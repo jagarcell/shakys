@@ -17,8 +17,6 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('internal_code', 50)->nullable();
             $table->string('internal_description', 150)->default('');
-            $table->string('supplier_code', 50)->nullable();
-            $table->string('supplier_description', 150)->default('');
             $table->integer('days_to_count')->default(0);
             $table->string('measure_unit')->nullable();
             $table->bigInteger('default_supplier_id')->default(-1);

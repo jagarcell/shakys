@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSuppliersProductsPivotsTable extends Migration
+class CreateSupplierProductLocationsPivotsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateSuppliersProductsPivotsTable extends Migration
      */
     public function up()
     {
-        Schema::create('suppliers_products_pivots', function (Blueprint $table) {
+        Schema::create('supplier_product_locations_pivots', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('supplier_id')->default(-1);
             $table->bigInteger('product_id')->default(-1);
-            $table->string('supplier_code', 50)->nullable();
-            $table->string('supplier_description', 150)->default('');
+            $table->bigInteger('location_id')->default(-1);
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateSuppliersProductsPivotsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('suppliers_products_pivots');
+        Schema::dropIfExists('supplier_product_locations_pivots');
     }
 }
