@@ -9,13 +9,13 @@
         <meta content="admin panel" property="twitter:title">
         <meta content="width=device-width, initial-scale=1" name="viewport">
         <meta content="Webflow" name="generator">
-        <link href="public/css/normalize.css" rel="stylesheet" type="text/css">
-        <link href="public/css/webflow.css" rel="stylesheet" type="text/css">
-        <link href="public/css/shakys.webflow.css" rel="stylesheet" type="text/css">
+        <link href="css/normalize.css" rel="stylesheet" type="text/css">
+        <link href="css/webflow.css" rel="stylesheet" type="text/css">
+        <link href="css/shakys.webflow.css" rel="stylesheet" type="text/css">
         <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
         <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
-        <link href="public/images/favicon.ico" rel="shortcut icon" type="image/x-icon">
-        <link href="public/images/webclip.png" rel="apple-touch-icon">
+        <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+        <link href="images/webclip.png" rel="apple-touch-icon">
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -49,7 +49,7 @@
             @endif
         </div-->
         <div class="page-header">
-            <div class="logo-frame"><img src="public/images/Shakys.png" loading="lazy" sizes="(max-width: 767px) 100vw, 53vw" srcset="/public/images/Shakys-p-500.png 500w, /public/images/Shakys.png 512w" alt="" class="logo">
+            <div class="logo-frame"><img src="images/Shakys.png" loading="lazy" sizes="(max-width: 767px) 100vw, 53vw" srcset="images/Shakys-p-500.png 500w, images/Shakys.png 512w" alt="" class="logo">
             </div>
             <div class="title-frame">
             <div class="text-block">PURCHASES CONTROL SYSTEM</div>
@@ -59,31 +59,31 @@
             <div class="page_title">ADMIN PANEL</div>
         </div>
         <div class="admin_panel_section">
-            <div data-w-id="dd404975-5144-4daa-172d-139e14ceec86" class="option_frame"><img src="public/images/pendingorders.png" loading="lazy" sizes="150px" width="150" srcset="/public/images/pendingorders-p-500.png 500w, /public/images/pendingorders.png 512w" alt="" class="option_image">
+            <div data-w-id="dd404975-5144-4daa-172d-139e14ceec86" class="option_frame"><img src="images/pendingorders.png" loading="lazy" sizes="150px" width="150" srcset="images/pendingorders-p-500.png 500w, images/pendingorders.png 512w" alt="" class="option_image">
             <div class="option_text">PENDING ORDERS</div>
             </div>
-            <div data-w-id="14a54350-4c5e-89b4-8745-04aac0afccbf" class="option_frame"><img src="public/images/products.png" loading="lazy" width="150" sizes="150px" srcset="/public/images/products-p-500.png 500w, /public/images/products.png 600w" alt="" class="option_image">
+            <div data-w-id="14a54350-4c5e-89b4-8745-04aac0afccbf" class="option_frame"><img src="/images/products.png" loading="lazy" width="150" sizes="150px" srcset="images/products-p-500.png 500w, images/products.png 600w" alt="" class="option_image">
             <div class="option_text">PRODUCTS </div>
             </div>
         </div>
         <div class="admin_panel_section">
-            <div data-w-id="14a54350-4c5e-89b4-8745-04aac0afccc1" class="option_frame"><img src="public/images/productlocation.png" loading="lazy" sizes="150px" width="150" srcset="/public/images/productlocation-p-500.png 500w, /public/images/productlocation.png 512w" alt="" class="option_image">
+            <div data-w-id="14a54350-4c5e-89b4-8745-04aac0afccc1" class="option_frame"><img src="images/productlocation.png" loading="lazy" sizes="150px" width="150" srcset="images/productlocation-p-500.png 500w, images/productlocation.png 512w" alt="" class="option_image">
             <div class="option_text">IN-STORE PRODUCT LOCATIONS</div>
             </div>
-            <div data-w-id="dd404975-5144-4daa-172d-139e14ceec84" class="option_frame"><img src="public/images/supplierproductlocation.png" loading="lazy" width="150" sizes="150px" srcset="/public/images/supplierproductlocation-p-500.png 500w, /public/images/supplierproductlocation.png 512w" alt="" class="option_image">
+            <div data-w-id="dd404975-5144-4daa-172d-139e14ceec84" class="option_frame"><img src="images/supplierproductlocation.png" loading="lazy" width="150" sizes="150px" srcset="images/supplierproductlocation-p-500.png 500w, images/supplierproductlocation.png 512w" alt="" class="option_image">
             <div class="option_text">PRODUCT LOCATIONS<br> AT SUPPLIERS</div>
             </div>
         </div>
         <div class="admin_panel_section">
-            <div data-w-id="690dbcf6-32a1-4389-d1b2-bf88ab73bace" class="option_frame"><img src="public/images/Users-icon.png" loading="lazy" width="150" alt="" class="option_image">
+            <div data-w-id="690dbcf6-32a1-4389-d1b2-bf88ab73bace" class="option_frame"><img src="images/Users-icon.png" loading="lazy" width="150" alt="" class="option_image">
             <div class="option_text">USERS</div>
             </div>
-            <div data-w-id="3f834a6a-4538-916b-a543-56df34d9b186" class="option_frame"><img src="public/images/Suppliers.png" loading="lazy" sizes="150px" width="150" srcset="/public/images/Suppliers-p-500.png 500w, /public/images/Suppliers.png 512w" alt="" class="option_image">
+            <div data-w-id="3f834a6a-4538-916b-a543-56df34d9b186" class="option_frame"><img src="images/Suppliers.png" loading="lazy" sizes="150px" width="150" srcset="images/Suppliers-p-500.png 500w, images/Suppliers.png 512w" alt="" class="option_image">
             <div class="option_text">SUPPLIERS</div>
             </div>
         </div>
         <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-        <script src="public/js/webflow.js" type="text/javascript"></script>
+        <script src="js/webflow.js" type="text/javascript"></script>
         <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
     </body>
 </html>
