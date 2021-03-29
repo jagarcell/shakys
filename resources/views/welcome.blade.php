@@ -1,10 +1,14 @@
+@extends('layouts.app')
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-wf-page="605538017156323a2f5ab124" data-wf-site="604d41d40c813292693d08e7">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Admin Panel</title>
+        $section('title', 'Admin Panel')
+
+        @section('headsection')
+            @parent
         <meta content="admin panel" property="og:title">
         <meta content="admin panel" property="twitter:title">
         <meta content="width=device-width, initial-scale=1" name="viewport">
@@ -31,6 +35,7 @@
             }
         </style>
       <meta name="format-detection" content="telephone=no">
+      @endsection
     </head>
     <body class="antialiased">
         <!--div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
@@ -48,16 +53,7 @@
                 </div>
             @endif
         </div-->
-        <div class="page-header">
-            <div class="logo-frame"><img src="images/Shakys.png" loading="lazy" sizes="(max-width: 767px) 100vw, 53vw" srcset="images/Shakys-p-500.png 500w, images/Shakys.png 512w" alt="" class="logo">
-            </div>
-            <div class="title-frame">
-            <div class="text-block">PURCHASES CONTROL SYSTEM</div>
-            </div>
-        </div>
-        <div class="page_title_frame">
-            <div class="page_title">ADMIN PANEL</div>
-        </div>
+        @section('content')
         <div class="admin_panel_section">
             <div data-w-id="dd404975-5144-4daa-172d-139e14ceec86" class="option_frame"><img src="images/pendingorders.png" loading="lazy" sizes="150px" width="150" srcset="images/pendingorders-p-500.png 500w, images/pendingorders.png 512w" alt="" class="option_image">
             <div class="option_text">PENDING ORDERS</div>
@@ -85,5 +81,6 @@
         <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
         <script src="js/webflow.js" type="text/javascript"></script>
         <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+        @endsection    
     </body>
 </html>
