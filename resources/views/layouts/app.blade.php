@@ -20,8 +20,8 @@
     
     <body>
         <div class="page-header">
-            <div class="logo-frame"><img src="images/Shakys.png" loading="lazy" sizes="(max-width: 767px) 100vw, 53vw" srcset="images/Shakys-p-500.png 500w, images/Shakys.png 512w" alt="" class="logo">
-            </div>
+            <a href="/" class="logo-frame"><img src="images/Shakys.png" loading="lazy" sizes="(max-width: 767px) 100vw, 53vw" srcset="images/Shakys-p-500.png 500w, images/Shakys.png 512w" alt="" class="logo">
+            </a>
             <div class="title-frame">
             <div class="text-block">PURCHASES CONTROL SYSTEM</div>
             </div>
