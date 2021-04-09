@@ -21,6 +21,14 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/users', 'UsersController@ListUsers');
+/*********************************
+ *           USERS               *
+ ********************************/
+
+Route::get('/users', 'UsersController@ListUsers')->name('users');
+
+Route::get('/userbyid', 'UsersController@UserById');
+
+Route::post('/saveuser', 'UsersController@SaveUser');
 
 require __DIR__.'/auth.php';

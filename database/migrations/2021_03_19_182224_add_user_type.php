@@ -15,7 +15,7 @@ class AddUserType extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->string('userType')->default('user');
+            $table->string('user_type')->default('user');
         });
     }
 
@@ -28,7 +28,7 @@ class AddUserType extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->dropColumn('userType');
+            $table->dropColumn('user_type');
         });
     }
 }

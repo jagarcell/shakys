@@ -2,14 +2,18 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-wf-page="605538017156323a2f5ab124" data-wf-site="604d41d40c813292693d08e7">
     <head>
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         @section('title', 'Users')
 
         @section('headsection')
-        <link href="css/welcome.css" rel="stylesheet" type="text/css">
-        <!--link href="css/shakys.webflow.css" rel="stylesheet" type="text/css"-->
+        <link href="css/shakys.webflow.css" rel="stylesheet" type="text/css">
+        <link href="css/users.css" rel="stylesheet" type="text/css">
+        <link href="css/webflow.css" rel="stylesheet" type="text/css">
         <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
         <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
         <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
@@ -35,6 +39,149 @@
         @section('page_title', 'USERS')
         @section('content')
 
+        <!-- HTML FOR THE NEW USER DATA ENTRY -->
+        <div class="user_section">
+            <div class="user_form_block w-form">
+                <form method="POST" action="{{ route('register') }}" class="user_form">
+                    @csrf
+                    <div class="user_data_1">
+                        <x-input type="text" class="user_name w-input" maxlength="256" name="name" data-name="name" placeholder="Name" id="name" :value="old('name')" required autofocus />
+                        <x-input type="email" class="user_email w-input" maxlength="256" name="email" data-name="email" placeholder="Email" id="email" :value="old('email')" required />
+                        <select class="user_type w-input" name="user_type" id="user_type" :value="old('user_type'>">
+                            <option value="admin">admin</option>
+                            <option value="user" selected>user</option>
+                        </select>
+                    </div>
+                    <div class="user_data_2">
+
+                        <x-input type="password" class="user_password w-input" 
+                                    maxlength="256" name="password" data-name="password" 
+                                    placeholder="Password" id="password"
+                                    required autocomplete="new-password" />
+        
+                        <x-input type="password" class="user_password_confirm w-input" 
+                                    maxlength="256" name="password_confirmation" 
+                                    data-name="password_confirmation" placeholder="Confirm Password" 
+                                    id="password_confirmation" required />
+                        <div class="user_add_button">
+                            <x-button data-wait="Please wait..." class="add_user_button w-button">
+                            {{ __('NEW') }}
+                            </x-button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Validation Errors -->
+                <x-auth-validation-errors class="mb-4 errors" :errors="$errors" />
+            </div>
+        </div>
+
+        <!-- HTML FOR THE EDITING OF USER DATA -->
+        <!-- THIS CONTENT WILL BE SHOWN FROM JAVASCRIPT WHEN THE USER STARTS THE EDIT USER ACTION -->    
+        <div  id="edit_section" hidden>    
+            <div class="user_section">
+                <div class="user_form_block w-form">
+                    <form id="user_edit_form" name="email-form" data-name="Email Form" class="user_form">
+                        @csrf
+                        <div class="user_data_1">
+                            <input id="edited_user_id" name="user_id" hidden>
+                            <input id="edited_name" type="text" class="user_name w-input" maxlength="256" name="name" placeholder="Name" required>
+                            <div class="user_email">
+                                <input id="edited_email" type="email" class="w-input" maxlength="256" name="email" placeholder="Email" required>
+                                <span id="email_error" class="user_email email_taken" hidden>THIS EMAIL IS ALREADY TAKEN!</span>
+                            </div>
+                            <select id="edited_user_type" type="text" class="user_type w-input" maxlength="256" name="user_type" placeholder="User Type" required>
+                                <option value="admin">admin</option>
+                                <option value="user">user</option>
+                            </select>
+                        </div>
+                        <div class="user_data_2 center">
+                            <!--input id="edited_password" type="password" class="user_password w-input" maxlength="256" name="Password-3" data-name="Password 3" placeholder="Password" required="">
+                            <input id="edited_password_confirmation" type="password" class="user_password_confirm w-input" maxlength="256" name="Password-2" data-name="Password 2" placeholder="Password" required="" -->
+                            <div class="user_add_button">
+                                <input id="edited_user_save" type="button" value="SAVE" data-wait="Please wait..." class="add_user_button w-button" onclick="saveUser(this)">
+                            </div>
+                            <div class="user_add_button">
+                                <input type="button" value="DISCARD" data-wait="Please wait..." class="add_user_button w-button" onclick="discard(this)">
+                            </div>
+                            <div class="user_add_button">
+                                <input type="button" value="PASSWORD" data-wait="Please wait..." class="add_user_button w-button" onclick="password(this)">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- HTML FOR THE USER PASSWORD CHANGE -->
+        <!-- THIS CONTENT WILL BE SHOWN FROM JAVASCRIPT WHEN THE USER CLICK ON PASSWORD BUTTON -->
+        <div id="password_section" hidden>
+            <form class="user_form">
+                @csrf                    
+                <div class="user_data_2 center">
+                    <input id="edited_password" type="password" class="user_password w-input" maxlength="256" name="Password-3" data-name="Password 3" placeholder="Password" required>
+                    <input id="edited_password_confirmation" type="password" class="user_password_confirm w-input" maxlength="256" name="Password-2" data-name="Password 2" placeholder="Password" required>
+                    <div class="user_add_button">
+                        <input id="edited_password_save" type="button" value="SAVE" data-wait="Please wait..." class="add_user_button w-button" onclick="saveUser(this)">
+                    </div>
+                    <div class="user_add_button">
+                        <input type="button" value="DISCARD" data-wait="Please wait..." class="add_user_button w-button" onclick="discard(this)">
+                    </div>
+                </div>
+            </form>    
+        </div>
+ 
+        <!-- HTML TO RESTORE USER DATA DISPLAY AFTER EDITED DATA IS SAVED -->    
+        <!-- THIS CONTENT WILL BE SHOWN FROM JAVASCRIPT WHEN THE USER SAVES THE EDITED USER DATA -->    
+        <div id="user_data" hidden>
+            <div class="user_section horizontal">
+                <div class="user_edit_section">
+                    <div class="user_field_header">USER</div>
+                    <div id="user_name" class="user_field_content">user_name</div>
+                </div>
+                <div class="user_edit_section">
+                    <div class="user_field_header">EMAIL</div>
+                    <div id="user_email" class="user_field_content">user_email</div>
+                </div>
+                    <div class="user_edit_section two">
+                    <div class="user_field_header">TYPE</div>
+                    <div id="user_type" class="user_field_content user_type">user_type</div>
+                </div>
+                <div class="user_edit_section center">
+                    <a class="add_user_button edit w-button" onclick="edit('user_id')">EDIT</a>
+                    <a class="add_user_button edit delete w-button" onclick="deleteUser('user_id')">DELETE</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- LIST OF REGISTERED USERS RECEIVED FROM THE VIEW REQUEST -->
+        @foreach($users as $key => $user)
+        <div id="{{$user->id}}">
+            <div class="user_section horizontal">
+                <div class="user_edit_section">
+                    <div class="user_field_header">USER</div>
+                    <div class="user_field_content">{{$user->name}}</div>
+                </div>
+                <div class="user_edit_section">
+                    <div class="user_field_header">EMAIL</div>
+                    <div class="user_field_content">{{$user->email}}</div>
+                 </div>
+                <div class="user_edit_section two">
+                    <div class="user_field_header">TYPE</div>
+                    <div class="user_field_content">{{$user->user_type}}</div>
+                </div>
+                <div class="user_edit_section center">
+                    <a class="add_user_button edit w-button" onclick="edit('{{$user->id}}')">EDIT</a>
+                    <a class="add_user_button edit delete w-button" onclick="deleteUser('{{$user->id}}')">DELETE</a>
+                </div>
+            </div>
+        </div>
+        @endforeach
+
+        <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+        <script src="js/webflow.js" type="text/javascript"></script>
+        <script src="js/users.js" type="text/javascript"></script>
+        <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
         @endsection    
     </body>
 </html>
