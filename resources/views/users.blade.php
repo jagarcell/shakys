@@ -40,7 +40,7 @@
         @section('content')
 
         <!-- HTML FOR THE NEW USER DATA ENTRY -->
-        <div class="user_section">
+        <div class="user_div user_section">
             <div class="user_form_block w-form">
                 <form method="POST" action="{{ route('register') }}" class="user_form">
                     @csrf
@@ -79,7 +79,7 @@
         <!-- HTML FOR THE EDITING OF USER DATA -->
         <!-- THIS CONTENT WILL BE SHOWN FROM JAVASCRIPT WHEN THE USER STARTS THE EDIT USER ACTION -->    
         <div  id="edit_section" hidden>    
-            <div class="user_section">
+            <div id="user_section" class="user_section">
                 <div class="user_form_block w-form">
                     <form id="user_edit_form" name="email-form" data-name="Email Form" class="user_form">
                         @csrf
@@ -100,6 +100,7 @@
                             <input id="edited_password_confirmation" type="password" class="user_password_confirm w-input" maxlength="256" name="Password-2" data-name="Password 2" placeholder="Password" required="" -->
                             <div class="user_add_button">
                                 <input id="edited_user_save" type="button" value="SAVE" data-wait="Please wait..." class="add_user_button w-button" onclick="saveUser(this)">
+                                <span id="save_session_expired" class="save_session_expired" hidden>Session expired! Please, refresh your browser.</span>
                             </div>
                             <div class="user_add_button">
                                 <input type="button" value="DISCARD" data-wait="Please wait..." class="add_user_button w-button" onclick="discard(this)">
@@ -116,63 +117,69 @@
         <!-- HTML FOR THE USER PASSWORD CHANGE -->
         <!-- THIS CONTENT WILL BE SHOWN FROM JAVASCRIPT WHEN THE USER CLICK ON PASSWORD BUTTON -->
         <div id="password_section" hidden>
-            <form class="user_form">
-                @csrf                    
-                <div class="user_data_2 center">
-                    <input id="edited_password" type="password" class="user_password w-input" maxlength="256" name="Password-3" data-name="Password 3" placeholder="Password" required>
-                    <input id="edited_password_confirmation" type="password" class="user_password_confirm w-input" maxlength="256" name="Password-2" data-name="Password 2" placeholder="Password" required>
-                    <div class="user_add_button">
-                        <input id="edited_password_save" type="button" value="SAVE" data-wait="Please wait..." class="add_user_button w-button" onclick="saveUser(this)">
-                    </div>
-                    <div class="user_add_button">
-                        <input type="button" value="DISCARD" data-wait="Please wait..." class="add_user_button w-button" onclick="discard(this)">
-                    </div>
-                </div>
-            </form>    
+            <div class="user_password_section">
+                <input type="password" class="user_password w-input" maxlength="256" name="password-4" data-name="Password 4" placeholder="New Password" id="password-4" required=""><input type="password" class="user_password_confirm w-input" maxlength="256" name="password_confirmation-3" data-name="Password Confirmation 3" placeholder="Confirm New Password" id="password_confirmation-3" required="">
+            </div>
+            <div class="user_password_section">
+                <input type="submit" value="CREATE NEW PASSWORD" data-wait="Please wait..." class="create_discard_passwd_button w-button">
+                <input type="submit" value="DISCARD NEW PASSWORD" data-wait="Please wait..." class="create_discard_passwd_button w-button" onclick="discardPassword(this)">
+            </div>
         </div>
  
         <!-- HTML TO RESTORE USER DATA DISPLAY AFTER EDITED DATA IS SAVED -->    
         <!-- THIS CONTENT WILL BE SHOWN FROM JAVASCRIPT WHEN THE USER SAVES THE EDITED USER DATA -->    
         <div id="user_data" hidden>
-            <div class="user_section horizontal">
-                <div class="user_edit_section">
-                    <div class="user_field_header">USER</div>
-                    <div id="user_name" class="user_field_content">user_name</div>
+            <div id="user_edit_frame">    
+                <div class="user_section horizontal">
+                    <div class="user_edit_section">
+                        <div class="user_field_header">USER</div>
+                        <div id="user_name" class="user_field_content">user_name</div>
+                    </div>
+                    <div class="user_edit_section">
+                        <div class="user_field_header">EMAIL</div>
+                        <div id="user_email" class="user_field_content">user_email</div>
+                    </div>
+                        <div class="user_edit_section two">
+                        <div class="user_field_header">TYPE</div>
+                        <div id="user_type" class="user_field_content user_type">user_type</div>
+                    </div>
+                    <div class="user_edit_section center" id="edit_buttons">
+                        <a class="add_user_button edit w-button" onclick="edit('user_id')">EDIT</a>
+                        <a class="add_user_button edit delete w-button" onclick="deleteUser('user_id')">DELETE</a>
+                        <a class="add_user_button edit password w-button" onclick="newPassword('user_id')">PASSWD</a>
+                    </div>
                 </div>
-                <div class="user_edit_section">
-                    <div class="user_field_header">EMAIL</div>
-                    <div id="user_email" class="user_field_content">user_email</div>
-                </div>
-                    <div class="user_edit_section two">
-                    <div class="user_field_header">TYPE</div>
-                    <div id="user_type" class="user_field_content user_type">user_type</div>
-                </div>
-                <div class="user_edit_section center">
-                    <a class="add_user_button edit w-button" onclick="edit('user_id')">EDIT</a>
-                    <a class="add_user_button edit delete w-button" onclick="deleteUser('user_id')">DELETE</a>
+                <div id="user_password_reset" class="user_password_reset">
+
                 </div>
             </div>
         </div>
 
         <!-- LIST OF REGISTERED USERS RECEIVED FROM THE VIEW REQUEST -->
         @foreach($users as $key => $user)
-        <div id="{{$user->id}}">
-            <div class="user_section horizontal">
-                <div class="user_edit_section">
-                    <div class="user_field_header">USER</div>
-                    <div class="user_field_content">{{$user->name}}</div>
+        <div id="{{$user->id}}" class="user_div">
+            <div id="user_edit_frame">    
+                <div class="user_section horizontal">
+                    <div class="user_edit_section">
+                        <div class="user_field_header">USER</div>
+                        <div class="user_field_content">{{$user->name}}</div>
+                    </div>
+                    <div class="user_edit_section">
+                        <div class="user_field_header">EMAIL</div>
+                        <div class="user_field_content">{{$user->email}}</div>
+                    </div>
+                    <div class="user_edit_section two">
+                        <div class="user_field_header">TYPE</div>
+                        <div class="user_field_content">{{$user->user_type}}</div>
+                    </div>
+                    <div class="user_edit_section center" id="edit_buttons">
+                        <a class="add_user_button edit w-button" onclick="edit('{{$user->id}}')">EDIT</a>
+                        <a class="add_user_button edit delete w-button" onclick="deleteUser('{{$user->id}}')">DELETE</a>
+                        <a class="add_user_button edit password w-button" onclick="newPassword('{{$user->id}}')">PASSWD</a>
+                    </div>
                 </div>
-                <div class="user_edit_section">
-                    <div class="user_field_header">EMAIL</div>
-                    <div class="user_field_content">{{$user->email}}</div>
-                 </div>
-                <div class="user_edit_section two">
-                    <div class="user_field_header">TYPE</div>
-                    <div class="user_field_content">{{$user->user_type}}</div>
-                </div>
-                <div class="user_edit_section center">
-                    <a class="add_user_button edit w-button" onclick="edit('{{$user->id}}')">EDIT</a>
-                    <a class="add_user_button edit delete w-button" onclick="deleteUser('{{$user->id}}')">DELETE</a>
+                <div id="user_password_reset" class="user_password_reset">
+
                 </div>
             </div>
         </div>
@@ -181,6 +188,7 @@
         <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
         <script src="js/webflow.js" type="text/javascript"></script>
         <script src="js/users.js" type="text/javascript"></script>
+        <script src="js/garcellLib.js" type="text/javascript"></script>
         <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
         @endsection    
     </body>

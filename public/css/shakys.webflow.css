@@ -317,12 +317,18 @@ a {
   line-height: 1.5em;
 }
 
+.user_div{
+  border-bottom: 1px solid #000;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
 .user_section {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  min-height: 185px;
+  min-height: 90px;
   height: auto;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
@@ -337,7 +343,6 @@ a {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-  border-bottom: 1px solid #000;
 }
 
 .user_section.horizontal {
@@ -471,6 +476,10 @@ a {
   background-color: #ed0000;
 }
 
+.add_user_button.password {
+  background-color:darkgreen;
+}
+
 .user_edit_section {
   padding-left: 10px;
   width: 28%;
@@ -499,7 +508,7 @@ a {
   display: -ms-flexbox;
   display: flex;
   width: 115px;
-  height: 60px;
+  height: 100px;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
@@ -526,6 +535,74 @@ a {
   padding-top: 10px;
 }
 
+
+.user_password_section {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 90%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.user_password_reset {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: 'Sofia Pro 400', sans-serif;
+}
+
+.create_discard_passwd_button {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 230px;
+  height: 46px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 15px;
+  font-size: 14px;
+}
+
+.create_discard_passwd_button.edit {
+  height: 20px;
+}
+
+.create_discard_passwd_button.delete {
+  background-color: #ed0000;
+}
+
+
 .div-block {
   display: -webkit-box;
   display: -webkit-flex;
@@ -533,8 +610,26 @@ a {
   display: flex;
 }
 
+.authenticated_user {
+  position: absolute;
+  padding-right: 10px;
+  padding-top: 10px;
+  text-align: end;
+  text-decoration: underline;
+  top: 0px;
+  right: 0px;
+  height: 40px;
+  font-family: 'Sofia Pro 400', sans-serif;
+}
+
+.save_session_expired{
+  padding-left: 10px;
+  color: #ed0000;
+}
+
 @media screen and (max-width: 767px) {
   .page-header {
+    position: relative;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
@@ -723,6 +818,22 @@ a {
     margin-left: 0%;
   }
 
+  .user_password_section {
+    height: 130px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-justify-content: space-around;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+
   .user_type {
     width: 100%;
     margin-left: 0%;
@@ -757,6 +868,11 @@ a {
     -ms-flex-direction: row;
     flex-direction: row;
   }
+
+  .user_password_reset {
+    padding-left: 10%;
+    padding-right: 10%;
+  }
 }
 
 @media screen and (max-width: 479px) {
@@ -780,6 +896,10 @@ a {
 
   .user_edit_section.center {
     width: 90%;
+  }
+
+  .create_discard_passwd_button {
+    font-size: 12px;
   }
 }
 

@@ -27,8 +27,8 @@ function deleteUser(userid){
 }
 
 function saveUser(element) {
-    var form = $(element)[0].parentNode.parentNode.parentNode
-
+    var form = garcellParentNodeById(element, "user_edit_form")
+    
     var userId = $(form).find('#edited_user_id').val()
     var email = $(form).find('#edited_email').val()
     var name = $(form).find('#edited_name').val()
@@ -37,7 +37,8 @@ function saveUser(element) {
     {
         $.post('/saveuser',
         {
-            _token: $('meta[name="csrf-token"]').attr('content'),
+            _token: $('meta[name="csrf-token"]').attr('content') + '1',
+            element_tag:userId,
             user_id:userId,
             name:name,
             email:email,
@@ -58,6 +59,11 @@ function saveUser(element) {
                     setTimeout(function(){
                         $(form).find('#email_error').hide()
                     }, 3000)
+                }
+                if(data.status == '419'){
+                    var recover_element = document.getElementById(data.element_tag)
+                    form = recover_element.find('#')
+                    console.log(recover_element)
                 }
             }
         })
@@ -85,30 +91,20 @@ function discard(element) {
     )
 }
 
-function password(element) {
-    var form = $(element)[0].parentNode.parentNode.parentNode
-    console.log(form)
-
-    var userId = $(form).find('#edited_user_id').val()
-    console.log(userId)
-    var userData = $(userId)
+function newPassword(userId) {
+    var userData = $('#' + userId)
+    var editButtons = userData.find('#edit_buttons')
+    var passwordReset = userData.find('#user_password_reset')
     var passwordHTML = $('#password_section')[0].innerHTML
-    userData[0].innerHTML = passwordHTML
-   
+    editButtons.hide();
+    passwordReset[0].innerHTML = passwordHTML
 }
 
-function ValidateEmail(inputText)
-{
-    var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    if(inputText.value.match(mailformat))
-    {
-        alert("Valid email address!");
-        return true;
-    }
-    else
-    {
-        inputText.setCustomValidity('INVALID EMAIL FORMAT')
-        alert("You have entered an invalid email address!")
-        return false;
-    }
+function discardPassword(element) {
+    var userPasswordReset = garcellParentNodeById(element, 'user_password_reset')
+    var userData = garcellParentNodeById(element, 'user_edit_frame')
+    var editButtons = $(userData).find('#edit_buttons')
+
+    userPasswordReset.innerHTML = ""
+    $(editButtons).show()
 }

@@ -37,5 +37,12 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+
+        $this->renderable(function (\Symfony\Component\HttpKernel\Exception\HttpException $e, $request) {
+            if ($e->getStatusCode() == 419) {
+              return response()->json(['status' => '419', 'element_tag' => $request['element_tag']]);
+            }
+          });
+    
     }
 }

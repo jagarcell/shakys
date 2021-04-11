@@ -58,7 +58,10 @@ class Users extends Model
         $UserType = $request['user_type'];
         $Users = $this->where('email', $Email)->get();
         if(count($Users) > 0){
-            return['status' => 'email taken'];
+            $User = $Users[0];
+            if($User->id != $UserId){
+                return['status' => 'email taken'];
+            }
         }
         try {
             //code...
