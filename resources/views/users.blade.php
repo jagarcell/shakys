@@ -48,8 +48,21 @@
                         <x-input type="text" class="user_name w-input" maxlength="256" name="name" data-name="name" placeholder="Name" id="name" :value="old('name')" required autofocus />
                         <x-input type="email" class="user_email w-input" maxlength="256" name="email" data-name="email" placeholder="Email" id="email" :value="old('email')" required />
                         <select class="user_type w-input" name="user_type" id="user_type" :value="old('user_type'>">
+                        @auth
+                        @if(Auth::user()->user_type == 'admin')
                             <option value="admin">admin</option>
                             <option value="user" selected>user</option>
+                        @else    
+                            <option value="admin" selected>admin</option>
+                            <option value="user">user</option>
+                        @endif
+                        @endauth
+
+                        @guest
+                            <option value="admin" selected>admin</option>
+                            <option value="user">user</option>
+                        @endguest
+
                         </select>
                     </div>
                     <div class="user_data_2">
@@ -87,20 +100,25 @@
                             <input id="edited_user_id" name="user_id" hidden>
                             <input id="edited_name" type="text" class="user_name w-input" maxlength="256" name="name" placeholder="Name" required>
                             <div class="user_email">
-                                <input id="edited_email" type="email" class="w-input" maxlength="256" name="email" placeholder="Email" required>
+                                <input id="edited_email" type="email" class="edited_email w-input" maxlength="256" name="email" placeholder="Email" required>
                                 <span id="email_error" class="user_email email_taken" hidden>THIS EMAIL IS ALREADY TAKEN!</span>
                             </div>
-                            <select id="edited_user_type" type="text" class="user_type w-input" maxlength="256" name="user_type" placeholder="User Type" required>
-                                <option value="admin">admin</option>
-                                <option value="user">user</option>
-                            </select>
+                            <div class="user_type">
+                                <select id="edited_user_type" type="text" class="edited_user_type w-input" maxlength="256" name="user_type" placeholder="User Type" required>
+                                    <option value="admin">admin</option>
+                                    <option value="user">user</option>
+                                </select>
+                                <span id="edited_user_type_error" class="no_admin_left" hidden>THIS IS THE ONLY admin USER LEFT!<br>YOU CAN NOT CHANGE THE USER TYPE FROM admin</span>
+                            </div>
                         </div>
                         <div class="user_data_2 center">
                             <!--input id="edited_password" type="password" class="user_password w-input" maxlength="256" name="Password-3" data-name="Password 3" placeholder="Password" required="">
                             <input id="edited_password_confirmation" type="password" class="user_password_confirm w-input" maxlength="256" name="Password-2" data-name="Password 2" placeholder="Password" required="" -->
                             <div class="user_add_button">
-                                <input id="edited_user_save" type="button" value="SAVE" data-wait="Please wait..." class="add_user_button w-button" onclick="saveUser(this)">
-                                <span id="save_session_expired" class="save_session_expired" hidden>Session expired! Please, refresh your browser.</span>
+                                <div style="display: block;">
+                                    <input id="edited_user_save" type="button" value="SAVE" data-wait="Please wait..." class="add_user_button w-button" onclick="saveUser(this)">
+                                    <span id="save_session_expired" class="save_session_expired" hidden>Session expired! Please, refresh your browser.</span>
+                                </div>    
                             </div>
                             <div class="user_add_button">
                                 <input type="button" value="DISCARD" data-wait="Please wait..." class="add_user_button w-button" onclick="discard(this)">
@@ -149,6 +167,12 @@
                         <a class="add_user_button edit password w-button" onclick="newPassword('user_id')">PASSWD</a>
                     </div>
                 </div>
+                <div id="delete_user_error" class="delete_button_frame" hidden>
+                    <span>NO MORE admin LEFT!<br>THIS USER CAN NOT BE DELETED!</span>
+                </div>
+                <div id="delete_user_success" class="delete_user_success" hidden>
+                    <span>THIS USER HAS BEEN SUCCESSFULLY DELETED!</span>
+                </div>
                 <div id="user_password_reset" class="user_password_reset">
 
                 </div>
@@ -174,9 +198,17 @@
                     </div>
                     <div class="user_edit_section center" id="edit_buttons">
                         <a class="add_user_button edit w-button" onclick="edit('{{$user->id}}')">EDIT</a>
-                        <a class="add_user_button edit delete w-button" onclick="deleteUser('{{$user->id}}')">DELETE</a>
+                        <div class="delete_button_frame">
+                            <a class="add_user_button edit delete w-button" onclick="deleteUser('{{$user->id}}')">DELETE</a>
+                        </div>    
                         <a class="add_user_button edit password w-button" onclick="newPassword('{{$user->id}}')">PASSWD</a>
                     </div>
+                </div>
+                <div id="delete_user_error" class="delete_button_frame" hidden>
+                    <span>NO MORE admin LEFT!<br>THIS USER CAN NOT BE DELETED!</span>
+                </div>
+                <div id="delete_user_success" class="delete_user_success" hidden>
+                    <span>THIS USER HAS BEEN SUCCESSFULLY DELETED!</span>
                 </div>
                 <div id="user_password_reset" class="user_password_reset">
 

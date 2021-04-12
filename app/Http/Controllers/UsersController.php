@@ -25,4 +25,10 @@ class UsersController extends Controller
         # code...
         return (new Users())->SaveUser($request);
     }
+
+    public function DeleteUser(Request $request)
+    {
+        # code...
+        return (new Users())->DeleteUser($request);
+    }
 }

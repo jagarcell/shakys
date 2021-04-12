@@ -25,10 +25,12 @@ Route::get('/dashboard', function () {
  *           USERS               *
  ********************************/
 
-Route::get('/users', 'UsersController@ListUsers')->name('users');
+Route::get('/users', 'UsersController@ListUsers')->name('users')->middleware('checkifcanregister');
 
 Route::get('/userbyid', 'UsersController@UserById');
 
-Route::post('/saveuser', 'UsersController@SaveUser');
+Route::post('/saveuser', 'UsersController@SaveUser')->middleware('checkifcanregister');
+
+Route::post('deleteuser', 'UsersController@DeleteUser');
 
 require __DIR__.'/auth.php';

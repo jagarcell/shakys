@@ -23,7 +23,34 @@ function edit(userid){
 }
 
 function deleteUser(userid){
-
+    if(confirm('ARE YOU SURE THAT YOU WANT TO REMOVE THIS USER')){
+        var element_tag = userid
+        $.post('/deleteuser', 
+            {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                userid:userid,
+                element_tag:element_tag,
+            }, 
+            function(data, status){
+               var edit_section = document.getElementById(data.element_tag)
+               console.log(edit_section)
+                if(data.status == 'ok'){
+                    var delete_user_success = $(edit_section).find('#delete_user_success')
+                    delete_user_success.show()
+                    setTimeout(function(edit_section_to_remove){
+                        $(edit_section_to_remove)[0].outerHTML = ""
+                    }, 4000, edit_section)
+                }
+                else{
+                    if(data.status == 'noadmin'){
+                        var delete_user_error = $(edit_section).find('#delete_user_error')
+                        delete_user_error.show()
+                        setTimeout(function(element_to_hide){delete_user_error.hide()}, 5000, delete_user_error)
+                    }
+                }
+                console.log(data)
+        })
+    }
 }
 
 function saveUser(element) {
@@ -37,7 +64,7 @@ function saveUser(element) {
     {
         $.post('/saveuser',
         {
-            _token: $('meta[name="csrf-token"]').attr('content') + '1',
+            _token: $('meta[name="csrf-token"]').attr('content'),
             element_tag:userId,
             user_id:userId,
             name:name,
@@ -54,16 +81,27 @@ function saveUser(element) {
                 user_section[0].innerHTML = user_section[0].innerHTML.replace('user_id', data.user_id)
             }
             else{
+                var edit_section = document.getElementById(data.element_tag)
                 if(data.status == 'email taken'){
-                    $(form).find('#email_error').show()
-                    setTimeout(function(){
-                        $(form).find('#email_error').hide()
-                    }, 3000)
+                    var email_error = $(edit_section).find('#email_error')
+                    email_error.show()
+                    setTimeout(function(element_to_hide){
+                        element_to_hide.hide()
+                    }, 3000, email_error)
                 }
                 if(data.status == '419'){
-                    var recover_element = document.getElementById(data.element_tag)
-                    form = recover_element.find('#')
-                    console.log(recover_element)
+                    var save_session_expired = $(edit_section).find('#save_session_expired')
+                    save_session_expired.show()
+                    setTimeout(function(element_to_hide){
+                        element_to_hide.hide()
+                    }, 3000, save_session_expired)
+                }
+                if(data.status == 'noadmin'){
+                    var edited_user_type_error = $(edit_section).find('#edited_user_type_error')
+                    edited_user_type_error.show()
+                    setTimeout(function(element_to_hide){
+                        edited_user_type_error.hide()
+                    }, 6000, edited_user_type_error)
                 }
             }
         })

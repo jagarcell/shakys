@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Users;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -17,6 +18,12 @@ class RegisteredUserController extends Controller
      *
      * @return \Illuminate\View\View
      */
+    public function __construct()
+    {
+//        $this->middleware('guest');
+        $this->middleware('checkifcanregister');
+    }
+
     public function create()
     {
         return view('auth.register');
@@ -39,12 +46,26 @@ class RegisteredUserController extends Controller
             'user_type' => 'required|string|min:1',
         ]);
 
-        Auth::login($user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'user_type' => $request->user_type,
-        ]));
+        $Users = (new Users())->where('id', '>', -1)->get();
+
+        if(count($Users) == 0)
+        {
+            Auth::login($user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'user_type' => $request->user_type,
+            ]));
+        }
+        else
+        {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'user_type' => $request->user_type,
+            ]);
+        }
 
         event(new Registered($user));
         return redirect(RouteServiceProvider::HOME);

@@ -442,6 +442,29 @@ a {
 .user_type {
   width: 30%;
   margin-left: 5%;
+  display: block;
+}
+
+.edited_user_type{
+  width: 100%;
+}
+
+.no_admin_left{
+  color: #ed0000;
+}
+
+.delete_button_frame{
+  color: #ed0000;
+  display: block;
+  text-align: center;
+  font-family: 'Sofia Pro 400', sans-serif;
+}
+
+.delete_user_success{
+  color: blue;
+  display: block;
+  text-align: center;
+  font-family: 'Sofia Pro 400', sans-serif;
 }
 
 .add_user_button {
@@ -470,6 +493,10 @@ a {
 
 .edit {
   height: 20px;
+}
+
+.edited_email{
+  width: 100%;
 }
 
 .add_user_button.delete {
@@ -623,7 +650,7 @@ a {
 }
 
 .save_session_expired{
-  padding-left: 10px;
+  display: block;
   color: #ed0000;
 }
 
@@ -837,6 +864,7 @@ a {
   .user_type {
     width: 100%;
     margin-left: 0%;
+    display: block;
   }
 
   .add_user_button {
