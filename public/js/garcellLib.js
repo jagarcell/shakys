@@ -1,6 +1,6 @@
-function garcellParentNodeById(element, id) {
+function garcellParentNodeById(element, parentId) {
     while (element !== 'undefined') {
-        if(element.id == id){
+        if(element.id == parentId){
             return element
         }
         element = element.parentNode

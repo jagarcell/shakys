@@ -111,8 +111,9 @@ function saveUser(element) {
     }
 }
 function discard(element) {
-    var form = $(element)[0].parentNode.parentNode.parentNode
-    var userId = $(form).find('#edited_user_id').val()
+    var edit_section = garcellParentNodeById(element, 'user_section')
+    var userId = $(edit_section).find('#edited_user_id').val()
+    console.log(userId)
     $.get('/userbyid',
         {userid:userId},
         function(data, status){
@@ -123,7 +124,7 @@ function discard(element) {
                 user_section.find('#user_name')[0].innerHTML = data.user.name
                 user_section.find('#user_email')[0].innerHTML = data.user.email
                 user_section.find('#user_type')[0].innerHTML = data.user.user_type
-                user_section[0].innerHTML = user_section[0].innerHTML.replace('user_id', data.user.id)
+                user_section[0].innerHTML = user_section[0].innerHTML.replace(/user_id/g, data.user.id)
             }
         }
     )
