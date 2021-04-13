@@ -110,6 +110,7 @@ function saveUser(element) {
         form.reportValidity()
     }
 }
+
 function discard(element) {
     var edit_section = garcellParentNodeById(element, 'user_section')
     var userId = $(edit_section).find('#edited_user_id').val()
