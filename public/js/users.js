@@ -33,7 +33,6 @@ function deleteUser(userid){
             }, 
             function(data, status){
                var edit_section = document.getElementById(data.element_tag)
-               console.log(edit_section)
                 if(data.status == 'ok'){
                     var delete_user_success = $(edit_section).find('#delete_user_success')
                     delete_user_success.show()
@@ -136,13 +135,69 @@ function newPassword(userId) {
     var editButtons = userData.find('#edit_buttons')
     var passwordReset = userData.find('#user_password_reset')
     var passwordHTML = $('#password_section')[0].innerHTML
-    editButtons.hide();
+    passwordHTML = passwordHTML.replace(/user_id/g, userId)
+//    editButtons.hide();
     passwordReset[0].innerHTML = passwordHTML
+}
+
+function createPassword(element) {
+    var user_edit_wrap = garcellParentNodeById(element, 'user_edit_wrap')
+    var user_password_reset_form = $(user_edit_wrap).find('#user_password_reset_form')
+    var user_id = $(user_edit_wrap).find('#password_id').val()
+    var user_password = $(user_edit_wrap).find('#user_password')
+    var user_password_confirm = $(user_edit_wrap).find('#user_password_confirm')
+    var new_password_value = $(user_password).val()
+    var confirm_new_password_value = $(user_password_confirm).val()
+    var password_confirmation_missmatch = $(user_edit_wrap).find('#password_confirmation_missmatch')
+    
+    if(new_password_value !== confirm_new_password_value){
+        $(password_confirmation_missmatch).show()
+        setTimeout(
+            function(element_to_hide){$(element_to_hide.hide())}, 3000, 
+            password_confirmation_missmatch)
+    }
+    else{
+        if(user_password_reset_form[0].checkValidity()){
+            $.post('changepassword', 
+                {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    user_id: user_id,
+                    password: new_password_value,
+                    element_tag : user_id,
+                }, function(data, status){
+                    if(data.status == 'ok'){
+                        var element_tag = $('#' + data.element_tag)
+                        var password_change_success = $(element_tag).find('#password_change_success')
+                        password_change_success.show()
+                        setTimeout(function(element_tag){
+                            var element = $('#' + element_tag)
+                            var user_password_reset = $(element).find('#user_password_reset')
+                            var editButtons = $(element).find('#edit_buttons')
+                            user_password_reset[0].innerHTML = ""
+                            $(editButtons).show()
+                        }, 3000, data.element_tag)
+                    }
+                    else{
+                        if(data.status == 'notfound'){
+
+                        }
+                        if(data.status == 'error'){
+
+                        }
+                    }
+                }
+            )
+        }
+        else{
+            user_password_reset_form[0].reportValidity()
+        }
+    }
+    
 }
 
 function discardPassword(element) {
     var userPasswordReset = garcellParentNodeById(element, 'user_password_reset')
-    var userData = garcellParentNodeById(element, 'user_edit_frame')
+    var userData = garcellParentNodeById(element, 'user_edit_wrap')
     var editButtons = $(userData).find('#edit_buttons')
 
     userPasswordReset.innerHTML = ""

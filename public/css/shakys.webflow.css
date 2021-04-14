@@ -17,6 +17,16 @@
   grid-row-start: 1;
 }
 
+.unauthorized_action{
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  padding: 0px;
+  color: #ed0000;
+  font-family: 'Sofia Pro 400';
+  font-size: 14px;
+}
+
 .w-checkbox::after {
   content: ' ';
   display: table;
@@ -499,6 +509,10 @@ a {
   width: 100%;
 }
 
+.new_password_form{
+  width: 100;
+}
+
 .add_user_button.delete {
   background-color: #ed0000;
 }
@@ -578,6 +592,19 @@ a {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
+}
+.password_confirmation_missmatch{
+  color: #ed0000;
+  font-family: 'Sofia Pro 400', sans-serif;
+  font-size: medium;
+  padding-top: 15px;
+}
+
+.password_change_success{
+  color: blue;
+  font-family: 'Sofia Pro 400', sans-serif;
+  font-size: medium;
+  padding-top: 15px;
 }
 
 .user_password_reset {

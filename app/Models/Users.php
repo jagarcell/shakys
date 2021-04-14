@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 
 class Users extends Model
 {
@@ -108,6 +109,7 @@ class Users extends Model
      */
 
 
+
     public function DeleteUser($request)
     {
         # code...
@@ -132,4 +134,38 @@ class Users extends Model
             }
         }
     }
+
+    /**
+     * 
+     * @param _token
+     * @param user_id
+     * @param password
+     * @param element_tag
+     * 
+     * @return status,element_tag
+     */
+
+    public function ChangePassword($request)
+    {
+        # code...
+        $UserId = $request['user_id'];
+        $Password = $request['password'];
+        $ElementTag = $request['element_tag'];
+
+        try {
+            //code...
+            $Users = $this->where('id', $UserId)->get();
+            if(count($Users) > 0){
+                $HashPassword = Hash::make($Password);
+                $this->where('id', $UserId)->update(['password' => $HashPassword]);
+                return['status' => 'ok', 'element_tag' => $ElementTag];
+            }
+            else{
+                return ['status' =>' notfound', 'element_tag' => $ElementTag];
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return['status' => 'error', 'th' => $th, 'element_tag' => $ElementTag];
+        }
+    }    
 }

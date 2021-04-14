@@ -1,3 +1,12 @@
+$(document).ready(function(){
+    var unauthorized_action = document.getElementById('unauthorized_action')
+    console.log(unauthorized_action)
+    if(unauthorized_action !== null){
+        setTimeout(function(){
+            window.location.href = "/"
+        }, 3000)
+    }
+})
 /*!
  * Webflow: Front-end site library
  * @license MIT

@@ -31,7 +31,7 @@ class CheckIfCanRegister
             }
         }
         else{
-            return redirect('/');
+            return redirect('/unauth');
         }
     }
 }

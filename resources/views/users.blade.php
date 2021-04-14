@@ -135,45 +135,53 @@
         <!-- HTML FOR THE USER PASSWORD CHANGE -->
         <!-- THIS CONTENT WILL BE SHOWN FROM JAVASCRIPT WHEN THE USER CLICK ON PASSWORD BUTTON -->
         <div id="password_section" hidden>
-            <div class="user_password_section">
-                <input type="password" class="user_password w-input" maxlength="256" name="password-4" data-name="Password 4" placeholder="New Password" id="password-4" required=""><input type="password" class="user_password_confirm w-input" maxlength="256" name="password_confirmation-3" data-name="Password Confirmation 3" placeholder="Confirm New Password" id="password_confirmation-3" required="">
-            </div>
-            <div class="user_password_section">
-                <input type="submit" value="CREATE NEW PASSWORD" data-wait="Please wait..." class="create_discard_passwd_button w-button">
-                <input type="submit" value="DISCARD NEW PASSWORD" data-wait="Please wait..." class="create_discard_passwd_button w-button" onclick="discardPassword(this)">
-            </div>
+            <form id="user_password_reset_form" class="user_password_reset">
+                <input id="password_id" value='user_id' hidden>
+                <div class="user_password_section">
+                    <input id="user_password" type="password" class="user_password w-input" maxlength="256" minlength="8" placeholder="New Password" required="">
+                    <input id="user_password_confirm" type="password" class="user_password_confirm w-input" maxlength="256" placeholder="Confirm New Password" required="">
+                </div>
+                <div class="user_password_section">
+                    <input id="new_password" type="button" value="CREATE NEW PASSWORD" data-wait="Please wait..." class="create_discard_passwd_button w-button" onclick="createPassword(this)">
+                    <input id="confirm_new_password" type="button" value="DISCARD NEW PASSWORD" data-wait="Please wait..." class="create_discard_passwd_button w-button" onclick="discardPassword(this)">
+                </div>
+                <div id="password_confirmation_missmatch" class="password_confirmation_missmatch" hidden><span>PASSWORD CONFIRMATION DOES NOT MATCH!</span></div>
+                <div id="password_change_success" class="password_change_success" hidden><span>PASSWORD SUCCESFULLY CHANGED!</span></div>
+            </form>    
         </div>
  
         <!-- HTML TO RESTORE USER DATA DISPLAY AFTER EDITED DATA IS SAVED -->    
         <!-- THIS CONTENT WILL BE SHOWN FROM JAVASCRIPT WHEN THE USER SAVES THE EDITED USER DATA -->    
         <div id="user_data" hidden>
-            <div id="user_edit_frame">    
-                <div class="user_section horizontal">
-                    <div class="user_edit_section">
-                        <div class="user_field_header">USER</div>
-                        <div id="user_name" class="user_field_content">user_name</div>
+            <div id="user_edit_wrap">
+                <div id="user_edit_frame">    
+                    <div class="user_section horizontal">
+                        <div class="user_edit_section">
+                            <div class="user_field_header">USER</div>
+                            <div id="user_name" class="user_field_content">user_name</div>
+                        </div>
+                        <div class="user_edit_section">
+                            <div class="user_field_header">EMAIL</div>
+                            <div id="user_email" class="user_field_content">user_email</div>
+                        </div>
+                            <div class="user_edit_section two">
+                            <div class="user_field_header">TYPE</div>
+                            <div id="user_type" class="user_field_content user_type">user_type</div>
+                        </div>
+                        <div class="user_edit_section center" id="edit_buttons">
+                            <a id="edit_user" class="add_user_button edit w-button" onclick="edit('user_id')">EDIT</a>
+                            <a id="delete_user" class="add_user_button edit delete w-button" onclick="deleteUser('user_id')">DELETE</a>
+                            <a id="new_user_password" class="add_user_button edit password w-button" onclick="newPassword('user_id')">PASSWD</a>
+                        </div>
                     </div>
-                    <div class="user_edit_section">
-                        <div class="user_field_header">EMAIL</div>
-                        <div id="user_email" class="user_field_content">user_email</div>
+                    <div id="delete_user_error" class="delete_button_frame" hidden>
+                        <span>NO MORE admin LEFT!<br>THIS USER CAN NOT BE DELETED!</span>
                     </div>
-                        <div class="user_edit_section two">
-                        <div class="user_field_header">TYPE</div>
-                        <div id="user_type" class="user_field_content user_type">user_type</div>
-                    </div>
-                    <div class="user_edit_section center" id="edit_buttons">
-                        <a class="add_user_button edit w-button" onclick="edit('user_id')">EDIT</a>
-                        <a class="add_user_button edit delete w-button" onclick="deleteUser('user_id')">DELETE</a>
-                        <a class="add_user_button edit password w-button" onclick="newPassword('user_id')">PASSWD</a>
+                    <div id="delete_user_success" class="delete_user_success" hidden>
+                        <span>THIS USER HAS BEEN SUCCESSFULLY DELETED!</span>
                     </div>
                 </div>
-                <div id="delete_user_error" class="delete_button_frame" hidden>
-                    <span>NO MORE admin LEFT!<br>THIS USER CAN NOT BE DELETED!</span>
-                </div>
-                <div id="delete_user_success" class="delete_user_success" hidden>
-                    <span>THIS USER HAS BEEN SUCCESSFULLY DELETED!</span>
-                </div>
-                <div id="user_password_reset" class="user_password_reset">
+                <div id="user_password_reset">
 
                 </div>
             </div>
@@ -182,35 +190,35 @@
         <!-- LIST OF REGISTERED USERS RECEIVED FROM THE VIEW REQUEST -->
         @foreach($users as $key => $user)
         <div id="{{$user->id}}" class="user_div">
-            <div id="user_edit_frame">    
-                <div class="user_section horizontal">
-                    <div class="user_edit_section">
-                        <div class="user_field_header">USER</div>
-                        <div class="user_field_content">{{$user->name}}</div>
+            <div id="user_edit_wrap">
+                <div id="user_edit_frame">    
+                    <div class="user_section horizontal">
+                        <div class="user_edit_section">
+                            <div class="user_field_header">USER</div>
+                            <div class="user_field_content">{{$user->name}}</div>
+                        </div>
+                        <div class="user_edit_section">
+                            <div class="user_field_header">EMAIL</div>
+                            <div class="user_field_content">{{$user->email}}</div>
+                        </div>
+                        <div class="user_edit_section two">
+                            <div class="user_field_header">TYPE</div>
+                            <div class="user_field_content">{{$user->user_type}}</div>
+                        </div>
+                        <div class="user_edit_section center" id="edit_buttons">
+                            <a id="edit_user" class="add_user_button edit w-button" onclick="edit('{{$user->id}}')">EDIT</a>
+                            <a id="delete_user" class="add_user_button edit delete w-button" onclick="deleteUser('{{$user->id}}')">DELETE</a>
+                            <a id="new_user_password" class="add_user_button edit password w-button" onclick="newPassword('{{$user->id}}')">PASSWD</a>
+                        </div>
                     </div>
-                    <div class="user_edit_section">
-                        <div class="user_field_header">EMAIL</div>
-                        <div class="user_field_content">{{$user->email}}</div>
+                    <div id="delete_user_error" class="delete_button_frame" hidden>
+                        <span>NO MORE admin LEFT!<br>THIS USER CAN NOT BE DELETED!</span>
                     </div>
-                    <div class="user_edit_section two">
-                        <div class="user_field_header">TYPE</div>
-                        <div class="user_field_content">{{$user->user_type}}</div>
-                    </div>
-                    <div class="user_edit_section center" id="edit_buttons">
-                        <a class="add_user_button edit w-button" onclick="edit('{{$user->id}}')">EDIT</a>
-                        <div class="delete_button_frame">
-                            <a class="add_user_button edit delete w-button" onclick="deleteUser('{{$user->id}}')">DELETE</a>
-                        </div>    
-                        <a class="add_user_button edit password w-button" onclick="newPassword('{{$user->id}}')">PASSWD</a>
+                    <div id="delete_user_success" class="delete_user_success" hidden>
+                        <span>THIS USER HAS BEEN SUCCESSFULLY DELETED!</span>
                     </div>
                 </div>
-                <div id="delete_user_error" class="delete_button_frame" hidden>
-                    <span>NO MORE admin LEFT!<br>THIS USER CAN NOT BE DELETED!</span>
-                </div>
-                <div id="delete_user_success" class="delete_user_success" hidden>
-                    <span>THIS USER HAS BEEN SUCCESSFULLY DELETED!</span>
-                </div>
-                <div id="user_password_reset" class="user_password_reset">
+                <div id="user_password_reset">
 
                 </div>
             </div>

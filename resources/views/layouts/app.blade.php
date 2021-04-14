@@ -30,6 +30,9 @@
             <div class="page_title">@yield('page_title')</div>
         </div>
 
+        @if(isset($unauthorized_user))
+        <div id="unauthorized_action" class="unauthorized_action"><span>Unauthorized action for this user!</span></div>
+        @endif
         <div class="collapse navbar-collapse authenticated_user" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
