@@ -41,24 +41,28 @@ function deleteUser(userid){
                     }, 4000, edit_section)
                 }
                 else{
-                    if(data.status == 'noadmin'){
-                        var delete_user_error = $(edit_section).find('#delete_user_error')
-                        delete_user_error.show()
-                        setTimeout(function(element_to_hide){delete_user_error.hide()}, 5000, delete_user_error)
+                    switch ('noadmin') {
+                        case value:
+                            var delete_user_error = $(edit_section).find('#delete_user_error')
+                            delete_user_error.show()
+                            setTimeout(function(element_to_hide){delete_user_error.hide()}, 5000, delete_user_error)
+                            break;
+                    
+                        default:
+                            break;
                     }
                 }
-                console.log(data)
         })
     }
 }
 
 function saveUser(element) {
     var form = garcellParentNodeById(element, "user_edit_form")
-    
     var userId = $(form).find('#edited_user_id').val()
     var email = $(form).find('#edited_email').val()
     var name = $(form).find('#edited_name').val()
     var user_type = $(form).find('#edited_user_type').val()
+
     if(form.checkValidity())
     {
         $.post('/saveuser',
@@ -73,6 +77,7 @@ function saveUser(element) {
             if(data.status == 'ok'){
                 var user_data = $('#user_data')
                 var user_section = $('#' + data.user_id)
+
                 user_section[0].innerHTML = user_data[0].innerHTML
                 user_section.find('#user_name')[0].innerHTML = data.name
                 user_section.find('#user_email')[0].innerHTML = data.email
@@ -81,26 +86,33 @@ function saveUser(element) {
             }
             else{
                 var edit_section = document.getElementById(data.element_tag)
-                if(data.status == 'email taken'){
-                    var email_error = $(edit_section).find('#email_error')
-                    email_error.show()
-                    setTimeout(function(element_to_hide){
-                        element_to_hide.hide()
-                    }, 3000, email_error)
-                }
-                if(data.status == '419'){
-                    var save_session_expired = $(edit_section).find('#save_session_expired')
-                    save_session_expired.show()
-                    setTimeout(function(element_to_hide){
-                        element_to_hide.hide()
-                    }, 3000, save_session_expired)
-                }
-                if(data.status == 'noadmin'){
-                    var edited_user_type_error = $(edit_section).find('#edited_user_type_error')
-                    edited_user_type_error.show()
-                    setTimeout(function(element_to_hide){
-                        edited_user_type_error.hide()
-                    }, 6000, edited_user_type_error)
+
+                switch (data.status) {
+                    case 'email taken':
+                        var email_error = $(edit_section).find('#email_error')
+
+                        email_error.show()
+                        setTimeout(function(element_to_hide){
+                            element_to_hide.hide()
+                        }, 3000, email_error)
+                            
+                        break;
+                    case '419':
+                        var save_session_expired = $(edit_section).find('#save_session_expired')
+                        save_session_expired.show()
+                        setTimeout(function(element_to_hide){
+                            element_to_hide.hide()
+                        }, 3000, save_session_expired)
+                        break;
+                    case 'noadmin':
+                        var edited_user_type_error = $(edit_section).find('#edited_user_type_error')
+                        edited_user_type_error.show()
+                        setTimeout(function(element_to_hide){
+                            edited_user_type_error.hide()
+                        }, 6000, edited_user_type_error)
+                        break;
+                    default:
+                        break;
                 }
             }
         })
@@ -113,7 +125,7 @@ function saveUser(element) {
 function discard(element) {
     var edit_section = garcellParentNodeById(element, 'user_section')
     var userId = $(edit_section).find('#edited_user_id').val()
-    console.log(userId)
+
     $.get('/userbyid',
         {userid:userId},
         function(data, status){
@@ -178,11 +190,17 @@ function createPassword(element) {
                         }, 3000, data.element_tag)
                     }
                     else{
-                        if(data.status == 'notfound'){
+                        switch (data.status) {
+                            case 'notfound':
+                                
+                                break;
 
-                        }
-                        if(data.status == 'error'){
-
+                            case 'error':
+                            
+                            break;
+                            
+                            default:
+                                break;
                         }
                     }
                 }
