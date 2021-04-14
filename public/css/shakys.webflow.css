@@ -17,6 +17,16 @@
   grid-row-start: 1;
 }
 
+.unauthorized_action{
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  padding: 0px;
+  color: #ed0000;
+  font-family: 'Sofia Pro 400';
+  font-size: 14px;
+}
+
 .w-checkbox::after {
   content: ' ';
   display: table;
@@ -75,6 +85,17 @@
 
 .w-checkbox-input--inputType-custom.w--redirected-focus {
   box-shadow: 0px 0px 3px 1px #3898ec;
+}
+
+body {
+  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  color: #333;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+a {
+  text-decoration: underline;
 }
 
 .page-header {
@@ -212,12 +233,6 @@
   font-weight: 300;
 }
 
-.div-block {
-  width: 15px;
-  height: 15px;
-  border: 1px solid #000;
-}
-
 .item-name {
   display: none;
 }
@@ -312,8 +327,363 @@
   line-height: 1.5em;
 }
 
+.user_div{
+  border-bottom: 1px solid #000;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.user_section {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  min-height: 90px;
+  height: auto;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.user_section.horizontal {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.user_name {
+  width: 30%;
+}
+
+.user_form_block {
+  width: 90%;
+  margin-bottom: 0px;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.user_form {
+  font-family: 'Sofia Pro 400', sans-serif;
+  line-height: 1.5em;
+}
+
+.user_data_1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.user_data_2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+.user_data_2.center {
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.user_email {
+  width: 30%;
+  margin-left: 5%;
+}
+
+.email_taken {
+  color:#ed0000;
+}
+
+.user_password {
+  width: 30%;
+}
+
+.user_password_confirm {
+  width: 30%;
+  margin-left: 5%;
+}
+
+.user_add_button {
+  padding-top: 10px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 30%;
+  margin-left: 5%;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 1.5em;
+}
+
+.user_add_button.two {
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+}
+
+.user_type {
+  width: 30%;
+  margin-left: 5%;
+  display: block;
+}
+
+.edited_user_type{
+  width: 100%;
+}
+
+.no_admin_left{
+  color: #ed0000;
+}
+
+.delete_button_frame{
+  color: #ed0000;
+  display: block;
+  text-align: center;
+  font-family: 'Sofia Pro 400', sans-serif;
+}
+
+.delete_user_success{
+  color: blue;
+  display: block;
+  text-align: center;
+  font-family: 'Sofia Pro 400', sans-serif;
+}
+
+.add_user_button {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 80px;
+  height: 35px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 15px;
+  font-size: 14px;
+}
+
+.edit {
+  height: 20px;
+}
+
+.edited_email{
+  width: 100%;
+}
+
+.new_password_form{
+  width: 100;
+}
+
+.add_user_button.delete {
+  background-color: #ed0000;
+}
+
+.add_user_button.password {
+  background-color:darkgreen;
+}
+
+.user_edit_section {
+  padding-left: 10px;
+  width: 28%;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  -ms-grid-row-align: center;
+  align-self: center;
+  font-family: 'Sofia Pro 400', sans-serif;
+  line-height: 1.5em;
+}
+
+.user_edit_section.edit {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.user_edit_section.center {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 115px;
+  height: 100px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: flex-end;
+}
+
+.user_field_header {
+  padding-left: 10px;
+  background-color: #b2b2b2;
+  border-radius: 15px;
+}
+
+.user_field_content {
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 10px;
+}
+
+
+.user_password_section {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 90%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.password_confirmation_missmatch{
+  color: #ed0000;
+  font-family: 'Sofia Pro 400', sans-serif;
+  font-size: medium;
+  padding-top: 15px;
+}
+
+.password_change_success{
+  color: blue;
+  font-family: 'Sofia Pro 400', sans-serif;
+  font-size: medium;
+  padding-top: 15px;
+}
+
+.user_password_reset {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: 'Sofia Pro 400', sans-serif;
+}
+
+.create_discard_passwd_button {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 230px;
+  height: 46px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 15px;
+  font-size: 14px;
+}
+
+.create_discard_passwd_button.edit {
+  height: 20px;
+}
+
+.create_discard_passwd_button.delete {
+  background-color: #ed0000;
+}
+
+
+.div-block {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.authenticated_user {
+  position: absolute;
+  padding-right: 10px;
+  padding-top: 10px;
+  text-align: end;
+  text-decoration: underline;
+  top: 0px;
+  right: 0px;
+  height: 40px;
+  font-family: 'Sofia Pro 400', sans-serif;
+}
+
+.save_session_expired{
+  display: block;
+  color: #ed0000;
+}
+
 @media screen and (max-width: 767px) {
   .page-header {
+    position: relative;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
@@ -350,10 +720,6 @@
     border-bottom: 1px solid #000;
   }
 
-  .order-line.last-line {
-    border-bottom-style: none;
-  }
-
   .order-lines-header-frame {
     display: none;
   }
@@ -387,13 +753,6 @@
     text-align: left;
   }
 
-  .div-block-2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-  }
-
   .item-name {
     display: -webkit-box;
     display: -webkit-flex;
@@ -410,11 +769,6 @@
     align-items: center;
     font-family: 'Sofia Pro 400', sans-serif;
     text-align: right;
-  }
-
-  .div-block-3 {
-    width: 70%;
-    padding-left: 10px;
   }
 
   .form-block {
@@ -465,6 +819,115 @@
   .option_text {
     font-size: 18px;
   }
+
+  .user_section {
+    height: 375px;
+  }
+
+  .user_section.horizontal {
+    padding-bottom: 0px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+
+  .user_name {
+    width: 100%;
+  }
+
+  .user_data_1 {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+
+  .user_data_2 {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+  
+  .user_email {
+    width: 100%;
+    margin-left: 0%;
+  }
+
+  .user_password {
+    width: 100%;
+  }
+
+  .user_password_confirm {
+    width: 100%;
+    margin-left: 0%;
+  }
+
+  .user_add_button {
+    width: 100%;
+    margin-left: 0%;
+  }
+
+  .user_password_section {
+    height: 130px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-justify-content: space-around;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+
+  .user_type {
+    width: 100%;
+    margin-left: 0%;
+    display: block;
+  }
+
+  .add_user_button {
+    font-size: 12px;
+  }
+
+  .user_edit_section {
+    width: 70%;
+    padding-bottom: 20px;
+    padding-left: 0px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+  }
+
+  .user_edit_section.center {
+    width: 50%;
+    height: 60px;
+    padding-bottom: 0px;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .user_password_reset {
+    padding-left: 10%;
+    padding-right: 10%;
+  }
 }
 
 @media screen and (max-width: 479px) {
@@ -474,6 +937,24 @@
 
   .option_frame {
     width: 200px;
+  }
+
+  .user_form {
+    font-family: 'Sofia Pro 400', sans-serif;
+    line-height: 1.5em;
+  }
+
+  .user_edit_section {
+    font-family: 'Sofia Pro 400', sans-serif;
+    line-height: 1.5em;
+  }
+
+  .user_edit_section.center {
+    width: 90%;
+  }
+
+  .create_discard_passwd_button {
+    font-size: 12px;
   }
 }
 

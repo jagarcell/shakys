@@ -17,8 +17,26 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/unauth', function(){
+    return view('welcome', ['unauthorized_user' => 'Unautorized']);
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+/*********************************
+ *           USERS               *
+ ********************************/
+
+Route::get('/users', 'UsersController@ListUsers')->name('users')->middleware('checkifcanregister');
+
+Route::get('/userbyid', 'UsersController@UserById');
+
+Route::post('/saveuser', 'UsersController@SaveUser')->middleware('checkifcanregister');
+
+Route::post('deleteuser', 'UsersController@DeleteUser');
+
+Route::post('changepassword', 'UsersController@ChangePassword');
 
 require __DIR__.'/auth.php';

@@ -1,15 +1,18 @@
+@extends('layouts.app')
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-wf-page="605538017156323a2f5ab124" data-wf-site="604d41d40c813292693d08e7">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Admin Panel</title>
-        <meta content="admin panel" property="og:title">
+        @section('title', 'Admin Panel')
+
+        @section('headsection')
+        <!--meta content="admin panel" property="og:title">
         <meta content="admin panel" property="twitter:title">
         <meta content="width=device-width, initial-scale=1" name="viewport">
         <meta content="Webflow" name="generator">
-        <link href="css/normalize.css" rel="stylesheet" type="text/css">
+        <link href="css/normalize.css" rel="stylesheet" type="text/css"-->
         <link href="css/webflow.css" rel="stylesheet" type="text/css">
         <link href="css/shakys.webflow.css" rel="stylesheet" type="text/css">
         <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
@@ -31,6 +34,7 @@
             }
         </style>
       <meta name="format-detection" content="telephone=no">
+      @endsection
     </head>
     <body class="antialiased">
         <!--div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
@@ -48,16 +52,8 @@
                 </div>
             @endif
         </div-->
-        <div class="page-header">
-            <div class="logo-frame"><img src="images/Shakys.png" loading="lazy" sizes="(max-width: 767px) 100vw, 53vw" srcset="images/Shakys-p-500.png 500w, images/Shakys.png 512w" alt="" class="logo">
-            </div>
-            <div class="title-frame">
-            <div class="text-block">PURCHASES CONTROL SYSTEM</div>
-            </div>
-        </div>
-        <div class="page_title_frame">
-            <div class="page_title">ADMIN PANEL</div>
-        </div>
+        @section('page_title', 'ADMIN PANEL')
+        @section('content')
         <div class="admin_panel_section">
             <div data-w-id="dd404975-5144-4daa-172d-139e14ceec86" class="option_frame"><img src="images/pendingorders.png" loading="lazy" sizes="150px" width="150" srcset="images/pendingorders-p-500.png 500w, images/pendingorders.png 512w" alt="" class="option_image">
             <div class="option_text">PENDING ORDERS</div>
@@ -75,15 +71,16 @@
             </div>
         </div>
         <div class="admin_panel_section">
-            <div data-w-id="690dbcf6-32a1-4389-d1b2-bf88ab73bace" class="option_frame"><img src="images/Users-icon.png" loading="lazy" width="150" alt="" class="option_image">
-            <div class="option_text">USERS</div>
-            </div>
+                <a href="/users" data-w-id="690dbcf6-32a1-4389-d1b2-bf88ab73bace" class="option_frame"><img src="images/Users-icon.png" loading="lazy" width="150" alt="" class="option_image">
+                <div class="option_text">USERS</div>
+                </a>
             <div data-w-id="3f834a6a-4538-916b-a543-56df34d9b186" class="option_frame"><img src="images/Suppliers.png" loading="lazy" sizes="150px" width="150" srcset="images/Suppliers-p-500.png 500w, images/Suppliers.png 512w" alt="" class="option_image">
             <div class="option_text">SUPPLIERS</div>
             </div>
         </div>
         <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-        <script src="js/webflow.js" type="text/javascript"></script>
+        <script src="js/welcome.js" type="text/javascript"></script>
         <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+        @endsection    
     </body>
 </html>
