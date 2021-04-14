@@ -22,16 +22,21 @@ class CheckIfCanRegister
         $user = Auth::user();
         $users = (new Users())->where('id', '>', -1)->get();
 
-        if((!is_null($user) && $user->user_type == 'admin') || count($users) == 0)
+        if(!is_null($user))
         {
             try {
-                return $next($request);
+                if($user->user_type == 'admin' || count($users) == 0){
+                    return $next($request);
+                }
+                else{
+                    return redirect('/unauth');
+                }
             } catch (\Exception $e) {
                 return redirect('/');
             }
         }
         else{
-            return redirect('/unauth');
+            return redirect('/login');
         }
     }
 }

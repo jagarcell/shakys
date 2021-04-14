@@ -40,7 +40,7 @@
             </ul>
 
             <!-- Right Side Of Navbar -->
-            <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav">
                 <!-- Authentication Links -->
                 @guest
                     <div id="loginDiv" style="display: inline;">
@@ -50,9 +50,9 @@
                     </div>
                 @else
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <div style="text-decoration:none; padding-bottom: 10px; font-size: medium;" id="navbarDropdown" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->name }} <span class="caret"></span>
-                        </a>
+                        </div>
                     </li>    
                     <li class="nav-item dropdown">
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
