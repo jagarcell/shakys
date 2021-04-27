@@ -28,26 +28,32 @@
         </style>
 
         <style>
+            /*
             body {
                 font-family: 'Nunito', sans-serif;
             }
+            */
         </style>
       <meta name="format-detection" content="telephone=no">
       @endsection
     </head>
-    <body class="antialiased">
+    <body class="antialiased bodyClass">
         @section('page_title', 'USERS')
         @section('content')
 
         <!-- HTML FOR THE NEW USER DATA ENTRY -->
-        <div class="user_div user_section">
-            <div class="user_form_block w-form">
-                <form method="POST" action="{{ route('register') }}" class="user_form">
+        <div class="user_add_section">
+            <div id="user_add_icon" class="user_add_icon">
+                    <input type="button" class="user_add_input" value="+" onclick="userAddClick(this)">
+            </div>
+            <div id="user_add_form" class="user_form_block" hidden>
+                <!--form method="POST" action="{{ route('register') }}" class="user_form"-->
+                <form id="user_form" class="user_form">
                     @csrf
                     <div class="user_data_1">
-                        <x-input type="text" class="user_name w-input" maxlength="256" name="name" data-name="name" placeholder="Name" id="name" :value="old('name')" required autofocus />
-                        <x-input type="email" class="user_email w-input" maxlength="256" name="email" data-name="email" placeholder="Email" id="email" :value="old('email')" required />
-                        <select class="user_type w-input" name="user_type" id="user_type" :value="old('user_type'>">
+                        <input id="add_user_name" type="text" class="user_name w-input" maxlength="256" name="name" data-name="name" placeholder="Name" id="name" :value="old('name')" required autofocus />
+                        <input id="add_user_email" type="email" class="user_email w-input" maxlength="256" name="email" data-name="email" placeholder="Email" id="email" :value="old('email')" required />
+                        <select id="add_user_type" class="user_type w-input" name="user_type" id="user_type" :value="old('user_type'>">
                         @auth
                         @if(Auth::user()->user_type == 'admin')
                             <option value="admin">admin</option>
@@ -60,28 +66,31 @@
 
                         @guest
                             <option value="admin" selected>admin</option>
-                            <option value="user">user</option>
                         @endguest
 
                         </select>
                     </div>
                     <div class="user_data_2">
 
-                        <x-input type="password" class="user_password w-input" 
+                        <input id="add_user_password" type="password" class="user_password w-input" 
                                     maxlength="256" name="password" data-name="password" 
                                     placeholder="Password" id="password"
                                     required autocomplete="new-password" />
         
-                        <x-input type="password" class="user_password_confirm w-input" 
+                        <input id="add_confirm_user_password" type="password" class="user_password_confirm w-input" 
                                     maxlength="256" name="password_confirmation" 
                                     data-name="password_confirmation" placeholder="Confirm Password" 
                                     id="password_confirmation" required />
                         <div class="user_add_button">
-                            <x-button data-wait="Please wait..." class="add_user_button w-button">
-                            {{ __('NEW') }}
-                            </x-button>
+                            <button type="button" data-wait="Please wait..." class="user_button" onclick="userCreateClick(this)">
+                                {{ __('Create User') }}
+                            </button>
+                            <button type="button" data-wait="Please wait..." class="user_button" onclick="userAbortClick(this)">
+                                {{ __('Abort') }}
+                            </button>
                         </div>
                     </div>
+                    <div id="create_message" class="create_message" hidden></div>
                 </form>
 
                 <!-- Validation Errors -->
@@ -96,35 +105,29 @@
                 <div class="user_form_block w-form">
                     <form id="user_edit_form" name="email-form" data-name="Email Form" class="user_form">
                         @csrf
+                        <div id="user_edit_message" class="user_edit_message" hidden>
+                        </div>
                         <div class="user_data_1">
                             <input id="edited_user_id" name="user_id" hidden>
                             <input id="edited_name" type="text" class="user_name w-input" maxlength="256" name="name" placeholder="Name" required>
                             <div class="user_email">
                                 <input id="edited_email" type="email" class="edited_email w-input" maxlength="256" name="email" placeholder="Email" required>
-                                <span id="email_error" class="user_email email_taken" hidden>THIS EMAIL IS ALREADY TAKEN!</span>
                             </div>
                             <div class="user_type">
                                 <select id="edited_user_type" type="text" class="edited_user_type w-input" maxlength="256" name="user_type" placeholder="User Type" required>
                                     <option value="admin">admin</option>
                                     <option value="user">user</option>
                                 </select>
-                                <span id="edited_user_type_error" class="no_admin_left" hidden>THIS IS THE ONLY admin USER LEFT!<br>YOU CAN NOT CHANGE THE USER TYPE FROM admin</span>
                             </div>
                         </div>
                         <div class="user_data_2 center">
-                            <!--input id="edited_password" type="password" class="user_password w-input" maxlength="256" name="Password-3" data-name="Password 3" placeholder="Password" required="">
-                            <input id="edited_password_confirmation" type="password" class="user_password_confirm w-input" maxlength="256" name="Password-2" data-name="Password 2" placeholder="Password" required="" -->
                             <div class="user_add_button">
                                 <div style="display: block;">
                                     <input id="edited_user_save" type="button" value="SAVE" data-wait="Please wait..." class="add_user_button w-button" onclick="saveUser(this)">
-                                    <span id="save_session_expired" class="save_session_expired" hidden>Session expired! Please, refresh your browser.</span>
                                 </div>    
                             </div>
                             <div class="user_add_button">
-                                <input type="button" value="DISCARD" data-wait="Please wait..." class="add_user_button w-button" onclick="discard(this)">
-                            </div>
-                            <div class="user_add_button">
-                                <input type="button" value="PASSWORD" data-wait="Please wait..." class="add_user_button w-button" onclick="password(this)">
+                                <input id="edited_user_password" type="button" value="ABORT" data-wait="Please wait..." class="add_user_button w-button" onclick="discard(this)">
                             </div>
                         </div>
                     </form>
@@ -137,6 +140,7 @@
         <div id="password_section" hidden>
             <form id="user_password_reset_form" class="user_password_reset">
                 <input id="password_id" value='user_id' hidden>
+                <div id="password_change_result" class="password_change_result" hidden><span></span></div>
                 <div class="user_password_section">
                     <input id="user_password" type="password" class="user_password w-input" maxlength="256" minlength="8" placeholder="New Password" required="">
                     <input id="user_password_confirm" type="password" class="user_password_confirm w-input" maxlength="256" placeholder="Confirm New Password" required="">
@@ -145,8 +149,6 @@
                     <input id="new_password" type="button" value="CREATE NEW PASSWORD" data-wait="Please wait..." class="create_discard_passwd_button w-button" onclick="createPassword(this)">
                     <input id="confirm_new_password" type="button" value="DISCARD NEW PASSWORD" data-wait="Please wait..." class="create_discard_passwd_button w-button" onclick="discardPassword(this)">
                 </div>
-                <div id="password_confirmation_missmatch" class="password_confirmation_missmatch" hidden><span>PASSWORD CONFIRMATION DOES NOT MATCH!</span></div>
-                <div id="password_change_success" class="password_change_success" hidden><span>PASSWORD SUCCESFULLY CHANGED!</span></div>
             </form>    
         </div>
  
@@ -155,6 +157,8 @@
         <div id="user_data" hidden>
             <div id="user_edit_wrap">
                 <div id="user_edit_frame">    
+                    <div id="user_edit_action_result" class="user_edit_action_result" hidden>
+                    </div>
                     <div class="user_section horizontal">
                         <div class="user_edit_section">
                             <div class="user_field_header">USER</div>
@@ -174,12 +178,6 @@
                             <a id="new_user_password" class="add_user_button edit password w-button" onclick="newPassword('user_id')">PASSWD</a>
                         </div>
                     </div>
-                    <div id="delete_user_error" class="delete_button_frame" hidden>
-                        <span>NO MORE admin LEFT!<br>THIS USER CAN NOT BE DELETED!</span>
-                    </div>
-                    <div id="delete_user_success" class="delete_user_success" hidden>
-                        <span>THIS USER HAS BEEN SUCCESSFULLY DELETED!</span>
-                    </div>
                 </div>
                 <div id="user_password_reset">
 
@@ -187,43 +185,75 @@
             </div>
         </div>
 
-        <!-- LIST OF REGISTERED USERS RECEIVED FROM THE VIEW REQUEST -->
-        @foreach($users as $key => $user)
-        <div id="{{$user->id}}" class="user_div">
-            <div id="user_edit_wrap">
-                <div id="user_edit_frame">    
-                    <div class="user_section horizontal">
-                        <div class="user_edit_section">
-                            <div class="user_field_header">USER</div>
-                            <div class="user_field_content">{{$user->name}}</div>
+        <div id="users_list">
+            <!-- LIST OF REGISTERED USERS RECEIVED FROM THE VIEW REQUEST -->
+            @foreach($users as $key => $user)
+            <div id="{{$user->id}}" class="user_div">
+                <div id="user_edit_wrap">
+                    <div id="user_edit_frame">    
+                        <div id="user_edit_action_result" class="user_edit_action_result" hidden>
                         </div>
-                        <div class="user_edit_section">
-                            <div class="user_field_header">EMAIL</div>
-                            <div class="user_field_content">{{$user->email}}</div>
-                        </div>
-                        <div class="user_edit_section two">
-                            <div class="user_field_header">TYPE</div>
-                            <div class="user_field_content">{{$user->user_type}}</div>
-                        </div>
-                        <div class="user_edit_section center" id="edit_buttons">
-                            <a id="edit_user" class="add_user_button edit w-button" onclick="edit('{{$user->id}}')">EDIT</a>
-                            <a id="delete_user" class="add_user_button edit delete w-button" onclick="deleteUser('{{$user->id}}')">DELETE</a>
-                            <a id="new_user_password" class="add_user_button edit password w-button" onclick="newPassword('{{$user->id}}')">PASSWD</a>
+                        <div class="user_section horizontal">
+                            <div class="user_edit_section">
+                                <div class="user_field_header">USER</div>
+                                <div class="user_field_content">{{$user->name}}</div>
+                            </div>
+                            <div class="user_edit_section">
+                                <div class="user_field_header">EMAIL</div>
+                                <div class="user_field_content">{{$user->email}}</div>
+                            </div>
+                            <div class="user_edit_section two">
+                                <div class="user_field_header">TYPE</div>
+                                <div class="user_field_content">{{$user->user_type}}</div>
+                            </div>
+                            <div class="user_edit_section center" id="edit_buttons">
+                                <a id="edit_user" class="add_user_button edit w-button" onclick="edit('{{$user->id}}')">EDIT</a>
+                                <a id="delete_user" class="add_user_button edit delete w-button" onclick="deleteUser('{{$user->id}}')">DELETE</a>
+                                <a id="new_user_password" class="add_user_button edit password w-button" onclick="newPassword('{{$user->id}}')">PASSWD</a>
+                            </div>
                         </div>
                     </div>
-                    <div id="delete_user_error" class="delete_button_frame" hidden>
-                        <span>NO MORE admin LEFT!<br>THIS USER CAN NOT BE DELETED!</span>
-                    </div>
-                    <div id="delete_user_success" class="delete_user_success" hidden>
-                        <span>THIS USER HAS BEEN SUCCESSFULLY DELETED!</span>
+                    <div id="user_password_reset">
+
                     </div>
                 </div>
-                <div id="user_password_reset">
+            </div>
+            @endforeach
+        </div>
 
+        <!-- HTML TO BE ADDED TO THE USERS LIST WHEN A NEW USER IS CREATED -->
+        <div id="added_user_html" hidden>
+            <div id="user-id" class="user_div">
+                <div id="user_edit_wrap">
+                    <div id="user_edit_frame">
+                        <div id="user_edit_action_result" class="user_edit_action_result" hidden>
+                        </div>
+                        <div class="user_section horizontal">
+                            <div class="user_edit_section">
+                                <div class="user_field_header">USER</div>
+                                <div class="user_field_content">user-name</div>
+                            </div>
+                            <div class="user_edit_section">
+                                <div class="user_field_header">EMAIL</div>
+                                <div class="user_field_content">user-email</div>
+                            </div>
+                            <div class="user_edit_section two">
+                                <div class="user_field_header">TYPE</div>
+                                <div class="user_field_content">user-type</div>
+                            </div>
+                            <div class="user_edit_section center" id="edit_buttons">
+                                <a id="edit_user" class="add_user_button edit w-button" onclick="edit('user-id')">EDIT</a>
+                                <a id="delete_user" class="add_user_button edit delete w-button" onclick="deleteUser('user-id')">DELETE</a>
+                                <a id="new_user_password" class="add_user_button edit password w-button" onclick="newPassword('user-id')">PASSWD</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="user_password_reset">
+
+                    </div>
                 </div>
             </div>
         </div>
-        @endforeach
 
         <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
         <script src="js/webflow.js" type="text/javascript"></script>

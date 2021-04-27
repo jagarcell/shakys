@@ -19,7 +19,7 @@ class CreateSuppliersTable extends Migration
             $table->string('email')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
-            $table->boolean('pickup')->default(true);
+            $table->string('pickup', 20)->default("pickup");
             $table->string('image_path')->nullable();
             $table->timestamps();
         });

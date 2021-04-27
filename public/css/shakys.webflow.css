@@ -1,3 +1,15 @@
+.bodyClass{
+  font-family: 'Sofia Pro 400';
+  font-size: 14px;;
+}
+
+.action_button{
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
 .w-checkbox {
   display: block;
   margin-bottom: 5px;
@@ -23,7 +35,6 @@
   top: 0px;
   padding: 0px;
   color: #ed0000;
-  font-family: 'Sofia Pro 400';
   font-size: 14px;
 }
 
@@ -88,14 +99,7 @@
 }
 
 body {
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
   color: #333;
-  font-size: 14px;
-  line-height: 20px;
-}
-
-a {
-  text-decoration: underline;
 }
 
 .page-header {
@@ -126,7 +130,6 @@ a {
 }
 
 .text-block {
-  font-family: 'Sofia Pro 400', sans-serif;
   font-size: 36px;
   line-height: 1.5em;
 }
@@ -138,7 +141,6 @@ a {
 }
 
 .page-title {
-  font-family: 'Sofia Pro 400', sans-serif;
   font-size: 20px;
   line-height: 1.5em;
   text-align: center;
@@ -151,7 +153,6 @@ a {
 
 .order-header {
   border: 1px solid #000;
-  font-family: 'Sofia Pro 400', sans-serif;
   font-size: 16px;
   line-height: 1.5em;
   text-align: center;
@@ -220,14 +221,12 @@ a {
 }
 
 .line-header-text {
-  font-family: 'Sofia Pro 400', sans-serif;
   line-height: 1.5em;
   font-weight: 300;
   text-align: center;
 }
 
 .column-text {
-  font-family: 'Sofia Pro 400', sans-serif;
   font-size: 17px;
   line-height: 1.5em;
   font-weight: 300;
@@ -258,7 +257,6 @@ a {
 
 .submit-button {
   border-radius: 15px;
-  font-family: 'Sofia Pro 400', sans-serif;
   font-size: 18px;
 }
 
@@ -280,7 +278,6 @@ a {
   -ms-flex-item-align: center;
   -ms-grid-row-align: center;
   align-self: center;
-  font-family: 'Sofia Pro 400', sans-serif;
   font-size: 36px;
   line-height: 1.5em;
 }
@@ -322,7 +319,6 @@ a {
 }
 
 .option_text {
-  font-family: 'Sofia Pro 400', sans-serif;
   font-size: 26px;
   line-height: 1.5em;
 }
@@ -331,6 +327,7 @@ a {
   border-bottom: 1px solid #000;
   padding-top: 30px;
   padding-bottom: 30px;
+  display: block;
 }
 
 .user_section {
@@ -368,16 +365,17 @@ a {
 
 .user_form_block {
   width: 90%;
+  margin-left: 5%;
   margin-bottom: 0px;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-}
+  padding-top: 30px;
+  padding-bottom: 30px;}
 
 .user_form {
-  font-family: 'Sofia Pro 400', sans-serif;
   line-height: 1.5em;
 }
 
@@ -412,10 +410,12 @@ a {
 .user_email {
   width: 30%;
   margin-left: 5%;
+  text-transform: lowercase;
 }
 
 .email_taken {
   color:#ed0000;
+  margin-top: 30px;
 }
 
 .user_password {
@@ -427,6 +427,10 @@ a {
   margin-left: 5%;
 }
 
+.user_add_section{
+  border-bottom: 1px solid #000;
+}
+
 .user_add_button {
   padding-top: 10px;
   display: -webkit-box;
@@ -436,17 +440,36 @@ a {
   width: 30%;
   margin-left: 5%;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  font-size: 16px;
-  line-height: 1.5em;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+}
+
+.user_button{
+  background-color: #3898EC;
+  border-radius: 15px;
+  height: 25px;
+  width: 115px;
+  color: white;
+  text-transform: uppercase;
 }
 
 .user_add_button.two {
   -webkit-justify-content: space-around;
   -ms-flex-pack: distribute;
   justify-content: space-around;
+}
+
+.user_add_icon{
+  width: 100%;
+  text-align: end;
+  padding: 10px;
+  font-size: xx-large;
+  color: orange;
+}
+
+.user_add_input {
+  min-height: 30px;
 }
 
 .user_type {
@@ -463,18 +486,11 @@ a {
   color: #ed0000;
 }
 
-.delete_button_frame{
-  color: #ed0000;
+.user_edit_action_result{
   display: block;
   text-align: center;
-  font-family: 'Sofia Pro 400', sans-serif;
-}
-
-.delete_user_success{
-  color: blue;
-  display: block;
-  text-align: center;
-  font-family: 'Sofia Pro 400', sans-serif;
+  font-size: 24px;
+  line-height: 1.5em;
 }
 
 .add_user_button {
@@ -498,7 +514,6 @@ a {
   -ms-flex-align: center;
   align-items: center;
   border-radius: 15px;
-  font-size: 14px;
 }
 
 .edit {
@@ -528,7 +543,6 @@ a {
   -ms-flex-item-align: center;
   -ms-grid-row-align: center;
   align-self: center;
-  font-family: 'Sofia Pro 400', sans-serif;
   line-height: 1.5em;
 }
 
@@ -593,18 +607,13 @@ a {
   -ms-flex-align: center;
   align-items: center;
 }
-.password_confirmation_missmatch{
-  color: #ed0000;
-  font-family: 'Sofia Pro 400', sans-serif;
-  font-size: medium;
-  padding-top: 15px;
-}
 
-.password_change_success{
-  color: blue;
-  font-family: 'Sofia Pro 400', sans-serif;
-  font-size: medium;
+.password_change_result{
+  font-size: large;
+  line-height: 1.5em;
   padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
 }
 
 .user_password_reset {
@@ -621,7 +630,6 @@ a {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-  font-family: 'Sofia Pro 400', sans-serif;
 }
 
 .create_discard_passwd_button {
@@ -656,6 +664,21 @@ a {
   background-color: #ed0000;
 }
 
+.supplier_data_form_buttons{
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+}
 
 .div-block {
   display: -webkit-box;
@@ -673,13 +696,170 @@ a {
   top: 0px;
   right: 0px;
   height: 40px;
-  font-family: 'Sofia Pro 400', sans-serif;
 }
 
 .save_session_expired{
   display: block;
   color: #ed0000;
 }
+
+.supplier_add_icon{
+  width: 100%;
+  border-bottom: 1px solid #000;
+  text-align: end;
+  padding: 10px;
+  font-size: xx-large;
+  color: orange;
+}
+
+.supplier_add_input {
+  min-height: 30px;
+}
+
+.supplier_section {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  min-height: 30vh;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #000;
+  font-family: inherit;
+  line-height: 1.5em;
+}
+
+.supplier_data_entry {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.supplier_pic_frame {
+  width: 170px;
+  padding-left: 20px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  -ms-grid-row-align: center;
+  align-self: center;
+  margin-left: 10%;
+}
+
+.supplier_pic {
+  max-width: 128px;
+}
+
+.create_button {
+  border-radius: 10px;
+}
+
+.supplier_data_edit {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 80%;
+  height: 100%;
+  padding-left: 20px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  line-height: 1.5em;
+}
+
+.supplier_data_entry_buttons {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 991px) {
+  .page-header {
+    position: relative;
+  }
+
+  .supplier_section {
+    padding-top: 20px;
+    border-bottom: 1px solid #000;
+  }
+
+  .supplier_data_edit {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 80%;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-justify-content: space-around;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+  }
+
+  .supplier_data_field {
+    width: 100%;
+    padding-left: 20px;
+  }
+
+  .supplier_data_entry_buttons {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    -webkit-justify-content: space-around;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
 
 @media screen and (max-width: 767px) {
   .page-header {
@@ -767,7 +947,6 @@ a {
     -webkit-align-items: center;
     -ms-flex-align: center;
     align-items: center;
-    font-family: 'Sofia Pro 400', sans-serif;
     text-align: right;
   }
 
@@ -928,6 +1107,15 @@ a {
     padding-left: 10%;
     padding-right: 10%;
   }
+
+  .supplier_section {
+    min-height: 80vh;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
 }
 
 @media screen and (max-width: 479px) {
@@ -940,12 +1128,10 @@ a {
   }
 
   .user_form {
-    font-family: 'Sofia Pro 400', sans-serif;
     line-height: 1.5em;
   }
 
   .user_edit_section {
-    font-family: 'Sofia Pro 400', sans-serif;
     line-height: 1.5em;
   }
 

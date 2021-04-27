@@ -25,7 +25,7 @@ class CheckIfCanRegister
         if(!is_null($user))
         {
             try {
-                if($user->user_type == 'admin' || count($users) == 0){
+                if($user->user_type == 'admin'){
                     return $next($request);
                 }
                 else{
@@ -36,7 +36,12 @@ class CheckIfCanRegister
             }
         }
         else{
-            return redirect('/login');
+            if(count($users) == 0){
+                return $next($request);
+            }
+            else{
+                return redirect('/login');
+            }
         }
     }
 }

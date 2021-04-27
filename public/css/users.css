@@ -2,6 +2,19 @@
     padding-top: 20px;
 }
 
+.create_message{
+    padding: 20px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.user_edit_message{
+    text-align: center;
+    font-size: large;
+    padding-bottom: 30px;
+    line-height: 1.5em;
+}
+
 input, select{
     border-radius: 0.375rem !important;
 }

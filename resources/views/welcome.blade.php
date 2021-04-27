@@ -36,7 +36,7 @@
       <meta name="format-detection" content="telephone=no">
       @endsection
     </head>
-    <body class="antialiased">
+    <body class="antialiased bodyClass">
         <!--div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
             @if (Route::has('login'))
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
@@ -71,12 +71,14 @@
             </div>
         </div>
         <div class="admin_panel_section">
-                <a href="/users" data-w-id="690dbcf6-32a1-4389-d1b2-bf88ab73bace" class="option_frame"><img src="images/Users-icon.png" loading="lazy" width="150" alt="" class="option_image">
+            <a href="/users" class="option_frame">
+                <img src="images/Users-icon.png" loading="lazy" width="150" alt="" class="option_image">
                 <div class="option_text">USERS</div>
-                </a>
-            <div data-w-id="3f834a6a-4538-916b-a543-56df34d9b186" class="option_frame"><img src="images/Suppliers.png" loading="lazy" sizes="150px" width="150" srcset="images/Suppliers-p-500.png 500w, images/Suppliers.png 512w" alt="" class="option_image">
-            <div class="option_text">SUPPLIERS</div>
-            </div>
+            </a>
+            <a href="/suppliers" class="option_frame">
+                <img src="images/Suppliers.png" loading="lazy" sizes="150px" width="150" srcset="images/Suppliers-p-500.png 500w, images/Suppliers.png 512w" alt="" class="option_image">
+                <div class="option_text">SUPPLIERS</div>
+            </a>
         </div>
         <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
         <script src="js/welcome.js" type="text/javascript"></script>

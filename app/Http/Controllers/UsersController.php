@@ -37,4 +37,10 @@ class UsersController extends Controller
         # code...
         return (new Users())->ChangePassword($request);
     }
+
+    public function CreateUser(Request $request)
+    {
+        # code...
+        return (new Users())->CreateUser($request);
+    }
 }

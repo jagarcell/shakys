@@ -21,7 +21,6 @@ class RegisteredUserController extends Controller
     public function __construct()
     {
 //        $this->middleware('guest');
-        $this->middleware('checkifcanregister');
     }
 
     public function create()

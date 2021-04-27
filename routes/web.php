@@ -25,13 +25,15 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+require __DIR__.'/auth.php';
+
 /*********************************
  *           USERS               *
  ********************************/
 
 Route::get('/users', 'UsersController@ListUsers')->name('users')->middleware('checkifcanregister');
 
-Route::get('/userbyid', 'UsersController@UserById');
+Route::post('/userbyid', 'UsersController@UserById');
 
 Route::post('/saveuser', 'UsersController@SaveUser')->middleware('checkifcanregister');
 
@@ -39,4 +41,21 @@ Route::post('deleteuser', 'UsersController@DeleteUser');
 
 Route::post('changepassword', 'UsersController@ChangePassword');
 
-require __DIR__.'/auth.php';
+Route::post('/createuser', 'UsersController@CreateUser');
+
+/****************************************
+ *                                      *
+ *             SUPPLIERS                *
+ *                                      * 
+ ***************************************/
+
+ Route::get('/suppliers', 'SuppliersController@ListSuppliers')->name('suppliers')->middleware('checkifcanregister');
+
+ Route::post('/addsupplier', 'SuppliersController@AddSupplier');
+
+ Route::post('/supplierimgupload', 'SuppliersController@UploadImage');
+
+ Route::post('/getsupplier', 'SuppliersController@GetSupplier');
+
+ Route::post('/updatesupplier', 'SuppliersController@UpdateSupplier');
+ 
