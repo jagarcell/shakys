@@ -302,8 +302,79 @@ function editClick(editButton) {
  * 
  * Action to delete a supplier
  */
-function deleteClick() {
-    
+function deleteClick(deleteButton) {
+    var supplier_section_wrap = garcellParentNodeByClassName(deleteButton, 'supplier_section_wrap')
+    var id = supplier_section_wrap.id
+
+    $.post('/deletesupplier',
+        {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            id:id,
+            element_tag:id,
+        },
+        function(data, status){
+            if(status == 'success'){
+                var supplier_section_wrap = document.getElementById(data.element_tag)
+                var action_result_message = $(supplier_section_wrap).find('#action_result_message')
+                var element_tag = data.element_tag
+
+                switch (data.status) {
+                    case 'ok':
+                        reportResult(
+                            {
+                                frame:action_result_message,
+                                message:"THE SUPPLIER HAS BEEN SUCCESFULLY DELETED!",
+                                error:false,
+                                param:element_tag,
+                            }, function(frame, element_tag){
+                                var supplier_section_wrap = document.getElementById(element_tag)
+                                supplier_section_wrap.outerHTML = ""
+                            }
+                        )                        
+                        break
+                
+                    case 'notfound':
+                        var message = getStatusMessage('notfound')
+                        reportResult(
+                            {
+                                frame:action_result_message,
+                                message:message,
+                                param:element_tag,
+                            }, function(frame, element_tag){
+                                var supplier_section_wrap = document.getElementById(element_tag)
+                                supplier_section_wrap.outerHTML = ""
+                            }
+                        )
+                        break
+
+                    case '419':
+                        var message = getStatusMessage('419')
+                        reportResult(
+                            {
+                                frame:action_result_message,
+                                message:message,
+                            }
+                        )
+                        break
+
+                    case 'error':
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:action_result_message,
+                                message:message,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+                        break
+
+                    default:
+                        break
+                }
+            }
+        }
+    )
 }
 
 /**

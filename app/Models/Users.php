@@ -54,7 +54,7 @@ class Users extends Model
             }
         } catch (\Throwable $th) {
             //throw $th;
-            return['status' => 'error', 'message' => $th, 'element_tag' => $ElementTag];
+            return['status' => 'error', 'message' => $this->ErrorInfo($th), 'element_tag' => $ElementTag];
         }
     }
 
@@ -129,7 +129,7 @@ class Users extends Model
             return ['status' => 'ok', 'user' => $User, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             // EXCEPTION THROWN RETURN status error;
-            return ['status' => 'error', 'message' => $th, 'element_tag' => $ElementTag];
+            return ['status' => 'error', 'message' => $this->ErrorInfo($th), 'element_tag' => $ElementTag];
         }
     }
 
@@ -182,7 +182,7 @@ class Users extends Model
             }
         } catch (\Throwable $th) {
             //throw $th;
-            return ['status' => 'error', 'message' => $th, 'element_tag' => $ElementTag];
+            return ['status' => 'error', 'message' => $this->ErrorInfo($th), 'element_tag' => $ElementTag];
         }
     }
 
@@ -227,7 +227,7 @@ class Users extends Model
             }
         } catch (\Throwable $th) {
             //throw $th;
-            return['status' => 'error', 'message' => $th, 'element_tag' => $ElementTag];
+            return['status' => 'error', 'message' => $this->ErrorInfo($th), 'element_tag' => $ElementTag];
         }
     }
 
@@ -277,7 +277,27 @@ class Users extends Model
             return ['status' => 'ok', 'user' => $User, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             //throw $th;
-            return ['status' => 'error', 'message' => $th, 'element_tag' => $ElementTag];
+            return ['status' => 'error', 'message' => $this->ErrorInfo($th), 'element_tag' => $ElementTag];
         }
+    }
+
+    /**
+     * 
+     * @param $th
+     * 
+     * @return $Message
+     * 
+     * 
+     */
+    public function ErrorInfo($th)
+    {
+        # code...
+        if(!property_exists($th, 'errorInfo') || count($th->errorInfo) == 0){
+            $Message = ["Undefined Server Error"];
+        }
+        else{
+            $Message = $th->errorInfo;
+        }
+        return $Message;
     }
 }

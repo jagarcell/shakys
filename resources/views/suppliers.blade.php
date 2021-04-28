@@ -116,7 +116,7 @@
                             <div id="supplier_pickup" class="supplier_data_field">{{$supplier->pickup}}</div>
                             <div class="supplier_data_entry_buttons">
                                 <a class="add_user_button edit w-button" onclick="editClick(this)">Edit</a>
-                                <a class="add_user_button delete edit w-button" onclick="deleteClick()">Delete</a>
+                                <a class="add_user_button delete edit w-button" onclick="deleteClick(this)">Delete</a>
                             </div>
                         </div>
                     </div>

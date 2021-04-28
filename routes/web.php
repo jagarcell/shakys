@@ -58,4 +58,6 @@ Route::post('/createuser', 'UsersController@CreateUser');
  Route::post('/getsupplier', 'SuppliersController@GetSupplier');
 
  Route::post('/updatesupplier', 'SuppliersController@UpdateSupplier');
+
+ Route::post('/deletesupplier', 'SuppliersController@DeleteSupplier');
  

@@ -41,4 +41,10 @@ class SuppliersController extends Controller
         # code...
         return (new Suppliers())->UpdateSupplier($request);
     }
+
+    public function DeleteSupplier(Request $request)
+    {
+        # code...
+        return (new Suppliers())->DeleteSupplier($request);
+    }
 }

@@ -79,7 +79,7 @@ class Suppliers extends Model
             return ['status' => 'ok', 'supplier' => $Supplier, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             //throw $th;
-            return ['status' => 'error', 'message' => $th, 'element_tag' => $ElementTag];
+            return ['status' => 'error', 'message' => $this->ErrorInfo($th), 'element_tag' => $ElementTag];
         }
     }
 
@@ -115,7 +115,7 @@ class Suppliers extends Model
             return ['status' => 'ok', 'supplier' => $Supplier, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             //throw $th;
-            return ['status' => 'error', 'message' => $th, 'element_tag' => $ElementTag];
+            return ['status' => 'error', 'message' => $this->ErrorInfo($th), 'element_tag' => $ElementTag];
         }
     }
 
@@ -176,7 +176,63 @@ class Suppliers extends Model
             return ['status' => 'ok', 'supplier' => $Supplier, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             //throw $th;
-            return ['status' => 'error', 'message' => $th, 'element_tag' => $ElementTag];
+            return ['status' => 'error', 'message' => $this->ErrorInfo($th), 'element_tag' => $ElementTag];
         }
+    }
+
+    /**
+     * 
+     * @param supplierid
+     * @param element_tag
+     * 
+     * This method deletes the supplier with the 'supplierid'
+     * 
+     * @return status
+     *          'ok'
+     *          'notfound'
+     *          'error'
+     * @return error
+     * @return element_tag
+     * 
+     */
+    public function DeleteSupplier($request)
+    {
+        # code...
+        $Id = $request['id'];
+        $ElementTag = $request['element_tag'];
+
+        try {
+            //code...
+            $Suppliers = $this->where('id', $Id)->get();
+            if(count($Suppliers) == 0){
+                return ['status' => 'notfound', 'element_tag' => $ElementTag];
+            }
+
+            $this->where('id', $Id)->delete();
+            return ['status' => 'ok', 'element_tag' => $ElementTag];
+        } catch (\Throwable $th) {
+            //throw $th;
+            return['status' => 'error', 'message' => $this->ErrorInfo($th), 'element_tag' => $ElementTag];
+        }
+    }
+
+    /**
+     * 
+     * @param $th
+     * 
+     * @return $Message
+     * 
+     * 
+     */
+    public function ErrorInfo($th)
+    {
+        # code...
+        if(!property_exists($th, 'errorInfo') || count($th->errorInfo) == 0){
+            $Message = ["Undefined Server Error"];
+        }
+        else{
+            $Message = $th->errorInfo;
+        }
+        return $Message;
     }
 }

@@ -8,6 +8,16 @@ function garcellParentNodeById(element, parentId) {
     return 'undefined'
 }
 
+/**
+ * 
+ * @param {string} element
+ *         'HTML element whose parent node will be searched by classname'
+ * @param {string} parentClass
+ *         'Name of the class whose HTML element is going to be searched for'
+ * @returns
+ **         'element found'
+ **         '"undefined" if no element was found'
+ */
 function garcellParentNodeByClassName(element, parentClass) {
     while (element !== 'undefined') {
         if(element.className.includes(parentClass)){
@@ -77,7 +87,7 @@ function reportResult(reportInfo,  endFunction=null) {
  * */
 function getMessageFromErrorInfo(errorResponse) {
     var message = ""
-    $.each(errorResponse.errorInfo, function(index, value){
+    $.each(errorResponse, function(index, value){
         message = message + value + "<br>"
     })
     return message
