@@ -55,27 +55,31 @@
         @section('page_title', 'ADMIN PANEL')
         @section('content')
         <div class="admin_panel_section">
-            <div data-w-id="dd404975-5144-4daa-172d-139e14ceec86" class="option_frame"><img src="images/pendingorders.png" loading="lazy" sizes="150px" width="150" srcset="images/pendingorders-p-500.png 500w, images/pendingorders.png 512w" alt="" class="option_image">
+            <div data-w-id="dd404975-5144-4daa-172d-139e14ceec86" class="option_frame">
+                <img src="images/pendingorders.png" loading="lazy" sizes="150px" width="150" srcset="images/pendingorders-p-500.png 500w, images/pendingorders.png 512w" alt="" class="option_image">
             <div class="option_text">PENDING ORDERS</div>
             </div>
-            <div data-w-id="14a54350-4c5e-89b4-8745-04aac0afccbf" class="option_frame"><img src="/images/products.png" loading="lazy" width="150" sizes="150px" srcset="images/products-p-500.png 500w, images/products.png 600w" alt="" class="option_image">
+            <div data-w-id="14a54350-4c5e-89b4-8745-04aac0afccbf" class="option_frame">
+                <img src="/images/products.png" loading="lazy" width="150" sizes="150px" srcset="images/products-p-500.png 500w, images/products.png 600w" alt="" class="option_image">
             <div class="option_text">PRODUCTS </div>
             </div>
         </div>
         <div class="admin_panel_section">
-            <div data-w-id="14a54350-4c5e-89b4-8745-04aac0afccc1" class="option_frame"><img src="images/productlocation.png" loading="lazy" sizes="150px" width="150" srcset="images/productlocation-p-500.png 500w, images/productlocation.png 512w" alt="" class="option_image">
-            <div class="option_text">IN-STORE PRODUCT LOCATIONS</div>
+            <div data-w-id="14a54350-4c5e-89b4-8745-04aac0afccc1" class="option_frame">
+                <img src="images/productlocation.png" loading="lazy" sizes="150px" width="150" srcset="images/productlocation-p-500.png 500w, images/productlocation.png 512w" alt="" class="option_image">
+                <div class="option_text">IN-STORE PRODUCT LOCATIONS</div>
             </div>
-            <div data-w-id="dd404975-5144-4daa-172d-139e14ceec84" class="option_frame"><img src="images/supplierproductlocation.png" loading="lazy" width="150" sizes="150px" srcset="images/supplierproductlocation-p-500.png 500w, images/supplierproductlocation.png 512w" alt="" class="option_image">
+            <div data-w-id="dd404975-5144-4daa-172d-139e14ceec84" class="option_frame">
+                <img src="images/supplierproductlocation.png" loading="lazy" width="150" sizes="150px" srcset="images/supplierproductlocation-p-500.png 500w, images/supplierproductlocation.png 512w" alt="" class="option_image">
             <div class="option_text">PRODUCT LOCATIONS<br> AT SUPPLIERS</div>
             </div>
         </div>
         <div class="admin_panel_section">
-            <a href="/users" class="option_frame">
+            <a href="/users" data-w-id="690dbcf6-32a1-4389-d1b2-bf88ab73bace" class="option_frame">
                 <img src="images/Users-icon.png" loading="lazy" width="150" alt="" class="option_image">
                 <div class="option_text">USERS</div>
             </a>
-            <a href="/suppliers" class="option_frame">
+            <a href="/suppliers" data-w-id="3f834a6a-4538-916b-a543-56df34d9b186" class="option_frame">
                 <img src="images/Suppliers.png" loading="lazy" sizes="150px" width="150" srcset="images/Suppliers-p-500.png 500w, images/Suppliers.png 512w" alt="" class="option_image">
                 <div class="option_text">SUPPLIERS</div>
             </a>
