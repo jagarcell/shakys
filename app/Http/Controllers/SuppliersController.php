@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Suppliers;
 
@@ -31,8 +33,24 @@ class SuppliersController extends Controller
         $fileToUpload = $request->file('file');
 
         if(!empty($_FILES)){
-            $Config = config('app');
-	        $path = $fileToUpload->storeAs($Config['suppliers_images_path'], $_FILES['file']['name'], 'suppliers_images');
+            $user = Auth::user();
+            if($user != null){
+                $counterFile = "counters/counter_" . $user->id;
+                $contents = "0";
+                if(Storage::exists($counterFile)){
+                    $contents = Storage::get($counterFile);
+                    $contents++;
+                }
+                Storage::put($counterFile, $contents);
+    
+                $fileName = $_FILES['file']['name'];
+                $fileNameChunks = explode('.', $fileName);
+                $fileExt = $fileNameChunks[count($fileNameChunks) - 1];
+                $fileName = $contents . "_" . $user->id . "." . $fileExt;
+                $Config = config('app');
+                $path = $fileToUpload->storeAs($Config['suppliers_images_path'], $fileName, 'images');
+                return ['filename' => $fileName];
+            }
         }
     }
 

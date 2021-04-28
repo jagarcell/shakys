@@ -20,12 +20,14 @@ function createSupplierImageDrop(){
 				// body...
 				this.on('addedfile', function (file) {
 					// body...
-                    $('#supplier_data_entry_form_add').find('#supplier_image_to_upload').val(file.name)
 					filesAccepted = this.getAcceptedFiles()
 					if(filesAccepted.length > 0){
 						this.removeFile(filesAccepted[0])
 					}
 				})
+                this.on('success', function(file, data){
+                    $('#supplier_data_entry_form_add').find('#supplier_image_to_upload').val(data.filename)
+                })
 			},
 		}
     )
@@ -224,34 +226,41 @@ function editClick(editButton) {
     
                         let mockFile = { name: supplier.image_name, size: supplier.image_size }
     
-                        new Dropzone(
-                            "form#supplier_image_" + supplier.id, 
-                            { 
-                                url: "/supplierimgupload", 
-                                dictDefaultMessage : 'Drop An Image Or Click To Search One',
-                                init : function dropzoneInit() {
-                                    // body...
-                                    this.on('addedfile', function (file) {
+                            new Dropzone(
+                                "form#supplier_image_" + supplier.id, 
+                                { 
+                                    url: "/supplierimgupload", 
+                                    dictDefaultMessage : 'Drop An Image Or Click To Search One',
+                                    init : function dropzoneInit() {
                                         // body...
-                                        var edit_div = this.element.parentNode
-                                        $(edit_div).find('#supplier_image_to_upload').val(file.name)
-                                        filesAccepted = this.getAcceptedFiles()
+                                        this.on('addedfile', function (file) {
+                                            // body...
+                                            var edit_div = this.element.parentNode
+                                            $(edit_div).find('#supplier_image_to_upload').val(file.name)
+                                            filesAccepted = this.getAcceptedFiles()
+            
+                                            if(this.hidePreview !== undefined){
+                                                $(edit_div).find('.dz-preview')[0].style.display = 'none'
+                                            }
+                                            else{
+                                                this.hidePreview = 'hidePreview'
+                                            }
         
-                                        if(this.hidePreview !== undefined){
-                                            $(edit_div).find('.dz-preview')[0].style.display = 'none'
-                                        }
-                                        else{
-                                            this.hidePreview = 'hidePreview'
-                                        }
-    
-                                        if(filesAccepted.length > 0){
-                                            this.removeFile(filesAccepted[0])
-                                        }
-                                    })
-                                },
-                            }
-                        ).displayExistingFile(mockFile, supplier.image_path)
-                            
+                                            if(filesAccepted.length > 0){
+                                                this.removeFile(filesAccepted[0])
+                                            }
+                                        })
+                                        this.on('success', function(file, data){
+                                            var edit_div = this.element.parentNode
+                                            $(edit_div).find('#supplier_image_to_upload').val(data.filename)
+                                        })
+                                                            },
+                                    renameFile: function(file){
+                                        return 'upload.png'
+                                    }                                }
+                            ).displayExistingFile(mockFile, supplier.image_path)
+
+                                
                         break;
                     
                     case 'notfound':

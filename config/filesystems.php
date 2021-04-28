@@ -52,7 +52,7 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
-        'suppliers_images' => [
+        'images' => [
             'driver' => 'local',
             'root' => public_path(),
             'visibility' => 'public',
