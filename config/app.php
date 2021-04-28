@@ -230,6 +230,6 @@ return [
 
     ],
     
-    'suppliers_images_path' => 'images/suppliers/',
+    'suppliers_images_path' => 'images/uploaded/suppliers/',
     'noimg' => 'noimg.jpg',
 ];
