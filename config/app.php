@@ -229,5 +229,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-
+    
+    'suppliers_images_path' => 'images/uploaded/suppliers/',
+    'noimg' => 'noimg.jpg',
 ];

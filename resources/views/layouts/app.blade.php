@@ -50,7 +50,7 @@
                     </div>
                 @else
                     <li class="nav-item dropdown">
-                        <div style="text-decoration:none; padding-bottom: 10px; font-size: medium;" id="navbarDropdown" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <div style="text-decoration:none; padding-bottom: 10px;" id="navbarDropdown" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->name }} <span class="caret"></span>
                         </div>
                     </li>    

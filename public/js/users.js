@@ -2,60 +2,185 @@ $(document).ready(function(){
 
 })
 
+/**
+ * 
+ * @param {string} userid
+ **                userid:'The id of the user being edited'  
+ */
 function edit(userid){
-    var id = '#' + userid
-    $.get('/userbyid', 
-        {userid:userid}, 
+
+    $.post('/userbyid', 
+        {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            userid:userid,
+            element_tag:userid,
+        }, 
         function(data, status){
             if(status == 'success'){
-                if(data.status =='ok'){
-                    var userData = $(id)
-                    var editHTML = $('#edit_section')[0].innerHTML
-                    userData[0].innerHTML = editHTML
-                    userData.find('#edited_user_id').val(data.user.id)
-                    userData.find('#edited_name').val(data.user.name)
-                    userData.find('#edited_email').val(data.user.email)
-                    userData.find('#edited_user_type').val(data.user.user_type)
+                var userData = $('#' + data.element_tag)
+                var editSection = $('#edit_section')
+                var editHTML = editSection[0].innerHTML
+                var userEditActionResult = userData.find('#user_edit_action_result')
+                switch (data.status) {
+                    case 'ok':
+                        var user = data.user
+                        userData[0].innerHTML = editHTML
+                        userData.find('#edited_user_id').val(user.id)
+                        userData.find('#edited_name').val(user.name)
+                        userData.find('#edited_email').val(user.email)
+                        userData.find('#edited_user_type').val(user.user_type)
+                    
+                        break;
+                    
+                    case 'notfound':
+                        var message = getStatusMessage('notfound')
+                        reportResult(
+                            {
+                                frame:userEditActionResult,
+                                message:message,
+                                param:data.element_tag,
+                            }, function(frame, element_tag){
+                                frame.hide()
+                                var userData = document.getElementById(element_tag)
+                                userData.outerHTML = ""
+                            }
+                        )
+                        
+                        break;
+
+                    case 'error':
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:userEditActionResult,
+                                message:message,
+                                
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )                        
+                        break;
+                    
+                    case '419':
+                        var message = getStatusMessage('419')
+                        reportResult(
+                            {
+                                frame:userEditActionResult,
+                                message:message,
+                            }
+                        )
+
+                    default:
+                        break;
                 }
+    
             }
         }
     )
 }
 
+/**
+ * 
+ * @param {string} userid
+ **                 userid:'The id of the user being deleted'
+ */
 function deleteUser(userid){
-    if(confirm('ARE YOU SURE THAT YOU WANT TO REMOVE THIS USER')){
-        var element_tag = userid
+    if(confirm('ARE YOU SURE THAT YOU WANT TO DELETE THIS USER')){
         $.post('/deleteuser', 
             {
                 _token: $('meta[name="csrf-token"]').attr('content'),
                 userid:userid,
-                element_tag:element_tag,
+                element_tag:userid,
             }, 
             function(data, status){
-               var edit_section = document.getElementById(data.element_tag)
-                if(data.status == 'ok'){
-                    var delete_user_success = $(edit_section).find('#delete_user_success')
-                    delete_user_success.show()
-                    setTimeout(function(edit_section_to_remove){
-                        $(edit_section_to_remove)[0].outerHTML = ""
-                    }, 4000, edit_section)
-                }
-                else{
-                    switch ('noadmin') {
-                        case value:
-                            var delete_user_error = $(edit_section).find('#delete_user_error')
-                            delete_user_error.show()
-                            setTimeout(function(element_to_hide){delete_user_error.hide()}, 5000, delete_user_error)
-                            break;
-                    
-                        default:
-                            break;
+                if(status == 'success'){
+                    var element_tag = data.element_tag
+                    var edit_section = document.getElementById(element_tag)
+                    var user_edit_action_result = $(edit_section).find('#user_edit_action_result')
+                    switch (data.status) {
+                            case 'ok':
+                                reportResult(
+                                    {
+                                        frame:user_edit_action_result,
+                                        message:"THIS USER HAS BEEN SUCCESSFULLY DELETED!",
+                                        error:false,
+                                        timeout:4000,
+                                        param:edit_section,
+                                    }, function(frame, element_tag){
+                                        frame.hide()
+                                        var edit_section = document.getElementById(element_tag)
+                                        edit_section.outerHTML = ""
+                                    }
+                                )
+
+                                break;
+
+                            case 'noadmin':
+                                reportResult(
+                                    {
+                                        frame:user_edit_action_result,
+                                        message:"THIS USER CAN NOT BE DELETED!<br>NO MORE admin LEFT!",
+                                        timeout:5000,                                
+                                    },
+                                    function(frame, param){
+                                        frame.hide()
+                                    }
+                                )
+
+                                break;
+
+                            case 'notfound':
+                                var message = getStatusMessage('notfound')
+                                reportResult(
+                                    {
+                                        frame:user_edit_action_result,
+                                        message:message,
+                                        timeout:4000,
+                                        param:element_tag
+                                    }, function(frame, element_tag){
+                                        frame.hide()
+                                        var edit_section = document.getElementById(element_tag)
+                                        edit_section.outerHTML = ""
+                                    }
+                                )
+                                break
+                            case 'error':
+                                var message = getMessageFromErrorInfo(data.message)
+                                reportResult(
+                                    {
+                                        frame:user_edit_action_result,
+                                        message:message,
+                                    },function(frame, param){
+                                        frame.hide()
+                                    }
+                                )
+
+                                break;
+
+                            case '419':
+                                var message = getStatusMessage('419')
+                                reportResult(
+                                    {
+                                        frame:user_edit_action_result,
+                                        message:message,
+                                    }
+                                )
+                                break;
+    
+                            default:
+                                break;
                     }
                 }
-        })
+            }
+        )
     }
 }
 
+/**
+ * 
+ * @param {string} element 
+ **         element:'The HTML element that initiated this action' 
+ */
 function saveUser(element) {
     var form = garcellParentNodeById(element, "user_edit_form")
     var userId = $(form).find('#edited_user_id').val()
@@ -68,49 +193,98 @@ function saveUser(element) {
         $.post('/saveuser',
         {
             _token: $('meta[name="csrf-token"]').attr('content'),
-            element_tag:userId,
             user_id:userId,
             name:name,
             email:email,
             user_type:user_type,
+            element_tag:userId,
         }, function (data, status) {
-            if(data.status == 'ok'){
-                var user_data = $('#user_data')
-                var user_section = $('#' + data.user_id)
-
-                user_section[0].innerHTML = user_data[0].innerHTML
-                user_section.find('#user_name')[0].innerHTML = data.name
-                user_section.find('#user_email')[0].innerHTML = data.email
-                user_section.find('#user_type')[0].innerHTML = data.user_type
-                user_section[0].innerHTML = user_section[0].innerHTML.replace('user_id', data.user_id)
-            }
-            else{
-                var edit_section = document.getElementById(data.element_tag)
-
+            if(status == 'success'){
+                var user_section = $('#' + data.element_tag)
+                var reportFrame = user_section.find('#user_edit_message')
                 switch (data.status) {
-                    case 'email taken':
-                        var email_error = $(edit_section).find('#email_error')
+                    case 'ok':
+                        var user = data.user
+                        reportResult(
+                            {
+                                frame:reportFrame,
+                                message:"THE USER WAS SUCCESSFULLY UPDATED!",
+                                error:false,
+                                param:user
+                            },
+                            function(frame, param){
+                                var user = param
+                                frame.hide()
+                                var user_data = $('#user_data')
+                                var user_section = $('#' + user.id)
+                
+                                user_section[0].innerHTML = user_data[0].innerHTML
+                                user_section.find('#user_name')[0].innerHTML = user.name
+                                user_section.find('#user_email')[0].innerHTML = user.email
+                                user_section.find('#user_type')[0].innerHTML = user.user_type
+                                user_section[0].innerHTML = user_section[0].innerHTML.replace(/user_id/g, user.id)
+                            }
+                        )
+                        break;
 
-                        email_error.show()
-                        setTimeout(function(element_to_hide){
-                            element_to_hide.hide()
-                        }, 3000, email_error)
+                    case 'emailtaken':
+                        reportResult(
+                            {
+                                frame:reportFrame,
+                                message:"THIS EMAIL IS TAKEN!",
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
                             
                         break;
                     case '419':
-                        var save_session_expired = $(edit_section).find('#save_session_expired')
-                        save_session_expired.show()
-                        setTimeout(function(element_to_hide){
-                            element_to_hide.hide()
-                        }, 3000, save_session_expired)
+                        var message = getStatusMessage('419')
+                        reportResult(
+                            {
+                                frame:reportFrame,
+                                message:message,
+                            }
+                        )
                         break;
                     case 'noadmin':
-                        var edited_user_type_error = $(edit_section).find('#edited_user_type_error')
-                        edited_user_type_error.show()
-                        setTimeout(function(element_to_hide){
-                            edited_user_type_error.hide()
-                        }, 6000, edited_user_type_error)
+                        reportResult(
+                            {
+                                frame:reportFrame,
+                                message:"THE TYPE OF THIS USER CAN NOT BE CHANGED TO 'user'!<br>THERE IS NOT OTHER 'admin' USER LEFT.",
+                                timeout:6000,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
                         break;
+
+                    case 'error':
+                        reportResult(
+                            {
+                                frame:reportFrame,
+                                message:getMessageFromErrorInfo(data.message),
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )    
+                        break;
+                    
+                    case 'notfound':
+                        var message = getStatusMessage('notfound')
+                        reportResult(
+                            {
+                                frame:reportFrame,
+                                message:message,
+                                timeout:4000,
+                                param:data.element_tag,
+                            },function(frame, element_tag){
+                                frame.hide()
+                                var user_section = $('#' + element_tag)
+                                user_section.hide()
+                            }
+                        )
+                            break;
                     default:
                         break;
                 }
@@ -122,36 +296,107 @@ function saveUser(element) {
     }
 }
 
+/**
+ * 
+ * @param {string} element 
+ **         element:'The HTML element that initiated this action' 
+ */
 function discard(element) {
     var edit_section = garcellParentNodeById(element, 'user_section')
     var userId = $(edit_section).find('#edited_user_id').val()
 
-    $.get('/userbyid',
-        {userid:userId},
+    $.post('/userbyid',
+        {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            userid:userId,
+            element_tag:userId,
+        },
         function(data, status){
-            if(data.status == 'ok'){
+            if(status == 'success'){
                 var user_data = $('#user_data')
-                var user_section = $('#' + data.user.id)
-                user_section[0].innerHTML = user_data[0].innerHTML
-                user_section.find('#user_name')[0].innerHTML = data.user.name
-                user_section.find('#user_email')[0].innerHTML = data.user.email
-                user_section.find('#user_type')[0].innerHTML = data.user.user_type
-                user_section[0].innerHTML = user_section[0].innerHTML.replace(/user_id/g, data.user.id)
+                var user_section = $('#' + data.element_tag)
+                var user_edit_message = user_section.find('#user_edit_message')
+
+                switch (data.status) {
+                    case 'ok':
+                        var user = data.user
+        
+                        user_section[0].innerHTML = user_data[0].innerHTML
+                        user_section.find('#user_name')[0].innerHTML = user.name
+                        user_section.find('#user_email')[0].innerHTML = user.email
+                        user_section.find('#user_type')[0].innerHTML = user.user_type
+                        user_section[0].innerHTML = user_section[0].innerHTML.replace(/user_id/g, user.id)
+                            
+                        break;
+                
+                    case 'notfound':
+                        var message = getStatusMessage('notfound')
+                        reportResult(
+                            {
+                                frame:user_edit_message,
+                                message:message,
+                                timeout:5000,
+                                param:data.element_tag,
+                            }, function(frame, element_tag){
+                                frame.hide()
+                                var user_section = $('#' + element_tag)
+                                user_section.hide()
+                            }
+                        )
+    
+                        break;
+
+                    case 'error':
+                        reportResult(
+                            {
+                                frame:user_edit_message,
+                                message:getMessageFromErrorInfo(data.message),
+                                timeout:4000,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+
+                        break;
+
+                    case '419':
+                        var message = getStatusMessage('419')
+                        reportResult(
+                            {
+                                frame:user_edit_message,
+                                message:message
+                            }
+                        )
+                        break;
+
+                        default:
+                           break;
+                }
             }
         }
     )
 }
 
+/**
+ * 
+ * @param {string} userId 
+ **         userid:'The id of the user that initiated this action' 
+ */
 function newPassword(userId) {
     var userData = $('#' + userId)
-    var editButtons = userData.find('#edit_buttons')
     var passwordReset = userData.find('#user_password_reset')
-    var passwordHTML = $('#password_section')[0].innerHTML
+    var passwordSection = $('#password_section')[0]
+    var passwordHTML = passwordSection.innerHTML
     passwordHTML = passwordHTML.replace(/user_id/g, userId)
-//    editButtons.hide();
     passwordReset[0].innerHTML = passwordHTML
+    userData[0].scrollIntoView(false)
 }
 
+/**
+ * 
+ * @param {string} element
+ **         element:'The HTML element that initiated this action'
+ */
 function createPassword(element) {
     var user_edit_wrap = garcellParentNodeById(element, 'user_edit_wrap')
     var user_password_reset_form = $(user_edit_wrap).find('#user_password_reset_form')
@@ -160,59 +405,101 @@ function createPassword(element) {
     var user_password_confirm = $(user_edit_wrap).find('#user_password_confirm')
     var new_password_value = $(user_password).val()
     var confirm_new_password_value = $(user_password_confirm).val()
-    var password_confirmation_missmatch = $(user_edit_wrap).find('#password_confirmation_missmatch')
     
-    if(new_password_value !== confirm_new_password_value){
-        $(password_confirmation_missmatch).show()
-        setTimeout(
-            function(element_to_hide){$(element_to_hide.hide())}, 3000, 
-            password_confirmation_missmatch)
-    }
-    else{
-        if(user_password_reset_form[0].checkValidity()){
-            $.post('changepassword', 
-                {
-                    _token: $('meta[name="csrf-token"]').attr('content'),
-                    user_id: user_id,
-                    password: new_password_value,
-                    element_tag : user_id,
-                }, function(data, status){
-                    if(data.status == 'ok'){
-                        var element_tag = $('#' + data.element_tag)
-                        var password_change_success = $(element_tag).find('#password_change_success')
-                        password_change_success.show()
-                        setTimeout(function(element_tag){
-                            var element = $('#' + element_tag)
-                            var user_password_reset = $(element).find('#user_password_reset')
-                            var editButtons = $(element).find('#edit_buttons')
-                            user_password_reset[0].innerHTML = ""
-                            $(editButtons).show()
-                        }, 3000, data.element_tag)
-                    }
-                    else{
-                        switch (data.status) {
-                            case 'notfound':
-                                
-                                break;
+    if(user_password_reset_form[0].checkValidity()){
+        $.post('changepassword', 
+            {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                user_id: user_id,
+                password: new_password_value,
+                confirm_password:confirm_new_password_value,
+                element_tag : user_id,
+            }, function(data, status){
+                if(status == 'success'){
+                    var password_change_result = $('#' + data.element_tag).find('#password_change_result')
+                    switch (data.status) {
+                        case 'ok':
+                            reportResult(
+                                {
+                                    frame:password_change_result,
+                                    message:"PASSWORD SUCCESFULLY CHANGED!",
+                                    error:false,
+                                    param:data.element_tag,
+                                }, function(frame, element_tag){
+                                    frame.hide()
+                                    var userSection = $('#' + element_tag)
+                                    var user_password_reset = $(userSection).find('#user_password_reset')
+                                    user_password_reset[0].innerHTML = ""
+                                }
+                            )
 
-                            case 'error':
-                            
                             break;
-                            
-                            default:
-                                break;
-                        }
+                        case 'notfound':
+                            var message = getStatusMessage('notfound')
+                            reportResult(
+                                {
+                                    frame:password_change_result,
+                                    message:message,
+                                    timeout:5000,
+                                    param:data.element_tag,
+                                }, function(frame, element_tag){
+                                    frame.hide()
+                                    var user_section = $('#' + element_tag)
+                                    user_section.hide()
+                                }
+                            )
+                            break;
+
+                        case 'error':
+                            reportResult(
+                                {
+                                    frame:password_change_result,
+                                    message:getMessageFromErrorInfo(data.message),
+                                }, function(frame, param){
+                                    frame.hide()
+                                }
+                            )
+                        
+                            break;
+
+                        case 'passwordmissmatch':
+                            var message = getStatusMessage('passwordmissmatch')
+                            reportResult(
+                                {
+                                    frame:password_change_result,
+                                    message:message,
+                                }, function(frame, param){
+                                    frame.hide()
+                                }
+                            )
+                            break;
+
+                        case '419':
+                            var message = getStatusMessage('419')
+                            reportResult(
+                                {
+                                    frame:password_change_result,
+                                    message:message,
+                                }
+                            )    
+                            break;
+                        default:
+                            break;
                     }
                 }
-            )
-        }
-        else{
-            user_password_reset_form[0].reportValidity()
-        }
+            }
+        )
     }
-    
+    else{
+        user_password_reset_form[0].reportValidity()
+    }
 }
 
+/**
+ * 
+ * @param {string} element
+ **         element:'The HTML element that initiated this action'
+ */
 function discardPassword(element) {
     var userPasswordReset = garcellParentNodeById(element, 'user_password_reset')
     var userData = garcellParentNodeById(element, 'user_edit_wrap')
@@ -220,4 +507,192 @@ function discardPassword(element) {
 
     userPasswordReset.innerHTML = ""
     $(editButtons).show()
+}
+
+/**
+ * 
+ * @param {string} userAddIcon
+ **         userAddIcon:'The HTML element that initiated this action'
+ */
+function userAddClick(userAddIcon) {
+    var user_add_section = $(garcellParentNodeByClassName(userAddIcon, 'user_add_section'))
+    var user_add_icon = user_add_section.find('#user_add_icon')
+    var user_add_form = user_add_section.find('#user_add_form')
+    user_add_icon.hide()
+    user_add_form.show()
+}
+
+/**
+ * 
+ * @param {string} userAbortButton
+ **         userAbortButton:'The HTML element that initiated this action'  
+ */
+function userAbortClick(userAbortButton) {
+    var user_add_icon = $('#user_add_icon')
+    var user_add_form = $('#user_add_form')
+
+    user_add_form.find('#add_user_name').val('')
+    user_add_form.find('#add_user_email').val('')
+    user_add_form.find('#add_user_password').val('')
+    user_add_form.find('#add_confirm_user_password').val('')
+    
+    user_add_form.hide()
+    user_add_icon.show()
+}
+
+/**
+ * 
+ * @param {string} userCreateButton
+ **         userCreateButton:'The HTML element that initiated this action'
+ */
+function userCreateClick(userCreateButton) {
+    var user_form = $('#user_form')
+
+    if((user_form[0]).checkValidity()){
+        var name = user_form.find('#add_user_name').val()
+        var email = user_form.find('#add_user_email').val()
+        var type = user_form.find('#add_user_type').val()
+        var password = user_form.find('#add_user_password').val()
+        var confirmPassword = user_form.find('#add_confirm_user_password').val()
+    
+        $.post('/createuser',
+            {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                name:name,
+                email:email,
+                user_type:type,
+                password:password,
+                confirm_password:confirmPassword,
+            },
+            function(data, status){
+                var createMessage = $('#create_message')
+                switch (data.status) {
+                    case 'ok':
+                        var user = data.user
+                        reportResult(
+                            {
+                                frame:createMessage,
+                                message:"THE USER WAS SUCCESSFULLY CREATED!",
+                                error:false,
+                                param:user,
+                            },
+                            function(frame, user){
+                                frame.hide()
+                                $('#user_add_form').hide()
+                                $('#add_user_email').val('')
+                                $('#add_user_name').val('')
+                                $('#add_user_password').val('')
+                                $('#add_confirm_user_password').val('')
+                                $('#user_add_icon').show()
+                                var addedUserHtml = document.getElementById('added_user_html')
+                                var innerHTML = addedUserHtml.innerHTML
+                                innerHTML = innerHTML.replace(/user-id/g, user.id)
+                                innerHTML = innerHTML.replace(/user-name/g, user.name)
+                                innerHTML = innerHTML.replace(/user-email/g, user.email)
+                                innerHTML = innerHTML.replace(/user-type/g, user.user_type)
+                                var usersList = document.getElementById('users_list')
+                                usersList.innerHTML = innerHTML + usersList.innerHTML
+                            }
+                        )
+                    break;
+
+                    case 'passwordmissmatch':
+                        var message = getStatusMessage('passwordmissmatch')
+                        reportResult(
+                            {
+                                frame:createMessage,
+                                message:message,
+                            },
+                            function(createMessage, param){
+                                createMessage.hide()
+                            }
+                        )
+                    break;
+                
+                    case 'emailtaken':
+                        var message = getStatusMessage('emailtaken')
+                        reportResult(
+                            {
+                                frame:createMessage,
+                                message:message,
+                            },
+                            function(createMessage, param){
+                                createMessage.hide()
+                            }
+                        )
+                    break;
+
+                    case 'error':
+                        reportResult(
+                            {
+                                frame:createMessage,
+                                message: data.message
+                            },
+                            function(createMessage, param){
+                                createMessage.hide()
+                            }
+                        )
+                    break;
+
+                    case '419':
+                        var message = getStatusMessage('419')
+                        reportResult(
+                            {
+                                frame:createMessage,
+                                message:message,
+                            }
+                        )
+                    break;
+
+                    default:
+                        break;
+                }
+            }
+        )
+    }
+    else{
+        (user_form[0]).reportValidity()
+    }
+}
+
+/**
+ * 
+ * @param {string} status
+ *                  'notfound'
+ *                  'emailtaken'
+ *                  'passwordmissmatch'
+ *                  '419'
+ *  
+ * @returns
+ *          
+ **          notfound:'THIS USER CAN NOT BE FOUND!<br>PLEASE TRY REFRESHING YOUR BROWSER.'
+ **          emailtaken:'THIS EMAIL HAS BEEN TAKEN'
+ **          passwordmissmatch:'PASSWORD CONFIRMATION DOES NOT MATCH!'
+ **          419:'SESSION EXPIRED!<br>REFRESH YOUR BROWSER.'
+ * 
+ */
+ function getStatusMessage(status) {
+    var statusMessage = ""
+    
+    switch (status) {
+        case 'notfound':
+            statusMessage = 'THIS USER CAN NOT BE FOUND!<br>PLEASE TRY REFRESHING YOUR BROWSER.'
+            break;
+    
+        case 'emailtaken':
+            statusMessage = 'THIS EMAIL HAS BEEN TAKEN'
+            break
+
+        case 'passwordmissmatch':
+            statusMessage = 'PASSWORD CONFIRMATION DOES NOT MATCH!'
+            break
+
+        case '419':
+            statusMessage = 'SESSION EXPIRED!<br>REFRESH YOUR BROWSER.'
+            break
+    
+        default:
+            break;
+    }
+    return statusMessage
 }
