@@ -9,6 +9,13 @@ class ProductLocations extends Model
 {
     use HasFactory;
 
+    /**
+     * 
+     * List all the registered locations
+     * 
+     * @return view productslocations
+     * 
+     */
     public function ProductsLocations($request)
     {
         # code...
@@ -58,6 +65,40 @@ class ProductLocations extends Model
             //throw $th;
             $Message = $this->ErrorInfo($th);
             return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
+        }
+    }
+
+    /**
+     * 
+     * @param id
+     * @param element_tag
+     * 
+     * @return status
+     *          'ok'
+     *          '419'
+     *          'notfound'
+     *          'error'
+     * @return element_tag
+     * 
+     */
+    public function DeleteInStoreLocation($request)
+    {
+        # code...
+        $Id = $request['id'];
+        $ElementTag = $request['element_tag'];
+
+        try {
+            //code...
+            $Locations = $this->where('id', $Id)->get();
+            if(count($Locations) == 0){
+                return ['status' => 'notfound', 'element_tag' => $ElementTag];
+            }
+            $this->where('id', $Id)->delete();
+            return ['status' => 'ok', 'element_tag' => $ElementTag];
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
         }
     }
     

@@ -67,37 +67,43 @@
         <!-- LIST OF LOCATIONS RECEIVED FROM THE SERVER -->
         <div id="locations_list_wrap">
             @foreach($locations as $key => $location)
-            <div id="{{$location->id}}" class="product_location_section">
-                <div class="product_location_pic_frame">
-                    <img src="{{$location->image_path}}" loading="lazy" sizes="(max-width: 128px) 92vw, 128px" srcset="{{$location->image_path}} 128w, {{$location->image_path}} 128w" alt="" class="prodcut_location_pic">
-                </div>
-                <div id="supplier_data_edit_frame" class="product_location_data_entry">
-                <div class="product_location_data_edit">
-                    <div class="location_data_field">{{$location->name}}</div>
-                    <div class="product_location_data_entry_buttons">
-                        <input type="button" class="add_location_button edit w-button" value="Edit" onclick="editButtonClick(this)">
-                        <input type="button" class="add_location_button delete edit w-button" value="Delete" onclick="deleteButtonClick(this)">
+            <div id="{{$location->id}}" class="product_location_section_wrap">
+                <div id="action_result_message" class="action_result_message"></div>
+                <div class="product_location_section">
+                    <div class="product_location_pic_frame">
+                        <img src="{{$location->image_path}}" loading="lazy" sizes="(max-width: 128px) 92vw, 128px" srcset="{{$location->image_path}} 128w, {{$location->image_path}} 128w" alt="" class="prodcut_location_pic">
                     </div>
-                </div>
+                    <div id="supplier_data_edit_frame" class="product_location_data_entry">
+                        <div class="product_location_data_edit">
+                            <div class="location_data_field">{{$location->name}}</div>
+                            <div class="product_location_data_entry_buttons">
+                                <input type="button" class="add_location_button edit w-button" value="Edit" onclick="editButtonClick('{{$location->id}})">
+                                <input type="button" class="add_location_button delete edit w-button" value="Delete" onclick="deleteButtonClick('{{$location->id}}')">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             @endforeach
         </div>
 
-        <!-- THIS IS THE HTML USED TO CREATE A LOCATION SECTION WHEN A NEW ONE IS
+        <!-- THIS IS THE HTML USED TO CREATE A LOCATION SECTION WHEN A NEW LOCATION IS
         CREATED OR AN EXISTING ONE IS EDITED AND UPDATED. THIS WILL BE USED FROM JS-->
         <div id="location_html" hidden>
-            <div id="location-id" class="product_location_section">
-                <div class="product_location_pic_frame">
-                    <img src="location-image-path" loading="lazy" sizes="(max-width: 479px) 92vw, 256px" srcset="location-image-path 500w, location-image-path 512w" alt="" class="prodcut_location_pic"></div>
-                <div id="supplier_data_edit_frame" class="product_location_data_entry">
-                <div class="product_location_data_edit">
-                    <div class="location_data_field">location-name</div>
-                    <div class="product_location_data_entry_buttons">
-                    <a href="#" class="add_location_button edit w-button">Edit</a>
-                    <a href="#" class="add_location_button delete edit w-button">Delete</a>
+            <div id="location-id" class="product_location_section_wrap">
+                <div id="action_result_message" class="action_result_message"></div>
+                    <div class="product_location_section">
+                        <div class="product_location_pic_frame">
+                            <img src="location-image-path" loading="lazy" sizes="(max-width: 479px) 92vw, 256px" srcset="location-image-path 500w, location-image-path 512w" alt="" class="prodcut_location_pic"></div>
+                        <div id="supplier_data_edit_frame" class="product_location_data_entry">
+                        <div class="product_location_data_edit">
+                            <div class="location_data_field">location-name</div>
+                            <div class="product_location_data_entry_buttons">
+                                <input type="button" class="add_location_button edit w-button" value="Edit" onclick="editButtonClick('location-id')">
+                                <input type="button" class="add_location_button delete edit w-button" value="Delete" onclick="deleteButtonClick('location-id')">
+                            </div>
+                        </div>
                     </div>
-                </div>
                 </div>
             </div>
         </div>

@@ -142,6 +142,74 @@ function createLocationClick(createLocationButton) {
     }
 }
 
+function deleteButtonClick(locationId) {
+    $.post('/deleteinstorelocation',
+        {
+            _token:$('meta[name="csrf-token"]').attr('content'),
+            id:locationId,
+            element_tag:locationId,
+        }, function(data, status){
+            if(status == 'success'){
+                var productLocationSectionWrap = document.getElementById(data.element_tag)
+                var actionResultMessage = $(productLocationSectionWrap).find('#action_result_message')
+                switch (data.status) {
+                    case 'ok':
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:"THIS LOCATION WAS SUCCESFULLY DELETED",
+                                param:data.element_tag,    
+                            }, function(frame, elementTag){
+                                frame.hide()
+                                var productLocationSectionWrap = document.getElementById(elementTag)
+                                productLocationSectionWrap.outerHTML = ""
+                            }
+                        )
+                        break;
+                    case 'notfound':
+                        var message = getStatusMessage('notfound')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                param:data.element_tag,
+                            }, function(frame, elementTag){
+                                var productLocationSectionWrap = document.getElementById(elementTag)
+                                productLocationSectionWrap.outerHTML = ""
+                            }
+                        )
+                        break
+
+                    case '419':
+                        var message = getStatusMessage('419')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                            }
+                        )
+                        break
+                       
+                    case 'error':
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+                        break
+
+                    default:
+                        break;
+                }
+            }
+        }
+    )
+}
+
 /**
  * 
  * @param {string} status

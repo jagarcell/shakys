@@ -57,10 +57,22 @@ class ProductLocationsController extends Controller
     /**
      * 
      * Call this action to create an InStore Product Location
+     * 
      */
     public function CreateInStoreLocation(Request $request)
     {
         # code...
         return (new ProductLocations())->CreateInStoreLocation($request);
+    }
+    
+    /**
+     * 
+     * Call this action to delete an InStore Product Location
+     * 
+     */
+    public function DeleteInStoreLocation(Request $request)
+    {
+        # code...
+        return (new ProductLocations())->DeleteInStoreLocation($request);
     }
 }
