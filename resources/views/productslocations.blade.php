@@ -70,15 +70,15 @@
             <div id="{{$location->id}}" class="product_location_section_wrap">
                 <div id="action_result_message" class="action_result_message"></div>
                 <div class="product_location_section">
-                    <div class="product_location_pic_frame">
+                    <div class="product_location_pic_frame shadowRight">
                         <img src="{{$location->image_path}}" loading="lazy" sizes="(max-width: 128px) 92vw, 128px" srcset="{{$location->image_path}} 128w, {{$location->image_path}} 128w" alt="" class="prodcut_location_pic">
                     </div>
                     <div id="supplier_data_edit_frame" class="product_location_data_entry">
                         <div class="product_location_data_edit">
-                            <div class="location_data_field">{{$location->name}}</div>
+                            <div class="location_data_field shadowRight">{{$location->name}}</div>
                             <div class="product_location_data_entry_buttons">
-                                <input type="button" class="add_location_button edit w-button" value="Edit" onclick="editButtonClick('{{$location->id}})">
-                                <input type="button" class="add_location_button delete edit w-button" value="Delete" onclick="deleteButtonClick('{{$location->id}}')">
+                                <input type="button" class="add_location_button edit w-button shadowRight" value="Edit" onclick="editButtonClick('{{$location->id}})">
+                                <input type="button" class="add_location_button delete edit w-button shadowRight" value="Delete" onclick="deleteButtonClick('{{$location->id}}')">
                             </div>
                         </div>
                     </div>

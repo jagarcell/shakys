@@ -3,6 +3,10 @@
   font-size: 14px;;
 }
 
+.shadowRight{
+  box-shadow: 4px 4px 3px 0 #000;
+}
+
 .action_result_message{
   width: 100%;
   font-size: x-large;
