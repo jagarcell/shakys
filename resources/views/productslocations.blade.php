@@ -2,19 +2,19 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-wf-page="605538017156323a2f5ab124" data-wf-site="604d41d40c813292693d08e7">
     <head>
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        @section('title', 'Admin Panel')
+        @section('title', 'Users')
 
         @section('headsection')
-        <!--meta content="admin panel" property="og:title">
-        <meta content="admin panel" property="twitter:title">
-        <meta content="width=device-width, initial-scale=1" name="viewport">
-        <meta content="Webflow" name="generator">
-        <link href="css/normalize.css" rel="stylesheet" type="text/css"-->
-        <link href="css/webflow.css" rel="stylesheet" type="text/css">
         <link href="css/shakys.webflow.css" rel="stylesheet" type="text/css">
+        <link href="css/productslocations.css" rel="stylesheet" type="text/css">
+        <link href="css/dropzone.css" rel="stylesheet" type="text/css">
+        <link href="css/webflow.css" rel="stylesheet" type="text/css">
         <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
         <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
         <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
@@ -37,55 +37,76 @@
       @endsection
     </head>
     <body class="antialiased bodyClass">
-        <!--div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
-            @if (Route::has('login'))
-                <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 underline">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-        </div-->
-        @section('page_title', 'ADMIN PANEL')
+        @section('page_title', 'PRODUCTS LOCATIONS')
         @section('content')
-        <div class="admin_panel_section">
-            <div data-w-id="dd404975-5144-4daa-172d-139e14ceec86" class="option_frame">
-                <img src="images/pendingorders.png" loading="lazy" sizes="150px" width="150" srcset="images/pendingorders-p-500.png 500w, images/pendingorders.png 512w" alt="" class="option_image">
-            <div class="option_text">PENDING ORDERS</div>
+        <!-- THIS IS THE SECTION USED TO ADD A NEW PRODUCT LOCATION-->
+        <div id="add_product_location_section" class="product_location_add_frame">
+            <div id="action_result_message" class="action_result_message" hidden></div>
+            <div id="add_icon_frame" class="add_icon_frame">
+                <input type="button" class="add_icon" value="+" onclick="addLocationClick(this)">
             </div>
-            <div data-w-id="14a54350-4c5e-89b4-8745-04aac0afccbf" class="option_frame">
-                <img src="/images/products.png" loading="lazy" width="150" sizes="150px" srcset="images/products-p-500.png 500w, images/products.png 600w" alt="" class="option_image">
-            <div class="option_text">PRODUCTS </div>
+            <div id="add_section_frame" class="product_location_section" hidden>
+                <form action="/instoreimgupload" id="product_location_add_pic" class="product_location_pic_frame" method="post" enctype="multipart/form-data">
+                    @csrf
+                </form>
+                <div class="product_location_data_entry">
+                    <div class="add_location_form_frame w-form">
+                        <form id="add_form" class="add_location">
+                            <input id="location_name" type="text" class="product_location_text_field w-input" maxlength="256" name="name" data-name="Name" placeholder="Name" required="">
+                            <div class="product_location_add_buttons_frame">
+                                <input type="button" value="Create Location" data-wait="Please wait..." class="create_button w-button" onclick="createLocationClick(this)">
+                                <input type="button" value="Discard Location" data-wait="Please wait..." class="create_button w-button" onclick="discardLocationClick(this)">
+                            </div>
+                            <input id="image_to_upload" name="image_path" hidden>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="admin_panel_section">
-            <a href="/productslocations" data-w-id="14a54350-4c5e-89b4-8745-04aac0afccc1" class="option_frame">
-                <img src="images/productlocation.png" loading="lazy" sizes="150px" width="150" srcset="images/productlocation-p-500.png 500w, images/productlocation.png 512w" alt="" class="option_image">
-                <div class="option_text">IN-STORE PRODUCT LOCATIONS</div>
-            </a>
-            <div data-w-id="dd404975-5144-4daa-172d-139e14ceec84" class="option_frame">
-                <img src="images/supplierproductlocation.png" loading="lazy" width="150" sizes="150px" srcset="images/supplierproductlocation-p-500.png 500w, images/supplierproductlocation.png 512w" alt="" class="option_image">
-            <div class="option_text">PRODUCT LOCATIONS<br> AT SUPPLIERS</div>
+
+        <!-- LIST OF LOCATIONS RECEIVED FROM THE SERVER -->
+        <div id="locations_list_wrap">
+            @foreach($locations as $key => $location)
+            <div id="{{$location->id}}" class="product_location_section">
+                <div class="product_location_pic_frame">
+                    <img src="{{$location->image_path}}" loading="lazy" sizes="(max-width: 128px) 92vw, 128px" srcset="{{$location->image_path}} 128w, {{$location->image_path}} 128w" alt="" class="prodcut_location_pic">
+                </div>
+                <div id="supplier_data_edit_frame" class="product_location_data_entry">
+                <div class="product_location_data_edit">
+                    <div class="location_data_field">{{$location->name}}</div>
+                    <div class="product_location_data_entry_buttons">
+                        <input type="button" class="add_location_button edit w-button" value="Edit" onclick="editButtonClick(this)">
+                        <input type="button" class="add_location_button delete edit w-button" value="Delete" onclick="deleteButtonClick(this)">
+                    </div>
+                </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+        <!-- THIS IS THE HTML USED TO CREATE A LOCATION SECTION WHEN A NEW ONE IS
+        CREATED OR AN EXISTING ONE IS EDITED AND UPDATED. THIS WILL BE USED FROM JS-->
+        <div id="location_html" hidden>
+            <div id="location-id" class="product_location_section">
+                <div class="product_location_pic_frame">
+                    <img src="location-image-path" loading="lazy" sizes="(max-width: 479px) 92vw, 256px" srcset="location-image-path 500w, location-image-path 512w" alt="" class="prodcut_location_pic"></div>
+                <div id="supplier_data_edit_frame" class="product_location_data_entry">
+                <div class="product_location_data_edit">
+                    <div class="location_data_field">location-name</div>
+                    <div class="product_location_data_entry_buttons">
+                    <a href="#" class="add_location_button edit w-button">Edit</a>
+                    <a href="#" class="add_location_button delete edit w-button">Delete</a>
+                    </div>
+                </div>
+                </div>
             </div>
         </div>
-        <div class="admin_panel_section">
-            <a href="/users" data-w-id="690dbcf6-32a1-4389-d1b2-bf88ab73bace" class="option_frame">
-                <img src="images/Users-icon.png" loading="lazy" width="150" alt="" class="option_image">
-                <div class="option_text">USERS</div>
-            </a>
-            <a href="/suppliers" data-w-id="3f834a6a-4538-916b-a543-56df34d9b186" class="option_frame">
-                <img src="images/Suppliers.png" loading="lazy" sizes="150px" width="150" srcset="images/Suppliers-p-500.png 500w, images/Suppliers.png 512w" alt="" class="option_image">
-                <div class="option_text">SUPPLIERS</div>
-            </a>
-        </div>
+
         <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-        <script src="js/welcome.js" type="text/javascript"></script>
+        <script src="js/webflow.js" type="text/javascript"></script>
+        <script src="js/productslocations.js" type="text/javascript"></script>
+        <script src="js/dropzone.js"></script>    
+        <script src="js/garcellLib.js" type="text/javascript"></script>
         <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
         @endsection    
     </body>

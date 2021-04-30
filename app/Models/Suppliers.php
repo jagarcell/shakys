@@ -62,7 +62,7 @@ class Suppliers extends Model
             $this->pickup = $Pickup;
             $this->image_path = 
                 $ImagePath == null ?
-                config('app')['suppliers_images_path'] . config('app')['noimg'] :
+                config('app')['nophoto'] :
                     config('app')['suppliers_images_path'] .  $ImagePath;
     
             $this->save();

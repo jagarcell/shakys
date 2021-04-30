@@ -61,4 +61,16 @@ Route::post('/createuser', 'UsersController@CreateUser');
 
  Route::post('/deletesupplier', 'SuppliersController@DeleteSupplier');
 
+ /***************************************
+  *                                     *
+  *         PRODUCTS LOCATIONS          *
+  *                                     *   
+  **************************************/
+
+ Route::get('/productslocations', 'ProductLocationsController@ProductsLocations')->middleware('checkifcanregister');
+
+ Route::post('/instoreimgupload', 'ProductLocationsController@InStoreImgUpload');
+
+ Route::post('/createinstorelocation', 'ProductLocationsController@CreateInStoreLocation');
+
  

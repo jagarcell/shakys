@@ -231,5 +231,6 @@ return [
     ],
     
     'suppliers_images_path' => 'images/uploaded/suppliers/',
-    'noimg' => 'noimg.jpg',
+    'instore_images_path' => 'images/uploaded/instore/',
+    'nophoto' => 'images/noimg.jpg',
 ];
