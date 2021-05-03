@@ -3,6 +3,18 @@
   font-size: 14px;;
 }
 
+.shadowRight{
+  box-shadow: 4px 4px 3px 0 #000;
+}
+
+.action_result_message{
+  width: 100%;
+  font-size: x-large;
+  line-height: 1.5em;
+  text-align: center;
+  padding: 30px;
+}
+
 .action_button{
   padding-left: 10px;
   padding-right: 10px;
@@ -769,6 +781,7 @@ body {
 
 .create_button {
   border-radius: 10px;
+  width: 170px;
 }
 
 .supplier_data_edit {
@@ -802,6 +815,16 @@ body {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
+  padding-top: 20px;
+}
+
+.supplier_data_field{
+  background-color: dimgray;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  padding-left: 20px;
+  margin-bottom: 10px;  
 }
 
 @media screen and (max-width: 991px) {
@@ -860,6 +883,7 @@ body {
     -ms-flex-align: center;
     align-items: center;
   }
+}
 
 @media screen and (max-width: 767px) {
   .page-header {

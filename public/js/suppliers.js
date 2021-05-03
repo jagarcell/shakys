@@ -254,10 +254,8 @@ function editClick(editButton) {
                                             var edit_div = this.element.parentNode
                                             $(edit_div).find('#supplier_image_to_upload').val(data.filename)
                                         })
-                                                            },
-                                    renameFile: function(file){
-                                        return 'upload.png'
-                                    }                                }
+                                    }
+                                }
                             ).displayExistingFile(mockFile, supplier.image_path)
 
                                 
