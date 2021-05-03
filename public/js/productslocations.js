@@ -1,27 +1,37 @@
 $(document).ready(function(){
-    $('#product_location_add_pic').addClass('dropzone')
-
-    MyDropzone = new Dropzone(
-        "form#product_location_add_pic", 
-		{ 
-			url: "/instoreimgupload", 
-			dictDefaultMessage : 'Drop An Image Or Click To Search One',
-			init : function dropzoneInit() {
-				// body...
-				this.on('addedfile', function (file) {
-					// body...
-					filesAccepted = this.getAcceptedFiles()
-					if(filesAccepted.length > 0){
-						this.removeFile(filesAccepted[0])
-					}
-				})
-                this.on('success', function(file, data){
-                    $('#image_to_upload').val(data.filename)
-                })
-			},
-		}
-    )
+    attachDropzone('product_location_add_pic')
 })
+
+/**
+ * 
+ * @param {string} id
+ *                  'id of the element to attach the dropzone to' 
+ */
+function attachDropzone(id){
+    $('#' + id).addClass('dropzone')
+    return(
+        new Dropzone(
+            "form#" + id,
+            { 
+                url: "/instoreimgupload", 
+                dictDefaultMessage : 'Drop An Image Or Click To Search One',
+                init : function dropzoneInit() {
+                    // body...
+                    this.on('addedfile', function (file) {
+                        // body...
+                        filesAccepted = this.getAcceptedFiles()
+                        if(!addNew || filesAccepted.length > 0){
+                            this.removeFile(filesAccepted[0])
+                        }
+                    })
+                    this.on('success', function(file, data){
+                        $('#image_to_upload').val(data.filename)
+                    })
+                },
+            }
+        )
+    )
+}
 
 /**
  * 
@@ -142,6 +152,11 @@ function createLocationClick(createLocationButton) {
     }
 }
 
+/**
+ * 
+ * @param {string} locationId
+ *              'The location id that is also the products_locations_section_wrap id' 
+ */
 function deleteButtonClick(locationId) {
     $.post('/deleteinstorelocation',
         {
@@ -208,6 +223,274 @@ function deleteButtonClick(locationId) {
             }
         }
     )
+}
+
+/**
+ * 
+ * @param {string} locationId
+ *               'The location id that is also the products_locations_section_wrap id' 
+ * 
+ * This action will open an editor section for a location in place of the location data section
+ */
+
+function editButtonClick(locationId) {
+   $.post('/getinstorelocation',
+        {
+            _token:$('meta[name="csrf-token"]').attr('content'),
+            id:locationId,
+            element_tag:locationId
+        }, function(data, status){
+            if(status == 'success'){
+                var productLocationSectionWrap = document.getElementById(data.element_tag)
+                var actionResultMessage = $(productLocationSectionWrap).find('#action_result_message')
+                switch (data.status) {
+                    case 'ok':
+                        var location = data.location
+                        var locationEditHtml = $(document.getElementById('location_edit_html')).find('#location-id')[0].innerHTML
+
+                        locationEditHtml = locationEditHtml.replace(/location-id/g, location.id)
+                        productLocationSectionWrap.innerHTML = locationEditHtml
+                        $(productLocationSectionWrap).find('#location_name').val(location.name)
+                        $(productLocationSectionWrap).find('#image_to_upload').val(location.image_name)
+
+                        $('#product_location_add_pic_' + location.id).addClass('dropzone')
+
+                        let mockFile = { name: location.image_name, size: location.image_size }
+                        
+                        new Dropzone(
+                            "form#product_location_add_pic_" + location.id, 
+                            { 
+                                url: "/instoreimgupload", 
+                                dictDefaultMessage : 'Drop An Image Or Click To Search One',
+                                init : function dropzoneInit() {
+                                    // body...
+                                    this.on('addedfile', function (file) {
+                                        // body...
+                                        var productLocationSectionWrap = document.getElementById(location.id)
+
+                                        filesAccepted = this.getAcceptedFiles()
+                                        if(this.hidePreview !== undefined){
+                                            $(productLocationSectionWrap).find('.dz-preview')[0].style.display = 'none'
+                                        }
+                                        else{
+                                            this.hidePreview = 'hidePreview'
+                                        }
+    
+                                        if(filesAccepted.length > 0){
+                                            this.removeFile(filesAccepted[0])
+                                        }
+                                    })
+                                    this.on('success', function(file, data){
+                                        var productLocationSectionWrap = document.getElementById(location.id)
+
+                                        $(productLocationSectionWrap).find('#image_to_upload').val(data.filename)
+                                    })
+                                }
+                            }).displayExistingFile(mockFile, location.image_path)
+                        break;
+                
+                    case 'notfound':
+                        var message = getStatusMessage('notfound')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                param:data.element_tag,
+                            }, function(frame, elementTag){
+                                frame.hide()
+
+                                var productLocationSectionWrap = document.getElementById(elementTag)
+                                productLocationSectionWrap.outerHTML = ""
+                            }
+                        )
+                        break
+
+                    case '419':
+                        var message = getStatusMessage('419')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                            }
+                        )
+                        break
+
+                    case 'error':
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+                        break
+
+                    default:
+                        break;
+                }
+            }
+        }
+   )
+}
+
+/**
+ * 
+ * @param {string} locationId
+ *                 'id of the location and also of the location section
+ *
+ */
+function discardLocationChangesClick(locationId){
+    $.post('/getinstorelocation',
+        {
+            _token:$('meta[name="csrf-token"').attr('content'),
+            id:locationId,
+            element_tag:locationId,
+        }, function(data, status){
+            if(status == 'success'){
+                var productLocationSectionWrap = document.getElementById(data.element_tag)
+                var actionResultMessage = $(productLocationSectionWrap).find('#action_result_message')
+                switch (data.status) {
+                    case 'ok':
+                        var location = data.location
+                        var locationHtml = $(document.getElementById('location_html')).find('#location-id')[0].innerHTML
+                        
+                        locationHtml = locationHtml.replace(/location-id/g, location.id)
+                        locationHtml = locationHtml.replace(/location-name/g, location.name)
+                        locationHtml = locationHtml.replace(/location-image-path/g, location.image_path)
+
+                        productLocationSectionWrap.innerHTML = locationHtml
+                        break;
+                
+                    case 'notfound':
+                        var message = getStatusMessage('notfound')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                param:data.element_tag,
+                            }, function(frame, elementTag){
+                                frame.hide()
+
+                                var productLocationSectionWrap = document.getElementById(element_tag)
+                                productLocationSectionWrap.outerHTML = ""
+                            }
+                        )
+                        break
+
+                    case '419':
+                        var message = getStatusMessage('419')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                            }
+                        )
+                        break
+                        
+                    case 'error':
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+                        break
+                    default:
+                        break;
+                }
+            }
+        }
+    )
+}
+
+/**
+ * 
+ * @param {string} locationId
+ *              'id of the product location and also of the location section'
+ *   
+ */
+function acceptLocationChangesClick(locationId) {
+    var productLocationSectionWrap = document.getElementById(locationId)
+    var addForm = $(productLocationSectionWrap).find('#add_form')
+    var name = addForm.find('#location_name').val()
+    var imageToUpload = addForm.find('#image_to_upload').val()
+    if(addForm[0].checkValidity()){
+        $.post('/updateinstorelocation',
+            {
+                _token:$('meta[name="csrf-token"]').attr('content'),
+                id:locationId,
+                name:name,
+                image_path:imageToUpload,
+                element_tag:locationId,
+            }, function(data, status){
+                if(status == 'success'){
+                    var elementTag = data.element_tag
+                    var productLocationSectionWrap = document.getElementById(elementTag)
+                    var actionResultMessage = $(productLocationSectionWrap).find('#action_result_message')
+        
+                    switch (data.status) {
+                        case 'ok':
+                            var location = data.location
+
+                            reportResult(
+                                {
+                                    frame:actionResultMessage,
+                                    message:"THIS LOCATION WAS SUCCESFULLY UPDATED!",
+                                    error:false,
+                                    param:location,
+                                }, function(frame, location){
+                                    frame.hide()
+                                    var productLocationSectionWrap = document.getElementById(location.id)
+                                    var locationHtml = $(document.getElementById('location_html')).find('#location-id')[0].innerHTML
+                                    
+                                    locationHtml = locationHtml.replace(/location-id/g, location.id)
+                                    locationHtml = locationHtml.replace(/location-name/g, location.name)
+                                    locationHtml = locationHtml.replace(/location-image-path/g, location.image_path)
+
+                                    productLocationSectionWrap.innerHTML = locationHtml
+            
+                                }
+                            )    
+                            break;
+                    
+                        case 'notfound':
+                            var message = getStatusMessage('notfound')
+                            reportResult(
+                                {
+                                    frame:actionResultMessage,
+                                    message:message,
+                                    param:elementTag,
+                                }, function(frame, elementTag){
+                                    var productLocationSectionWrap = document.getElementById(elementTag)
+                                    productLocationSectionWrap.innerHTML = ""
+                                }
+                            )
+                            break    
+
+                        case '419':
+                            var message = getStatusMessage('419')
+                            reportResult(
+                                {
+                                    frame:actionResultMessage,
+                                    message:message,
+                                }
+                            )
+                            break
+                        default:
+                            break;
+                    }
+                }
+            }
+        )
+    }
+    else{
+        addForm.reportValidity()
+    }
 }
 
 /**

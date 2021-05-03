@@ -75,4 +75,16 @@ class ProductLocationsController extends Controller
         # code...
         return (new ProductLocations())->DeleteInStoreLocation($request);
     }
+
+    public function GetInStoreLocation(Request $request)
+    {
+        # code...
+        return (new ProductLocations())->GetInStoreLocation($request);
+    }
+
+    public function UpdateInStoreLocation(Request $request)
+    {
+        # code...
+        return (new ProductLocations())->UpdateInStoreLocation($request);
+    }
 }

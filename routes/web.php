@@ -74,3 +74,8 @@ Route::post('/createuser', 'UsersController@CreateUser');
  Route::post('/createinstorelocation', 'ProductLocationsController@CreateInStoreLocation');
 
  Route::post('/deleteinstorelocation', 'ProductLocationsController@DeleteInStoreLocation');
+
+ Route::post('/getinstorelocation', 'ProductLocationsController@GetInStoreLocation');
+
+ Route::post('/updateinstorelocation', 'ProductLocationsController@UpdateInStoreLocation');
+ 
