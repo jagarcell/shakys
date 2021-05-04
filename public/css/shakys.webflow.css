@@ -1172,6 +1172,7 @@ body {
 @media screen and (max-width: 479px) {
   .text-block {
     font-size: 18px;
+    text-shadow: 3px 2px 4px black;
   }
 
   .option_frame {
