@@ -37,7 +37,7 @@
       @endsection
     </head>
     <body class="antialiased bodyClass">
-        @section('page_title', 'IN STORE PRODUCT LOCATIONS')
+        @section('page_title', 'IN-STORE PRODUCT LOCATIONS')
         @section('content')
         <!-- THIS IS THE SECTION USED TO ADD A NEW PRODUCT LOCATION-->
         <div id="add_product_location_section" class="product_location_add_frame">

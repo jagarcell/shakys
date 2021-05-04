@@ -115,6 +115,7 @@ body {
 }
 
 .page-header {
+  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -139,6 +140,7 @@ body {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
+  width: 70%;
 }
 
 .text-block {
@@ -294,6 +296,16 @@ body {
   font-size: 36px;
   line-height: 1.5em;
   text-shadow: 3px 2px 2px black;
+  background-color: dimgray;
+  color: aliceblue;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-shadow: 4px 4px 3px 0 #000;
+  border-radius: 10px;
+}
+
+.buttons_frame_height{
+  height: 60px;
 }
 
 .admin_panel_section {
@@ -466,6 +478,7 @@ body {
   width: 115px;
   color: white;
   text-transform: uppercase;
+  box-shadow: 4px 4px 3px 0 #000;
 }
 
 .user_add_button.two {
@@ -527,11 +540,12 @@ body {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-  border-radius: 15px;
+  border-radius: 5px;
+  box-shadow: 4px 4px 3px 0 #000;
 }
 
 .edit {
-  height: 20px;
+  height: 25px;
 }
 
 .edited_email{
@@ -596,6 +610,7 @@ body {
   padding-left: 10px;
   background-color: #b2b2b2;
   border-radius: 15px;
+  box-shadow: 4px 4px 3px 0 #000;
 }
 
 .user_field_content {
@@ -668,6 +683,7 @@ body {
   align-items: center;
   border-radius: 15px;
   font-size: 14px;
+  box-shadow: 4px 4px 3px 0 #000;
 }
 
 .create_discard_passwd_button.edit {
@@ -768,8 +784,8 @@ body {
 }
 
 .supplier_pic_frame {
-  width: 170px;
-  padding-left: 20px;
+  width: 256px;
+  text-align: center;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   -ms-grid-row-align: center;
@@ -778,12 +794,15 @@ body {
 }
 
 .supplier_pic {
-  max-width: 128px;
+  max-width: 256px;
+  box-shadow: 4px 4px 3px 0 #000;
+  border-radius: 10px;
 }
 
 .create_button {
   border-radius: 10px;
-  width: 170px;
+  width: 150px;
+  box-shadow: 4px 4px 3px 0 #000;
 }
 
 .supplier_data_edit {
@@ -827,13 +846,10 @@ body {
   border-radius: 5px;
   padding-left: 20px;
   margin-bottom: 10px;  
+  box-shadow: 4px 4px 3px 0 #000;
 }
 
 @media screen and (max-width: 991px) {
-  .page-header {
-    position: relative;
-  }
-
   .supplier_section {
     padding-top: 20px;
     border-bottom: 1px solid #000;
@@ -888,6 +904,15 @@ body {
 }
 
 @media screen and (max-width: 767px) {
+
+  .title-frame {
+    width: auto;
+  }
+  
+  .supplier_pic_frame{
+    margin-bottom: 20px;
+  }
+
   .page-header {
     position: relative;
     -webkit-box-orient: vertical;

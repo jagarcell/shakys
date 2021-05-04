@@ -11,10 +11,12 @@ input[type="button"]{
     min-height: 30vh;
     padding-left: 20px;
     border-bottom: 1px solid #000;
+    padding-bottom: 20px;
+    padding-top: 20px;
   }
   
   .prodcut_location_pic {
-    width: 128px;
+    width: 256px;
   }
   
   .add_location_form_frame {
@@ -41,7 +43,7 @@ input[type="button"]{
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    height: 100%;
+    height: 210px;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
@@ -97,11 +99,14 @@ input[type="button"]{
   }
   
   .product_location_pic_frame {
-    padding-left: 20px;
+    margin-left: 10%;
     -webkit-align-self: center;
     -ms-flex-item-align: center;
     -ms-grid-row-align: center;
     align-self: center;
+    border-radius: 10px;
+    width: 256px;
+    text-align: center;
   }
   
   .product_location_data_edit {
@@ -210,7 +215,7 @@ input[type="button"]{
   }
       
   .product_location_text_field {
-   width: 80%;
+   width: 100%;
   }
 
 
@@ -264,6 +269,11 @@ input[type="button"]{
 }
 
 @media screen and (max-width: 767px) {
+
+  
+.product_location_pic_frame {
+    margin-left: 5%;
+}
 
 .product_location_section {
     min-height: 80vh;
