@@ -8,31 +8,31 @@ $(document).ready(function(){
  *                  'id of the element to attach the dropzone to' 
  */
 function attachDropzone(id){
-    var addSection = document.getElementById(id)
-    $(addSection).addClass('dropzone')
-    var addDropzone =
-        new Dropzone(
-            "form#" + id,
-            { 
-                url: "/instoreimgupload", 
-                dictDefaultMessage : 'Drop An Image Or Click To Search One',
-                init : function dropzoneInit() {
+    var section = document.getElementById(id)
+    $(section).addClass('dropzone')
+    var sectionDropzone = new Dropzone(
+        "form#" + id,
+        { 
+            url: "/supplierlocationimgupload", 
+            dictDefaultMessage : 'Drop An Image Or Click To Search One',
+            init : function dropzoneInit() {
+                // body...
+                this.on('addedfile', function (file) {
                     // body...
-                    this.on('addedfile', function (file) {
-                        // body...
-                        filesAccepted = this.getAcceptedFiles()
-                        if(filesAccepted.length > 0){
-                            this.removeFile(filesAccepted[0])
-                        }
-                    })
-                    this.on('success', function(file, data){
-                        $('#image_to_upload').val(data.filename)
-                    })
-                },
-            }
-        )
-    addSection.Dropzone = addDropzone
-    return addDropzone
+                    filesAccepted = this.getAcceptedFiles()
+                    if(filesAccepted.length > 0){
+                        this.removeFile(filesAccepted[0])
+                    }
+                })
+                this.on('success', function(file, data){
+                    $('#image_to_upload').val(data.filename)
+                })
+            },
+        }
+    )
+    
+    section.Dropzone = sectionDropzone
+    return sectionDropzone
 }
 
 /**
@@ -44,7 +44,6 @@ function addLocationClick(addLocationButton) {
     var addIconFrame = document.getElementById('add_icon_frame')
     var addSectionFrame = document.getElementById('add_section_frame')
 
-    // Change the views
     addIconFrame.style.display = 'none'
     addSectionFrame.style.display = 'flex'    
 }
@@ -82,7 +81,7 @@ function createLocationClick(createLocationButton) {
         var name = $(addForm).find('#location_name').val()
         var imagePath = $(addForm).find('#image_to_upload').val()
 
-        $.post('/createinstorelocation',
+        $.post('/createsupplierlocation',
             {
                 _token:$('meta[name="csrf-token"]').attr('content'),
                 name:name,
@@ -108,14 +107,14 @@ function createLocationClick(createLocationButton) {
                                     var addSectionFrame = document.getElementById('add_section_frame')
                                     var addSection = document.getElementById('product_location_add_pic')
 
+                                    // Hide the add section and show the add icon
+                                    addIconFrame.style.display = 'flex'
+                                    addSectionFrame.style.display = 'none'
+
                                     // Clear the add section fields
                                     $(addSectionFrame).find('#location_name').val('')
                                     $(addSectionFrame).find('#image_to_upload').val('')
                                     addSection.Dropzone.removeAllFiles()
-
-                                    // Hide the add section and show the add icon
-                                    addIconFrame.style.display = 'flex'
-                                    addSectionFrame.style.display = 'none'
 
                                     // Get the location HTML template and substitute the values with
                                     // the ones in the response then add the result to the locations list
@@ -175,7 +174,7 @@ function createLocationClick(createLocationButton) {
  *              'The location id that is also the products_locations_section_wrap id' 
  */
 function deleteButtonClick(locationId) {
-    $.post('/deleteinstorelocation',
+    $.post('/deletesupplierlocation',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
             id:locationId,
@@ -252,7 +251,7 @@ function deleteButtonClick(locationId) {
  */
 
 function editButtonClick(locationId) {
-   $.post('/getinstorelocation',
+   $.post('/getsupplierlocation',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
             id:locationId,
@@ -278,7 +277,7 @@ function editButtonClick(locationId) {
                         new Dropzone(
                             "form#product_location_add_pic_" + location.id, 
                             { 
-                                url: "/instoreimgupload", 
+                                url: "/supplierlocationimgupload", 
                                 dictDefaultMessage : 'Drop An Image Or Click To Search One',
                                 init : function dropzoneInit() {
                                     // body...
@@ -360,7 +359,7 @@ function editButtonClick(locationId) {
  *
  */
 function discardLocationChangesClick(locationId){
-    $.post('/getinstorelocation',
+    $.post('/getsupplierlocation',
         {
             _token:$('meta[name="csrf-token"').attr('content'),
             id:locationId,
@@ -438,7 +437,7 @@ function acceptLocationChangesClick(locationId) {
     var name = addForm.find('#location_name').val()
     var imageToUpload = addForm.find('#image_to_upload').val()
     if(addForm[0].checkValidity()){
-        $.post('/updateinstorelocation',
+        $.post('/updatesupplierlocation',
             {
                 _token:$('meta[name="csrf-token"]').attr('content'),
                 id:locationId,
