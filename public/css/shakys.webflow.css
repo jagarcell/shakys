@@ -323,6 +323,7 @@ body {
 }
 
 .option_frame {
+  border-radius: 10px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
