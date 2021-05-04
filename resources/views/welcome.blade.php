@@ -69,10 +69,10 @@
                 <img src="images/productlocation.png" loading="lazy" sizes="150px" width="150" srcset="images/productlocation-p-500.png 500w, images/productlocation.png 512w" alt="" class="option_image">
                 <div class="option_text">IN-STORE PRODUCT LOCATIONS</div>
             </a>
-            <div data-w-id="dd404975-5144-4daa-172d-139e14ceec84" class="option_frame">
+            <a href="/suppliersproductlocation" data-w-id="dd404975-5144-4daa-172d-139e14ceec84" class="option_frame">
                 <img src="images/supplierproductlocation.png" loading="lazy" width="150" sizes="150px" srcset="images/supplierproductlocation-p-500.png 500w, images/supplierproductlocation.png 512w" alt="" class="option_image">
             <div class="option_text">PRODUCT LOCATIONS<br> AT SUPPLIERS</div>
-            </div>
+            </a>
         </div>
         <div class="admin_panel_section">
             <a href="/users" data-w-id="690dbcf6-32a1-4389-d1b2-bf88ab73bace" class="option_frame">
