@@ -99,8 +99,8 @@
                         <div class="product_location_data_edit">
                             <div class="location_data_field shadowRight">location-name</div>
                             <div class="product_location_data_entry_buttons">
-                                <input type="button" class="add_location_button shadowRight edit w-button" value="Edit" onclick="editButtonClick('location-id')">
-                                <input type="button" class="add_location_button shadowRight delete edit w-button" value="Delete" onclick="deleteButtonClick('location-id')">
+                                <input type="button" class="add_location_button edit w-button shadowRight" value="Edit" onclick="editButtonClick('location-id')">
+                                <input type="button" class="add_location_button delete edit w-button shadowRight" value="Delete" onclick="deleteButtonClick('location-id')">
                             </div>
                         </div>
                     </div>

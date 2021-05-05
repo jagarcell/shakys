@@ -41,7 +41,7 @@
                 <input type="button" class="add_icon" value="+" onclick="addLocationClick(this)">
             </div>
             <div id="add_section_frame" class="product_location_section" hidden>
-                <form action="/instoreimgupload" id="product_location_add_pic" class="product_location_pic_frame" method="post" enctype="multipart/form-data">
+                <form action="/instoreimgupload" id="product_location_add_pic" class="product_location_pic_frame shadowRight" method="post" enctype="multipart/form-data">
                     @csrf
                 </form>
                 <div class="product_location_data_entry">
@@ -65,7 +65,7 @@
             <div id="{{$location->id}}" class="product_location_section_wrap">
                 <div id="action_result_message" class="action_result_message" hidden></div>
                 <div class="product_location_section">
-                    <div class="product_location_pic_frame">
+                    <div class="product_location_pic_frame shadowRight">
                         <img src="{{$location->image_path}}" loading="lazy" sizes="(max-width: 128px) 92vw, 128px" srcset="{{$location->image_path}} 128w, {{$location->image_path}} 128w" alt="" class="prodcut_location_pic shadowRight">
                     </div>
                     <div id="supplier_data_edit_frame" class="product_location_data_entry">
@@ -108,7 +108,7 @@
             <div id="location-id" class="product_location_section_wrap">
                 <div id="action_result_message" class="action_result_message" hidden></div>
                 <div id="add_section_frame" class="product_location_section">
-                    <form action="/instoreimgupload" id="product_location_add_pic_location-id" class="product_location_pic_frame" method="post" enctype="multipart/form-data">
+                    <form action="/instoreimgupload" id="product_location_add_pic_location-id" class="product_location_pic_frame shadowRight" method="post" enctype="multipart/form-data">
                         @csrf
                     </form>
                     <div class="product_location_data_entry">

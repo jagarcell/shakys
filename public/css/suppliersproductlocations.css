@@ -105,6 +105,10 @@ input[type="button"]{
       -ms-grid-row-align: center;
       margin-left: 10%;
       text-align: -webkit-right;
+      border-radius: 10px;
+      overflow: hidden;
+      width: 256px;
+      text-align: center;
     }
     
     .product_location_data_edit {

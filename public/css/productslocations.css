@@ -17,6 +17,7 @@ input[type="button"]{
   
   .prodcut_location_pic {
     width: 256px;
+    border-radius: 10px;
   }
   
   .add_location_form_frame {
