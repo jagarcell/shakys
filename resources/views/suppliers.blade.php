@@ -34,7 +34,7 @@
             <div id="action_result_message" class="action_result_message" hidden>action_result_message</div>
             <div id="supplier_add_section" style="display:none">
                 <div class="supplier_add_section">
-                    <form id="supplier_image" action="/supplierimgupload" method="post" enctype="multipart/form-data" class="supplier_pic_frame">
+                    <form id="supplier_image" action="/supplierimgupload" method="post" enctype="multipart/form-data" class="supplier_pic_frame box_shadow">
                         @csrf
                     </form>
                     <div class="supplier_data_entry">
@@ -52,8 +52,8 @@
                                 </select>
                                 <input id="supplier_image_to_upload" hidden>
                                 <div class="supplier_data_form_buttons">
-                                    <input type="button" value="Create Supplier" data-wait="Please wait..." class="create_button action_button w-button" onclick='newSupplier(this)'>
-                                    <input type="button" value="Discard Creation" data-wait="Please wait..." class="create_button action_button w-button" onclick='discardNewSupplier()'>
+                                    <input type="button" value="Create Supplier" data-wait="Please wait..." class="create_button box_shadow action_button w-button" onclick='newSupplier(this)'>
+                                    <input type="button" value="Discard Creation" data-wait="Please wait..." class="create_button box_shadow action_button w-button" onclick='discardNewSupplier()'>
                                 </div>
                                 <div id="supplier_add_error" class="supplier_add_error" hidden>
                                 </div>
@@ -68,7 +68,7 @@
         <div id="supplier_add_section_html" hidden>
             <div id="action_result_message" class="action_result_message" hidden>action_result_message</div>
             <div class="supplier_section">
-                <form id="supplier-image" action="/supplierimgupload" method="post" enctype="multipart/form-data" class="supplier_pic_frame">
+                <form id="supplier-image" action="/supplierimgupload" method="post" enctype="multipart/form-data" class="supplier_pic_frame box_shadow">
                     @csrf
                 </form>
                 <div class="supplier_data_entry">
@@ -86,8 +86,8 @@
                             </select>
                             <input id="supplier_image_to_upload" hidden>
                             <div class="supplier_data_form_buttons">
-                                <input type="button" value="Accept Changes" data-wait="Please wait..." class="create_button action_button w-button" onclick='acceptChanges(this)'>
-                                <input type="button" value="Discard Changes" data-wait="Please wait..." class="create_button action_button w-button" onclick='discardChanges(this)'>
+                                <input type="button" value="Accept Changes" data-wait="Please wait..." class="create_button box_shadow action_button w-button" onclick='acceptChanges(this)'>
+                                <input type="button" value="Discard Changes" data-wait="Please wait..." class="create_button box_shadow action_button w-button" onclick='discardChanges(this)'>
                             </div>
                             <div id="supplier_add_error" class="supplier_add_error" style="display:none">
                                     Test Error
@@ -104,19 +104,19 @@
             <div id="{{$supplier->id}}" class="supplier_section_wrap">
                 <div id="action_result_message" class="action_result_message" hidden>action_result_message</div>
                 <div class="supplier_section">
-                    <div class="supplier_pic_frame">
+                    <div class="supplier_pic_frame box_shadow">
                         <img src="{{$supplier->image_path}}" loading="lazy" sizes="(max-width: 479px) 92vw, 256" srcset="{{$supplier->image_path}} 256w, {{$supplier->image_path}} 256w" alt="" class="supplier_pic">
                     </div>
                     <div id="supplier_data_edit_frame" class="supplier_data_entry">
                         <div class="supplier_data_edit">
-                            <div id="supplier_email" class="supplier_data_field">{{$supplier->email}}</div>
-                            <div id="supplier_name" class="supplier_data_field">{{$supplier->name}}</div>
-                            <div id="supplier_address" class="supplier_data_field">{{$supplier->address}}</div>
-                            <div id="supplier_phone" class="supplier_data_field">{{$supplier->phone}}</div>
-                            <div id="supplier_pickup" class="supplier_data_field">{{$supplier->pickup}}</div>
+                            <div id="supplier_email" class="supplier_data_field box_shadow">{{$supplier->email}}</div>
+                            <div id="supplier_name" class="supplier_data_field box_shadow">{{$supplier->name}}</div>
+                            <div id="supplier_address" class="supplier_data_field box_shadow">{{$supplier->address}}</div>
+                            <div id="supplier_phone" class="supplier_data_field box_shadow">{{$supplier->phone}}</div>
+                            <div id="supplier_pickup" class="supplier_data_field box_shadow">{{$supplier->pickup}}</div>
                             <div class="supplier_data_entry_buttons">
-                                <a class="add_user_button edit w-button" onclick="editClick(this)">Edit</a>
-                                <a class="add_user_button delete edit w-button" onclick="deleteClick(this)">Delete</a>
+                                <a class="add_user_button box_shadow edit w-button" onclick="editClick(this)">Edit</a>
+                                <a class="add_user_button box_shadow delete edit w-button" onclick="deleteClick(this)">Delete</a>
                             </div>
                         </div>
                     </div>
@@ -131,19 +131,19 @@
             <div id="supplier-id" class="supplier_section_wrap">
                 <div id="action_result_message" class="action_result_message" hidden>action_result_message</div>
                 <div class="supplier_section">
-                    <div class="supplier_pic_frame">
+                    <div class="supplier_pic_frame box_shadow">
                         <img src="supplier-image-path" loading="lazy" sizes="(max-width: 479px) 92vw, 256" srcset="supplier-image-path 256w, supplier-image-path 256w" alt="" class="supplier_pic">
                     </div>
                     <div id="supplier_data_edit_frame" class="supplier_data_entry">
                         <div class="supplier_data_edit">
-                            <div id="supplier_email" class="supplier_data_field">supplier-email</div>
-                            <div id="supplier_name" class="supplier_data_field">supplier-name</div>
-                            <div id="supplier_address" class="supplier_data_field">supplier-address</div>
-                            <div id="supplier_phone" class="supplier_data_field">supplier-phone</div>
-                            <div id="supplier_pickup" class="supplier_data_field">supplier-pickup</div>
+                            <div id="supplier_email" class="supplier_data_field box_shadow">supplier-email</div>
+                            <div id="supplier_name" class="supplier_data_field box_shadow">supplier-name</div>
+                            <div id="supplier_address" class="supplier_data_field box_shadow">supplier-address</div>
+                            <div id="supplier_phone" class="supplier_data_field box_shadow">supplier-phone</div>
+                            <div id="supplier_pickup" class="supplier_data_field box_shadow">supplier-pickup</div>
                             <div class="supplier_data_entry_buttons">
-                                <a class="add_user_button edit w-button" onclick="editClick(this)">Edit</a>
-                                <a class="add_user_button delete edit w-button" onclick="deleteClick(this)">Delete</a>
+                                <a class="add_user_button box_shadow edit w-button" onclick="editClick(this)">Edit</a>
+                                <a class="add_user_button box_shadow delete edit w-button" onclick="deleteClick(this)">Delete</a>
                             </div>
                         </div>
                     </div>

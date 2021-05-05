@@ -23,11 +23,11 @@
             <a href="/" class="logo-frame"><img src="images/Shakys.png" loading="lazy" sizes="(max-width: 767px) 100vw, 53vw" srcset="images/Shakys-p-500.png 500w, images/Shakys.png 512w" alt="" class="logo">
             </a>
             <div class="title-frame">
-            <div class="text-block">PURCHASES CONTROL SYSTEM</div>
+            <div class="text-block text_shadow">PURCHASES CONTROL SYSTEM</div>
             </div>
         </div>
         <div class="page_title_frame">
-            <div class="page_title">@yield('page_title')</div>
+            <div class="page_title text_shadow box_shadow">@yield('page_title')</div>
         </div>
 
         @if(isset($unauthorized_user))

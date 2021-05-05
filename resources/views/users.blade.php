@@ -123,11 +123,11 @@
                         <div class="user_data_2 center">
                             <div class="user_add_button">
                                 <div style="display: block;">
-                                    <input id="edited_user_save" type="button" value="SAVE" data-wait="Please wait..." class="add_user_button w-button" onclick="saveUser(this)">
+                                    <input id="edited_user_save" type="button" value="SAVE" data-wait="Please wait..." class="add_user_button box_shadow w-button" onclick="saveUser(this)">
                                 </div>    
                             </div>
                             <div class="user_add_button">
-                                <input id="edited_user_password" type="button" value="ABORT" data-wait="Please wait..." class="add_user_button w-button" onclick="discard(this)">
+                                <input id="edited_user_password" type="button" value="ABORT" data-wait="Please wait..." class="add_user_button box_shadow w-button" onclick="discard(this)">
                             </div>
                         </div>
                     </form>
@@ -161,21 +161,21 @@
                     </div>
                     <div class="user_section horizontal">
                         <div class="user_edit_section">
-                            <div class="user_field_header">USER</div>
+                            <div class="user_field_header box_shadow">USER</div>
                             <div id="user_name" class="user_field_content">user_name</div>
                         </div>
                         <div class="user_edit_section">
-                            <div class="user_field_header">EMAIL</div>
+                            <div class="user_field_header box_shadow">EMAIL</div>
                             <div id="user_email" class="user_field_content">user_email</div>
                         </div>
                             <div class="user_edit_section two">
-                            <div class="user_field_header">TYPE</div>
+                            <div class="user_field_header box_shadow">TYPE</div>
                             <div id="user_type" class="user_field_content user_type">user_type</div>
                         </div>
                         <div class="user_edit_section center" id="edit_buttons">
-                            <a id="edit_user" class="add_user_button edit w-button" onclick="edit('user_id')">EDIT</a>
-                            <a id="delete_user" class="add_user_button edit delete w-button" onclick="deleteUser('user_id')">DELETE</a>
-                            <a id="new_user_password" class="add_user_button edit password w-button" onclick="newPassword('user_id')">PASSWD</a>
+                            <a id="edit_user" class="add_user_button box_shadow edit w-button" onclick="edit('user_id')">EDIT</a>
+                            <a id="delete_user" class="add_user_button box_shadow edit delete w-button" onclick="deleteUser('user_id')">DELETE</a>
+                            <a id="new_user_password" class="add_user_button box_shadow edit password w-button" onclick="newPassword('user_id')">PASSWD</a>
                         </div>
                     </div>
                 </div>
@@ -195,21 +195,21 @@
                         </div>
                         <div class="user_section horizontal">
                             <div class="user_edit_section">
-                                <div class="user_field_header">USER</div>
+                                <div class="user_field_header box_shadow">USER</div>
                                 <div class="user_field_content">{{$user->name}}</div>
                             </div>
                             <div class="user_edit_section">
-                                <div class="user_field_header">EMAIL</div>
+                                <div class="user_field_header box_shadow">EMAIL</div>
                                 <div class="user_field_content">{{$user->email}}</div>
                             </div>
                             <div class="user_edit_section two">
-                                <div class="user_field_header">TYPE</div>
+                                <div class="user_field_header box_shadow">TYPE</div>
                                 <div class="user_field_content">{{$user->user_type}}</div>
                             </div>
                             <div class="user_edit_section center" id="edit_buttons">
-                                <a id="edit_user" class="add_user_button edit w-button" onclick="edit('{{$user->id}}')">EDIT</a>
-                                <a id="delete_user" class="add_user_button edit delete w-button" onclick="deleteUser('{{$user->id}}')">DELETE</a>
-                                <a id="new_user_password" class="add_user_button edit password w-button" onclick="newPassword('{{$user->id}}')">PASSWD</a>
+                                <a id="edit_user" class="add_user_button box_shadow edit w-button" onclick="edit('{{$user->id}}')">EDIT</a>
+                                <a id="delete_user" class="add_user_button box_shadow edit delete w-button" onclick="deleteUser('{{$user->id}}')">DELETE</a>
+                                <a id="new_user_password" class="add_user_button box_shadow edit password w-button" onclick="newPassword('{{$user->id}}')">PASSWD</a>
                             </div>
                         </div>
                     </div>
@@ -230,21 +230,21 @@
                         </div>
                         <div class="user_section horizontal">
                             <div class="user_edit_section">
-                                <div class="user_field_header">USER</div>
+                                <div class="user_field_header box_shadow">USER</div>
                                 <div class="user_field_content">user-name</div>
                             </div>
                             <div class="user_edit_section">
-                                <div class="user_field_header">EMAIL</div>
+                                <div class="user_field_header box_shadow">EMAIL</div>
                                 <div class="user_field_content">user-email</div>
                             </div>
                             <div class="user_edit_section two">
-                                <div class="user_field_header">TYPE</div>
+                                <div class="user_field_header box_shadow">TYPE</div>
                                 <div class="user_field_content">user-type</div>
                             </div>
                             <div class="user_edit_section center" id="edit_buttons">
-                                <a id="edit_user" class="add_user_button edit w-button" onclick="edit('user-id')">EDIT</a>
-                                <a id="delete_user" class="add_user_button edit delete w-button" onclick="deleteUser('user-id')">DELETE</a>
-                                <a id="new_user_password" class="add_user_button edit password w-button" onclick="newPassword('user-id')">PASSWD</a>
+                                <a id="edit_user" class="add_user_button box_shadow edit w-button" onclick="edit('user-id')">EDIT</a>
+                                <a id="delete_user" class="add_user_button box_shadow edit delete w-button" onclick="deleteUser('user-id')">DELETE</a>
+                                <a id="new_user_password" class="add_user_button box_shadow edit password w-button" onclick="newPassword('user-id')">PASSWD</a>
                             </div>
                         </div>
                     </div>
