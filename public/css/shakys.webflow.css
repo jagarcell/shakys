@@ -303,6 +303,7 @@ body {
   padding-left: 20px;
   padding-right: 20px;
   border-radius: 10px;
+  text-align: center;
 }
 
 .buttons_frame_height{
@@ -325,6 +326,7 @@ body {
 
 .option_frame {
   border-radius: 10px;
+  overflow: hidden;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -343,7 +345,6 @@ body {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-  box-shadow: 4px 4px 8px 0 #000;
 }
 
 .option_text {
@@ -909,6 +910,10 @@ body {
 
   .title-frame {
     width: auto;
+  }
+
+  .page_title{
+    font-size: 22px;
   }
   
   .supplier_pic_frame{
