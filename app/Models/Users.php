@@ -23,26 +23,19 @@ class Users extends Model
 
     /**
      * 
-     * @return json ['status' => 'ok', 'users' => $Users]
-     *              ['status' => 'error', 'message' => $Error]
+     * @return Bolean 
+     *              
      *              
      */
     public function HasUsers()
     {
         # code...
-        try {
-            //code...
-            $Users = $this->where('id', '>', -1)->get();
-            if(count($Users) > 0){
-                return ['status' => 'yes'];
-            }
-            else{
-                return ['status' => 'no'];
-            }
-        } catch (\Throwable $th) {
-            //throw $th;
-            $Message = $this->ErrorInfo($th);
-            return ['status' => 'error', 'message' => $Message];
+        $Users = $this->where('id', '>', -1)->get();
+        if(count($Users) > 0){
+            return true;
+        }
+        else{
+            return false;
         }
     }
 

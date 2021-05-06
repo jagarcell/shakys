@@ -8,17 +8,12 @@
         @section('title', 'Admin Panel')
 
         @section('headsection')
-        <!--meta content="admin panel" property="og:title">
-        <meta content="admin panel" property="twitter:title">
-        <meta content="width=device-width, initial-scale=1" name="viewport">
-        <meta content="Webflow" name="generator">
-        <link href="css/normalize.css" rel="stylesheet" type="text/css"-->
-        <link href="css/webflow.css" rel="stylesheet" type="text/css">
-        <link href="css/shakys.webflow.css" rel="stylesheet" type="text/css">
+        <link href="/css/webflow.css" rel="stylesheet" type="text/css">
+        <link href="/css/shakys.webflow.css" rel="stylesheet" type="text/css">
         <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
         <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
-        <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
-        <link href="images/webclip.png" rel="apple-touch-icon">
+        <link href="/images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+        <link href="/images/webclip.png" rel="apple-touch-icon">
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -37,55 +32,40 @@
       @endsection
     </head>
     <body class="antialiased bodyClass">
-        <!--div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
-            @if (Route::has('login'))
-                <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 underline">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-        </div-->
         @section('page_title', 'ADMIN PANEL')
         @section('content')
         <div class="admin_panel_section">
             <div data-w-id="dd404975-5144-4daa-172d-139e14ceec86" class="option_frame box_shadow">
-                <img src="images/pendingorders.png" loading="lazy" sizes="150px" width="150" srcset="images/pendingorders-p-500.png 500w, images/pendingorders.png 512w" alt="" class="option_image">
+                <img src="/images/pendingorders.png" loading="lazy" sizes="150px" width="150" srcset="/images/pendingorders-p-500.png 500w, images/pendingorders.png 512w" alt="" class="option_image">
             <div class="option_text">PENDING ORDERS</div>
             </div>
             <div data-w-id="14a54350-4c5e-89b4-8745-04aac0afccbf" class="option_frame box_shadow">
-                <img src="/images/products.png" loading="lazy" width="150" sizes="150px" srcset="images/products-p-500.png 500w, images/products.png 600w" alt="" class="option_image">
+                <img src="/images/products.png" loading="lazy" width="150" sizes="150px" srcset="/images/products-p-500.png 500w, images/products.png 600w" alt="" class="option_image">
             <div class="option_text">PRODUCTS </div>
             </div>
         </div>
         <div class="admin_panel_section">
             <a href="/productslocations" data-w-id="14a54350-4c5e-89b4-8745-04aac0afccc1" class="option_frame box_shadow">
-                <img src="images/productlocation.png" loading="lazy" sizes="150px" width="150" srcset="images/productlocation-p-500.png 500w, images/productlocation.png 512w" alt="" class="option_image">
+                <img src="/images/productlocation.png" loading="lazy" sizes="150px" width="150" srcset="/images/productlocation-p-500.png 500w, images/productlocation.png 512w" alt="" class="option_image">
                 <div class="option_text">IN-STORE PRODUCT LOCATIONS</div>
             </a>
             <a href="/suppliersproductlocation" data-w-id="dd404975-5144-4daa-172d-139e14ceec84" class="option_frame box_shadow">
-                <img src="images/supplierproductlocation.png" loading="lazy" width="150" sizes="150px" srcset="images/supplierproductlocation-p-500.png 500w, images/supplierproductlocation.png 512w" alt="" class="option_image">
+                <img src="/images/supplierproductlocation.png" loading="lazy" width="150" sizes="150px" srcset="/images/supplierproductlocation-p-500.png 500w, images/supplierproductlocation.png 512w" alt="" class="option_image">
             <div class="option_text">PRODUCT LOCATIONS<br> AT SUPPLIERS</div>
             </a>
         </div>
         <div class="admin_panel_section">
             <a href="/users" data-w-id="690dbcf6-32a1-4389-d1b2-bf88ab73bace" class="option_frame box_shadow">
-                <img src="images/Users-icon.png" loading="lazy" width="150" alt="" class="option_image">
+                <img src="/images/Users-icon.png" loading="lazy" width="150" alt="" class="option_image">
                 <div class="option_text">USERS</div>
             </a>
             <a href="/suppliers" data-w-id="3f834a6a-4538-916b-a543-56df34d9b186" class="option_frame box_shadow">
-                <img src="images/Suppliers.png" loading="lazy" sizes="150px" width="150" srcset="images/Suppliers-p-500.png 500w, images/Suppliers.png 512w" alt="" class="option_image">
+                <img src="/images/Suppliers.png" loading="lazy" sizes="150px" width="150" srcset="/images/Suppliers-p-500.png 500w, images/Suppliers.png 512w" alt="" class="option_image">
                 <div class="option_text">SUPPLIERS</div>
             </a>
         </div>
         <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-        <script src="js/welcome.js" type="text/javascript"></script>
+        <script src="/js/admindashboard.js" type="text/javascript"></script>
         <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
         @endsection    
     </body>

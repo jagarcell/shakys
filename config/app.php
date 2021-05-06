@@ -230,8 +230,8 @@ return [
 
     ],
     
-    'suppliers_images_path' => 'images/uploaded/suppliers/',
-    'instore_images_path' => 'images/uploaded/instore/',
-    'suppliers_prod_location_images_path' => 'images/uploaded/suppprodloc/',
-    'nophoto' => 'images/noimg.jpg',
+    'suppliers_images_path' => '/images/uploaded/suppliers/',
+    'instore_images_path' => '/images/uploaded/instore/',
+    'suppliers_prod_location_images_path' => '/images/uploaded/suppprodloc/',
+    'nophoto' => '/images/noimg.jpg',
 ];

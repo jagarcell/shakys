@@ -14,43 +14,34 @@ use App\Models\Users;
 |
 */
 
+/**
+ * Home page (admin dashboard or user dashboar)
+ */
 Route::get('/', function () {
-    $User = Auth::user();
-    if($User == null){
-        $Result = (new Users())->HasUsers();
-        switch ($Result['status']) {
-            case 'yes':
-                # code...
-                return redirect('login');
-                break;
+    return view('admindashboard');
+})->Middleware('checkusersstate');
 
-            case 'no':
-                return redirect('register');
-                break;
-
-            case 'error':
-                return $Result['message'];
-                break;
-            default:
-                # code...
-                break;
-        }
-     }
-    if($User->user_type == 'user'){
-        return redirect('userdashboard');
-    }
-    else{
-        return view('welcome');
-    }
+Route::get('/userdashboard', function(){
+    return view('userdashboard');
 });
 
+/**
+ * Unauthorized Action for the user
+ */
 Route::get('/unauth', function(){
-    return view('welcome', ['unauthorized_user' => 'Unautorized']);
+    return view('admindashboard', ['unauthorized_user' => 'Unautorized']);
 });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+/**
+ * Error page
+ */
+Route::get('/error/{message}', function($message){
+    return view('error', ['message' => $message]);
+});
 
 require __DIR__.'/auth.php';
 
@@ -124,10 +115,4 @@ Route::post('/createuser', 'UsersController@CreateUser');
  
   Route::post('/updatesupplierlocation', 'SupplierProductLocationsController@UpdateSupplierLocation');
 
-  /**************************************
-   *                                    *
-   *        USER'S DASHBOARD            *
-   *                                    *
-   *************************************/
  
-   

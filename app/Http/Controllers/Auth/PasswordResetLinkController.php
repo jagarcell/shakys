@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Users;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
+
 
 class PasswordResetLinkController extends Controller
 {
@@ -28,6 +31,10 @@ class PasswordResetLinkController extends Controller
      */
     public function store(Request $request)
     {
+        $Email = $request['email'];
+        if((new Users())->IsTypeAdmin($Email) == false){
+            return redirect('/error/ASK AN admin TO RESET YOUR PASSWORD!');
+        }
         $request->validate([
             'email' => 'required|email',
         ]);
