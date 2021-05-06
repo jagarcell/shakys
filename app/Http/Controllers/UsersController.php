@@ -14,6 +14,12 @@ class UsersController extends Controller
         return (new Users())->ListUsers($request);
     }
 
+    public function HasUsers(Request $request)
+    {
+        # code...
+        return (new Users())->HasUsers($request);
+    }
+
     public function UserById(Request $request)
     {
         # code...

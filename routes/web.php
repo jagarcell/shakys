@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Users;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +15,34 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $User = Auth::user();
+    if($User == null){
+        $Result = (new Users())->HasUsers();
+        switch ($Result['status']) {
+            case 'yes':
+                # code...
+                return redirect('login');
+                break;
+
+            case 'no':
+                return redirect('register');
+                break;
+
+            case 'error':
+                return $Result['message'];
+                break;
+            default:
+                # code...
+                break;
+        }
+     }
+    if($User->user_type == 'user'){
+        return view('welcome');
+        return 'user';
+    }
+    else{
+        return view('welcome');
+    }
 });
 
 Route::get('/unauth', function(){
@@ -31,7 +59,7 @@ require __DIR__.'/auth.php';
  *           USERS               *
  ********************************/
 
-Route::get('/users', 'UsersController@ListUsers')->name('users')->middleware('checkifcanregister');
+Route::get('/users', 'UsersController@ListUsers')->middleware('checkifcanregister');
 
 Route::post('/userbyid', 'UsersController@UserById');
 
