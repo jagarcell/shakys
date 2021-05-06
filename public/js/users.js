@@ -105,7 +105,7 @@ function deleteUser(userid){
                                         message:"THIS USER HAS BEEN SUCCESSFULLY DELETED!",
                                         error:false,
                                         timeout:4000,
-                                        param:edit_section,
+                                        param:element_tag,
                                     }, function(frame, element_tag){
                                         frame.hide()
                                         var edit_section = document.getElementById(element_tag)

@@ -42,7 +42,7 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|confirmed|min:8',
-            'user_type' => 'required|string|min:1',
+//            'user_type' => 'required|string|min:1',
         ]);
 
         $Users = (new Users())->where('id', '>', -1)->get();
@@ -53,7 +53,7 @@ class RegisteredUserController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'user_type' => $request->user_type,
+                'user_type' => 'admin',
             ]));
         }
         else
