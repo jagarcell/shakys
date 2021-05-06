@@ -37,8 +37,7 @@ Route::get('/', function () {
         }
      }
     if($User->user_type == 'user'){
-        return view('welcome');
-        return 'user';
+        return redirect('userdashboard');
     }
     else{
         return view('welcome');
@@ -125,5 +124,10 @@ Route::post('/createuser', 'UsersController@CreateUser');
  
   Route::post('/updatesupplierlocation', 'SupplierProductLocationsController@UpdateSupplierLocation');
 
-  
+  /**************************************
+   *                                    *
+   *        USER'S DASHBOARD            *
+   *                                    *
+   *************************************/
  
+   
