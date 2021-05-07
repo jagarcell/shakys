@@ -49,8 +49,8 @@
                         <form id="add_form" class="add_location">
                             <input id="location_name" type="text" class="product_location_text_field box_shadow w-input" maxlength="256" name="name" data-name="Name" placeholder="Name" required="">
                             <div class="product_location_add_buttons_frame">
-                                <input type="button" value="Create Location" data-wait="Please wait..." class="create_button box_shadow w-button" onclick="createLocationClick(this)">
-                                <input type="button" value="Discard Location" data-wait="Please wait..." class="create_button box_shadow w-button" onclick="discardLocationClick(this)">
+                                <input type="button" value="Create Location" data-wait="Please wait..." class="edition_button create_button box_shadow w-button" onclick="createLocationClick(this)">
+                                <input type="button" value="Discard Location" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardLocationClick(this)">
                             </div>
                             <input id="image_to_upload" name="image_path" hidden>
                         </form>
@@ -116,8 +116,8 @@
                             <form id="add_form" class="add_location">
                                 <input id="location_name" type="text" class="product_location_text_field box_shadow w-input" maxlength="256" name="name" data-name="Name" placeholder="Name" required="">
                                 <div class="product_location_add_buttons_frame">
-                                    <input type="button" value="Accept Changes" data-wait="Please wait..." class="create_button box_shadow w-button" onclick="acceptLocationChangesClick('location-id')">
-                                    <input type="button" value="Discard Changes" data-wait="Please wait..." class="create_button box_shadow w-button" onclick="discardLocationChangesClick('location-id')">
+                                    <input type="button" value="Accept Changes" data-wait="Please wait..." class="edition_button create_button box_shadow w-button" onclick="acceptLocationChangesClick('location-id')">
+                                    <input type="button" value="Discard Changes" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardLocationChangesClick('location-id')">
                                 </div>
                                 <input id="image_to_upload" name="image_path" hidden>
                             </form>
