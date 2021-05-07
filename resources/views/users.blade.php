@@ -85,7 +85,7 @@
                             <button type="button" data-wait="Please wait..." class="user_button" onclick="userCreateClick(this)">
                                 {{ __('Create User') }}
                             </button>
-                            <button type="button" data-wait="Please wait..." class="user_button" onclick="userAbortClick(this)">
+                            <button type="button" data-wait="Please wait..." class="user_button discard_button" onclick="userAbortClick(this)">
                                 {{ __('Abort') }}
                             </button>
                         </div>
@@ -127,7 +127,7 @@
                                 </div>    
                             </div>
                             <div class="user_add_button">
-                                <input id="edited_user_password" type="button" value="ABORT" data-wait="Please wait..." class="add_user_button box_shadow w-button" onclick="discard(this)">
+                                <input id="edited_user_password" type="button" value="ABORT" data-wait="Please wait..." class="add_user_button discard_button box_shadow w-button" onclick="discard(this)">
                             </div>
                         </div>
                     </form>

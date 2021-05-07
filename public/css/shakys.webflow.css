@@ -804,9 +804,17 @@ body {
   max-width: 256px;
 }
 
-.create_button {
+.edition_button{
   border-radius: 10px;
   width: 150px;
+}
+
+.create_button {
+  background-color: darkblue;
+}
+
+.discard_button{
+  background-color: darkgreen !important;
 }
 
 .supplier_data_edit {

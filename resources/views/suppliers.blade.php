@@ -53,7 +53,7 @@
                                 <input id="supplier_image_to_upload" hidden>
                                 <div class="supplier_data_form_buttons">
                                     <input type="button" value="Create Supplier" data-wait="Please wait..." class="create_button box_shadow action_button w-button" onclick='newSupplier(this)'>
-                                    <input type="button" value="Discard Creation" data-wait="Please wait..." class="create_button box_shadow action_button w-button" onclick='discardNewSupplier()'>
+                                    <input type="button" value="Discard Creation" data-wait="Please wait..." class="create_button discard_button box_shadow action_button w-button" onclick='discardNewSupplier()'>
                                 </div>
                                 <div id="supplier_add_error" class="supplier_add_error" hidden>
                                 </div>
@@ -87,7 +87,7 @@
                             <input id="supplier_image_to_upload" hidden>
                             <div class="supplier_data_form_buttons">
                                 <input type="button" value="Accept Changes" data-wait="Please wait..." class="create_button box_shadow action_button w-button" onclick='acceptChanges(this)'>
-                                <input type="button" value="Discard Changes" data-wait="Please wait..." class="create_button box_shadow action_button w-button" onclick='discardChanges(this)'>
+                                <input type="button" value="Discard Changes" data-wait="Please wait..." class="create_button discard_button box_shadow action_button w-button" onclick='discardChanges(this)'>
                             </div>
                             <div id="supplier_add_error" class="supplier_add_error" style="display:none">
                                     Test Error
