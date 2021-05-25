@@ -58,6 +58,10 @@ class ProductLocations extends Model
                 config('app')['nophoto'] :
                 config('app')['instore_images_path'] . $ImagePath;
 
+            if(!\File::exists($ImagePath)){
+                $ImagePath = config('app')['nophoto'];
+            }
+    
             $this->save();
             $Location = ['id' => $this->id, 'name' => $this->name, 'image_path' => $this->image_path];
             return['status' => 'ok', 'location' => $Location, 'element_tag' => $ElementTag];
