@@ -543,6 +543,16 @@ function acceptEditChanges(productId){
                                     message:message,
                                 }
                             )
+                            break
+                        case 'exist':
+                            reportResult(
+                                {
+                                    frame:actionResultMessage,
+                                    message:"THIS PRODUCT CODE IS ALREADY TAKEN",
+                                }, function(frame, param){
+                                    frame.hide()
+                                }
+                            )
                             break    
                         default:
                             break;

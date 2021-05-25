@@ -228,6 +228,12 @@ class Products extends Model
             if(count($Products) == 0){
                 return ['status' => 'notfound', 'element_tag' => $ElementTag];
             }
+            $Products = $this->where('internal_code', $InternalCode)->get();
+            if(count($Products) > 0){
+                if($Products[0]->id != $Id){
+                    return ['status' => 'exist', 'element_tag' => $ElementTag];
+                }
+            }
             $ProductsUploadeImgPath = $Config['products_images_path'];
             $ImagePath = 
                 str_contains($ImagePath, $ProductsUploadeImgPath) ?
