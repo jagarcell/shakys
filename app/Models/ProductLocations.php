@@ -188,6 +188,10 @@ class ProductLocations extends Model
             }
             $Config = config('app');
             $ImagePath = $ImagePath == null ? $Config['nophoto'] : $Config['instore_images_path'] . $ImagePath;
+            if(!\File::exists($ImagePath)){
+                $ImagePath = config('app')['nophoto'];
+            }
+
             $this->where('id', $Id)->update(['name' => $Name, 'image_path' => $ImagePath]);
 
             $Location = ['id' => $Id, 'name' => $Name, 'image_path' => $ImagePath];
