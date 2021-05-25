@@ -88,7 +88,11 @@ class Products extends Model
                 $ImagePath = $Config['nophoto'];
             }
             $this->image_path = $ImagePath; 
-            $this->next_count_date = new \DateTime('2100-12-31');
+            $NextCountDate = new \DateTime();
+            $NextCountDate = date_modify($NextCountDate, "+" . $DaysToCount . " day");
+            $this->next_count_date = $NextCountDate;
+
+            $this->counted = false;
             $this->save();
             
             $DefaultSupplierName = ' ';
