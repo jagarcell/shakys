@@ -95,5 +95,36 @@ function orderClick(productId){
 }
 
 function searchClick() {
-    alert('search')
+    var searchtext = $('#SearchFor').val()
+    $.get('/searchfor',
+        {
+            searchtext:searchtext,
+        }, function(data, status){
+            if(status == 'success'){
+                switch (data.status) {
+                    case 'ok':
+                        var products = data.products
+                        var productsListWrap = document.getElementById('products_list_wrap')
+                        productsListWrap.innerHTML = ""
+                        $.each(products, function(index, product){
+                            productHtml = document.getElementById('product').innerHTML
+                            productHtml = productHtml.replace(/product-id/g, product.id)
+                            productHtml = productHtml.replace(/image-path/g, product.image_path)
+                            productHtml = productHtml.replace(/internal-description/g, product.internal_description)
+                            productsListWrap.innerHTML = productsListWrap.innerHTML + productHtml
+                            var prod = document.getElementById(product.id)
+                            if(Math.floor(index / 2) * 2 == index){
+                                prod.classList.add('rbg')
+                            }
+                            else{
+                                prod.classList.add('bbg')
+                            }
+                        })
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    )
 }

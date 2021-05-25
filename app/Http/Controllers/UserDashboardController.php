@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-use App\Models\Products;
-use App\Models\ProductLocations;
+use App\Models\UserDashboard;
 
 class UserDashboardController extends Controller
 {
@@ -13,23 +11,18 @@ class UserDashboardController extends Controller
     public function ShowUserDashboard(Request $request)
     {
         # code...
-        $Date = new \DateTime();
-        $Products = (new Products())->where('counted', false)->where('next_count_date', '<=', $Date)->get();
-
-        $Locations = (new ProductLocations)->where('id', '>', -1)->get();
-
-        $LocationsCount = count($Locations);
-        if(round($LocationsCount / 2) * 2 != $LocationsCount){
-            $Locations[$LocationsCount - 1]->odd = true;
-        }
-        return view('userdashboard', ['locations' => $Locations, 'products' => $Products]);
+        return (new UserDashboard())->ShowUserDashboard($request);
     }
 
     public function ProductsToCount(Request $request)
     {
+        # code
+        return (new UserDashboard())->ProductsToCount($request);
+    }
+
+    public function SearchFor(Request $request)
+    {
         # code...
-        if(isset($request['locationid'])){
-            $LocationId = $request['locationid'];
-        }
+        return (new UserDashboard())->SearchFor($request);
     }
 }

@@ -14,6 +14,14 @@ a{
   cursor: pointer;
 }
 
+.search_bar_wrap{
+  position:sticky; 
+  top:0px; 
+  background-color:white; 
+  padding-top:10px;
+  padding-bottom:20px;
+}
+
 .order_button{
   background-color: #3898ec;
   width: 80px !important;
@@ -307,6 +315,10 @@ a{
 .ui_section {
   padding-top: 40px;
   padding-bottom: 40px;
+  margin-top: 20px;
+  width: 90%;
+  margin-left: 5%;
+  border-radius: 10px;
 }
 
 .ui_section.bbg {
@@ -1522,7 +1534,19 @@ body {
 }
 
 @media screen and (max-width: 991px) {
+  .search_form {
+    display: block;
+    text-align: center;
+  }
+
+  .search_button{
+    margin-top: 25px;
+  }
   
+  .search_block{
+    width: 70%;
+  }
+
   .data_edit {
     display: -webkit-box;
     display: -webkit-flex;
@@ -1612,7 +1636,6 @@ body {
 }
 
 @media screen and (max-width: 767px) {
-
   .search_locations {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;

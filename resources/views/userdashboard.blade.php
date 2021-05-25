@@ -28,11 +28,11 @@
         @section('content')
 
         <!-- THIS SECTION IS THE SEARCH BAR SECTION -->
-        <div id="search_bar" class="ui_section" style="position:sticky; top:0px; background-color:white;">
+        <div id="search_bar" class="search_bar_wrap">
             <div class="search_wrap">
                 <div class="search_block w-form">
                     <div id="email-form" name="email-form" data-name="Email Form" class="search_form">
-                        <input id="search_input" type="text" class="search_bar w-input" maxlength="256" name="name" data-name="Name" placeholder="Enter Your Search">
+                        <input id="search_text" type="text" class="search_bar w-input" maxlength="256" name="name" data-name="Name" placeholder="Enter Your Search">
                         <a style="height:35px;" onclick="searchClick()">
                             <input type="button" value="Search" data-wait="Please wait..." class="search_button w-button">
                         </a>
@@ -89,38 +89,57 @@
         @endfor
         @endif
 
-        @foreach($products as $key => $product)
-        @if(round($key / 2) * 2 != $key)
-        <!-- HERE A PRODUCT IS SHOWN WITH A BLACK BACKGROUND -->
-        <a onclick="productClick('{{$product->id}}')">
-            <div id="{{$product->id}}" class="ui_section bbg product">
-                <div class="product_frame">
-                    <div class="product_pic_frame">
-                        <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
-                    </div>
-                    <div class="product_description">
-                        <div class="product_description_text">{{$product->internal_description}}</div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        @else    
-        <!-- HERE A PRODUCT IS SHOWN WITH A RED BACKGROUND -->
-        <a onclick="productClick('{{$product->id}}')">
-            <div id="{{$product->id}}" class="ui_section rbg product">
-                <div class="product_frame">
-                    <div class="product_pic_frame">
-                        <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
-                    </div>
-                    <div class="product_description">
-                        <div class="product_description_text">{{$product->internal_description}}</div>
+        <div id="products_list_wrap">
+            @foreach($products as $key => $product)
+            @if(round($key / 2) * 2 != $key)
+            <!-- HERE A PRODUCT IS SHOWN WITH A BLACK BACKGROUND -->
+            <a onclick="productClick('{{$product->id}}')">
+                <div id="{{$product->id}}" class="ui_section bbg product shadowRight">
+                    <div class="product_frame">
+                        <div class="product_pic_frame">
+                            <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
+                        </div>
+                        <div class="product_description">
+                            <div class="product_description_text">{{$product->internal_description}}</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </a>
-        @endif
-        @endforeach
+            </a>
+            @else    
+            <!-- HERE A PRODUCT IS SHOWN WITH A RED BACKGROUND -->
+            <a onclick="productClick('{{$product->id}}')">
+                <div id="{{$product->id}}" class="ui_section rbg product shadowRight">
+                    <div class="product_frame">
+                        <div class="product_pic_frame">
+                            <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
+                        </div>
+                        <div class="product_description">
+                            <div class="product_description_text">{{$product->internal_description}}</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            @endif
+            @endforeach
+        </div>
 
+        <div id="product" hidden>
+            <!-- THIS IS THE HTML FOR A PRODUCT -->
+            <a onclick="productClick('product-id')">
+                <div id="product-id" class="ui_section product shadowRight">
+                    <div class="product_frame">
+                        <div class="product_pic_frame">
+                            <img src="image-path" loading="lazy" alt="" class="product_pic">
+                        </div>
+                        <div class="product_description">
+                            <div class="product_description_text">internal-description</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- THIS IS THE HTML TO SHOW THE ORDER DIALOG -->
         <div id="order_top_most" class="order_top_most" hidden>
             <div id="popup_product" class="order_frame">
                 <div class="order_close_bar">
@@ -138,8 +157,10 @@
             </div>
         </div>
 
+        <!-- THIS IS THE SECTION THAT WILL HOLD THE ORDER DIALOG -->    
         <div id="order_top_id" class="order_top_most" hidden>
         </div>
+
         <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
         <script src="/js/garcellLib.js" type="text/javascript"></script>
         <script src="/js/userdashboard.js" type="text/javascript"></script>

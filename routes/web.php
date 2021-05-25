@@ -21,8 +21,6 @@ Route::get('/', function () {
     return view('admindashboard');
 })->Middleware('checkusersstate');
 
-Route::get('/userdashboard', 'UserDashboardController@ShowUserDashboard');
-
 /**
  * Unauthorized Action for the user
  */
@@ -150,4 +148,13 @@ Route::post('/createuser', 'UsersController@CreateUser');
   **************************************/
 
   Route::get('/showpendingorderspanel','PendingOrdersController@ShowPendingOrdersPanel');
+
+/****************************************
+ *                                      *
+ *                                      *
+ *                                      *
+ ***************************************/
   
+Route::get('/userdashboard', 'UserDashboardController@ShowUserDashboard');
+  
+Route::get('/searchfor', 'UserDashboardController@SearchFor');
