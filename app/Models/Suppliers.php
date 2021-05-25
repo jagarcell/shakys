@@ -183,6 +183,11 @@ class Suppliers extends Model
             if(count($Suppliers) >= 0 && $Suppliers[0]->id != $Id){
                 return['status' => 'emailtaken', 'id' => $Id, 'element_tag' => $ElementTag];
             }
+
+            if(!\File::exists($ImagePath)){
+                $ImagePath = config('app')['nophoto'];
+            }
+
             $this->where('id', $Id)->update(
                 [
                     'name' => $Name, 
