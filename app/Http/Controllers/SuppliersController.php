@@ -31,11 +31,11 @@ class SuppliersController extends Controller
     public function UploadImage(Request $request)
     {
         $fileToUpload = $request->file('file');
-
         if(!empty($_FILES)){
             $user = Auth::user();
             if($user != null){
-                $counterFile = "counters/counter_" . $user->id;
+                $Config = config('app');
+                $counterFile = $Config['counter'] . $user->id;
                 $contents = "0";
                 if(Storage::exists($counterFile)){
                     $contents = Storage::get($counterFile);
@@ -47,7 +47,6 @@ class SuppliersController extends Controller
                 $fileNameChunks = explode('.', $fileName);
                 $fileExt = $fileNameChunks[count($fileNameChunks) - 1];
                 $fileName = $contents . "_" . $user->id . "." . $fileExt;
-                $Config = config('app');
                 $path = $fileToUpload->storeAs($Config['suppliers_images_path'], $fileName, 'images');
                 return ['filename' => $fileName];
             }
@@ -64,5 +63,11 @@ class SuppliersController extends Controller
     {
         # code...
         return (new Suppliers())->DeleteSupplier($request);
+    }
+
+    public function GetSuppliers(Request $request)
+    {
+        # code...
+        return(new Suppliers())->GetSuppliers($request);
     }
 }

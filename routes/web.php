@@ -21,9 +21,7 @@ Route::get('/', function () {
     return view('admindashboard');
 })->Middleware('checkusersstate');
 
-Route::get('/userdashboard', function(){
-    return view('userdashboard');
-});
+Route::get('/userdashboard', 'UserDashboardController@ShowUserDashboard');
 
 /**
  * Unauthorized Action for the user
@@ -68,6 +66,8 @@ Route::post('/createuser', 'UsersController@CreateUser');
  ***************************************/
 
  Route::get('/suppliers', 'SuppliersController@ListSuppliers')->name('suppliers')->middleware('checkifcanregister');
+
+ Route::get('/getsuppliers', 'SuppliersController@GetSuppliers');
 
  Route::post('/addsupplier', 'SuppliersController@AddSupplier');
 
@@ -115,4 +115,39 @@ Route::post('/createuser', 'UsersController@CreateUser');
  
   Route::post('/updatesupplierlocation', 'SupplierProductLocationsController@UpdateSupplierLocation');
 
- 
+ /***************************************
+  *                                     *
+  *             PRODUCTS                *
+  *                                     *
+  **************************************/
+
+  Route::get('/listproducts', 'ProductsController@ListProducts');
+
+  Route::post('/productimgupload', 'ProductsController@ProductImgUpload');
+
+  Route::post('/createproduct', 'ProductsController@CreateProduct');
+
+  Route::post('/deleteproduct', 'ProductsController@DeleteProduct');
+
+  Route::get('/getproduct','ProductsController@GetProduct');
+
+  Route::post('/updateproduct', 'ProductsController@UpdateProduct');
+  
+  Route::post('/markascounted', 'ProductsController@MarkAsCounted');
+
+/****************************************
+ *                                      *
+ *             PICKUP USER              *
+ *                                      *
+ ***************************************/
+
+ Route::get('/pickupdashboard', 'PickupUserController@ShowDashboard');
+
+ /***************************************
+  *                                     * 
+  *          PENDING ORDERS             *
+  *                                     *
+  **************************************/
+
+  Route::get('/showpendingorderspanel','PendingOrdersController@ShowPendingOrdersPanel');
+  

@@ -3,6 +3,10 @@
     width: 100%;
 }
 
+.pic_wrap{
+    display: flex;
+}
+
 .supplier_data_form_block {
     display: block;
     width: 80%;
@@ -52,4 +56,17 @@
 }
 input, select{
     border-radius: 0.375rem !important;
+}
+
+
+@media screen and (max-width: 767px) {
+
+    .pic_wrap{
+        display: block;
+        text-align: -webkit-center;
+    }
+
+    .supplier_add_section {
+        display: block;
+    }
 }

@@ -70,6 +70,13 @@ function reportResult(reportInfo,  endFunction=null) {
     }
 
     reportInfo.frame.show()
+    if(reportInfo.alignTop === undefined){
+        reportInfo.frame[0].scrollIntoView(true)
+    }
+    else{
+        reportInfo.frame[0].scrollIntoView(reportInfo.alignTop)
+
+    }
     var timeout = reportInfo.timeout != undefined ? reportInfo.timeout : 3000
 
     setTimeout(function(frame, param){
@@ -87,8 +94,14 @@ function reportResult(reportInfo,  endFunction=null) {
  * */
 function getMessageFromErrorInfo(errorResponse) {
     var message = ""
-    $.each(errorResponse, function(index, value){
-        message = message + value + "<br>"
-    })
+
+    if(errorResponse.__proto__.anchor === undefined){
+        $.each(errorResponse, function(index, value){
+            message = message + value + "<br>"
+        })
+    }
+    else{
+        message = errorResponse
+    }
     return message
 }

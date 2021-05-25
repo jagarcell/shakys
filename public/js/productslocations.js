@@ -93,6 +93,10 @@ function createLocationClick(createLocationButton) {
                     var actionResultMessage = addProductLocationSection.find('#action_result_message')
                     switch (data.status) {
                         case 'ok':
+                            var emptyList = $('#empty_list')
+                            if(emptyList !== undefined){
+                                emptyList.hide()
+                            }
                             // Report the result in a message
                             reportResult(
                                 {

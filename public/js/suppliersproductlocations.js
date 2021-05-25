@@ -59,6 +59,7 @@ function discardLocationClick(discardLocationButton) {
     var productLocationAddPic = document.getElementById('product_location_add_pic')
 
     // Clear the add section fields
+    $(addSectionFrame).find('#supplier_id').val('-1')
     $(addSectionFrame).find('#location_name').val('')
     $(addSectionFrame).find('#image_to_upload').val('')
     productLocationAddPic.Dropzone.removeAllFiles()
@@ -78,6 +79,7 @@ function discardLocationClick(discardLocationButton) {
 function createLocationClick(createLocationButton) {
     var addForm = document.getElementById('add_form')
     if(addForm.checkValidity()){
+        var supplier_id = $(addForm).find('#supplier_id').val() 
         var name = $(addForm).find('#location_name').val()
         var imagePath = $(addForm).find('#image_to_upload').val()
 
@@ -86,12 +88,17 @@ function createLocationClick(createLocationButton) {
                 _token:$('meta[name="csrf-token"]').attr('content'),
                 name:name,
                 image_path:imagePath,
+                supplier_id:supplier_id,
             }, function(data, status){
                 if(status == 'success'){
                     var addProductLocationSection = $('#add_product_location_section')
                     var actionResultMessage = addProductLocationSection.find('#action_result_message')
                     switch (data.status) {
                         case 'ok':
+                            var emptyList = $('#empty_list')
+                            if(emptyList !== undefined){
+                                emptyList.hide()
+                            }
                             // Report the result in a message
                             reportResult(
                                 {
@@ -112,6 +119,7 @@ function createLocationClick(createLocationButton) {
                                     addSectionFrame.style.display = 'none'
 
                                     // Clear the add section fields
+                                    $(addSectionFrame).find('#supplier_id').val(-1)
                                     $(addSectionFrame).find('#location_name').val('')
                                     $(addSectionFrame).find('#image_to_upload').val('')
                                     addSection.Dropzone.removeAllFiles()
@@ -127,6 +135,7 @@ function createLocationClick(createLocationButton) {
                                     locationHtml = locationHtml.replace(/location-id/g, location.id)
                                     locationHtml = locationHtml.replace(/location-image-path/g, location.image_path)
                                     locationHtml = locationHtml.replace(/location-name/g, location.name)
+                                    locationHtml = locationHtml.replace(/location-supplier-name/g, location.supplier_name)
 
                                     // Add the result to the locations list    
                                     locationsListWrap.innerHTML = locationHtml + locationsListWrap.innerHTML
@@ -263,12 +272,26 @@ function editButtonClick(locationId) {
                 switch (data.status) {
                     case 'ok':
                         var location = data.location
+                        var suppliers = data.suppliers
                         var locationEditHtml = $(document.getElementById('location_edit_html')).find('#location-id')[0].innerHTML
 
                         locationEditHtml = locationEditHtml.replace(/location-id/g, location.id)
                         productLocationSectionWrap.innerHTML = locationEditHtml
                         $(productLocationSectionWrap).find('#location_name').val(location.name)
                         $(productLocationSectionWrap).find('#image_to_upload').val(location.image_name)
+                        var supplierSelect = document.getElementById('supplier_select')
+                        var selectedIndex = 0
+                        $.each(suppliers, function(index, supplier){
+                            var option = document.createElement("option")
+                            option.value = supplier.id
+                            option.text = supplier.name
+                            if(supplier.id == location.supplier_id)
+                            {
+                                selectedIndex = index + 1
+                            }
+                            supplierSelect.add(option)
+                        })
+                        supplierSelect.options.selectedIndex = selectedIndex
 
                         $('#product_location_add_pic_' + location.id).addClass('dropzone')
 
@@ -371,11 +394,13 @@ function discardLocationChangesClick(locationId){
                 switch (data.status) {
                     case 'ok':
                         var location = data.location
+                        var supplier = data.supplier
                         var locationHtml = $(document.getElementById('location_html')).find('#location-id')[0].innerHTML
                         
                         locationHtml = locationHtml.replace(/location-id/g, location.id)
                         locationHtml = locationHtml.replace(/location-name/g, location.name)
                         locationHtml = locationHtml.replace(/location-image-path/g, location.image_path)
+                        locationHtml = locationHtml.replace(/location-supplier-name/g, supplier.name)
 
                         productLocationSectionWrap.innerHTML = locationHtml
                         break;
@@ -436,6 +461,7 @@ function acceptLocationChangesClick(locationId) {
     var addForm = $(productLocationSectionWrap).find('#add_form')
     var name = addForm.find('#location_name').val()
     var imageToUpload = addForm.find('#image_to_upload').val()
+    var supplier_id = addForm.find('#supplier_select').val()
     if(addForm[0].checkValidity()){
         $.post('/updatesupplierlocation',
             {
@@ -443,6 +469,7 @@ function acceptLocationChangesClick(locationId) {
                 id:locationId,
                 name:name,
                 image_path:imageToUpload,
+                supplier_id:supplier_id,
                 element_tag:locationId,
             }, function(data, status){
                 if(status == 'success'){
@@ -453,7 +480,7 @@ function acceptLocationChangesClick(locationId) {
                     switch (data.status) {
                         case 'ok':
                             var location = data.location
-
+                            var supplier = data.supplier
                             reportResult(
                                 {
                                     frame:actionResultMessage,
@@ -468,6 +495,7 @@ function acceptLocationChangesClick(locationId) {
                                     locationHtml = locationHtml.replace(/location-id/g, location.id)
                                     locationHtml = locationHtml.replace(/location-name/g, location.name)
                                     locationHtml = locationHtml.replace(/location-image-path/g, location.image_path)
+                                    locationHtml = locationHtml.replace(/location-supplier-name/g, supplier.name)
 
                                     productLocationSectionWrap.innerHTML = locationHtml
             

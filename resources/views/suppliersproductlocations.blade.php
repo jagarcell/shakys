@@ -34,11 +34,12 @@
     <body class="antialiased bodyClass">
         @section('page_title', 'SUPPLIER PRODUCT LOCATIONS')
         @section('content')
+
         <!-- THIS IS THE SECTION USED TO ADD A NEW PRODUCT LOCATION-->
         <div id="add_product_location_section" class="product_location_add_frame">
             <div id="action_result_message" class="action_result_message" hidden></div>
             <div id="add_icon_frame" class="add_icon_frame">
-                <input type="button" class="add_icon" value="+" onclick="addLocationClick(this)">
+                <input type="button" class="add_input" value="+" onclick="addLocationClick(this)">
             </div>
             <div id="add_section_frame" class="product_location_section" hidden>
                 <form action="/instoreimgupload" id="product_location_add_pic" class="product_location_pic_frame box_shadow" method="post" enctype="multipart/form-data">
@@ -47,10 +48,16 @@
                 <div class="product_location_data_entry">
                     <div class="add_location_form_frame w-form">
                         <form id="add_form" class="add_location">
+                            <select id="supplier_id" class="product_location_text_field box_shadow w-input">
+                                <option value="-1" disabled selected>Select a supplier</option>
+                                @foreach($suppliers as $key => $supplier)
+                                <option value="{{$supplier->id}}">{{$supplier->name}}</option>
+                                @endforeach
+                            </select>
                             <input id="location_name" type="text" class="product_location_text_field box_shadow w-input" maxlength="256" name="name" data-name="Name" placeholder="Name" required="">
                             <div class="product_location_add_buttons_frame">
-                                <input type="button" value="Create Location" data-wait="Please wait..." class="edition_button create_button box_shadow w-button" onclick="createLocationClick(this)">
-                                <input type="button" value="Discard Location" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardLocationClick(this)">
+                                <input type="button" value="Create Location" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="createLocationClick(this)">
+                                <input type="button" value="Discard Location" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardLocationClick(this)">
                             </div>
                             <input id="image_to_upload" name="image_path" hidden>
                         </form>
@@ -61,6 +68,7 @@
 
         <!-- LIST OF LOCATIONS RECEIVED FROM THE SERVER -->
         <div id="locations_list_wrap">
+            @if(count($locations) > 0)
             @foreach($locations as $key => $location)
             <div id="{{$location->id}}" class="product_location_section_wrap">
                 <div id="action_result_message" class="action_result_message" hidden></div>
@@ -70,19 +78,29 @@
                     </div>
                     <div id="supplier_data_edit_frame" class="product_location_data_entry">
                         <div class="product_location_data_edit">
-                            <div class="location_data_field box_shadow">{{$location->name}}</div>
+                            <div class="field_wrap">
+                                <div class="field_label">Supplier</div>
+                                <div class="location_data_field box_shadow">{{$location->supplier_name}}</div>
+                            </div>
+                            <div class="field_wrap">
+                                <div class="field_label">Location Name</div>
+                                <div class="location_data_field box_shadow">{{$location->name}}</div>
+                            </div>
                             <div class="product_location_data_entry_buttons buttons_frame_height">
-                                <input type="button" class="add_location_button edit w-button box_shadow" value="Edit" onclick="editButtonClick('{{$location->id}}')">
-                                <input type="button" class="add_location_button delete edit w-button box_shadow" value="Delete" onclick="deleteButtonClick('{{$location->id}}')">
+                                <input type="button" class="edit_button w-button box_shadow" value="Edit" onclick="editButtonClick('{{$location->id}}')">
+                                <input type="button" class="delete_button w-button box_shadow" value="Delete" onclick="deleteButtonClick('{{$location->id}}')">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             @endforeach
+            @else
+                <div id="empty_list" class="empty_list">THERE ARE NOT SUPPLIER'S PRODUCT LOCATIONS REGISTERED!</div>
+            @endif    
         </div>
 
-        <!-- THIS IS THE HTML USED TO CREATE A LOCATION SECTION WHEN A NEW LOCATION IS
+        <!-- THIS IS THE HTML USED TO SHOW A LOCATION SECTION WHEN A NEW LOCATION IS
         CREATED OR AN EXISTING ONE IS EDITED AND UPDATED. THIS WILL BE USED FROM JS-->
         <div id="location_html" hidden>
             <div id="location-id" class="product_location_section_wrap">
@@ -92,10 +110,17 @@
                             <img src="location-image-path" loading="lazy" sizes="(max-width: 479px) 92vw, 256px" srcset="location-image-path 500w, location-image-path 512w" alt="" class="prodcut_location_pic"></div>
                         <div id="supplier_data_edit_frame" class="product_location_data_entry">
                         <div class="product_location_data_edit">
-                            <div class="location_data_field box_shadow">location-name</div>
+                            <div class="field_wrap">
+                                <div class="field_label">Supplier</div>
+                                <div class="location_data_field box_shadow">location-supplier-name</div>
+                            </div>
+                            <div class="field_wrap">
+                                <div class="field_label">Location Name</div>
+                                <div class="location_data_field box_shadow">location-name</div>
+                            </div>
                             <div class="product_location_data_entry_buttons">
-                                <input type="button" class="add_location_button box_shadow edit w-button" value="Edit" onclick="editButtonClick('location-id')">
-                                <input type="button" class="add_location_button box_shadow delete edit w-button" value="Delete" onclick="deleteButtonClick('location-id')">
+                                <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('location-id')">
+                                <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('location-id')">
                             </div>
                         </div>
                     </div>
@@ -106,7 +131,7 @@
         <!-- THIS HTML IS USED TO SHOW A LOCATION EDIT SECTION WHEN THE USER CLICKS THE EDIT BUTTON-->
         <div id="location_edit_html" hidden>
             <div id="location-id" class="product_location_section_wrap">
-                <div id="action_result_message" class="action_result_message" hidden></div>
+                <div id="action_result_message" class="action_result_message" align-top="true" hidden></div>
                 <div id="add_section_frame" class="product_location_section">
                     <form action="/instoreimgupload" id="product_location_add_pic_location-id" class="product_location_pic_frame box_shadow" method="post" enctype="multipart/form-data">
                         @csrf
@@ -114,10 +139,19 @@
                     <div class="product_location_data_entry">
                         <div class="add_location_form_frame w-form">
                             <form id="add_form" class="add_location">
-                                <input id="location_name" type="text" class="product_location_text_field box_shadow w-input" maxlength="256" name="name" data-name="Name" placeholder="Name" required="">
+                                <div class="field_wrap">
+                                    <div class="field_label">Supplier</div>
+                                    <select id="supplier_select" class="product_location_text_field box_shadow w-input">
+                                        <option value="-1" disabled selected>Select a supplier</option>
+                                    </select>
+                                </div>
+                                <div class="field_wrap">
+                                    <div class="field_label">Location Name</div>
+                                    <input id="location_name" type="text" class="product_location_text_field box_shadow w-input" maxlength="256" name="name" data-name="Name" placeholder="Name" required="">
+                                </div>
                                 <div class="product_location_add_buttons_frame">
-                                    <input type="button" value="Accept Changes" data-wait="Please wait..." class="edition_button create_button box_shadow w-button" onclick="acceptLocationChangesClick('location-id')">
-                                    <input type="button" value="Discard Changes" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardLocationChangesClick('location-id')">
+                                    <input type="button" value="Accept Changes" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="acceptLocationChangesClick('location-id')">
+                                    <input type="button" value="Discard Changes" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardLocationChangesClick('location-id')">
                                 </div>
                                 <input id="image_to_upload" name="image_path" hidden>
                             </form>
@@ -126,6 +160,7 @@
                 </div>
             </div>
         </div>
+
         <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
         <script src="/js/webflow.js" type="text/javascript"></script>
         <script src="/js/suppliersproductlocations.js" type="text/javascript"></script>

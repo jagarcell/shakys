@@ -229,9 +229,24 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
+
+    /**
+     * 
+     * Path to uploaded images counter files.
+     * The count must be added to the uploaded filename
+     * as well as the user id to avoid name conflicts.
+     * 
+     */
+
+        'counter' => 'counters/counter_',
     
-    'suppliers_images_path' => 'images/uploaded/suppliers/',
-    'instore_images_path' => 'images/uploaded/instore/',
-    'suppliers_prod_location_images_path' => 'images/uploaded/suppprodloc/',
-    'nophoto' => 'images/noimg.jpg',
+    /**
+     * 
+     * Path to images uploads
+     */
+        'suppliers_images_path' => 'images/uploaded/suppliers/',
+        'instore_images_path' => 'images/uploaded/instore/',
+        'suppliers_prod_location_images_path' => 'images/uploaded/suppprodloc/',
+        'products_images_path' => 'images/uploaded/products/',
+        'nophoto' => 'images/noimg.jpg',
 ];

@@ -121,6 +121,31 @@ class Suppliers extends Model
 
     /**
      * 
+     * @param String id
+     * 
+     * @return String status 'ok' 'error'
+     * @return Object supplier 
+     */
+    public function GetSupplierById($id)
+    {
+        # code...
+        try {
+            //code...
+            $Suppliers = $this->where('id', $id)->get();
+            if(count($Suppliers) > 0){
+                return $Suppliers[0];
+            }
+            else{
+                return null;
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return null;
+        }
+    }
+
+    /**
+     * 
      * @param id
      * @param name
      * @param email
@@ -213,6 +238,32 @@ class Suppliers extends Model
         } catch (\Throwable $th) {
             //throw $th;
             return['status' => 'error', 'message' => $this->ErrorInfo($th), 'element_tag' => $ElementTag];
+        }
+    }
+
+    /**
+     * 
+     * @param Request $request['element_tag']
+     * 
+     * @return String status => 'ok'
+     *                       => 'error
+     * @return String message (if status is error)
+     * @return Mixed element_tag (Always)
+     * @return Model suppliers
+     * 
+     */
+    public function GetSuppliers($request)
+    {
+        # code...
+        $ElementTag = $request['element_tag'];
+        try {
+            //code...
+            $Suppliers = $this->where('id', '>', -1)->get();
+            return['status' => 'ok', 'suppliers' => $Suppliers, 'element_tag' => $ElementTag];
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
         }
     }
 

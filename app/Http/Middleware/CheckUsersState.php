@@ -27,11 +27,22 @@ class CheckUsersState
     {
         $User = Auth::user();
         if(!is_null($User)){
-            if($User->user_type == 'admin'){
-                return $next($request); 
-            }
-            else{
-                return redirect('/userdashboard');
+            switch ($User->user_type) {
+                case 'admin':
+                    # code...
+                    return $next($request); 
+                    break;
+                
+                case 'user':
+                    return redirect('/userdashboard');
+                    break;
+
+                case 'pickup':
+                    return redirect('/pickupdashboard');
+                    break;
+                default:
+                    # code...
+                    break;
             }
         }
         else{

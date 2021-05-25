@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Suppliers;
+
 class SupplierProductLocations extends Model
 {
     use HasFactory;
@@ -20,7 +22,14 @@ class SupplierProductLocations extends Model
         try {
             //code...
             $SupplierProductLocations = $this->where('id', '>', -1)->get();
-            return view('suppliersproductlocations', ['locations' => $SupplierProductLocations]);
+            $Suppliers = (new Suppliers())->where('id', '>', -1)->get();
+            foreach($SupplierProductLocations as $Key => $SupplierProductLocation){
+                $SuppliersNames = (new Suppliers())->where('id', $SupplierProductLocation->supplier_id)->get();
+                if(count($SuppliersNames) > 0){
+                    $SupplierProductLocation->supplier_name = $SuppliersNames[0]->name;
+                }
+            }
+            return view('suppliersproductlocations', ['locations' => $SupplierProductLocations, 'suppliers' => $Suppliers]);
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -28,6 +37,7 @@ class SupplierProductLocations extends Model
 
     /**
      * 
+     * @param str supplier_id
      * @param str name
      * @param str image_path
      * @param mix element_tag
@@ -45,6 +55,7 @@ class SupplierProductLocations extends Model
     public function CreateSupplierLocation($request)
     {
         # code...
+        $SupplierId = $request['supplier_id'];
         $Name = $request['name'];
         $ImagePath = $request['image_path'];
         $ElementTag = $request['element_tag'];
@@ -56,8 +67,18 @@ class SupplierProductLocations extends Model
                 config('app')['nophoto'] :
                 config('app')['suppliers_prod_location_images_path'] . $ImagePath;
 
+            if(!\File::exists($ImagePath)){
+                $ImagePath = config('app')['nophoto'];
+            }
+
+            $this->supplier_id = $SupplierId;
             $this->save();
-            $Location = ['id' => $this->id, 'name' => $this->name, 'image_path' => $this->image_path];
+            $SupplierName = "";
+            $Suppliers = (new Suppliers())->where('id', $SupplierId)->get();
+            if(count($Suppliers) > 0){
+                $SupplierName = $Suppliers[0]->name;
+            }
+            $Location = ['id' => $this->id, 'name' => $this->name, 'image_path' => $this->image_path, 'supplier_name' => $SupplierName];
             return['status' => 'ok', 'location' => $Location, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             //throw $th;
@@ -111,6 +132,7 @@ class SupplierProductLocations extends Model
      *          '419'
      *          'error'
      * @return location if 'ok'
+     * @return suppliers
      * @return element_tag always
      * @return message if 'error'
      * 
@@ -139,7 +161,17 @@ class SupplierProductLocations extends Model
                 $Location->image_name = $Location->image_path;
             }
 
-            return ['status' => 'ok', 'location' => $Location, 'element_tag' => $ElementTag];
+            $Suppliers = (new Suppliers())->where('id', $Location->supplier_id)->get();
+            if(count($Suppliers) > 0){
+                $Supplier = $Suppliers[0];
+            }
+            else{
+                $Supplier = ['id' => -1, 'name' => ''];
+            }
+
+            $Suppliers = (new Suppliers())->where('id', '>', -1)->get();
+
+            return ['status' => 'ok', 'location' => $Location, 'suppliers' => $Suppliers, 'supplier' => $Supplier, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             //throw $th;
             $Message = $this->ErrorInfo($th);
@@ -170,6 +202,7 @@ class SupplierProductLocations extends Model
         $Id = $request['id'];
         $Name = $request['name'];
         $ImagePath = $request['image_path'];
+        $SupplierId = $request['supplier_id'];
         $ElementTag = $request['element_tag'];
 
         try {
@@ -180,10 +213,21 @@ class SupplierProductLocations extends Model
             }
             $Config = config('app');
             $ImagePath = $ImagePath == null ? $Config['nophoto'] : $Config['suppliers_prod_location_images_path'] . $ImagePath;
-            $this->where('id', $Id)->update(['name' => $Name, 'image_path' => $ImagePath]);
+            if(!\File::exists($ImagePath)){
+                $ImagePath = config('app')['nophoto'];
+            }
+
+            $this->where('id', $Id)->update(['name' => $Name, 'image_path' => $ImagePath, 'supplier_id' => $SupplierId]);
 
             $Location = ['id' => $Id, 'name' => $Name, 'image_path' => $ImagePath];
-            return ['status' => 'ok', 'location' => $Location, 'element_tag' => $ElementTag];
+            $Suppliers = (new Suppliers())->where('id', $SupplierId)->get();
+            if(count($Suppliers) > 0){
+                $Supplier = $Suppliers[0];
+            }
+            else{
+                $Supplier = ['id' => -1, 'name' => ''];
+            }
+            return ['status' => 'ok', 'location' => $Location, 'supplier' => $Supplier, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             //throw $th;
             $Message = $this->ErrorInfo($th);
@@ -211,5 +255,4 @@ class SupplierProductLocations extends Model
         }
         return $Message;
     }
-
 }

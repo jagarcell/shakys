@@ -20,7 +20,7 @@ class CreateProductsTable extends Migration
             $table->integer('days_to_count')->default(0);
             $table->string('measure_unit')->nullable();
             $table->bigInteger('default_supplier_id')->default(-1);
-            $table->string('impage_path')->nullable();
+            $table->string('image_path')->nullable();
             $table->timestamps();
         });
     }

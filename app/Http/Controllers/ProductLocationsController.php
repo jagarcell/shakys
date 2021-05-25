@@ -35,7 +35,8 @@ class ProductLocationsController extends Controller
 
             $user = Auth::user();
             if($user != null){
-                $counterFile = "counters/instore_counter_" . $user->id;
+                $Config = config('app');
+                $counterFile = $Config['counter'] . $user->id;
                 $contents = "0";
                 if(Storage::exists($counterFile)){
                     $contents = Storage::get($counterFile);
@@ -47,7 +48,6 @@ class ProductLocationsController extends Controller
                 $fileNameChunks = explode('.', $fileName);
                 $fileExt = $fileNameChunks[count($fileNameChunks) - 1];
                 $fileName = $contents . "_" . $user->id . "." . $fileExt;
-                $Config = config('app');
                 $path = $fileToUpload->storeAs($Config['instore_images_path'], $fileName, 'images');
                 return ['filename' => $fileName];
             }
