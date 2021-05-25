@@ -93,3 +93,7 @@ function orderClick(productId){
         closeOrder()
     }
 }
+
+function searchClick() {
+    alert('search')
+}

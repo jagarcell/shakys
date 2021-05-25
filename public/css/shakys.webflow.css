@@ -254,6 +254,7 @@ a{
   margin-left: 10px;
   border-radius: 10px;
   background-color: #3898ec;
+  height: 100% !important;
 }
 
 .search_bar {

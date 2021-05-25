@@ -33,7 +33,9 @@
                 <div class="search_block w-form">
                     <div id="email-form" name="email-form" data-name="Email Form" class="search_form">
                         <input id="search_input" type="text" class="search_bar w-input" maxlength="256" name="name" data-name="Name" placeholder="Enter Your Search">
-                        <input type="button" value="Search" data-wait="Please wait..." class="search_button w-button">
+                        <a style="height:35px;" onclick="searchClick()">
+                            <input type="button" value="Search" data-wait="Please wait..." class="search_button w-button">
+                        </a>
                     </div>
                 </div>
             </div>
