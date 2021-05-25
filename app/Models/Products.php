@@ -73,6 +73,10 @@ class Products extends Model
 
         # code...
         try {
+            $Products = $this->where('internal_code', $Code)->get();
+            if(count($Products) > 0){
+                return ['status' => 'exist', 'element_tag' => $ElementTag];
+            }
             //code...
             $this->internal_code = $Code;
             $this->internal_description = $Description;
