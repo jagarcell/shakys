@@ -54,13 +54,15 @@ class ProductLocations extends Model
         try {
             //code...
             $this->name = $Name;
-            $this->image_path = $ImagePath == null ?
+            $ImagePath = $ImagePath == null ?
                 config('app')['nophoto'] :
                 config('app')['instore_images_path'] . $ImagePath;
 
             if(!\File::exists($ImagePath)){
                 $ImagePath = config('app')['nophoto'];
             }
+
+            $this->image_path = $ImagePath;
     
             $this->save();
             $Location = ['id' => $this->id, 'name' => $this->name, 'image_path' => $this->image_path];
