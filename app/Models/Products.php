@@ -79,7 +79,11 @@ class Products extends Model
             $this->days_to_count = $DaysToCount;
             $this->measure_unit = $MeasureUnit;
             $this->default_supplier_id = $DefaultSupplierId;
-            $this->image_path = $Config['products_images_path'] . $ImageToUpload;
+            $ImagePath = $ImageToUpload == null ? $Config['nophoto']: $Config['products_images_path'] . $ImageToUpload;
+            if(!\File::exists($ImagePath)){
+                $ImagePath = $Config['nophoto'];
+            }
+            $this->image_path = $ImagePath; 
             $this->next_count_date = new \DateTime('2100-12-31');
             $this->save();
             
@@ -224,7 +228,10 @@ class Products extends Model
             $ImagePath = 
                 str_contains($ImagePath, $ProductsUploadeImgPath) ?
                 $ImagePath : $ProductsUploadeImgPath . $ImagePath;
-                
+            if(!\File::exists($ImagePath)){
+                $ImagePath = config('app')['nophoto'];
+            }
+                    
             $this->where('id', $Id)->update(
                 [
                     'internal_code' => $InternalCode,

@@ -246,6 +246,7 @@ function editButtonClick(productId) {
             element_tag:productId,
         }, function(data, status){
             if(status == 'success'){
+                console.log(data)
                 var actionResultMessage = $('#' + data.element_tag).find('#action_result_message')
                 var element_tag = data.element_tag
                 switch (data.status) {
@@ -400,7 +401,7 @@ function discardEditChanges(productId) {
                         sectionHtml = sectionHtml.replace(/days-to-count/g, product.days_to_count)
                         sectionHtml = sectionHtml.replace(/measure-unit/g, product.measure_unit)
                         sectionHtml = sectionHtml.replace(/default-supplier-name/g, product.default_supplier_name)
-                        sectionHtml = sectionHtml.replace(/section-id/g, product.id)
+                        sectionHtml = sectionHtml.replace(/section_html/g, product.id)
 
                         section.innerHTML = sectionHtml
                        break;
@@ -492,7 +493,7 @@ function acceptEditChanges(productId){
                             sectionHtml = sectionHtml.replace(/days-to-count/g, product.days_to_count)
                             sectionHtml = sectionHtml.replace(/measure-unit/g, product.measure_unit)
                             sectionHtml = sectionHtml.replace(/default-supplier-name/g, product.default_supplier_name)
-                            sectionHtml = sectionHtml.replace(/section-id/g, product.id)
+                            sectionHtml = sectionHtml.replace(/section_html/g, product.id)
                             sectionHtml = sectionHtml.replace(/image-path/g, product.image_path)
                             
                             section.innerHTML = sectionHtml

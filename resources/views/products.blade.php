@@ -146,8 +146,8 @@
                             <div id="default_supplier" class="data_field box_shadow">default-supplier-name</div>
                         </div>
                         <div class="data_entry_buttons">
-                            <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('section-id')">
-                            <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('section-id')">
+                            <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('section_html')">
+                            <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('section_html')">
                         </div>
                     </div>
                 </div>
