@@ -133,7 +133,7 @@
                         <form id="email-form-2" class="order_form">
                             <label for="name">Order Qty</label>
                             <select id="qty" class="order_qty">
-                                <option value="0" style="text-align:right">0</option>
+                                <option value="0" style="text-align:right;text-align-last:right;">0</option>
                             </select>
                             <input type="button" value="Order" class="order_button w-button" onclick="orderClick('product-id')">
                         </form>
