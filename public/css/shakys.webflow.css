@@ -1644,7 +1644,7 @@ body {
     padding-right: 0px !important;
     padding-top: 0px !important;
     padding-bottom: 0px !important;
-    text-align: right;
+    text-align: right !important;
     font-size: 12px !important;
     border-radius: 5px;
   }
