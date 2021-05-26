@@ -130,9 +130,9 @@
                     <img id="product_order_image" src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" width="64" alt="" class="order_image">
                     <div id="order_product" class="order_product">internal-description</div>
                     <div class="form-block-2 w-form">
-                        <form id="email-form-2" name="email-form-2" data-name="Email Form 2" class="order_form">
+                        <form id="email-form-2" class="order_form">
                             <label for="name">Order Qty</label>
-                            <select id="qty" class="order_qty w-input" placeholder="">
+                            <select id="qty" class="order_qty>
                                 <option value="0">0</option>
                             </select>
                             <input type="button" value="Order" class="order_button w-button" onclick="orderClick('product-id')">
