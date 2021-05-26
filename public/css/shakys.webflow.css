@@ -1638,6 +1638,12 @@ body {
 
 @media screen and (max-width: 767px) {
 
+  
+  .order_frame {
+    width: 70vw;
+    margin-left: 15vw;
+  }
+  
   .data_entry_buttons {
     display: block;
     width: auto;
