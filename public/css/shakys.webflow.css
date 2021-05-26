@@ -15,6 +15,29 @@ a{
   cursor: pointer;
 }
 
+select{
+  border-radius: 5px !important;
+  height: 30px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  font-family: inherit;
+}
+
+.order_data_field_label{
+  color:white;
+}
+
+.order_data{
+  display: flex;
+  text-align: center;
+  font-size: inherit;
+}
+
+.order_data_field{
+  align-items: center;
+  width: -webkit-fill-available;
+}
+
 .search_bar_wrap{
   position:sticky; 
   top:0px; 
@@ -1544,6 +1567,18 @@ body {
 }
 
 @media screen and (max-width: 991px) {
+  .po_to_count_section{
+    font-size: 18px;
+  }
+
+  .order_data{  
+    display: block;
+  }
+
+  .order_data_field{
+    margin-bottom: 20px;
+  }
+
   .search_form {
     display: block;
     text-align: center;

@@ -38,7 +38,9 @@
                     <div>Orders</div>
                 </a>
             </div>
+
             <div class="w-tab-content">
+                <!-- PENDING TO COUNT PRODUCTS -->
                 <div data-w-tab="Tab 1" class="w-tab-pane w--tab-active">
                     @foreach($products as $key => $product)
                     @if(round($key / 2) * 2 != $key)
@@ -80,70 +82,113 @@
                     @endif
                     @endforeach
                 </div>
+
+                <!-- COUNTED PRODUCTS -->
                 <div data-w-tab="Tab 2" class="w-tab-pane">
                     @foreach($countedproducts as $key => $countedProduct)
                     @if(round($key / 2) * 2 != $key)
                     <!-- HERE A PRODUCT IS SHOWN WITH A BLACK BACKGROUND -->
-                    <a onclick="productClick('{{$countedProduct->id}}')">
-                        <div id="{{$countedProduct->id}}" class="ui_section bbg product">
-                            <div class="po_to_count_section">
-                                <div class="po_pic_frame">
-                                    <img src="{{$countedProduct->image_path}}" loading="lazy" alt="" class="product_pic">
-                                </div>
-                                <div class="po_description">
-                                    <div class="product_description_text">{{$countedProduct->internal_description}}</div>
-                                </div>
+                    <div id="{{$countedProduct->id}}" class="ui_section bbg product">
+                        <div class="po_to_count_section">
+                            <div class="po_pic_frame">
+                                <img src="{{$countedProduct->image_path}}" loading="lazy" alt="" class="product_pic">
+                            </div>
+                            <div class="po_description">
+                                <div class="product_description_text">{{$countedProduct->internal_description}}</div>
                             </div>
                         </div>
-                    </a>
+                        <div id="order_data" class="order_data">
+                            <div class="order_data_field">
+                                <label class="order_data_field_label">Supplier</label>
+                                <select id="supplier_sel">
+                                    <option value="-1">Select a supplier</option>
+                                </select>
+                            </div>
+                            <div class="order_data_field">
+                                <label class="order_data_field_label">Qty</label>
+                                <select id="order_qty" class="order_qty_tag">
+                                    <option value="0">0</option>
+                                </select>
+                            </div>
+                            <div class="order_data_field">
+                                <label class="order_data_field_label">Delivery</label>
+                                <select id="order_pickup">
+                                    <option value="pickup">Pickup</option>
+                                    <option value="delivery">Delivery</option>
+                                </select>
+                            <div class="order_data_field">
+                        </div>
+                    </div>
                     @else    
                     <!-- HERE A PRODUCT IS SHOWN WITH A RED BACKGROUND -->
-                    <a onclick="productClick('{{$countedProduct->id}}')">
-                        <div id="{{$countedProduct->id}}" class="ui_section rbg product">
-                            <div class="po_to_count_section">
-                                <div class="po_pic_frame">
-                                    <img src="{{$countedProduct->image_path}}" loading="lazy" alt="" class="product_pic">
-                                </div>
-                                <div class="po_description">
-                                    <div class="product_description_text">{{$countedProduct->internal_description}}</div>
-                                </div>
-                                <div class="po_due_date">
-                                    <div>Was Due on</div>
-                                    <div>{{$countedProduct->due_date}}</div>
-                                </div>
+                    <div id="{{$countedProduct->id}}" class="ui_section rbg product">
+                        <div class="po_to_count_section">
+                            <div class="po_pic_frame">
+                                <img src="{{$countedProduct->image_path}}" loading="lazy" alt="" class="product_pic">
+                            </div>
+                            <div class="po_description">
+                                <div class="product_description_text">{{$countedProduct->internal_description}}</div>
+                            </div>
+                            <div class="po_due_date">
+                                <div>Was Due on</div>
+                                <div>{{$countedProduct->due_date}}</div>
                             </div>
                         </div>
-                    </a>
+                        <div id="order_data" class="order_data">
+                            <div class="order_data_field">
+                                <label class="order_data_field_label">Supplier</label>
+                                <select id="supplier_sel">
+                                    <option value="-1">Select a supplier</option>
+                                </select>
+                            </div>
+                            <div class="order_data_field">
+                                <label class="order_data_field_label">Qty</label>
+                                <select id="order_qty" class="order_qty_tag">
+                                    <option value="0">0</option>
+                                </select>
+                            </div>
+                            <div class="order_data_field">
+                                <label class="order_data_field_label">Delivery</label>
+                                <select id="order_pickup">
+                                    <option value="pickup">Pickup</option>
+                                    <option value="delivery">Delivery</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                     @endif
                     @endforeach
-
                 </div>
+
+                <!-- ORDERS TAB -->
                 <div data-w-tab="Tab 3" class="w-tab-pane">
                 </div>
             </div>
+        </div>
 
-            <div id="order_top_most" class="order_top_most" hidden>
-                <div id="popup_product" class="order_frame">
-                    <div class="order_close_bar">
-                        <a onclick="closeOrder()">X</a>
-                    </div>
-                    <img id="product_order_image" src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" width="64" alt="" class="order_image">
-                    <div id="order_product" class="order_product">internal-description</div>
-                    <div class="form-block-2 w-form">
-                        <form id="email-form-2" class="order_form">
-                            <label for="name">Order Qty</label>
-                            <select id="qty" class="order_qty">
-                                <option value="0" style="text-align:right;text-align-last:right;">0</option>
-                            </select>
-                            <input type="button" value="Order" class="order_button w-button" onclick="orderClick('product-id')">
-                        </form>
-                    </div>
+        <div id="order_top_most" class="order_top_most" hidden>
+            <div id="popup_product" class="order_frame">
+                <div class="order_close_bar">
+                    <a onclick="closeOrder()">X</a>
+                </div>
+                <img id="product_order_image" src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" width="64" alt="" class="order_image">
+                <div id="order_product" class="order_product">internal-description</div>
+                <div class="form-block-2 w-form">
+                    <form id="email-form-2" class="order_form">
+                        <label for="name">Order Qty</label>
+                        <select id="qty" class="order_qty order_qty_tag">
+                            <option value="0" style="text-align:right;text-align-last:right;">0</option>
+                        </select>
+                        <input type="button" value="Order" class="order_button w-button" onclick="orderClick('product-id')">
+                    </form>
                 </div>
             </div>
-
-            <div id="order_top_id" class="order_top_most" hidden>
-            </div>
         </div>
+
+        <div id="order_top_id" class="order_top_most" hidden>
+        </div>
+
+
         <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
         <script src="/js/garcellLib.js" type="text/javascript"></script>
         <script src="/js/pendingorders.js" type="text/javascript"></script>

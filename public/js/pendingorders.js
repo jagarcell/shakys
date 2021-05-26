@@ -1,10 +1,12 @@
 $(document).ready(function(){
-    for(var i = 1; i < 5001; i++){
-        var option = document.createElement("option")
-        option.value = i
-        option.text = i
-        document.getElementById('qty').add(option)
+    var optionsHTML = ""
+    for(var i = 1; i < 201; i++){
+        optionsHTML += "<option value='" + i + "'>" + i + "</option>"
     }
+    var orderQtys = document.getElementsByClassName('order_qty_tag')
+    $.each(orderQtys, function(index, orderQty){
+        orderQty.innerHTML += optionsHTML
+    })
 })
 
 function tabClick(element){
