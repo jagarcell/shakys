@@ -103,8 +103,12 @@
                                 <div id="default_supplier" class="data_field box_shadow">{{$product->default_supplier_name}}</div>
                             </div>
                             <div class="data_entry_buttons">
-                                <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$product->id}}')">
-                                <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('{{$product->id}}')">
+                                <div>
+                                    <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$product->id}}')">
+                                </div>
+                                <div class="bottom_button">
+                                    <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('{{$product->id}}')">
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -4,6 +4,7 @@ input[type="button"]{
   padding-left: 10px;
   font-family: inherit;
   width: 150px;
+  border-radius: 5px;
 }
 
 input{
@@ -1636,6 +1637,15 @@ body {
 }
 
 @media screen and (max-width: 767px) {
+
+  .data_entry_buttons {
+    display: block;
+    width: auto;
+  }
+
+  .bottom_button{
+    margin-top: 20px;
+  }
 
   .picture {
     height:20vh;
