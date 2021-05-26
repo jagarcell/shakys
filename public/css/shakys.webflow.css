@@ -1721,7 +1721,7 @@ body {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
-    font-size: 10px;
+    font-size: 14px;
   }
 
   .add_frame{
