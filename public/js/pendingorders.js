@@ -1,5 +1,10 @@
 $(document).ready(function(){
-
+    for(var i = 1; i < 5001; i++){
+        var option = document.createElement("option")
+        option.value = i
+        option.text = i
+        document.getElementById('qty').add(option)
+    }
 })
 
 function tabClick(element){
