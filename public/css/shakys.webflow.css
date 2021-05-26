@@ -1636,6 +1636,12 @@ body {
 }
 
 @media screen and (max-width: 767px) {
+
+  .picture {
+    height:20vh;
+    width: auto;
+  }
+  
   .search_locations {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
