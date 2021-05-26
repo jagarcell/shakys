@@ -132,7 +132,7 @@
                     <div class="form-block-2 w-form">
                         <form id="email-form-2" class="order_form">
                             <label for="name">Order Qty</label>
-                            <select id="qty" class="order_qty>
+                            <select id="qty" class="order_qty">
                                 <option value="0">0</option>
                             </select>
                             <input type="button" value="Order" class="order_button w-button" onclick="orderClick('product-id')">
