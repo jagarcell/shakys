@@ -1639,7 +1639,8 @@ body {
 @media screen and (max-width: 767px) {
 
   .order_qty{
-    height: 80px;
+    padding-right: 10px;
+  }
   }
 
   .order_frame {
