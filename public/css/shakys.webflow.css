@@ -30,11 +30,12 @@ a{
 
 .order_qty{
   height: 20px;
-  width: 80px;
+  width: 150px;
   text-align: right;
   text-align: end;
   padding-right: 0px !important;
   margin-top: 0px;
+  border-radius: 5px;
 }
 
 .location_name_text {
