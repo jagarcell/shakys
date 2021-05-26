@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+
 
 use App\Models\Products;
 use App\Models\ProductLocations;
@@ -19,8 +21,7 @@ class UserDashboard extends Model
     public function ShowUserDashboard($request)
     {
         # code...
-        $Date = new \DateTime();
-        $Products = (new Products())->where('counted', false)->where('next_count_date', '<=', $Date)->get();
+        $Products = $this->ProductsToCount($request);
 
         $Locations = (new ProductLocations)->where('id', '>', -1)->get();
 
@@ -31,11 +32,41 @@ class UserDashboard extends Model
         return view('userdashboard', ['locations' => $Locations, 'products' => $Products]);
     }
 
+    /**
+     * 
+     * Search for products due to count, if locationid is
+     * set it shows only the products for that location
+     * 
+     * @param String locationid
+     * 
+     * @return Array products
+     * 
+     */
     public function ProductsToCount($request)
     {
         # code...
-        if(isset($request['locationid'])){
-            $LocationId = $request['locationid'];
+        try {
+            //code...
+            $Date = new \DateTime();
+    
+            if(isset($request['locationid'])){
+                $LocationId = $request['locationid'];
+            }
+            else{
+                $Products = (new Products())->where('counted', false)->where('next_count_date', '<=', $Date)->get();
+            }
+            return $Products;
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            $Product = new \stdClass;
+            $Product->id = -1;
+            $Product->internal_description = $Message;
+            $Product->image_path = config('app')['nophoto'];
+            $Products = new \stdClass;
+            $Products = [];
+            array_push($Products, $Product);
+            return $Products;
         }
     }
 
@@ -57,20 +88,18 @@ class UserDashboard extends Model
             }
             $Keywords = explode(" ", $SearchText);
 
-            $query = " where ((internal_description like '%";
+            $query = " where internal_description like '%";
             $first = true;
             foreach ($Keywords as $key => $Keyword) {
                 # code...
                 if($first){
                     $first = false;
-                    $query = $query . $Keyword . "%')";
+                    $query = $query . $Keyword . "%'";
                 }
                 else{
-                    $query = $query . "or (internal_description like '%" . $Keyword . "%')";
+                    $query = $query . "or internal_description like '%" . $Keyword . "%'";
                 }
             }
-
-            $query = $query . ")";
 
             $basequery = "select * from products";
             $Products = DB::select($basequery . $query);
@@ -97,7 +126,7 @@ class UserDashboard extends Model
             $Message = ["Undefined Server Error"];
         }
         else{
-            $Message = $th->errorInfo;
+            $Message = $th->errorInfo[2];
         }
         return $Message;
     }
