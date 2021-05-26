@@ -1720,6 +1720,7 @@ body {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
+    font-size: 10px;
   }
 
   .add_frame{
