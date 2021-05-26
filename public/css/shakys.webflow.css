@@ -1639,6 +1639,7 @@ body {
 @media screen and (max-width: 767px) {
 
   .order_qty{
+    height: 60px;
     padding-right: 0px;
     padding-bottom: 10px;
     font-size: 6px !important;
