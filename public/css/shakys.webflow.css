@@ -93,7 +93,7 @@ a{
   width: 35vw;
   border-radius: 10px;
   margin-left: 32vw;
-  margin-top: 25vh;
+  margin-top: 15vh;
   position: relative;
   overflow: hidden;
 }
@@ -1643,7 +1643,7 @@ body {
     width: 70vw;
     margin-left: 15vw;
   }
-  
+
   .data_entry_buttons {
     display: block;
     width: auto;
