@@ -32,6 +32,7 @@ a{
   height: 20px;
   width: 80px;
   text-align: right;
+  text-align: end;
   padding-right: 0px !important;
   margin-top: 0px;
 }
