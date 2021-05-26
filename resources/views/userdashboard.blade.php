@@ -41,7 +41,7 @@
             </div>
         </div>
 
-        @if(count($products) > 0)
+        @if(count($productstocount) > 0)
         @for($i = 0; $i < count($locations); $i += 2)
         @if(!isset($locations[$i]->odd))    
         <!-- THIS SECTION WILL BE USED TO SHOW A PAIR OF LOCATIONS -->
@@ -89,32 +89,32 @@
         @endfor
         @endif
 
-        <div id="products_list_wrap">
-            @foreach($products as $key => $product)
+        <div id="products_list_wrap" style="padding-bottom:60px;">
+            @foreach($productstocount as $key => $producttocount)
             @if(round($key / 2) * 2 != $key)
             <!-- HERE A PRODUCT IS SHOWN WITH A BLACK BACKGROUND -->
-            <a onclick="productClick('{{$product->id}}')">
-                <div id="{{$product->id}}" class="ui_section bbg product shadowRight">
+            <a onclick="productClick('{{$producttocount->id}}')">
+                <div id="{{$producttocount->id}}" class="ui_section bbg product shadowRight">
                     <div class="product_frame">
                         <div class="product_pic_frame">
-                            <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
+                            <img src="{{$producttocount->image_path}}" loading="lazy" alt="" class="product_pic">
                         </div>
                         <div class="product_description">
-                            <div class="product_description_text">{{$product->internal_description}}</div>
+                            <div class="product_description_text">{{$producttocount->internal_description}}</div>
                         </div>
                     </div>
                 </div>
             </a>
             @else    
             <!-- HERE A PRODUCT IS SHOWN WITH A RED BACKGROUND -->
-            <a onclick="productClick('{{$product->id}}')">
-                <div id="{{$product->id}}" class="ui_section rbg product shadowRight">
+            <a onclick="productClick('{{$producttocount->id}}')">
+                <div id="{{$producttocount->id}}" class="ui_section rbg product shadowRight">
                     <div class="product_frame">
                         <div class="product_pic_frame">
-                            <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
+                            <img src="{{$producttocount->image_path}}" loading="lazy" alt="" class="product_pic">
                         </div>
                         <div class="product_description">
-                            <div class="product_description_text">{{$product->internal_description}}</div>
+                            <div class="product_description_text">{{$producttocount->internal_description}}</div>
                         </div>
                     </div>
                 </div>

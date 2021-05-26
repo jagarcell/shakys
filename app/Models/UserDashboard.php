@@ -21,15 +21,36 @@ class UserDashboard extends Model
     public function ShowUserDashboard($request)
     {
         # code...
-        $Products = $this->ProductsToCount($request);
-
         $Locations = (new ProductLocations)->where('id', '>', -1)->get();
 
         $LocationsCount = count($Locations);
         if(round($LocationsCount / 2) * 2 != $LocationsCount){
             $Locations[$LocationsCount - 1]->odd = true;
         }
-        return view('userdashboard', ['locations' => $Locations, 'products' => $Products]);
+
+        $Result = $this->ProductsToCount($request);
+        switch ($Result['status']) {
+            case 'ok':
+                # code...
+                $ProductsToCount = $Result['productstocount'];
+                break;
+            case 'error':
+                $Product = new \stdClass;
+                $Product->id = -1;
+                $Product->internal_description = $Result['message'];
+                $Product->image_path = config('app')['nophoto'];
+                $ProductsToCount = [];
+                array_push($ProductsToCount, $Product);
+                break;
+            default:
+                # code...
+                break;
+        }
+        return view('userdashboard', 
+            [
+                'locations' => $Locations, 
+                'productstocount' => $ProductsToCount,
+            ]);
     }
 
     /**
@@ -53,20 +74,13 @@ class UserDashboard extends Model
                 $LocationId = $request['locationid'];
             }
             else{
-                $Products = (new Products())->where('counted', false)->where('next_count_date', '<=', $Date)->get();
+                $ProductsToCount = (new Products())->where('counted', false)->where('next_count_date', '<=', $Date)->get();
             }
-            return $Products;
+            return ['status' => 'ok', 'productstocount' => $ProductsToCount];
         } catch (\Throwable $th) {
             //throw $th;
             $Message = $this->ErrorInfo($th);
-            $Product = new \stdClass;
-            $Product->id = -1;
-            $Product->internal_description = $Message;
-            $Product->image_path = config('app')['nophoto'];
-            $Products = new \stdClass;
-            $Products = [];
-            array_push($Products, $Product);
-            return $Products;
+            return ['status' => 'error', 'message' => $Message];
         }
     }
 
