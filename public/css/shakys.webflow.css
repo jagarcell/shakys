@@ -1641,7 +1641,7 @@ body {
   .order_qty{
     padding-right: 10px;
     padding-bottom: 10px;
-    font-size: 6px;
+    font-size: 6px !important;
   }
   
   .order_frame {
