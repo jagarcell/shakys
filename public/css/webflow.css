@@ -1789,6 +1789,12 @@ textarea.w-select {
   .w-tab-link {
     display: block;
   }
+  .w-tab-link {
+    border-top-right-radius: 0px;
+  }  
+  .w-tab-content {
+    border-top-right-radius: 0px;
+  }
 }
 .w-ix-emptyfix:after {
   content: "";

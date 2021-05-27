@@ -26,12 +26,12 @@ select{
 .add_to_order_button{
   position: sticky;
   top: 330px;
-  width: 150px;
+  width: 100px;
   margin-left: auto;
-  margin-right: 50px;
+  margin-right: 5px;
   text-align: end;
   z-index: 1;
-  color:white;
+  color: white;
 }
 
 .order_data_field_label{

@@ -27,7 +27,7 @@
         @section('page_title', 'PENDING ORDERS')
         @section('content')
         <div id="add_to_order_button" class="add_to_order_button" style="display:none;">
-            <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;">
+            <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;width:100%;">
         </div>
 
         <div data-duration-in="300" data-duration-out="100" class="w-tabs">
