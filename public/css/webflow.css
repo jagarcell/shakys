@@ -1761,9 +1761,11 @@ textarea.w-select {
   cursor: pointer;
   color: #222222;
   background-color: #dddddd;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 20px;
 }
 .w-tab-link.w--current {
-  background-color: #C8C8C8;
+  background-color: darkgray;
 }
 .w-tab-link:focus {
   outline: 0;
@@ -1772,6 +1774,9 @@ textarea.w-select {
   position: relative;
   display: block;
   overflow: hidden;
+  background-color: darkgrey;
+  padding-bottom: 40px;
+  border-top-right-radius: 15px;
 }
 .w-tab-pane {
   position: relative;

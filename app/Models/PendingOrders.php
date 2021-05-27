@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Products;
 use App\Models\Suppliers;
+use App\Models\Users;
 
 class PendingOrders extends Model
 {
@@ -48,7 +49,39 @@ class PendingOrders extends Model
                 break;
         }
 
-        return view('pendingorders', ['products' => $Products, 'countedproducts' => $CountedProducts]);
+        $Result = $this->PickupUsers($request);
+        switch ($Result['status']) {
+            case 'ok':
+                # code...
+                $PickupUsers = $Result['pickupusers'];
+                break;
+            case 'error':
+                $PickupUsers = [];
+                break;
+            default:
+                # code...
+                break;
+        }
+
+        $Result = $this->Suppliers($request);
+        switch ($Result['status']) {
+            case 'ok':
+                # code...
+                $Suppliers = $Result['suppliers'];
+                break;
+            case 'error':
+                $Suppliers = [];
+            default:
+                # code...
+                break;
+        }
+        return view('pendingorders', 
+            [
+                'products' => $Products, 
+                'countedproducts' => $CountedProducts,
+                'pickupusers' => $PickupUsers,
+                'suppliers' => $Suppliers
+            ]);
     }
 
     /**
@@ -70,5 +103,64 @@ class PendingOrders extends Model
             $Message = $this->ErrorInfo($th);
             return ['status' => 'error', 'message' => $Message];
         }
+    }
+
+    /**
+     * 
+     * @return Object pickupusers
+     * 
+     * 
+     */
+    public function PickupUsers($request)
+    {
+        # code...
+        try {
+            //code...
+            $PickupUsers = (new Users())->where('user_type', 'pickup')->get();
+            return ['status' => 'ok', 'pickupusers' => $PickupUsers];
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message];
+        }
+    }
+
+    /**
+     * 
+     * @return String status [ok, error]
+     * 
+     */
+    public function Suppliers($request)
+    {
+        # code...
+        try {
+            //code...
+            $Suppliers = (new Suppliers())->where('id', '>', -1)->get();
+            return ['status' => 'ok', 'suppliers' => $Suppliers];
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message];
+        }
+    }
+
+    /**
+     * 
+     * @param $th
+     * 
+     * @return $Message
+     * 
+     * 
+     */
+    public function ErrorInfo($th)
+    {
+        # code...
+        if(!property_exists($th, 'errorInfo') || count($th->errorInfo) == 0){
+            $Message = ["Undefined Server Error"];
+        }
+        else{
+            $Message = $th->errorInfo[2];
+        }
+        return $Message;
     }
 }

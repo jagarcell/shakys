@@ -10,7 +10,7 @@ $(document).ready(function(){
 })
 
 function tabClick(element){
-    console.log()
+    console.log(element)
     var tabLinks = document.getElementsByClassName('w-tab-link')
     var tabPanes = document.getElementsByClassName('w-tab-pane')
 
@@ -27,6 +27,13 @@ function tabClick(element){
             tabPane.classList.add('w--tab-active')
         }
     })
+
+    if(element.getAttribute('data-w-tab') == "Tab 2"){
+        $('#add_to_order_button').show()
+    }
+    else{
+        $('#add_to_order_button').hide()
+    }
 }
 
 function closeOrder(){

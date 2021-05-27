@@ -26,6 +26,10 @@
     <body class="antialiased bodyClass">
         @section('page_title', 'PENDING ORDERS')
         @section('content')
+        <div id="add_to_order_button" class="add_to_order_button" style="display:none;">
+            <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;">
+        </div>
+
         <div data-duration-in="300" data-duration-out="100" class="w-tabs">
             <div class="w-tab-menu">
                 <a data-w-tab="Tab 1" class="w-inline-block w-tab-link w--current" onclick="tabClick(this)">
@@ -43,10 +47,9 @@
                 <!-- PENDING TO COUNT PRODUCTS -->
                 <div data-w-tab="Tab 1" class="w-tab-pane w--tab-active">
                     @foreach($products as $key => $product)
-                    @if(round($key / 2) * 2 != $key)
-                    <!-- HERE A PRODUCT IS SHOWN WITH A BLACK BACKGROUND -->
+                    <!-- HERE A PRODUCT IS SHOWN WITH A RED/BLACK BACKGROUND -->
                     <a onclick="productClick('{{$product->id}}')">
-                        <div id="{{$product->id}}" class="ui_section bbg product">
+                        <div id="{{$product->id}}" class="ui_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
                             <div class="po_to_count_section">
                                 <div class="po_pic_frame">
                                     <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
@@ -61,34 +64,14 @@
                             </div>
                         </div>
                     </a>
-                    @else    
-                    <!-- HERE A PRODUCT IS SHOWN WITH A RED BACKGROUND -->
-                    <a onclick="productClick('{{$product->id}}')">
-                        <div id="{{$product->id}}" class="ui_section rbg product">
-                            <div class="po_to_count_section">
-                                <div class="po_pic_frame">
-                                    <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
-                                </div>
-                                <div class="po_description">
-                                    <div class="product_description_text">{{$product->internal_description}}</div>
-                                </div>
-                                <div class="po_due_date">
-                                    <div>Due on</div>
-                                    <div>{{$product->due_date}}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    @endif
                     @endforeach
                 </div>
 
                 <!-- COUNTED PRODUCTS -->
                 <div data-w-tab="Tab 2" class="w-tab-pane">
                     @foreach($countedproducts as $key => $countedProduct)
-                    @if(round($key / 2) * 2 != $key)
-                    <!-- HERE A PRODUCT IS SHOWN WITH A BLACK BACKGROUND -->
-                    <div id="{{$countedProduct->id}}" class="ui_section bbg product">
+                    <!-- HERE A PRODUCT IS SHOWN WITH A RED/BLACK BACKGROUND -->
+                    <div id="{{$countedProduct->id}}" class="ui_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
                         <div class="po_to_count_section">
                             <div class="po_pic_frame">
                                 <img src="{{$countedProduct->image_path}}" loading="lazy" alt="" class="product_pic">
@@ -101,44 +84,10 @@
                             <div class="order_data_field">
                                 <label class="order_data_field_label">Supplier</label>
                                 <select id="supplier_sel">
-                                    <option value="-1">Select a supplier</option>
-                                </select>
-                            </div>
-                            <div class="order_data_field">
-                                <label class="order_data_field_label">Qty</label>
-                                <select id="order_qty" class="order_qty_tag">
-                                    <option value="0">0</option>
-                                </select>
-                            </div>
-                            <div class="order_data_field">
-                                <label class="order_data_field_label">Delivery</label>
-                                <select id="order_pickup">
-                                    <option value="pickup">Pickup</option>
-                                    <option value="delivery">Delivery</option>
-                                </select>
-                            <div class="order_data_field">
-                        </div>
-                    </div>
-                    @else    
-                    <!-- HERE A PRODUCT IS SHOWN WITH A RED BACKGROUND -->
-                    <div id="{{$countedProduct->id}}" class="ui_section rbg product">
-                        <div class="po_to_count_section">
-                            <div class="po_pic_frame">
-                                <img src="{{$countedProduct->image_path}}" loading="lazy" alt="" class="product_pic">
-                            </div>
-                            <div class="po_description">
-                                <div class="product_description_text">{{$countedProduct->internal_description}}</div>
-                            </div>
-                            <div class="po_due_date">
-                                <div>Was Due on</div>
-                                <div>{{$countedProduct->due_date}}</div>
-                            </div>
-                        </div>
-                        <div id="order_data" class="order_data">
-                            <div class="order_data_field">
-                                <label class="order_data_field_label">Supplier</label>
-                                <select id="supplier_sel">
-                                    <option value="-1">Select a supplier</option>
+                                    <option value="-1" disabled>Select a supplier</option>
+                                    @foreach($suppliers as $key => $supplier)
+                                    <option value="{{$supplier->id}}">{{$supplier->name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="order_data_field">
@@ -154,9 +103,21 @@
                                     <option value="delivery">Delivery</option>
                                 </select>
                             </div>
+                            <div class="order_data_field">
+                                <label class="order_data_field_label">Pickup Guy</label>
+                                <select id="order_pickup_guy">
+                                    <option value="-1" disabled>Select one</option>
+                                    @foreach($pickupusers as $key => $pickupuser)
+                                    <option value="{{$pickupuser->id}}">{{$pickupuser->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="order_data_field">
+                                <label class="order_data_field_label">Add to order</label>
+                                <input type="checkbox" id="order_check">
+                            </div>
                         </div>
                     </div>
-                    @endif
                     @endforeach
                 </div>
 
