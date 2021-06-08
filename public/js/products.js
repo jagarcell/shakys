@@ -174,6 +174,34 @@ function createButtonClick() {
 
 /**
  * 
+ * Action to open a dialog to link a product to a supplier
+ * @param {string} productId
+ *  
+ */
+function suppliersButtonClick(productId) {
+    alert(productId)
+}
+
+/**
+ * Accept product linking to a supplier
+ * @param {string} productId 
+ * 
+ */
+function acceptProductChanges(productId){
+
+}
+
+/**
+ * Discard the product linking to a supplier
+ * @param {string} productId 
+ * 
+ */
+function discardProductChanges(productId) {
+    
+}
+
+/**
+ * Action to delete a product
  * @param {string} productId
  *  
  */

@@ -180,8 +180,11 @@ class Suppliers extends Model
                 return['status' => 'notfound', 'id' => $Id, 'element_tag' => $ElementTag];
             }
             $Suppliers = $this->where('email', $Email)->get();
-            if(count($Suppliers) >= 0 && $Suppliers[0]->id != $Id){
-                return['status' => 'emailtaken', 'id' => $Id, 'element_tag' => $ElementTag];
+
+            if(count($Suppliers) > 0){
+                if($Suppliers[0]->id != $Id){
+                    return['status' => 'emailtaken', 'id' => $Id, 'element_tag' => $ElementTag];
+                }
             }
 
             if(!\File::exists($ImagePath)){
@@ -287,7 +290,7 @@ class Suppliers extends Model
             $Message = ["Undefined Server Error"];
         }
         else{
-            $Message = $th->errorInfo;
+            $Message = $th->errorInfo[2];
         }
         return $Message;
     }

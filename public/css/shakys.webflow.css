@@ -23,9 +23,144 @@ select{
   font-family: inherit;
 }
 
+.product_qty_display_input{
+  width: 100%;
+  border-radius: 5px;
+  text-align-last: center;
+}
+
+.order_line_section{
+  margin-top: 40px;
+  border: outset;
+  width: 90%;
+  margin-left: 5%;
+  border-radius: 10px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.submit_order_button_wrap{
+  text-align: center;
+  padding-top: 20px;
+}
+
+.submit_order_button{
+  background-color: #3898ec;
+}
+
+.empty_tab_text{
+  width: 100%;
+  text-align: center;
+  font-size: xx-large;
+  padding-top: 110px;
+}
+
+.order_line{
+  width: 100%;
+  display: flex;
+}
+
+.product_code_wrap{
+  width: 30%;
+  text-align: center;
+}
+
+.order_display_lines{
+  padding-top: 20px;
+}
+
+.product_int_desc_wrap{
+  width: 50%;
+  text-align: center;
+}
+
+.product_qty_display_select{
+  text-align-last: center;
+}
+
+.product_int_desc{
+  border-radius: 5px;
+  text-align: center;
+  width: 90%;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.product_int_code{
+  border-radius: 5px;
+  text-align: center;
+  width: 60%;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.order_display_qty{
+  width: 10%;
+}
+
+.order_section{
+  width: 100%;
+  background-color: darkslategrey;
+  margin: 5%;
+  width: 90%;
+  border-radius: 10px;
+  padding-bottom: 20px;
+  padding-top: 20px;  
+}
+
+.order_pickup_display_wrap{
+  width: 50%;
+}
+
+.order_type_display_select{
+  width: 60%;
+  padding-left: 10px;
+  border-radius: 5px;  
+}
+
+.order_segment{
+  width: 100%;
+  display: flex;
+  text-align: center;
+}
+
+.order_supplier_select_wrap{
+  width: 50%;
+}
+
+.order_supplier_display_select{
+  width: 60%;
+  padding-left: 10px;
+  border-radius: 5px;
+}
+
+.order_pickup_user_display_select{
+  width: 60%;
+  padding-left: 10px;
+  border-radius: 5px;
+}
+
+.order_date_wrap{
+  width:50%;
+}
+
+.order_display_date{
+  width: 60%;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.pending_content{
+  font-size: 18px;
+}
+
+.counted_product_description{
+  width: auto;
+}
+
 .add_to_order_button{
   position: sticky;
-  top: 330px;
+  top: 320px;
   width: 100px;
   margin-left: auto;
   margin-right: 5px;
@@ -44,6 +179,7 @@ select{
   font-size: inherit;
   width: 96%;
   margin-left: 4%;
+  margin-top: 50px;
 }
 
 .order_data_field{
@@ -62,6 +198,7 @@ select{
 .order_button{
   background-color: #3898ec;
   width: 80px !important;
+  margin-top: 10px;
 }
 
 .order_qty{
@@ -364,7 +501,6 @@ select{
   width: 90%;
   margin-left: 5%;
   border-radius: 10px;
-  font-size: 22px;
 }
 
 .ui_section.bbg {
@@ -411,6 +547,11 @@ select{
 
 .delete_button{
   background-color: red;
+  width: 80px;
+}
+
+.supplier_product_button{
+  background-color: darkgreen;
   width: 80px;
 }
 
@@ -729,6 +870,8 @@ body {
   padding-right: 20px;
   border-radius: 10px;
   text-align: center;
+  width: 90%;
+  border-radius:0px;
 }
 
 .buttons_frame_height{
@@ -1562,6 +1705,7 @@ body {
   min-height: 20vh;
   color: white;
   font-family: inherit;
+  font-size: inherit;
 }
 
 .po_pic_frame {
@@ -1580,8 +1724,18 @@ body {
 }
 
 @media screen and (max-width: 991px) {
-  .po_to_count_section{
-    font-size: 18px;
+  
+  .data_entry_buttons {
+    display: block;
+    width: auto;
+  }
+
+  .bottom_button{
+    margin-top: 20px;
+  }
+
+  .add_to_order_button{
+    top: 100px;
   }
 
   .order_data{  
@@ -1695,6 +1849,51 @@ body {
 
 @media screen and (max-width: 767px) {
 
+  
+  .order_display_qty{
+    width: 100%;
+    text-align: center;
+  }
+
+  .product_qty_display_select{
+    width: 60%;
+  }
+
+  .product_int_desc{
+    width: 60%;
+  }
+  
+  .product_int_desc_wrap{
+    width: 100%;
+  }
+
+  .product_code_wrap{
+    width: 100%;
+  }
+  
+  .order_line{
+    display: block;
+  }
+
+  .order_pickup_display_wrap{
+    width: 100%;
+  }
+
+  .order_segment{
+    display: block;
+  }
+  .counted_product_description{
+    width: 100%;
+  }
+
+  .order_supplier_select_wrap{
+    width: 100%;
+  }
+
+  .order_date_wrap{
+    width: 100%;
+  }
+  
   .order_qty{
     display: block;
     height: 30px;
@@ -1711,15 +1910,6 @@ body {
   .order_frame {
     width: 70vw;
     margin-left: 15vw;
-  }
-
-  .data_entry_buttons {
-    display: block;
-    width: auto;
-  }
-
-  .bottom_button{
-    margin-top: 20px;
   }
 
   .picture {
@@ -1769,7 +1959,6 @@ body {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
-    font-size: 14px;
   }
 
   .add_frame{

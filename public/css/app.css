@@ -627,6 +627,7 @@ select {
   padding-right: 2.5rem;
   -webkit-print-color-adjust: exact;
           color-adjust: exact;
+  font-size:inherit;
 }
 
 [multiple] {

@@ -1760,7 +1760,7 @@ textarea.w-select {
   text-align: left;
   cursor: pointer;
   color: #222222;
-  background-color: #dddddd;
+  background-color: lightgray;
   border-top-right-radius: 5px;
   border-top-left-radius: 20px;
 }
@@ -1777,6 +1777,7 @@ textarea.w-select {
   background-color: darkgrey;
   padding-bottom: 40px;
   border-top-right-radius: 15px;
+  min-height: 50vh;
 }
 .w-tab-pane {
   position: relative;

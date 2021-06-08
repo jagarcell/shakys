@@ -227,17 +227,22 @@ class Products extends Model
         $Config = config('app');
 
         try {
-            //code...
+            // Check if the product exists
             $Products = $this->where('id', $Id)->get();
             if(count($Products) == 0){
                 return ['status' => 'notfound', 'element_tag' => $ElementTag];
             }
+            $Product = $Products[0];
+
+            // Check if the product's code is in use
             $Products = $this->where('internal_code', $InternalCode)->get();
             if(count($Products) > 0){
                 if($Products[0]->id != $Id){
                     return ['status' => 'exist', 'element_tag' => $ElementTag];
                 }
             }
+
+            // Check if the product's image is uploaded
             $ProductsUploadeImgPath = $Config['products_images_path'];
             $ImagePath = 
                 str_contains($ImagePath, $ProductsUploadeImgPath) ?
@@ -245,7 +250,13 @@ class Products extends Model
             if(!\File::exists($ImagePath)){
                 $ImagePath = config('app')['nophoto'];
             }
-                    
+
+            if($Product->days_to_count != $DaysToCount){
+                $NextCountDate = date_modify(new \DateTime(), "+$DaysToCount day");
+            }
+            else{
+                $NextCountDate = new \DateTime($Product->next_count_date);
+            }
             $this->where('id', $Id)->update(
                 [
                     'internal_code' => $InternalCode,
@@ -253,7 +264,8 @@ class Products extends Model
                     'days_to_count' => $DaysToCount,
                     'measure_unit' => $MeasureUnit,
                     'default_supplier_id' => $DefaultSupplierId,
-                    'image_path' => $ImagePath
+                    'image_path' => $ImagePath,
+                    'next_count_date' => $NextCountDate,
                 ]
             );
 

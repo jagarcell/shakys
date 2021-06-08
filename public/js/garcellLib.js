@@ -51,6 +51,7 @@ function ValidateEmail(inputText)
  *                  message: 'string value with the success or error message', 
  *                  error: 'boolean to indicate error or success'
  *                         'if not defined is considered an error',
+ *                  alignTop: 'If true aligns message at top, otherwise at bottom
  *                  timeout: 'time in milliseconds to run the callback function'
  *                  param: 'callback function parameter'
  *

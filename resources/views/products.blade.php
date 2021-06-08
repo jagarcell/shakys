@@ -70,7 +70,7 @@
             </div>
         </div>
     
-        <!-- THIS IS THE LIST OF PRODUCTS IN THE DATABASE RECIVED FROM THE SERVER -->
+        <!-- THIS IS THE LIST OF PRODUCTS IN THE DATABASE RECEIVED FROM THE SERVER -->
         <div id="products_list_wrap">    
             @if(count($products) > 0)
             @foreach($products as $key => $product)
@@ -105,6 +105,9 @@
                             <div class="data_entry_buttons">
                                 <div>
                                     <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$product->id}}')">
+                                </div>
+                                <div class="bottom_button">
+                                    <input type="button" class="supplier_product_button box_shadow w-button" value="Suppliers" onclick="suppliersButtonClick('{{$product->id}}')">
                                 </div>
                                 <div class="bottom_button">
                                     <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('{{$product->id}}')">
@@ -154,6 +157,9 @@
                                 <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('section_html')">
                             </div>
                             <div class="bottom_button">
+                                <input type="button" class="supplier_product_button box_shadow w-button" value="Suppliers" onclick="suppliersButtonClick('section_html')">
+                            </div>
+                            <div class="bottom_button">
                                 <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('section_html')">
                             </div>
                         </div>
@@ -199,6 +205,43 @@
                             <div class="add_buttons_frame">
                                 <input type="button" value="Accept Changes" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="acceptEditChanges('product-id')">
                                 <input type="button" value="Discard Changes" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardEditChanges('product-id')">
+                            </div>
+                            <input id="image_to_upload" hidden>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+        <!-- THIS IS THE HTML TO BE SHOWN FROM JS TO LINK A PRODUCT TO A SUPPLIER WHEN THE USER CLICKS EDIT -->
+        <div id="link_product_section_html" class="edit_section_html" style="display:none;">
+            <div id="action_result_message" class="action_result_message" hidden></div>
+            <div class="section">
+                <div class="pic_frame">
+                    <form id="product-image" action="/productimgupload" method="post" enctype="multipart/form-data" class="box_shadow">
+                        @csrf
+                    </form>
+                </div>
+                <div class="data_entry">
+                    <div class="add_form_frame w-form">
+                        <form id="product_form" class="add_frame">
+                            <div class="field_wrap">
+                                <div class="field_label">Product Code</div>
+                                <input id="code" value="text" type="text" class="text_field box_shadow w-input" disabled>
+                            </div>    
+                            <div class="field_wrap">
+                                <div class="field_label">Description</div>
+                                <input id="description" type="text" class="text_field box_shadow w-input" disabled>
+                            </div>
+                            <div class="field_wrap">
+                                <div class="field_label">Supplier</div>
+                                <select id="default_supplier" class="text_field box_shadow w-input" maxlength="256" name="default_supplier" data-name="default_supplier">
+                                    <option value="-1" selected="" placeholder="Default Supplier (Optional)">Default Supplier (Optional)</option>
+                                </select>
+                            </div>
+                            <div class="add_buttons_frame">
+                                <input type="button" value="Accept Changes" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="acceptProductChanges('product-id')">
+                                <input type="button" value="Discard Changes" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardProductChanges('product-id')">
                             </div>
                             <input id="image_to_upload" hidden>
                         </form>

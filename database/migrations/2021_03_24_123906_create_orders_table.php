@@ -17,7 +17,7 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->bigInteger('supplier_id')->default(-1);
             $table->dateTime('date');
-            $table->boolean('pickup')->default(true);
+            $table->string('pickup', 20)->default('pickup');
             $table->bigInteger('pickup_guy_id')->default(-1);
             $table->timestamps();
         });

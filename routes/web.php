@@ -158,3 +158,16 @@ Route::post('/createuser', 'UsersController@CreateUser');
 Route::get('/userdashboard', 'UserDashboardController@ShowUserDashboard');
   
 Route::get('/searchfor', 'UserDashboardController@SearchFor');
+
+/****************************************
+ *                                      *
+ *               ORDERS                 *
+ *                                      *
+ ***************************************/
+
+ Route::post('/addtoorder', 'OrdersController@AddToOrder');
+
+ Route::post('/submitorder', 'OrdersController@SubmitOrder');
+
+ Route::post('/emailorder', 'OrdersController@EmailOrder');
+ 
