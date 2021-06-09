@@ -56,6 +56,13 @@ function openTab(element){
     else{
         $('#add_to_order_button').hide()
     }
+
+    if(element.getAttribute('data-w-tab') == "Tab 3"){
+        $('#all_products_add_to_order_button').show()
+    }
+    else{
+        $('#all_products_add_to_order_button').hide()
+    }
 }
 
 function tabClick(element) {
@@ -210,7 +217,6 @@ function orderTypeSelectChange(orderTypeSelect, orderId){
 }
 
 function orderPickupGuySelectChange(orderPickupGuySelect){
-    console.log(orderPickupGuySelect)
     orderPickupGuySelect.style = ""
 }
 
@@ -275,12 +281,13 @@ function resendOrderButtonClick(orderId){
                 var actionResultMessage = $('#action_result_message_' + elementTag)
                 switch (data.status) {
                     case 'ok':
+                        var order = data.order
                         reportResult(
                             {
                                 frame:actionResultMessage,
                                 error:false,
                                 alignTop:false,
-                                message:"THE ORDER WAS SUCCESFULLY SENT",
+                                message:"THE ORDER WAS SUCCESFULLY SENT TO:<br> " + order.email,
                             }, function(frame, param){
                                 frame.hide()
                             }
@@ -298,6 +305,16 @@ function resendOrderButtonClick(orderId){
                         )
                         break
 
+                    case 'noemail':
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:"THERE IS NO EMAIL REGISTERED",
+                            }, function(frame, parama){
+                                frame.hide()
+                            }
+                        )
+                        break        
                     case 'error':
                         var message = data.message
                         reportResult(
@@ -319,11 +336,11 @@ function resendOrderButtonClick(orderId){
     )
 }
 
-function addToOrderClick() {
-    var checkedToOrder = $('.add_to_order_check:checkbox:checked')
+function addToOrderClick(addCheckClass) {
+    var checkedToOrder = $('.' + addCheckClass + ':checkbox:checked')
     $.each(checkedToOrder, function(index, toOrder){
         var uiSection = garcellParentNodeByClassName(toOrder, 'ui_section')
-        var supplierSel = $(uiSection).find('#counted_supplier_select')[0]
+        var supplierSel = $(uiSection).find('#product_supplier_select')[0]
         var productId = uiSection.id
         var supplierId = supplierSel.options[supplierSel.selectedIndex].getAttribute("value")
         var orderQtySel = $(uiSection).find('#order_qty_sel')[0]

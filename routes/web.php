@@ -151,7 +151,7 @@ Route::post('/createuser', 'UsersController@CreateUser');
 
 /****************************************
  *                                      *
- *                                      *
+ *           USER DASHBOARD             *
  *                                      *
  ***************************************/
   
@@ -170,4 +170,14 @@ Route::get('/searchfor', 'UserDashboardController@SearchFor');
  Route::post('/submitorder', 'OrdersController@SubmitOrder');
 
  Route::post('/emailorder', 'OrdersController@EmailOrder');
+
+ /***************************************
+  *                                     *
+  *      SUPPLIERS-PRODUCTS PIVOTS      *
+  *                                     *
+  **************************************/
+
+  Route::post('/createsuppliersproductspivot', 'SuppliersProductsPivotsController@CreatePivot');
+
+  Route::get('/getsuppliersproductspivot', 'SuppliersProductsPivotsController@GetPivot');
  

@@ -75,7 +75,6 @@
             @if(count($products) > 0)
             @foreach($products as $key => $product)
             <div id="{{$product->id}}">
-                <div id="action_result_message" class="action_result_message" hidden></div>
                 <div class="section">
                     <div class="pic_frame">
                         <img src="{{$product->image_path}}" loading="lazy" sizes="(max-width: 479px) 80vw, 256px" srcset="{{$product->image_path}} 500w, {{$product->image_path}} 512w" alt="" class="picture box_shadow">
@@ -114,6 +113,7 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="action_result_message" class="action_result_message" hidden></div>
                     </div>
                 </div>
             </div>
@@ -125,7 +125,6 @@
 
         <!-- THIS IS THE HTML TO BE USED BY JS TO SHOW A CREATED OR UPDATED PRODUCT -->
         <div id="section_html" style="display:none;">
-            <div id="action_result_message" class="action_result_message" hidden></div>
             <div class="section">
                 <div class="pic_frame">
                     <img src="image-path" loading="lazy" sizes="(max-width: 479px) 80vw, 256px" srcset="image-path 500w, image-path 512w" alt="" class="picture box_shadow">
@@ -165,6 +164,7 @@
                         </div>
                     </div>
                 </div>
+                <div id="action_result_message" class="action_result_message" hidden></div>
             </div>
         </div>
      
@@ -213,41 +213,48 @@
             </div>
         </div>
      
-        <!-- THIS IS THE HTML TO BE SHOWN FROM JS TO LINK A PRODUCT TO A SUPPLIER WHEN THE USER CLICKS EDIT -->
+        <!-- THIS IS THE HTML TO BE SHOWN FROM JS TO LINK A PRODUCT TO A SUPPLIER WHEN THE USER CLICKS SUPPLIERS -->
         <div id="link_product_section_html" class="edit_section_html" style="display:none;">
-            <div id="action_result_message" class="action_result_message" hidden></div>
             <div class="section">
                 <div class="pic_frame">
-                    <form id="product-image" action="/productimgupload" method="post" enctype="multipart/form-data" class="box_shadow">
-                        @csrf
-                    </form>
+                    <img src="image-path" loading="lazy" sizes="(max-width: 479px) 80vw, 256px" srcset="image-path 500w, image-path 512w" alt="" class="picture box_shadow">
                 </div>
                 <div class="data_entry">
                     <div class="add_form_frame w-form">
                         <form id="product_form" class="add_frame">
                             <div class="field_wrap">
                                 <div class="field_label">Product Code</div>
-                                <input id="code" value="text" type="text" class="text_field box_shadow w-input" disabled>
+                                <input id="code" value="product-code" type="text" class="text_field box_shadow w-input" disabled>
                             </div>    
                             <div class="field_wrap">
                                 <div class="field_label">Description</div>
-                                <input id="description" type="text" class="text_field box_shadow w-input" disabled>
+                                <input id="description" value="product-description" type="text" class="text_field box_shadow w-input" disabled>
                             </div>
                             <div class="field_wrap">
                                 <div class="field_label">Supplier</div>
-                                <select id="default_supplier" class="text_field box_shadow w-input" maxlength="256" name="default_supplier" data-name="default_supplier">
-                                    <option value="-1" selected="" placeholder="Default Supplier (Optional)">Default Supplier (Optional)</option>
+                                <select id="supplier_product_select" class="text_field box_shadow w-input" maxlength="256" name="default_supplier" data-name="default_supplier" onchange="supplierProductSelectChange(this, 'product-id')">
+                                    <option value="-1" selected disabled style="font-style:italic;">Select a supplier ...</option>
                                 </select>
                             </div>
+                            <div class="field_wrap">
+                                <div class="field_label">Supplier's Product Code</div>
+                                <input id="supplier_product_code" value="" type="text" class="text_field box_shadow w-input" disabled>
+                            </div>    
+                            <div class="field_wrap">
+                                <div class="field_label">Supplier's Product Description</div>
+                                <input id="supplier_product_description" value="" type="text" class="text_field box_shadow w-input" disabled>
+                            </div>
                             <div class="add_buttons_frame">
-                                <input type="button" value="Accept Changes" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="acceptProductChanges('product-id')">
-                                <input type="button" value="Discard Changes" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardProductChanges('product-id')">
+                                <input type="button" value="Accept Changes" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="acceptSupplierProductChanges('product-id')">
+                                <input type="button" value="Discard Changes" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardSupplierProductChanges('product-id')">
                             </div>
                             <input id="image_to_upload" hidden>
                         </form>
                     </div>
+                    <div id="action_result_message" class="action_result_message" hidden></div>
                 </div>
             </div>
+            <div id="action_result_message" class="action_result_message" hidden></div>
         </div>
      
         <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>

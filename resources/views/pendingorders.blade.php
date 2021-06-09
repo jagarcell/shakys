@@ -28,11 +28,15 @@
         @section('content')
         <input id="tab_id" value="{{$tabid}}" hidden></input>
         <div class="pending_content">
-            <div id="add_to_order_button" class="add_to_order_button" style="display:none;">
-                <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;width:100%;" onclick="addToOrderClick()">
+        <div id="add_to_order_button" class="add_to_order_button" style="display:none;">
+                <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;width:100%;" onclick="addToOrderClick('add_to_order_check')">
+            </div>
+            <div id="all_products_add_to_order_button" class="add_to_order_button" style="display:none;">
+                <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;width:100%;" onclick="addToOrderClick('all_products_add_to_order_check')">
             </div>
 
             <div data-duration-in="300" data-duration-out="100" class="w-tabs">
+                <!-- TABS MENU -->
                 <div class="w-tab-menu">
                     <a id="tab_1" data-w-tab="Tab 1" class="w-inline-block w-tab-link w--current" onclick="tabClick(this)">
                         <div>Pending To Count</div>
@@ -41,14 +45,19 @@
                         <div>Counted</div>
                     </a>
                     <a id="tab_3" data-w-tab="Tab 3" class="w-inline-block w-tab-link" onclick="tabClick(this)">
-                        <div>Orders For Approval</div>
+                        <div>All The Products</div>
                     </a>
                     <a id="tab_4" data-w-tab="Tab 4" class="w-inline-block w-tab-link" onclick="tabClick(this)">
+                        <div>Orders For Approval</div>
+                    </a>
+                    <a id="tab_5" data-w-tab="Tab 5" class="w-inline-block w-tab-link" onclick="tabClick(this)">
                         <div>Submitted Orders</div>
                     </a>
                 </div>
 
+                <!-- TABS CONTENT -->
                 <div class="w-tab-content">
+                
                     <!-- PENDING TO COUNT PRODUCTS -->
                     <div data-w-tab="Tab 1" class="w-tab-pane w--tab-active">
                         @if(count($products) > 0)
@@ -98,7 +107,7 @@
                             <div id="order_data" class="order_data">
                                 <div class="order_data_field">
                                     <label id="supplier_select_label" class="order_data_field_label">Supplier</label>
-                                    <select id="counted_supplier_select" onchange="supplierSelChange(this)">
+                                    <select id="product_supplier_select" onchange="supplierSelChange(this)">
                                         <option value="-1" selected disabled>Select a supplier</option>
                                         @foreach($suppliers as $key => $supplier)
                                         <option value="{{$supplier->id}}" pickup="{{$supplier->pickup}}" last_pickup_guy="{{$supplier->last_pickup_id}}" {{$supplier->id == $countedProduct->default_supplier_id ? 'selected':''}}>{{$supplier->name}}</option>
@@ -141,8 +150,70 @@
                         @endif
                     </div>
 
-                    <!-- ORDERS FOR APPROVAL TAB -->
+                    <!-- ALL THE PRODUCTS -->
                     <div data-w-tab="Tab 3" class="w-tab-pane">
+                        @if(count($allproducts) > 0)
+                        @foreach($allproducts as $key => $allProduct)
+                        <!-- HERE A PRODUCT IS SHOWN WITH A RED/BLACK BACKGROUND -->
+                        <div id="{{$allProduct->id}}" class="ui_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
+                            <div class="po_to_count_section">
+                                <div class="po_pic_frame">
+                                    <img src="{{$allProduct->image_path}}" loading="lazy" alt="" class="product_pic">
+                                </div>
+                                <div class="po_description">
+                                    <div class="product_description_text">
+                                        <text class="all_product_description">{{$allProduct->internal_description}}</text>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="order_data" class="order_data">
+                                <div class="order_data_field">
+                                    <label id="supplier_select_label" class="order_data_field_label">Supplier</label>
+                                    <select id="product_supplier_select" onchange="supplierSelChange(this)">
+                                        <option value="-1" selected disabled>Select a supplier</option>
+                                        @foreach($suppliers as $key => $supplier)
+                                        <option value="{{$supplier->id}}" pickup="{{$supplier->pickup}}" last_pickup_guy="{{$supplier->last_pickup_id}}" {{$supplier->id == $allProduct->default_supplier_id ? 'selected':''}}>{{$supplier->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="order_data_field">
+                                    <label class="order_data_field_label">Qty</label>
+                                    <select id="order_qty_sel" class="order_qty_select" qty_to_order={{$allProduct->qty_to_order}}>
+                                        <option value="0">0</option>
+                                    </select>
+                                </div>
+                                <div id="pickup" class="order_data_field">
+                                    <label id="pickup_user_label" class="order_data_field_label">Delivery</label>
+                                    <select id="order_pickup_select" onchange="orderPickupSelectChange(this)">
+                                        <option value="pickup" {{$allProduct->pickup == 'pickup' ? 'selected':''}}>Pickup</option>
+                                        <option value="delivery" {{$allProduct->pickup == 'delivery' ? 'selected':''}}>Delivery</option>
+                                    </select>
+                                </div>
+                                <div id="order_pickup_guy_wrap" class="order_data_field" {{$allProduct->pickup == 'delivery' ? 'hidden':''}}>
+                                    <label id="all_pickup_user_select" class="order_data_field_label">Pickup Guy</label>
+                                    <select id="order_pickup_guy_select" onchange="orderPickupGuySelectChange(this)">
+                                        <option value="-1" selected disabled>Select one</option>
+                                        @foreach($pickupusers as $key => $pickupuser)
+                                        <option value="{{$pickupuser->id}}" {{$pickupuser->id == $allProduct->last_pickup_id ? 'selected':''}}>
+                                            {{$pickupuser->name}}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="order_data_field">
+                                    <label class="order_data_field_label">Add to order</label>
+                                    <input type="checkbox" id="order_check" class="all_products_add_to_order_check">
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                        @else
+                        <div class="empty_tab_text">THERE ARE NOT PRODUCTS AT ALL</div>
+                        @endif
+                    </div>
+
+                    <!-- ORDERS FOR APPROVAL TAB -->
+                    <div data-w-tab="Tab 4" class="w-tab-pane">
                         @if(count($orders) > 0)
                         @foreach($orders as $key => $order)
                         <div id="{{$order->id}}" class="order_section shadowRight">
@@ -231,7 +302,7 @@
                     </div>
 
                     <!-- SUBMITTED ORDERS TAB -->
-                    <div data-w-tab="Tab 4" class="w-tab-pane">
+                    <div data-w-tab="Tab 5" class="w-tab-pane">
                         @if(count($submittedorders) > 0)
                         @foreach($submittedorders as $key => $submittedOrder)
                         <div id="{{$submittedOrder->id}}" class="order_section shadowRight">

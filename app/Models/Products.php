@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 use App\Models\Suppliers;
+use App\Models\SuppliersProductsPivots;
 
 class Products extends Model
 {
@@ -149,11 +151,15 @@ class Products extends Model
 
     /**
      * 
-     * @param Request ['id']
+     * @param Request [
+     *                  'id' 
+     *                  'suppliers' if any value is set include suppliers
+     *                ]
      * @param Object element_tag
      * 
      * @return String status ['ok' 'error' 'notfound']
      * @return String message if status is error
+     * @return Object product
      * @return Object element_tag
      * 
      */
@@ -161,7 +167,11 @@ class Products extends Model
     {
         # code...
         $Id = $request['id'];
+        if(isset($request['supplier_id'])){
+            $SupplierId = $request['supplier_id'];
+        }
         $ElementTag = $request['element_tag'];
+
         try {
             //code...
             $Products = $this->where('id', $Id)->get();
@@ -185,7 +195,27 @@ class Products extends Model
             if(!is_null($Supplier)){
                 $DefaultSupplierName = $Supplier->name;
             }
+
             $Product->default_supplier_name = $DefaultSupplierName;
+            if(isset($request['suppliers'])){
+                $Suppliers = (new Suppliers())->where('id', '>', -1)->get();
+                $Product->suppliers = $Suppliers;
+
+                if(isset($SupplierId)){
+                    $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                    ->where('product_id', $Product->id)
+                    ->where('supplier_id', $SupplierId)->get();
+                }
+                else{
+                    $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                    ->where('product_id', $Product->id)
+                    ->where('supplier_id', $Product->default_supplier_id)->get();
+                }
+                if(count($SuppliersProductsPivots) > 0){
+                    $SuppliersProductsPivot = $SuppliersProductsPivots[0];
+                    $Product->supplier_product_pivot = $SuppliersProductsPivot;
+                }
+            }
             return ['status' => 'ok', 'product' => $Product, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             //throw $th;

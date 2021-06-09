@@ -121,6 +121,8 @@ class PendingOrders extends Model
                 break;
         }
 
+        $AllProducts = (new Products())->where('id', '>', -1)->get();
+
         return view('pendingorders', 
             [
                 'tabid' => $TabId,
@@ -130,13 +132,14 @@ class PendingOrders extends Model
                 'suppliers' => $Suppliers,
                 'orders' => $Orders,
                 'submittedorders' => $SubmittedOrders,
+                'allproducts' => $AllProducts,
             ]);
     }
 
     /**
      * 
-     * This function shows the products tha have been counted
-     * and should be considered to be ordered to the supplier
+     * This function shows the products that have been counted
+     * and that should be considered to be ordered to the supplier
      * 
      * @return Object products
      */

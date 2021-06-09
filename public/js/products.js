@@ -179,7 +179,68 @@ function createButtonClick() {
  *  
  */
 function suppliersButtonClick(productId) {
-    alert(productId)
+
+    $.get('/getproduct',
+        {
+            id:productId,
+            suppliers:"include",
+            element_tag:productId,
+        }, function (data, status) {
+            if(status == 'success'){
+                var elementTag = data.element_tag
+                var actionResultMessage = $('#' + elementTag).find('#action_result_message')
+                switch (data.status) {
+                    case 'ok':
+                        var product = data.product
+                        var productHtml = document.getElementById(productId)
+
+                        productHtml.innerHTML = document.getElementById('link_product_section_html').innerHTML
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/image-path/g, product.image_path)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/product-id/g, product.id)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/product-code/g, product.internal_code)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/product-description/g, product.internal_description)
+
+                        var suppliersSelect = $(productHtml).find('#supplier_product_select')[0]
+
+                        $.each(product.suppliers, function(index, supplier){
+                            var option = document.createElement("option")
+                            option.value = supplier.id
+                            option.text = supplier.name
+                            suppliersSelect.options.add(option)
+                        })
+                        break
+                
+                    case 'error':
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                alignTop:false,
+                            }, function (frame, param) {
+                                frame.hide()
+                            }
+                        )
+                        break
+                        
+                    case 'notfound':
+                        var message = getStatusMessage('notfound')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                            }, function (frame, param) {
+                                frame.hide()
+                            }
+                        )
+                        break
+
+                    default:
+                        break
+                }
+            }
+        }
+    )
 }
 
 /**
@@ -187,8 +248,128 @@ function suppliersButtonClick(productId) {
  * @param {string} productId 
  * 
  */
-function acceptProductChanges(productId){
+function acceptSupplierProductChanges(productId){
+    var productHtml = document.getElementById(productId)
+    var supplierSelect = $(productHtml).find('#supplier_product_select')[0]
+    var supplierId = supplierSelect.options[supplierSelect.selectedIndex].value
+    var supplierCode = $(productHtml).find('#supplier_product_code').val()
+    var supplierDescription = $(productHtml).find('#supplier_product_description').val()
+    $.post('/createsuppliersproductspivot',
+        {
+            _token:$('meta[name="csrf-token"]').attr('content'),
+            supplier_id:supplierId,
+            product_id:productId,
+            supplier_code:supplierCode,
+            supplier_description:supplierDescription,
+            element_tag:productId,
+        }, function(data, status){
+            if(status == 'success'){
+                var elementTag = data.element_tag
+                var actionResultMessage = $(document.getElementById(elementTag)).find('#action_result_message')
+                switch (data.status) {
+                    case 'ok':
+                        var product = data.product
+                        var sectionHtml = document.getElementById('section_html')
+                        var productHtml = document.getElementById(elementTag)
+                        
+                        productHtml.innerHTML = sectionHtml.innerHTML
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/image-path/g, product.image_path)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/internal-code/g, product.internal_code)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/internal-description/g, product.internal_description)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/days-to-count/g, product.days_to_count)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/measure-unit/g, product.measure_unit)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/default-supplier-name/g, product.default_supplier_name)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/section_html/g, product.id)
+                        
+                        break
+                    
+                    case 'error':
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                alignTop:false,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+                        break
+                    case '419':
+                        var message = getStatusMessage('419')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                alignTop:false,
+                            }
+                        )
 
+                    case 'nodata':
+                        var message = getStatusMessage('nodata')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                alignTop:false,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+                    default:
+                        break
+                }
+            }
+        }
+    )
+}
+
+/**
+ * 
+ * 
+ * @param {string} productId
+ *  
+ */
+function supplierProductSelectChange(supplierProductSelect, productId) {
+    var supplierId = supplierProductSelect.options[supplierProductSelect.selectedIndex].value
+    $.get('/getsuppliersproductspivot',
+        {
+            product_id:productId,
+            supplier_id:supplierId,
+            element_tag:productId,
+        }, function(data, status){
+            if(status == 'success'){
+                var elementTag = data.element_tag
+                var productHtml = document.getElementById(elementTag)
+                switch (data.status) {
+                    case 'ok':
+                        var suppliersProductsPivot = data.suppliersproductspivot
+                        var supplierProductCode = $(productHtml).find('#supplier_product_code')
+                        var supplierProductDescription = $(productHtml).find('#supplier_product_description')
+
+                        supplierProductCode.val(suppliersProductsPivot.supplier_code)
+                        supplierProductDescription.val(suppliersProductsPivot.supplier_description)
+                        supplierProductCode.removeAttr('disabled')
+                        supplierProductDescription.removeAttr('disabled')
+                        
+                        break
+
+                    case 'notfound':
+                        var supplierProductCode = $(productHtml).find('#supplier_product_code')
+                        var supplierProductDescription = $(productHtml).find('#supplier_product_description')
+
+                        supplierProductCode.val("")
+                        supplierProductDescription.val("")
+                        supplierProductCode.removeAttr('disabled')
+                        supplierProductDescription.removeAttr('disabled')
+                        break
+
+                    default:
+                        break
+                }
+            }
+        }
+    )
 }
 
 /**
@@ -196,8 +377,37 @@ function acceptProductChanges(productId){
  * @param {string} productId 
  * 
  */
-function discardProductChanges(productId) {
-    
+function discardSupplierProductChanges(productId) {
+    $.get('getproduct',
+        {
+            id:productId,
+            element_tag:productId,
+        }, function(data, status){
+            if(status == 'success'){
+                var elementTag = data.element_tag
+                switch (data.status) {
+                    case 'ok':
+                        var product = data.product
+                        var sectionHtml = document.getElementById('section_html')
+                        var productHtml = document.getElementById(elementTag)
+                        
+                        productHtml.innerHTML = sectionHtml.innerHTML
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/image-path/g, product.image_path)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/internal-code/g, product.internal_code)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/internal-description/g, product.internal_description)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/days-to-count/g, product.days_to_count)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/measure-unit/g, product.measure_unit)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/default-supplier-name/g, product.default_supplier_name)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/section_html/g, product.id)
+                        
+                        break
+                
+                    default:
+                        break
+                }
+            }
+        }
+    )
 }
 
 /**
@@ -434,7 +644,7 @@ function discardEditChanges(productId) {
                         var sectionHtml = document.getElementById('section_html').innerHTML
 
                         sectionHtml = sectionHtml.replace(/image-path/g, product.image_path)
-                        sectionHtml = sectionHtml.replace(/internal-code/g, product.internal_code)
+                        sectionHtml = sectionHtml.replace(/internal-description/g, product.internal_code)
                         sectionHtml = sectionHtml.replace(/internal-description/g, product.internal_description)
                         sectionHtml = sectionHtml.replace(/days-to-count/g, product.days_to_count)
                         sectionHtml = sectionHtml.replace(/measure-unit/g, product.measure_unit)
@@ -526,7 +736,7 @@ function acceptEditChanges(productId){
                             var section = document.getElementById(product.id)
                             var sectionHtml = document.getElementById('section_html').innerHTML
 
-                            sectionHtml = sectionHtml.replace(/internal-code/g, product.internal_code)
+                            sectionHtml = sectionHtml.replace(/internal-description/g, product.internal_code)
                             sectionHtml = sectionHtml.replace(/internal-description/g, product.internal_description)
                             sectionHtml = sectionHtml.replace(/days-to-count/g, product.days_to_count)
                             sectionHtml = sectionHtml.replace(/measure-unit/g, product.measure_unit)
@@ -648,6 +858,10 @@ function fromEditToShow(product, added) {
             break
         case 'notfound':
             statusMessage = 'THIS PRODUCT WAS NOT FOUND!'
+            break
+        case 'nodata':
+            statusMessage = 'NOT ENOUGH DATA WAS PROVIDED'
+            break
         default:
             break;
     }
