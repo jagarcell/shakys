@@ -51,6 +51,7 @@ function ValidateEmail(inputText)
  *                  message: 'string value with the success or error message', 
  *                  error: 'boolean to indicate error or success'
  *                         'if not defined is considered an error',
+ *                  alignTop: 'If true aligns message at top, otherwise at bottom
  *                  timeout: 'time in milliseconds to run the callback function'
  *                  param: 'callback function parameter'
  *
@@ -70,6 +71,13 @@ function reportResult(reportInfo,  endFunction=null) {
     }
 
     reportInfo.frame.show()
+    if(reportInfo.alignTop === undefined){
+        reportInfo.frame[0].scrollIntoView(true)
+    }
+    else{
+        reportInfo.frame[0].scrollIntoView(reportInfo.alignTop)
+
+    }
     var timeout = reportInfo.timeout != undefined ? reportInfo.timeout : 3000
 
     setTimeout(function(frame, param){
@@ -87,8 +95,14 @@ function reportResult(reportInfo,  endFunction=null) {
  * */
 function getMessageFromErrorInfo(errorResponse) {
     var message = ""
-    $.each(errorResponse, function(index, value){
-        message = message + value + "<br>"
-    })
+
+    if(errorResponse.__proto__.anchor === undefined){
+        $.each(errorResponse, function(index, value){
+            message = message + value + "<br>"
+        })
+    }
+    else{
+        message = errorResponse
+    }
     return message
 }

@@ -34,7 +34,7 @@
         @if(isset($unauthorized_user))
         <div id="unauthorized_action" class="unauthorized_action"><span>Unauthorized action for this user!</span></div>
         @endif
-        <div class="collapse navbar-collapse authenticated_user" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse authenticated_user" id="navbarSupportedContent" style="width: 20%; margin-left: 80%;">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
 

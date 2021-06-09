@@ -80,6 +80,10 @@ function newSupplier(newSupplierButton) {
                 if(status == 'success'){
                     switch (data.status) {
                         case 'ok':
+                            var emptyList = $('#empty_list')
+                            if(emptyList !== undefined){
+                                emptyList.hide()
+                            }
                             reportResult(
                                 {
                                     frame:action_result_message,

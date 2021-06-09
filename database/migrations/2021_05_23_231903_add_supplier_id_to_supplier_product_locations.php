@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrdersTable extends Migration
+class AddSupplierIdToSupplierProductLocations extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreateOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
-            $table->id();
+        Schema::table('supplier_product_locations', function (Blueprint $table) {
+            //
             $table->bigInteger('supplier_id')->default(-1);
-            $table->dateTime('date');
-            $table->string('pickup', 20)->default('pickup');
-            $table->bigInteger('pickup_guy_id')->default(-1);
-            $table->timestamps();
         });
     }
 
@@ -30,6 +26,9 @@ class CreateOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orders');
+        Schema::table('supplier_product_locations', function (Blueprint $table) {
+            //
+            $table->dropColumn('supplier_id');
+        });
     }
 }

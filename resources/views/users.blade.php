@@ -44,7 +44,7 @@
         <!-- HTML FOR THE NEW USER DATA ENTRY -->
         <div class="user_add_section">
             <div id="user_add_icon" class="user_add_icon">
-                    <input type="button" class="user_add_input" value="+" onclick="userAddClick(this)">
+                    <input type="button" class="add_input" value="+" onclick="userAddClick(this)">
             </div>
             <div id="user_add_form" class="user_form_block" hidden>
                 <!--form method="POST" action="{{ route('register') }}" class="user_form"-->
@@ -58,9 +58,11 @@
                         @if(Auth::user()->user_type == 'admin')
                             <option value="admin">admin</option>
                             <option value="user" selected>user</option>
+                            <option value="pickup">pickup</option>
                         @else    
                             <option value="admin" selected>admin</option>
                             <option value="user">user</option>
+                            <option value="pickup">pickup</option>
                         @endif
                         @endauth
 
@@ -82,7 +84,7 @@
                                     data-name="password_confirmation" placeholder="Confirm Password" 
                                     id="password_confirmation" required />
                         <div class="user_add_button">
-                            <button type="button" data-wait="Please wait..." class="user_button" onclick="userCreateClick(this)">
+                            <button type="button" data-wait="Please wait..." class="user_button accept_button" onclick="userCreateClick(this)">
                                 {{ __('Create User') }}
                             </button>
                             <button type="button" data-wait="Please wait..." class="user_button discard_button" onclick="userAbortClick(this)">
@@ -109,21 +111,27 @@
                         </div>
                         <div class="user_data_1">
                             <input id="edited_user_id" name="user_id" hidden>
-                            <input id="edited_name" type="text" class="user_name w-input" maxlength="256" name="name" placeholder="Name" required>
+                            <div>
+                            <div class="user_name field_label">Name</div>
+                            <input id="edited_name" type="text" class="w-input" maxlength="256" name="name" placeholder="Name" required>
+                            </div>
                             <div class="user_email">
+                                <div class="field_label">Email</div>
                                 <input id="edited_email" type="email" class="edited_email w-input" maxlength="256" name="email" placeholder="Email" required>
                             </div>
                             <div class="user_type">
+                                <div class="edited_user_type field_label">User Type</div>
                                 <select id="edited_user_type" type="text" class="edited_user_type w-input" maxlength="256" name="user_type" placeholder="User Type" required>
                                     <option value="admin">admin</option>
                                     <option value="user">user</option>
+                                    <option value="pickup">pickup</option>
                                 </select>
                             </div>
                         </div>
                         <div class="user_data_2 center">
                             <div class="user_add_button">
                                 <div style="display: block;">
-                                    <input id="edited_user_save" type="button" value="SAVE" data-wait="Please wait..." class="add_user_button box_shadow w-button" onclick="saveUser(this)">
+                                    <input id="edited_user_save" type="button" value="SAVE" data-wait="Please wait..." class="add_user_button accept_button box_shadow w-button" onclick="saveUser(this)">
                                 </div>    
                             </div>
                             <div class="user_add_button">
@@ -146,8 +154,8 @@
                     <input id="user_password_confirm" type="password" class="user_password_confirm w-input" maxlength="256" placeholder="Confirm New Password" required="">
                 </div>
                 <div class="user_password_section">
-                    <input id="new_password" type="button" value="CREATE NEW PASSWORD" data-wait="Please wait..." class="create_discard_passwd_button w-button" onclick="createPassword(this)">
-                    <input id="confirm_new_password" type="button" value="DISCARD NEW PASSWORD" data-wait="Please wait..." class="create_discard_passwd_button w-button" onclick="discardPassword(this)">
+                    <input id="new_password" type="button" value="CREATE NEW PASSWORD" data-wait="Please wait..." class="create_discard_passwd_button accept_button w-button" onclick="createPassword(this)">
+                    <input id="confirm_new_password" type="button" value="DISCARD NEW PASSWORD" data-wait="Please wait..." class="create_discard_passwd_button discard_button w-button" onclick="discardPassword(this)">
                 </div>
             </form>    
         </div>
@@ -173,9 +181,9 @@
                             <div id="user_type" class="user_field_content user_type">user_type</div>
                         </div>
                         <div class="user_edit_section center" id="edit_buttons">
-                            <a id="edit_user" class="add_user_button box_shadow edit w-button" onclick="edit('user_id')">EDIT</a>
-                            <a id="delete_user" class="add_user_button box_shadow edit delete w-button" onclick="deleteUser('user_id')">DELETE</a>
-                            <a id="new_user_password" class="add_user_button box_shadow edit password w-button" onclick="newPassword('user_id')">PASSWD</a>
+                            <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('user_id')">
+                            <input type="button" id="delete_user" class="add_user_button delete_button box_shadow edit delete w-button" value="DELETE" onclick="deleteUser('user_id')">
+                            <input type="button" id="new_user_password" class="add_user_button discard_button box_shadow edit password w-button" value="PASSWD" onclick="newPassword('user_id')">
                         </div>
                     </div>
                 </div>
@@ -207,9 +215,9 @@
                                 <div class="user_field_content">{{$user->user_type}}</div>
                             </div>
                             <div class="user_edit_section center" id="edit_buttons">
-                                <a id="edit_user" class="add_user_button box_shadow edit w-button" onclick="edit('{{$user->id}}')">EDIT</a>
-                                <a id="delete_user" class="add_user_button box_shadow edit delete w-button" onclick="deleteUser('{{$user->id}}')">DELETE</a>
-                                <a id="new_user_password" class="add_user_button box_shadow edit password w-button" onclick="newPassword('{{$user->id}}')">PASSWD</a>
+                                <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('{{$user->id}}')">
+                                <input type="button" id="delete_user" class="add_user_button delete_button box_shadow edit delete w-button" value="DELETE" onclick="deleteUser('{{$user->id}}')">
+                                <input type="button" id="new_user_password" class="add_user_button discard_button box_shadow edit password w-button" value="PASSWD" onclick="newPassword('{{$user->id}}')">
                             </div>
                         </div>
                     </div>
@@ -242,9 +250,9 @@
                                 <div class="user_field_content">user-type</div>
                             </div>
                             <div class="user_edit_section center" id="edit_buttons">
-                                <a id="edit_user" class="add_user_button box_shadow edit w-button" onclick="edit('user-id')">EDIT</a>
-                                <a id="delete_user" class="add_user_button box_shadow edit delete w-button" onclick="deleteUser('user-id')">DELETE</a>
-                                <a id="new_user_password" class="add_user_button box_shadow edit password w-button" onclick="newPassword('user-id')">PASSWD</a>
+                                <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('user-id')">
+                                <input type="button" id="delete_user" class="add_user_button delete_button box_shadow edit delete w-button" value="DELETE" onclick="deleteUser('user-id')">
+                                <input type="button" id="new_user_password" class="add_user_button discard_button box_shadow edit password w-button" value="PASSWD" onclick="newPassword('user-id')">
                             </div>
                         </div>
                     </div>

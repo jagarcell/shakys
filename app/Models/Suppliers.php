@@ -121,6 +121,31 @@ class Suppliers extends Model
 
     /**
      * 
+     * @param String id
+     * 
+     * @return String status 'ok' 'error'
+     * @return Object supplier 
+     */
+    public function GetSupplierById($id)
+    {
+        # code...
+        try {
+            //code...
+            $Suppliers = $this->where('id', $id)->get();
+            if(count($Suppliers) > 0){
+                return $Suppliers[0];
+            }
+            else{
+                return null;
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return null;
+        }
+    }
+
+    /**
+     * 
      * @param id
      * @param name
      * @param email
@@ -155,9 +180,17 @@ class Suppliers extends Model
                 return['status' => 'notfound', 'id' => $Id, 'element_tag' => $ElementTag];
             }
             $Suppliers = $this->where('email', $Email)->get();
-            if(count($Suppliers) >= 0 && $Suppliers[0]->id != $Id){
-                return['status' => 'emailtaken', 'id' => $Id, 'element_tag' => $ElementTag];
+
+            if(count($Suppliers) > 0){
+                if($Suppliers[0]->id != $Id){
+                    return['status' => 'emailtaken', 'id' => $Id, 'element_tag' => $ElementTag];
+                }
             }
+
+            if(!\File::exists($ImagePath)){
+                $ImagePath = config('app')['nophoto'];
+            }
+
             $this->where('id', $Id)->update(
                 [
                     'name' => $Name, 
@@ -218,6 +251,32 @@ class Suppliers extends Model
 
     /**
      * 
+     * @param Request $request['element_tag']
+     * 
+     * @return String status => 'ok'
+     *                       => 'error
+     * @return String message (if status is error)
+     * @return Mixed element_tag (Always)
+     * @return Model suppliers
+     * 
+     */
+    public function GetSuppliers($request)
+    {
+        # code...
+        $ElementTag = $request['element_tag'];
+        try {
+            //code...
+            $Suppliers = $this->where('id', '>', -1)->get();
+            return['status' => 'ok', 'suppliers' => $Suppliers, 'element_tag' => $ElementTag];
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
+        }
+    }
+
+    /**
+     * 
      * @param $th
      * 
      * @return $Message
@@ -231,7 +290,7 @@ class Suppliers extends Model
             $Message = ["Undefined Server Error"];
         }
         else{
-            $Message = $th->errorInfo;
+            $Message = $th->errorInfo[2];
         }
         return $Message;
     }

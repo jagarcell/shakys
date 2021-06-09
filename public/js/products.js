@@ -1,0 +1,869 @@
+$(document).ready(function(){
+    createProductImageDrop()
+})
+
+/**
+ *  Dropzone initialization
+ */
+ function createProductImageDrop(){
+
+    var productImage = document.getElementById('product_image')
+    $(productImage).addClass('dropzone')
+
+    MyDropzone = new Dropzone(
+        "form#product_image", 
+		{ 
+			url: "/productimgupload", 
+			dictDefaultMessage : 'Drop An Image Or Click To Search One',
+			init : function dropzoneInit() {
+				// body...
+				this.on('addedfile', function (file) {
+					// body...
+					filesAccepted = this.getAcceptedFiles()
+					if(filesAccepted.length > 0){
+						this.removeFile(filesAccepted[0])
+					}
+				})
+                this.on('success', function(file, data){
+                    $('#add_section_frame').find('#product_form').find('#image_to_upload').val(data.filename)
+                })
+			},
+		}
+    )
+    productImage.MyDropzone = MyDropzone
+}
+
+/**
+ * Shows the data entry form to add a product.
+ */
+function addIconClick() {
+    $.get('/getsuppliers', function(data, status){
+        if(status == 'success'){
+            switch (data.status) {
+                case 'ok':
+                    var defaultSupplier = document.getElementById('default_supplier')
+                    $.each(data.suppliers, function(index, supplier){
+                        var option = document.createElement('option')
+                        option.text = supplier.name
+                        option.value = supplier.id
+                        defaultSupplier.add(option)
+                    })
+                    $('#add_icon_frame').hide()
+                    $('#add_section_frame').show()
+                    break;
+
+                case 'error':
+                    var actionResult = $('#add_section_wrap').find('#action_result_message')
+                    var message = getMessageFromErrorInfo(data.message)
+                    reportResult({
+                        frame:actionResult,
+                        message:message,
+                    })
+                    break
+                default:
+                    break;
+            }
+        }
+
+    })
+}
+
+/**
+ * Action to discard the product creation.
+ */
+function discardButtonClick() {
+    $('#add_section_frame').find('#code').val('')
+    $('#add_section_frame').find('#description').val('')
+    $('#add_section_frame').find('#days_to_count').val('')
+    $('#add_section_frame').find('#measure_unit').val('')
+    var defaultSupplier = $('#add_section_frame').find('#default_supplier')[0]
+    while(defaultSupplier.options.length > 1){
+        defaultSupplier.options.remove(1)
+    }
+    $('#add_section_frame').find('#supplier_code').val('')
+    $('#add_section_frame').find('#supplier_product_description').val('')
+    $('#add_section_frame').find('#supplier_product_location').val('')
+    $('#add_section_frame').find('#image_to_upload').val('')
+
+    $('#add_section_frame').hide()
+    $('#add_icon_frame').show()
+
+    productImage = document.getElementById('product_image')
+    productImage.MyDropzone.removeAllFiles()
+}
+
+/**
+ * Action to create a new product.
+ */
+function createButtonClick() {
+    var productForm = document.getElementById('product_form')
+    if(productForm.checkValidity()){
+        $.post('/createproduct',
+            {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                internal_code:$('#add_section_frame').find('#code').val(),
+                internal_description:$('#add_section_frame').find('#description').val(),
+                days_to_count:$('#add_section_frame').find('#days_to_count').val(),
+                measure_unit:$('#add_section_frame').find('#measure_unit').val(),
+                default_supplier_id:document.getElementById('default_supplier').selectedOptions[0].value,
+                image_to_upload:$('#add_section_frame').find('#image_to_upload').val(),
+            }, function(data, status){
+                if(status == 'success'){
+                    var actionResultMessage = $('#add_section_wrap').find('#action_result_message')
+                    switch (data.status) {
+                        case 'ok':
+                            var product = data.product
+                            var emptyList = $('#empty_list')
+                            if(emptyList !== undefined){
+                                emptyList.hide()
+                            }
+                            reportResult(
+                                {
+                                    frame:actionResultMessage,
+                                    message:"THE PRODUCT WAS SUCCESSFULLY REGISTERED",
+                                    error:false,
+                                    param:product
+                                }, function(frame, product){
+                                    fromEditToShow(product, true)
+                                    frame.hide()
+                                    discardButtonClick()                                    
+                                }
+                            )
+                            break;
+                        case 'error':
+                            var message = getMessageFromErrorInfo(data.message)
+                            reportResult(
+                                {
+                                    frame:actionResultMessage,
+                                    message:message,
+                                },
+                                function(frame, param){
+                                    frame.hide()
+                                }
+                            )
+                            break
+                        case '419':
+                            var message = getStatusMessage('419')
+                            reportResult(
+                                {
+                                    frame:actionResultMessage,
+                                    message:message,
+                                }
+                            )
+                        case 'exist':
+                            reportResult(
+                                {
+                                    frame:actionResultMessage,
+                                    message:"THIS PRODUCT CODE IS ALREADY TAKEN",
+                                }, function(frame, param){
+                                    frame.hide()
+                                }
+                            )
+                            break    
+                        default:
+                            break;
+                    }
+                }
+            }
+        )
+    }
+    else{
+        productForm.reportValidity()
+    }
+}
+
+/**
+ * 
+ * Action to open a dialog to link a product to a supplier
+ * @param {string} productId
+ *  
+ */
+function suppliersButtonClick(productId) {
+
+    $.get('/getproduct',
+        {
+            id:productId,
+            suppliers:"include",
+            element_tag:productId,
+        }, function (data, status) {
+            if(status == 'success'){
+                var elementTag = data.element_tag
+                var actionResultMessage = $('#' + elementTag).find('#action_result_message')
+                switch (data.status) {
+                    case 'ok':
+                        var product = data.product
+                        var productHtml = document.getElementById(productId)
+
+                        productHtml.innerHTML = document.getElementById('link_product_section_html').innerHTML
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/image-path/g, product.image_path)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/product-id/g, product.id)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/product-code/g, product.internal_code)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/product-description/g, product.internal_description)
+
+                        var suppliersSelect = $(productHtml).find('#supplier_product_select')[0]
+
+                        $.each(product.suppliers, function(index, supplier){
+                            var option = document.createElement("option")
+                            option.value = supplier.id
+                            option.text = supplier.name
+                            suppliersSelect.options.add(option)
+                        })
+                        break
+                
+                    case 'error':
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                alignTop:false,
+                            }, function (frame, param) {
+                                frame.hide()
+                            }
+                        )
+                        break
+                        
+                    case 'notfound':
+                        var message = getStatusMessage('notfound')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                            }, function (frame, param) {
+                                frame.hide()
+                            }
+                        )
+                        break
+
+                    default:
+                        break
+                }
+            }
+        }
+    )
+}
+
+/**
+ * Accept product linking to a supplier
+ * @param {string} productId 
+ * 
+ */
+function acceptSupplierProductChanges(productId){
+    var productHtml = document.getElementById(productId)
+    var supplierSelect = $(productHtml).find('#supplier_product_select')[0]
+    var supplierId = supplierSelect.options[supplierSelect.selectedIndex].value
+    var supplierCode = $(productHtml).find('#supplier_product_code').val()
+    var supplierDescription = $(productHtml).find('#supplier_product_description').val()
+    $.post('/createsuppliersproductspivot',
+        {
+            _token:$('meta[name="csrf-token"]').attr('content'),
+            supplier_id:supplierId,
+            product_id:productId,
+            supplier_code:supplierCode,
+            supplier_description:supplierDescription,
+            element_tag:productId,
+        }, function(data, status){
+            if(status == 'success'){
+                var elementTag = data.element_tag
+                var actionResultMessage = $(document.getElementById(elementTag)).find('#action_result_message')
+                switch (data.status) {
+                    case 'ok':
+                        var product = data.product
+                        var sectionHtml = document.getElementById('section_html')
+                        var productHtml = document.getElementById(elementTag)
+                        
+                        productHtml.innerHTML = sectionHtml.innerHTML
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/image-path/g, product.image_path)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/internal-code/g, product.internal_code)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/internal-description/g, product.internal_description)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/days-to-count/g, product.days_to_count)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/measure-unit/g, product.measure_unit)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/default-supplier-name/g, product.default_supplier_name)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/section_html/g, product.id)
+                        
+                        break
+                    
+                    case 'error':
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                alignTop:false,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+                        break
+                    case '419':
+                        var message = getStatusMessage('419')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                alignTop:false,
+                            }
+                        )
+
+                    case 'nodata':
+                        var message = getStatusMessage('nodata')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                alignTop:false,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+                    default:
+                        break
+                }
+            }
+        }
+    )
+}
+
+/**
+ * 
+ * 
+ * @param {string} productId
+ *  
+ */
+function supplierProductSelectChange(supplierProductSelect, productId) {
+    var supplierId = supplierProductSelect.options[supplierProductSelect.selectedIndex].value
+    $.get('/getsuppliersproductspivot',
+        {
+            product_id:productId,
+            supplier_id:supplierId,
+            element_tag:productId,
+        }, function(data, status){
+            if(status == 'success'){
+                var elementTag = data.element_tag
+                var productHtml = document.getElementById(elementTag)
+                switch (data.status) {
+                    case 'ok':
+                        var suppliersProductsPivot = data.suppliersproductspivot
+                        var supplierProductCode = $(productHtml).find('#supplier_product_code')
+                        var supplierProductDescription = $(productHtml).find('#supplier_product_description')
+
+                        supplierProductCode.val(suppliersProductsPivot.supplier_code)
+                        supplierProductDescription.val(suppliersProductsPivot.supplier_description)
+                        supplierProductCode.removeAttr('disabled')
+                        supplierProductDescription.removeAttr('disabled')
+                        
+                        break
+
+                    case 'notfound':
+                        var supplierProductCode = $(productHtml).find('#supplier_product_code')
+                        var supplierProductDescription = $(productHtml).find('#supplier_product_description')
+
+                        supplierProductCode.val("")
+                        supplierProductDescription.val("")
+                        supplierProductCode.removeAttr('disabled')
+                        supplierProductDescription.removeAttr('disabled')
+                        break
+
+                    default:
+                        break
+                }
+            }
+        }
+    )
+}
+
+/**
+ * Discard the product linking to a supplier
+ * @param {string} productId 
+ * 
+ */
+function discardSupplierProductChanges(productId) {
+    $.get('getproduct',
+        {
+            id:productId,
+            element_tag:productId,
+        }, function(data, status){
+            if(status == 'success'){
+                var elementTag = data.element_tag
+                switch (data.status) {
+                    case 'ok':
+                        var product = data.product
+                        var sectionHtml = document.getElementById('section_html')
+                        var productHtml = document.getElementById(elementTag)
+                        
+                        productHtml.innerHTML = sectionHtml.innerHTML
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/image-path/g, product.image_path)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/internal-code/g, product.internal_code)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/internal-description/g, product.internal_description)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/days-to-count/g, product.days_to_count)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/measure-unit/g, product.measure_unit)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/default-supplier-name/g, product.default_supplier_name)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/section_html/g, product.id)
+                        
+                        break
+                
+                    default:
+                        break
+                }
+            }
+        }
+    )
+}
+
+/**
+ * Action to delete a product
+ * @param {string} productId
+ *  
+ */
+function deleteButtonClick(productId) {
+    $.post('/deleteproduct',
+        {
+            _token:$('meta[name="csrf-token"]').attr('content'),
+            id:productId,
+            element_tag:productId,
+        }, function(data, status){
+            if (status == 'success'){
+                var element_tag = data.element_tag
+                var actionResultMessage = $('#' + element_tag).find('#action_result_message')
+                switch (data.status) {
+                    case 'ok':
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:"THE PRODUCT WAS SUCCESSFULLY DELETED!",
+                                error:false,
+                                param:productId,
+                            }, function(frame, productId){
+                                var section = document.getElementById(productId)
+                                section.outerHTML = ""
+                            }
+                        )
+                        break;
+
+                    case 'error':
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+                        break
+
+                    case '419':
+                        var message = getStatusMessage('419')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message
+                            }
+                        )
+                        break
+                    
+                    case 'notfound':
+                        var message = getStatusMessage('notfound')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                param:productId,
+                            }, function(frame, productId){
+                                var section = document.getElementById(productId)
+                                section.outerHTML = ""
+                            }
+                        )
+                    default:
+                        break;
+                }
+            }
+        }
+    )
+}
+
+/**
+ * 
+ * @param {string} productId
+ *  
+ */
+function editButtonClick(productId) {
+    $.get('/getproduct',
+        {
+            id:productId,
+            element_tag:productId,
+        }, function(data, status){
+            if(status == 'success'){
+                console.log(data)
+                var actionResultMessage = $('#' + data.element_tag).find('#action_result_message')
+                var element_tag = data.element_tag
+                switch (data.status) {
+                    case 'ok':
+                        var product = data.product
+                        var section = document.getElementById(product.id)
+                        var addSectionHtml = document.getElementById('add_section_html')
+
+                        section.innerHTML = addSectionHtml.innerHTML
+                        section.innerHTML = section.innerHTML.replace(/product-image/g, 'product_image_' + product.id)
+                        section.innerHTML = section.innerHTML.replace(/product-id/g, product.id)
+
+                        var productForm = $(section).find('#product_form')
+
+                        productForm.find('#code').val(product.internal_code)
+                        productForm.find('#description').val(product.internal_description)
+                        productForm.find('#days_to_count').val(product.days_to_count)
+                        productForm.find('#measure_unit').val(product.measure_unit)
+                        productForm.find('#default_supplier').val(product.default_supplier_name)
+                        productForm.find('#image_to_upload').val(product.image_path)
+        
+                        $('#product_image_' + product.id).addClass('dropzone')
+    
+                        let mockFile = { name: product.image_name, size: product.image_size }
+    
+                            new Dropzone(
+                                "form#product_image_" + product.id, 
+                                { 
+                                    url: "/productimgupload", 
+                                    dictDefaultMessage : 'Drop An Image Or Click To Search One',
+                                    init : function dropzoneInit() {
+                                        // body...
+                                        this.on('addedfile', function (file) {
+                                            // body...
+                                            var edit_div = this.element.parentNode
+                                            $(edit_div).find('#image_to_upload').val(file.name)
+                                            filesAccepted = this.getAcceptedFiles()
+            
+                                            if(this.hidePreview !== undefined){
+                                                $(edit_div).find('.dz-preview')[0].style.display = 'none'
+                                            }
+                                            else{
+                                                this.hidePreview = 'hidePreview'
+                                            }
+        
+                                            if(filesAccepted.length > 0){
+                                                this.removeFile(filesAccepted[0])
+                                            }
+                                        })
+                                        this.on('success', function(file, data){
+                                            var section = this.element.parentNode.parentNode
+
+                                            $(section).find('#product_form').find('#image_to_upload').val(data.filename)
+                                        })
+                                    }
+                                }
+                            ).displayExistingFile(mockFile, product.image_path)
+
+                        $.get('/getsuppliers',
+                            {
+                                element_tag:product.id
+                            }, function (data, status) {
+                                if(status == 'success'){
+                                    if(data.status == 'ok'){
+                                        var section = document.getElementById(data.element_tag)
+                                        var supplierSelect = $(section).find('#product_form').find('#default_supplier')[0]
+                                        var suppliers = data.suppliers
+                                        $.each(suppliers, function (index, supplier) {
+                                            var option = document.createElement('option')
+                                            option.value = supplier.id
+                                            option.text = supplier.name
+                                            if(supplier.id == product.default_supplier_id){
+                                                option.selected = true
+                                            }
+                                            supplierSelect.add(option)
+                                        })
+                                    }
+                                }
+                            }
+                        )
+                       break;
+                
+                    case 'error':
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                            }, function (frame, param) {
+                                frame.hide()
+                            }
+                        )
+                        break
+
+                    case '419':
+                        var message = getStatusMessage('419')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                            })
+                        break
+
+                    case 'notfound':
+                        var message = getStatusMessage('notfound')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                param:element_tag,
+                            }, function(frame, productId){
+                                var section = document.getElementById(productId)
+                                section.outerHTML = "" 
+                            }
+                        )
+                        break
+                    default:
+                        break
+                }
+            }
+        }
+    )
+
+
+}
+
+/**
+ * 
+ * Action to discard the product's edit changes
+ * 
+ * @param {string} productid
+ *  
+ */
+function discardEditChanges(productId) {
+    $.get('/getproduct',
+        {
+            id:productId,
+            element_tag:productId
+        }, function(data, status){
+            if(status == 'success'){
+                var element_tag = data.element_tag
+                var actionResultMessage = $(document.getElementById(element_tag)).find('#action_result_message')
+                switch (data.status) {
+                    case 'ok':
+                        var product = data.product
+                        var section = document.getElementById(element_tag)
+                        var sectionHtml = document.getElementById('section_html').innerHTML
+
+                        sectionHtml = sectionHtml.replace(/image-path/g, product.image_path)
+                        sectionHtml = sectionHtml.replace(/internal-description/g, product.internal_code)
+                        sectionHtml = sectionHtml.replace(/internal-description/g, product.internal_description)
+                        sectionHtml = sectionHtml.replace(/days-to-count/g, product.days_to_count)
+                        sectionHtml = sectionHtml.replace(/measure-unit/g, product.measure_unit)
+                        sectionHtml = sectionHtml.replace(/default-supplier-name/g, product.default_supplier_name)
+                        sectionHtml = sectionHtml.replace(/section_html/g, product.id)
+
+                        section.innerHTML = sectionHtml
+                       break;
+
+                    case 'error':
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+                        break
+                    
+                    case '419':
+                        var message = getStatusMessage('419')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message
+                            }
+                        )
+                        break
+
+                    case 'notfound':
+                        var message = getStatusMessage('notfound')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                param:element_tag,
+                            }, function(frame, element_tag){
+                                var section = document.getElementById(element_tag)
+                                section.outerHTML = ""
+                            }
+                        )
+                        break
+                    default:
+                        break;
+                }
+            }
+        }
+    )
+
+}
+
+/**
+ * 
+ * Action to accept the product's edit changes.
+ * 
+ * @param {string} productId
+ *  
+ */
+function acceptEditChanges(productId){
+    var productForm = $(document.getElementById(productId)).find('#product_form')
+    if(productForm[0].checkValidity()){
+        var internalCode = productForm.find('#code').val()
+        var internalDescription = productForm.find('#description').val()
+        var daysToCount = productForm.find('#days_to_count').val()
+        var measureUnit = productForm.find('#measure_unit').val()
+        var defaultSupplierId = productForm.find('#default_supplier').val()
+        var imagePath = productForm.find('#image_to_upload').val()
+
+        $.post('/updateproduct',
+            {
+                _token:$('meta[name="csrf-token"]').attr('content'),
+                id:productId,
+                internal_code:internalCode,
+                internal_description:internalDescription,
+                days_to_count:daysToCount,
+                measure_unit:measureUnit,
+                default_supplier_id:defaultSupplierId,
+                image_path:imagePath,
+                element_tag:productId,
+            }, function(data, status){
+                if(status == 'success'){
+                    var element_tag = data.element_tag
+                    var actionResultMessage = $(document.getElementById(element_tag)).find('#action_result_message')
+                    switch (data.status) {
+                        case 'ok':
+                            var product = data.product
+                            var section = document.getElementById(product.id)
+                            var sectionHtml = document.getElementById('section_html').innerHTML
+
+                            sectionHtml = sectionHtml.replace(/internal-description/g, product.internal_code)
+                            sectionHtml = sectionHtml.replace(/internal-description/g, product.internal_description)
+                            sectionHtml = sectionHtml.replace(/days-to-count/g, product.days_to_count)
+                            sectionHtml = sectionHtml.replace(/measure-unit/g, product.measure_unit)
+                            sectionHtml = sectionHtml.replace(/default-supplier-name/g, product.default_supplier_name)
+                            sectionHtml = sectionHtml.replace(/section_html/g, product.id)
+                            sectionHtml = sectionHtml.replace(/image-path/g, product.image_path)
+                            
+                            section.innerHTML = sectionHtml
+                            break;
+
+                        case 'notfound':
+                            var message = getStatusMessage('notfound')
+                            reportResult(
+                                {
+                                    frame:actionResultMessage,
+                                    message:message,
+                                    param:element_tag,                                    
+                                }, function(frame, element_tag){
+                                    var section = document.getElementById(element_tag)
+                                    section.outerHTML = ""
+                                }
+                            )
+                            break
+
+                        case 'error':
+                            var message = getMessageFromErrorInfo(data.message)
+                            reportResult(
+                                {
+                                    frame:actionResultMessage,
+                                    message:message,
+                                }, function(frame, param){
+                                    frame.hide()
+                                }
+                            )
+                            break
+
+                        case '419':
+                            var message = getStatusMessage('419')
+                            reportResult(
+                                {
+                                    frame:actionResultMessage,
+                                    message:message,
+                                }
+                            )
+                            break
+                        case 'exist':
+                            reportResult(
+                                {
+                                    frame:actionResultMessage,
+                                    message:"THIS PRODUCT CODE IS ALREADY TAKEN",
+                                }, function(frame, param){
+                                    frame.hide()
+                                }
+                            )
+                            break    
+                        default:
+                            break;
+                    }
+                }
+            }
+        )
+    }
+    else{
+        reportValidity()
+    }
+}
+
+/**
+ * 
+ * @param {object} product 
+ * @param {boolean} added 'true' if new product 'false' if edited
+ * 
+ */
+function fromEditToShow(product, added) {
+    var sectionHtml = document.getElementById('section_html').outerHTML
+    
+    sectionHtml = sectionHtml.replace(/image-path/g, product.image_path)
+    sectionHtml = sectionHtml.replace(/internal-code/g, product.internal_code)
+    sectionHtml = sectionHtml.replace(/internal-description/g, product.internal_description)
+    sectionHtml = sectionHtml.replace(/days-to-count/g, product.days_to_count)
+    sectionHtml = sectionHtml.replace(/days-to-count/g, product.days_to_count)
+    sectionHtml = sectionHtml.replace(/measure-unit/g, product.measure_unit)
+    sectionHtml = sectionHtml.replace(/default-supplier-name/g, product.default_supplier_name)
+
+    if(added){
+        var productsListWrapHtml = document.getElementById('products_list_wrap').innerHTML
+        sectionHtml = sectionHtml.replace(/section_html/g, product.id)
+        productsListWrapHtml = sectionHtml + productsListWrapHtml
+        document.getElementById('products_list_wrap').innerHTML = productsListWrapHtml
+    }   
+    else{
+        var section = document.getElementById(product.id)
+        section.innerHTML = sectionHtml
+    }
+    $('#' + product.id).show()
+}
+
+/**
+ * 
+ * @param {string} status
+ *                  'notfound'
+ *                  'emailtaken'
+ *                  'passwordmissmatch'
+ *                  '419'
+ *  
+ * @returns
+ **          notfound:'THIS USER CAN NOT BE FOUND!<br>PLEASE TRY REFRESHING YOUR BROWSER.'
+ **          emailtaken:'THIS EMAIL HAS BEEN TAKEN'
+ **          passwordmissmatch:'PASSWORD CONFIRMATION DOES NOT MATCH!'
+ **          419:'SESSION EXPIRED!<br>REFRESH YOUR BROWSER.'
+ * 
+ */
+ function getStatusMessage(status) {
+    var statusMessage = ""
+    
+    switch (status) {
+        case '419':
+            statusMessage = 'SESSION EXPIRED!<br>REFRESH YOUR BROWSER.'
+            break
+        case 'notfound':
+            statusMessage = 'THIS PRODUCT WAS NOT FOUND!'
+            break
+        case 'nodata':
+            statusMessage = 'NOT ENOUGH DATA WAS PROVIDED'
+            break
+        default:
+            break;
+    }
+    return statusMessage
+}

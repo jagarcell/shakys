@@ -54,10 +54,16 @@ class ProductLocations extends Model
         try {
             //code...
             $this->name = $Name;
-            $this->image_path = $ImagePath == null ?
+            $ImagePath = $ImagePath == null ?
                 config('app')['nophoto'] :
                 config('app')['instore_images_path'] . $ImagePath;
 
+            if(!\File::exists($ImagePath)){
+                $ImagePath = config('app')['nophoto'];
+            }
+
+            $this->image_path = $ImagePath;
+    
             $this->save();
             $Location = ['id' => $this->id, 'name' => $this->name, 'image_path' => $this->image_path];
             return['status' => 'ok', 'location' => $Location, 'element_tag' => $ElementTag];
@@ -182,6 +188,10 @@ class ProductLocations extends Model
             }
             $Config = config('app');
             $ImagePath = $ImagePath == null ? $Config['nophoto'] : $Config['instore_images_path'] . $ImagePath;
+            if(!\File::exists($ImagePath)){
+                $ImagePath = config('app')['nophoto'];
+            }
+
             $this->where('id', $Id)->update(['name' => $Name, 'image_path' => $ImagePath]);
 
             $Location = ['id' => $Id, 'name' => $Name, 'image_path' => $ImagePath];
