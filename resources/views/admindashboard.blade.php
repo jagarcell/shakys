@@ -37,7 +37,7 @@
         <div class="admin_panel_section">
             <a href="/showpendingorderspanel" data-w-id="dd404975-5144-4daa-172d-139e14ceec86" class="option_frame box_shadow">
                 <img src="/images/pendingorders.png" loading="lazy" sizes="150px" width="150" srcset="/images/pendingorders-p-500.png 500w, images/pendingorders.png 512w" alt="" class="option_image">
-                <div class="option_text">PENDING ORDERS</div>
+                <div class="option_text">ORDERS</div>
             </a>
             <a href="/listproducts" data-w-id="14a54350-4c5e-89b4-8745-04aac0afccbf" class="option_frame box_shadow">
                 <img src="/images/products.png" loading="lazy" width="150" sizes="150px" srcset="/images/products-p-500.png 500w, images/products.png 600w" alt="" class="option_image">
