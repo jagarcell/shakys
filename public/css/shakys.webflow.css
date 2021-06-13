@@ -1140,6 +1140,10 @@ body {
   justify-content: center;
 }
 
+.user_name{
+  width: 30%;
+}
+
 .user_email {
   width: 30%;
   margin-left: 5%;

@@ -111,7 +111,7 @@
                         </div>
                         <div class="user_data_1">
                             <input id="edited_user_id" name="user_id" hidden>
-                            <div>
+                            <div class="user_name">
                             <div class="user_name field_label">Name</div>
                             <input id="edited_name" type="text" class="w-input" maxlength="256" name="name" placeholder="Name" required>
                             </div>
