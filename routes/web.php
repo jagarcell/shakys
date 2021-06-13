@@ -141,6 +141,8 @@ Route::post('/createuser', 'UsersController@CreateUser');
 
  Route::get('/pickupdashboard', 'PickupUserController@ShowDashboard');
 
+ Route::post('/completeorder', 'PickupUserController@CompleteOrder');
+
  /***************************************
   *                                     * 
   *          PENDING ORDERS             *
@@ -170,6 +172,8 @@ Route::get('/searchfor', 'UserDashboardController@SearchFor');
  Route::post('/submitorder', 'OrdersController@SubmitOrder');
 
  Route::post('/emailorder', 'OrdersController@EmailOrder');
+
+ Route::post('/receiveorder', 'OrdersController@ReceiveOrder');
 
  /***************************************
   *                                     *

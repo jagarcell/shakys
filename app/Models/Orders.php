@@ -275,6 +275,41 @@ class Orders extends Model
      }
 
      /**
+      * 
+      * @param Request ['id' 'order_lines:{id, avilable_qy}' 'element_tag']
+      *
+      * @return String status ['ok' 'error' 'notfound' '419']
+      * 
+      */
+     public function ReceiveOrder($request)
+     {
+         # code...
+         $Id = $request['id'];
+         $OrderLines = $request['order_lines'];
+         $ElementTag = $request['element_tag'];
+
+         try {
+             //code...
+             $Orders = $this->where('id', $Id)->get();
+             if(count($Orders) == 0){
+                return ['status' => 'notfound', 'element_tag' => $ElementTag];
+             }
+             DB::beginTransaction();
+             foreach($OrderLines as $Key => $OrderLine){
+                 DB::table('order_lines')->where('id', $OrderLine['id'])->update(['available_qty' => $OrderLine['available_qty']]);
+             }
+             DB::table('orders')->where('id', $Orders[0]->id)->update(['received' => true]);
+             DB::commit();
+             return ['status' => 'ok', 'order_line' => $OrderLines, 'element_tag' => $ElementTag];
+         } catch (\Throwable $th) {
+             //throw $th;
+             DB::rollback();
+             $Message = $this->ErrorInfo($th);
+             return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
+         }
+     }
+
+     /**
      * 
      * @param $th
      * 

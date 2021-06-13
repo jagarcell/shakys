@@ -23,8 +23,117 @@ select{
   font-family: inherit;
 }
 
-.product_qty_display_input{
+.show_all_desktop{
+  display: block;
+}
+
+.show_all_mobile{
+  display: none;
+}
+
+.all_done{
+  margin-top: 20px;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: black;
+}
+
+.hide_order_line_button{
   width: 100%;
+  height: 80%;
+  margin-top: 3%;
+  text-align: center;
+  display: block;
+  background-color: #3898ec;
+  border-radius: 5px;
+  padding-top: 1px;}
+
+.order_detail_line_field{
+  background-color: black;
+  width: 100%;
+  height: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 5px;
+  padding-top: 5px;
+}
+
+.individual_label{
+  display: none;
+}
+
+.display_none{
+  display: none;
+}
+
+.display_yes{
+  display: block;
+}
+
+.order_details{
+  text-align: center;
+}
+
+
+.order_details_labels{
+  display: flex;
+  background-color: gray;
+  margin-top: 20px;
+  border-radius: 5px;
+  height: 25px;
+}
+
+.order_detail_code{
+  width: 20%;
+  text-align: left;
+  padding-left: 20px;
+}
+
+.order_detail_description{
+  width:50%;
+  text-align: left;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.order_detail_qty{
+  width:10%;
+  text-align: right;
+  padding-right: 20px;
+}
+
+.order_details_body{
+  display: block;
+  background-color: grey;
+  color: white;
+  border-radius: 5px;
+  margin-top: 10px;
+  padding-bottom: 10px;
+  padding-top: 1px;
+}
+
+.order_detail_line{
+  display: flex;
+  margin-top: 10px;  
+}
+
+.pickup_orders{
+  width: 80%;
+  margin-left: 10%;
+}
+
+.pickup_order_header{
+  display: block;
+  margin-top: 20px;
+  background-color: grey;
+  padding-left: 20px;
+  border-radius: 5px;
+  padding-bottom: 10px;
+  padding-top: 10px;  
+}
+
+.product_qty_display_input{
+  width: 85%;
   border-radius: 5px;
   text-align-last: center;
 }
@@ -42,10 +151,26 @@ select{
 .submit_order_button_wrap{
   text-align: center;
   padding-top: 20px;
+  display: block;
+}
+
+.submitted_order_buttons_wrap{
+  text-align: center;
+  padding-top: 20px;
+  display: flex;
+}
+
+.submitted_order_button_wrap{
+  width: 50%;
 }
 
 .submit_order_button{
   background-color: #3898ec;
+  width: 100%;
+}
+.submitted_order_button{
+  background-color: #3898ec;
+  width: 100%;
 }
 
 .empty_tab_text{
@@ -95,7 +220,15 @@ select{
 }
 
 .order_display_qty{
-  width: 10%;
+  width: 15%;
+}
+
+.order_display_qty_desktop{
+  display: block;
+}
+
+.order_display_qty_mobile{
+  display: none;
 }
 
 .order_section{
@@ -1727,7 +1860,10 @@ body {
 }
 
 @media screen and (max-width: 991px) {
-  
+  .pickup_orders{
+    font-size: 10px;
+  }
+
   .data_entry_buttons {
     display: block;
     width: auto;
@@ -1848,11 +1984,103 @@ body {
     -ms-flex-align: center;
     align-items: center;
   }
+
 }
 
 @media screen and (max-width: 767px) {
-
   
+  .show_all_desktop{
+    display: none;
+  }
+
+  .show_all_mobile{
+    display: block;
+    text-align: right !important;
+  }
+  .submitted_order_buttons_wrap{
+    display: block;
+  }
+
+  .submitted_order_button_wrap{
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .submit_order_button_wrap{
+    display: block;
+  }
+  
+  .individual_label{
+    display: block;
+    margin-top: 10px;
+  }
+
+  .order_details{
+    text-align: center;
+    display: flex;
+  }
+    
+  .display_yes{
+    display: flex;
+  }
+
+  .order_details_labels{
+    display: none;
+  }
+  
+  .order_detail_code{
+    width: 100%;
+    text-align: left;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
+  .order_detail_description{
+    width: 100%;
+    text-align: left;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
+  .order_detail_qty{
+    width: 100%;
+    text-align: left;
+    padding-left: 20px;
+  }
+  
+  .order_details_body{
+    width: 100%;
+  }
+  
+  .order_detail_line{
+    display: block;
+    margin-top: 40px;
+  }
+  
+  .pickup_orders{
+    width: 80%;
+    margin-left: 10%;
+  }
+  
+  .pickup_order_header{
+    display: block;
+    margin-top: 20px;
+    background-color: grey;
+    padding-left: 20px;
+    border-radius: 5px;
+    padding-bottom: 10px;
+    padding-top: 10px;  
+  }
+  
+  .order_display_qty_desktop{
+    display: none;
+  }
+
+  .order_display_qty_mobile{
+    text-align: center;
+    display: block;
+  }
+
   .order_display_qty{
     width: 100%;
     text-align: center;
@@ -1865,7 +2093,11 @@ body {
   .product_int_desc{
     width: 60%;
   }
-  
+
+  .product_qty_display_input {
+    width: 60%;
+  }
+
   .product_int_desc_wrap{
     width: 100%;
   }

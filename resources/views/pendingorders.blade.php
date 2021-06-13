@@ -28,7 +28,7 @@
         @section('content')
         <input id="tab_id" value="{{$tabid}}" hidden></input>
         <div class="pending_content">
-        <div id="add_to_order_button" class="add_to_order_button" style="display:none;">
+            <div id="add_to_order_button" class="add_to_order_button" style="display:none;">
                 <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;width:100%;" onclick="addToOrderClick('add_to_order_check')">
             </div>
             <div id="all_products_add_to_order_button" class="add_to_order_button" style="display:none;">
@@ -72,7 +72,7 @@
                                     <div class="po_description">
                                         <div class="product_description_text">
                                             <text class="counted_product_description">{{$product->internal_description}}</text>
-                                    </div>
+                                        </div>
                                     </div>
                                     <div class="po_due_date">
                                         <div>Due on</div>
@@ -114,12 +114,6 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="order_data_field">
-                                    <label class="order_data_field_label">Qty</label>
-                                    <select id="order_qty_sel" class="order_qty_select" qty_to_order={{$countedProduct->qty_to_order}}>
-                                        <option value="0">0</option>
-                                    </select>
-                                </div>
                                 <div id="pickup" class="order_data_field">
                                     <label id="pickup_user_label" class="order_data_field_label">Delivery</label>
                                     <select id="order_pickup_select" onchange="orderPickupSelectChange(this)">
@@ -136,6 +130,12 @@
                                             {{$pickupuser->name}}
                                         </option>
                                         @endforeach
+                                    </select>
+                                </div>
+                                <div class="order_data_field">
+                                    <label class="order_data_field_label">Request</label>
+                                    <select id="order_qty_sel" class="order_qty_select" qty_to_order={{$countedProduct->qty_to_order}}>
+                                        <option value="0">0</option>
                                     </select>
                                 </div>
                                 <div class="order_data_field">
@@ -176,12 +176,6 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="order_data_field">
-                                    <label class="order_data_field_label">Qty</label>
-                                    <select id="order_qty_sel" class="order_qty_select" qty_to_order={{$allProduct->qty_to_order}}>
-                                        <option value="0">0</option>
-                                    </select>
-                                </div>
                                 <div id="pickup" class="order_data_field">
                                     <label id="pickup_user_label" class="order_data_field_label">Delivery</label>
                                     <select id="order_pickup_select" onchange="orderPickupSelectChange(this)">
@@ -198,6 +192,12 @@
                                             {{$pickupuser->name}}
                                         </option>
                                         @endforeach
+                                    </select>
+                                </div>
+                                <div class="order_data_field">
+                                    <label class="order_data_field_label">Request</label>
+                                    <select id="order_qty_sel" class="order_qty_select" qty_to_order={{$allProduct->qty_to_order}}>
+                                        <option value="0">0</option>
                                     </select>
                                 </div>
                                 <div class="order_data_field">
@@ -282,7 +282,7 @@
                                             <input class="product_int_desc" value="{{$orderLine->supplier_description}}" disabled></input>
                                         </div>
                                         <div class="order_display_qty">
-                                            <label>Qty</label>
+                                            <label>Requested</label>
                                             <select id="product_qty_display_select" class="product_qty_display_select qty_select" qty="{{$orderLine->qty}}">
                                                 <option value="0" selected>0</option>
                                             </select>
@@ -302,7 +302,7 @@
                     </div>
 
                     <!-- SUBMITTED ORDERS TAB -->
-                    <div data-w-tab="Tab 5" class="w-tab-pane">
+                    <div id="submitted_orders_tab" data-w-tab="Tab 5" class="w-tab-pane">
                         @if(count($submittedorders) > 0)
                         @foreach($submittedorders as $key => $submittedOrder)
                         <div id="{{$submittedOrder->id}}" class="order_section shadowRight">
@@ -340,8 +340,13 @@
                                             <label>In-store Description</label>
                                             <input class="product_int_desc" value="{{$orderLine->internal_description}}" disabled></input>
                                         </div>
+                                        <div class="order_display_qty_desktop order_display_qty">
+                                            <label>Ordered</label>
+                                            <input class="product_qty_display_input" value="{{$orderLine->qty}}" disabled>
+                                            </input>
+                                        </div>
                                     </div>
-                                    <div class="order_line">
+                                    <div class="order_line order_line_2">
                                         <div class="product_code_wrap">
                                             <label>Supplier Code</label>
                                             <input class="product_int_code" value="{{$orderLine->supplier_code}}" disabled></input>
@@ -350,19 +355,30 @@
                                             <label>Supplier Description</label>
                                             <input class="product_int_desc" value="{{$orderLine->supplier_description}}" disabled></input>
                                         </div>
-                                        <div class="order_display_qty">
-                                            <label>Qty</label>
+                                        <div class="order_display_qty_mobile order_display_qty">
+                                            <label>Ordered</label>
                                             <input class="product_qty_display_input" value="{{$orderLine->qty}}" disabled>
                                             </input>
+                                        </div>
+                                        <div class="order_display_qty">
+                                            <label>Available</label>
+                                            <select class="order_qty_select product_qty_display_input available_qty" style="padding-right:25px;" qty_to_order="{{$orderLine->available_qty}}" lineId="{{$orderLine->id}}">
+                                                <option value="0">0</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                                 @endforeach
                             </div>
-                            <div class="submit_order_button_wrap">
-                                <input type="button" value="Resend order" class="submit_order_button" onclick="resendOrderButtonClick('{{$submittedOrder->id}}')">
+                            <div class="submitted_order_buttons_wrap">
+                                <div class="submitted_order_button_wrap">
+                                    <input type="button" value="Resend order" class="submitted_order_button" onclick="resendOrderButtonClick('{{$submittedOrder->id}}')">
+                                </div>
+                                <div class="submitted_order_button_wrap">
+                                    <input type="button" value="Receive order" class="submitted_order_button" onclick="receivedOrderButtonClick('{{$submittedOrder->id}}')">
+                                </div>
                             </div>
-                            <div id="action_result_message_{{$submittedOrder->id}}" class="action_result_message" hidden></div>
+                             <div id="action_result_message_{{$submittedOrder->id}}" class="action_result_message" hidden></div>
                         </div>
                         @endforeach
                         @else
@@ -381,7 +397,7 @@
                     <div id="order_product" class="order_product">internal-description</div>
                     <div class="form-block-2 w-form">
                         <form id="email-form-2" class="order_form">
-                            <label for="name">Order Qty</label>
+                            <label for="name">Request</label>
                             <select id="qty" class="order_qty_select order_qty_tag">
                                 <option value="0" style="text-align:right;text-align-last:right;">0</option>
                             </select>

@@ -270,7 +270,7 @@ class PendingOrders extends Model
         # code...
         try {
             //code...
-            $Orders = (new Orders())->where('submitted', true)->get();
+            $Orders = (new Orders())->where('submitted', true)->where('received', false)->get();
             foreach($Orders as $Key => $Order){
                 $OrderLines = (new OrderLines())->where('order_id', $Order->id)->get();
                 $Order->order_lines = $OrderLines;

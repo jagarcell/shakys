@@ -270,6 +270,14 @@ function submitOrderButtonClick(order_id){
 }
 
 function resendOrderButtonClick(orderId){
+    var actionResultMessage = $('#action_result_message_' + orderId)
+    reportResult(
+        {
+            frame:actionResultMessage,
+            message:"SENDING THE ORDER ...",
+            error:false,
+        }
+    )
     $.post('/emailorder',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
@@ -330,6 +338,61 @@ function resendOrderButtonClick(orderId){
 
                     default:
                         break;
+                }
+            }
+        }
+    )
+}
+
+function receivedOrderButtonClick(orderId) {
+    var actionResultMessage = $('#action_result_message_' + orderId)
+    var submittedOrdersTab = document.getElementById('submitted_orders_tab')
+    var order = $(submittedOrdersTab).find("#" + orderId)
+    var order_lines = order.find('.' + 'available_qty')
+    var lines = []
+
+    reportResult(
+        {
+            frame:actionResultMessage,
+            error:false,
+            message:"RECEIVING THE ORDER ...",
+            alignTop:false,
+        }
+    )
+
+    $.each(order_lines, function(index, order_line){
+        lines.push({id:order_line.getAttribute("lineId"), available_qty:order_line.selectedIndex})
+    })
+
+    $.post('/receiveorder',
+        {
+            _token:$('meta[name="csrf-token"]').attr('content'),
+            id:orderId,
+            order_lines:lines,
+            element_tag:orderId,
+        }, function(data, status){
+            if(status == 'success'){
+                var actionResultMessage = $('#action_result_message_' + orderId)
+                var elementTag = data.element_tag
+                switch (data.status) {
+                    case 'ok':
+                        console.log(data)
+                        var submittedOrdersTab = document.getElementById('submitted_orders_tab')
+                        var order = $(submittedOrdersTab).find("#" + elementTag)[0]
+
+                        order.outerHTML = ""
+                        break
+ 
+                    case 'notfound':
+                        
+                        break
+
+                    case 'error':
+                        
+                        break
+                
+                    default:
+                        break
                 }
             }
         }
