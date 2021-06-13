@@ -1217,7 +1217,6 @@ body {
 }
 
 .user_type {
-  width: 30%;
   margin-left: 5%;
   display: block;
 }
@@ -1324,7 +1323,6 @@ body {
 
 .user_field_header {
   padding-left: 10px;
-  background-color: #b2b2b2;
   border-radius: 15px;
 }
 
@@ -1336,6 +1334,10 @@ body {
   padding-right: 10px;
   padding-left: 10px;
   padding-top: 10px;
+  background-color: black;
+  border-radius: 5px;
+  margin-top: 10px;
+  color: wheat;
 }
 
 
