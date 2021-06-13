@@ -410,6 +410,8 @@ function addToOrderClick(addCheckClass) {
         var qty = orderQtySel.options[orderQtySel.selectedIndex].getAttribute("value")
         var orderPickupSelect = $(uiSection).find('#order_pickup_select')[0]
         var pickup = orderPickupSelect.options[orderPickupSelect.selectedIndex].getAttribute("value")
+        console.log(pickup)
+        
         var orderPickupGuySelect = $(uiSection).find('#order_pickup_guy_select')[0]
         var orderPickupGuy = orderPickupGuySelect.options[orderPickupGuySelect.selectedIndex].getAttribute("value")
         
