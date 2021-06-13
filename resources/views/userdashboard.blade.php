@@ -45,7 +45,7 @@
         @for($i = 0; $i < count($locations); $i += 2)
         @if(!isset($locations[$i]->odd))    
         <!-- THIS SECTION WILL BE USED TO SHOW A PAIR OF LOCATIONS -->
-        <div class="ui_section">
+        <div class="ui_section" hidden>
             <div class="search_locations">
                 <div class="search_location_frame">
                     <div class="location_picture_frame left">
@@ -71,7 +71,7 @@
         </div>
         @else
         <!-- THIS SECTION WILL BE USED TO SHOW A SINGLE CENTERED LOCATION -->
-        <div class="ui_section">
+        <div class="ui_section" hidden>
             <div class="search_locations">
                 <div class="search_location_frame">
                     <div class="location_picture_frame">
