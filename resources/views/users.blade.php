@@ -113,7 +113,7 @@
                             <input id="edited_user_id" name="user_id" hidden>
                             <div class="user_name">
                             <div class="user_name field_label">Name</div>
-                            <input id="edited_name" type="text" class="w-input" maxlength="256" name="name" placeholder="Name" required>
+                            <input id="edited_name" type="text" class="w-input edited_user_name" maxlength="256" name="name" placeholder="Name" required>
                             </div>
                             <div class="user_email">
                                 <div class="field_label">Email</div>
@@ -178,7 +178,7 @@
                         </div>
                             <div class="user_edit_section two">
                             <div class="user_field_header">TYPE</div>
-                            <div id="user_type" class="user_field_content user_type">user_type</div>
+                            <div id="user_type" class="user_field_content">user_type</div>
                         </div>
                         <div class="user_edit_section center" id="edit_buttons">
                             <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('user_id')">
