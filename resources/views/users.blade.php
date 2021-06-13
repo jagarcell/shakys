@@ -169,15 +169,15 @@
                     </div>
                     <div class="user_section horizontal">
                         <div class="user_edit_section">
-                            <div class="user_field_header box_shadow">USER</div>
+                            <div class="user_field_header">USER</div>
                             <div id="user_name" class="user_field_content">user_name</div>
                         </div>
                         <div class="user_edit_section">
-                            <div class="user_field_header box_shadow">EMAIL</div>
+                            <div class="user_field_header">EMAIL</div>
                             <div id="user_email" class="user_field_content">user_email</div>
                         </div>
                             <div class="user_edit_section two">
-                            <div class="user_field_header box_shadow">TYPE</div>
+                            <div class="user_field_header">TYPE</div>
                             <div id="user_type" class="user_field_content user_type">user_type</div>
                         </div>
                         <div class="user_edit_section center" id="edit_buttons">
@@ -203,15 +203,15 @@
                         </div>
                         <div class="user_section horizontal">
                             <div class="user_edit_section">
-                                <div class="user_field_header box_shadow">USER</div>
+                                <div class="user_field_header">USER</div>
                                 <div class="user_field_content">{{$user->name}}</div>
                             </div>
                             <div class="user_edit_section">
-                                <div class="user_field_header box_shadow">EMAIL</div>
+                                <div class="user_field_header">EMAIL</div>
                                 <div class="user_field_content">{{$user->email}}</div>
                             </div>
                             <div class="user_edit_section two">
-                                <div class="user_field_header box_shadow">TYPE</div>
+                                <div class="user_field_header">TYPE</div>
                                 <div class="user_field_content">{{$user->user_type}}</div>
                             </div>
                             <div class="user_edit_section center" id="edit_buttons">
