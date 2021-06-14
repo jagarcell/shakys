@@ -61,6 +61,7 @@
                             <div class="order_detail_qty show_all_mobile">
                                 <a style="text-decoration-line: underline;" onclick="showAllOrderLinesClick('{{$order->id}}')">Show All</></a>
                             </div>
+
                             @foreach($order->lines as $key => $line)
                             <div id="{{$order->id}}_{{$line->id}}" lineid="{{$line->id}}" class="order_detail_line">
                                 <div class="order_detail_code">
@@ -81,7 +82,7 @@
                                 </div>
                                 <div class="order_detail_qty">
                                     <div class="individual_label"></div>
-                                    <a class="hide_order_line_button" onclick="hideOrderLineClick('{{$order->id}}_{{$line->id}}')">Hide</a>
+                                    <a class="hide_order_line_button" onclick="hideOrderLineClick('{{$order->id}}_{{$line->id}}')">Check</a>
                                 </div>
                             </div>
                             @endforeach
