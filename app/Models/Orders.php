@@ -267,7 +267,7 @@ class Orders extends Model
         try {
             //code...
             if(strlen($Order->email) > 0){
-//                Mail::to($Order->email)->send((new OrderEmail($Order))->subject($Subject));
+                Mail::to($Order->email)->send((new OrderEmail($Order))->subject($Subject));
             }
             else{
                 return ['status' => 'noemail', 'element_tag' => $ElementTag];
@@ -275,7 +275,7 @@ class Orders extends Model
         } catch (\Exception $th) {
             //throw $th;
             $Message = $this->ErrorInfo($th);
-            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag, 'th' => $th];
+            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag, 'th' => $th, 'email' => $Order->email, 'subject' => $Subject];
         }
         return ['status' => 'ok', 'order' => $Order, 'element_tag' => $ElementTag];
      }
