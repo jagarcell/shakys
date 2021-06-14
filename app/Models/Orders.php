@@ -267,7 +267,7 @@ class Orders extends Model
         try {
             //code...
             if(strlen($Order->email) > 0){
-                Mail::to($Order->email)->send((new OrderEmail($Order))->subject($Subject));
+//                Mail::to($Order->email)->send((new OrderEmail($Order))->subject($Subject));
             }
             else{
                 return ['status' => 'noemail', 'element_tag' => $ElementTag];
