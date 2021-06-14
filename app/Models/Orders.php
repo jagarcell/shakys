@@ -270,7 +270,7 @@ class Orders extends Model
         } catch (\Throwable $th) {
             //throw $th;
             $Message = $this->ErrorInfo($th);
-            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
+            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag, 'th' => $th];
         }
      }
 
