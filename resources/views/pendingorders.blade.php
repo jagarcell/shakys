@@ -29,10 +29,10 @@
         <input id="tab_id" value="{{$tabid}}" hidden></input>
         <div class="pending_content">
             <div id="add_to_order_button" class="add_to_order_button" style="display:none;">
-                <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;width:100%;" onclick="addToOrderClick('add_to_order_check')">
+                <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;width:100%;" onclick="addToOrderClick('add_to_order_check', 'counted_')">
             </div>
             <div id="all_products_add_to_order_button" class="add_to_order_button" style="display:none;">
-                <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;width:100%;" onclick="addToOrderClick('all_products_add_to_order_check')">
+                <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;width:100%;" onclick="addToOrderClick('all_products_add_to_order_check', 'all_')">
             </div>
 
             <div data-duration-in="300" data-duration-out="100" class="w-tabs">

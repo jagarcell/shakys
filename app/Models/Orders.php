@@ -169,13 +169,21 @@ class Orders extends Model
             $Message = $this->ErrorInfo($th);
             return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
         }
-        try {
-            //code...
+        
+        $Result = $this->EmailOrder($request);
+        switch ($Result['status']) {
+            case 'ok':
+                # code...
+                return ['status' => 'ok', 'order' => $Result['order'], 'element_tag' => $ElementTag];
+                break;
 
-        } catch (\Throwable $th) {
-            //throw $th;
+            case 'error':
+                return ['status' => 'notsent', 'message' => $Result['message'], 'element_tag' => $ElementTag];    
+                break;
+            default:
+                # code...
+                break;
         }
-        return ['status' => 'ok', 'element_tag' => $ElementTag];
      }
 
      /**

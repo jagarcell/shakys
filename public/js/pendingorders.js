@@ -400,12 +400,12 @@ function receivedOrderButtonClick(orderId) {
     )
 }
 
-function addToOrderClick(addCheckClass) {
+function addToOrderClick(addCheckClass, prefixToReplace) {
     var checkedToOrder = $('.' + addCheckClass + ':checkbox:checked')
     $.each(checkedToOrder, function(index, toOrder){
         var uiSection = garcellParentNodeByClassName(toOrder, 'ui_section')
         var supplierSel = $(uiSection).find('#product_supplier_select')[0]
-        var productId = uiSection.id.replace('all_', '')
+        var productId = uiSection.id.replace(prefixToReplace, '')
         var supplierId = supplierSel.options[supplierSel.selectedIndex].getAttribute("value")
         var orderQtySel = $(uiSection).find('#order_qty_sel')[0]
         var qty = orderQtySel.options[orderQtySel.selectedIndex].getAttribute("value")
