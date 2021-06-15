@@ -29,6 +29,7 @@ class PickupUser extends Model
                     ->where('pickup', 'pickup')
                     ->where('pickup_guy_id', $PickupUser->id)
                     ->where('submitted', true)
+                    ->where('received', false)
                     ->where('completed', false)->get();
                 foreach($Orders as $Key => $Order){
                     $Suppliers = (new Suppliers())->where('id', $Order->supplier_id)->get();

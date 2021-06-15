@@ -63,8 +63,8 @@
                         @if(count($products) > 0)
                         @foreach($products as $key => $product)
                         <!-- HERE A PRODUCT IS SHOWN WITH A RED/BLACK BACKGROUND -->
-                        <a onclick="productClick('{{$product->id}}')">
-                            <div id="{{$product->id}}" class="ui_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
+                        <a onclick="productClick('pending_{{$product->id}}')">
+                            <div id="pending_{{$product->id}}" class="ui_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
                                 <div class="po_to_count_section">
                                     <div class="po_pic_frame">
                                         <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
@@ -93,7 +93,7 @@
                         @if(count($countedproducts) > 0)
                         @foreach($countedproducts as $key => $countedProduct)
                         <!-- HERE A PRODUCT IS SHOWN WITH A RED/BLACK BACKGROUND -->
-                        <div id="{{$countedProduct->id}}" class="ui_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
+                        <div id="counted_{{$countedProduct->id}}" class="ui_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
                             <div class="po_to_count_section">
                                 <div class="po_pic_frame">
                                     <img src="{{$countedProduct->image_path}}" loading="lazy" alt="" class="product_pic">
@@ -155,7 +155,7 @@
                         @if(count($allproducts) > 0)
                         @foreach($allproducts as $key => $allProduct)
                         <!-- HERE A PRODUCT IS SHOWN WITH A RED/BLACK BACKGROUND -->
-                        <div id="{{$allProduct->id}}" class="ui_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
+                        <div id="all_{{$allProduct->id}}" class="ui_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
                             <div class="po_to_count_section">
                                 <div class="po_pic_frame">
                                     <img src="{{$allProduct->image_path}}" loading="lazy" alt="" class="product_pic">
@@ -216,7 +216,7 @@
                     <div data-w-tab="Tab 4" class="w-tab-pane">
                         @if(count($orders) > 0)
                         @foreach($orders as $key => $order)
-                        <div id="{{$order->id}}" class="order_section shadowRight">
+                        <div id="approval_{{$order->id}}" class="order_section shadowRight">
                             <div class="order_segment">
                                 <div class="order_supplier_select_wrap">
                                     <label>Supplier</label>
@@ -237,7 +237,7 @@
                             <div class="order_segment">
                                 <div class="order_pickup_display_wrap">
                                     <label>Order Type</label>
-                                    <select id="order_type_select" class="order_type_display_select" onchange="orderTypeSelectChange(this, '{{$order->id}}')">
+                                    <select id="order_type_select" class="order_type_display_select" onchange="orderTypeSelectChange(this, 'approval_{{$order->id}}')">
                                         <option value="pickup" {{$order->pickup == 'pickup' ? 'selected':''}}>
                                                 Pickup
                                             </option>
@@ -292,7 +292,7 @@
                                 @endforeach
                             </div>
                             <div class="submit_order_button_wrap">
-                                <input type="button" value="Submit order" class="submit_order_button" onclick="submitOrderButtonClick('{{$order->id}}')">
+                                <input type="button" value="Submit order" class="submit_order_button" onclick="submitOrderButtonClick('approval_{{$order->id}}')">
                             </div>
                         </div>
                         @endforeach
@@ -305,7 +305,7 @@
                     <div id="submitted_orders_tab" data-w-tab="Tab 5" class="w-tab-pane">
                         @if(count($submittedorders) > 0)
                         @foreach($submittedorders as $key => $submittedOrder)
-                        <div id="{{$submittedOrder->id}}" class="order_section shadowRight">
+                        <div id="submitted_{{$submittedOrder->id}}" class="order_section shadowRight">
                             <div class="order_segment">
                                 <div class="order_supplier_select_wrap">
                                     <label>Supplier</label>
@@ -372,10 +372,10 @@
                             </div>
                             <div class="submitted_order_buttons_wrap">
                                 <div class="submitted_order_button_wrap">
-                                    <input type="button" value="Resend order" class="submitted_order_button" onclick="resendOrderButtonClick('{{$submittedOrder->id}}')">
+                                    <input type="button" value="Resend order" class="submitted_order_button" onclick="resendOrderButtonClick('submitted_{{$submittedOrder->id}}')">
                                 </div>
                                 <div class="submitted_order_button_wrap">
-                                    <input type="button" value="Receive order" class="submitted_order_button" onclick="receivedOrderButtonClick('{{$submittedOrder->id}}')">
+                                    <input type="button" value="Receive order" class="submitted_order_button" onclick="receivedOrderButtonClick('submitted_{{$submittedOrder->id}}')">
                                 </div>
                             </div>
                              <div id="action_result_message_{{$submittedOrder->id}}" class="action_result_message" hidden></div>

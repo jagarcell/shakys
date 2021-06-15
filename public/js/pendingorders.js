@@ -78,7 +78,7 @@ function closeOrder(){
 function productClick(productId){
     $.get('/getproduct',
         {
-            id:productId,
+            id:productId.replace('pending_', ''),
             element_tag:productId,
         }, function(data, status){
             if(status == 'success'){
@@ -241,7 +241,7 @@ function submitOrderButtonClick(order_id){
     $.post('/submitorder',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
-            order_id:order_id,
+            order_id:order_id.replace('approval_', ''),
             supplier_id:orderSupplierSelect.options[orderSupplierSelect.selectedIndex].getAttribute('value'),
             order_type:orderTypeSelect.options[orderTypeSelect.selectedIndex].getAttribute('value'),
             pickup_user_id:orderPickupUserSelect.options[orderPickupUserSelect.selectedIndex].getAttribute('value'),
@@ -270,22 +270,23 @@ function submitOrderButtonClick(order_id){
 }
 
 function resendOrderButtonClick(orderId){
-    var actionResultMessage = $('#action_result_message_' + orderId)
+    var actionResultMessage = $('#action_result_message_' + orderId.replace('submitted_', ''))
     reportResult(
         {
             frame:actionResultMessage,
             message:"SENDING THE ORDER ...",
             error:false,
+            alignTop:false,
         }
     )
     $.post('/emailorder',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
-            order_id:orderId,
-            element_tag:orderId,
+            order_id:orderId.replace('submitted_', ''),
+            element_tag:orderId.replace('submitted_', ''),
         }, function(data, status){
             if(status == 'success'){
-                var elementTag = data.element_tag;
+                var elementTag = data.element_tag
                 var actionResultMessage = $('#action_result_message_' + elementTag)
                 switch (data.status) {
                     case 'ok':
@@ -345,7 +346,7 @@ function resendOrderButtonClick(orderId){
 }
 
 function receivedOrderButtonClick(orderId) {
-    var actionResultMessage = $('#action_result_message_' + orderId)
+    var actionResultMessage = $('#action_result_message_' + orderId.replace('submitted_', ''))
     var submittedOrdersTab = document.getElementById('submitted_orders_tab')
     var order = $(submittedOrdersTab).find("#" + orderId)
     var order_lines = order.find('.' + 'available_qty')
@@ -367,7 +368,7 @@ function receivedOrderButtonClick(orderId) {
     $.post('/receiveorder',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
-            id:orderId,
+            id:orderId.replace('submitted_', ''),
             order_lines:lines,
             element_tag:orderId,
         }, function(data, status){
@@ -404,7 +405,7 @@ function addToOrderClick(addCheckClass) {
     $.each(checkedToOrder, function(index, toOrder){
         var uiSection = garcellParentNodeByClassName(toOrder, 'ui_section')
         var supplierSel = $(uiSection).find('#product_supplier_select')[0]
-        var productId = uiSection.id
+        var productId = uiSection.id.replace('all_', '')
         var supplierId = supplierSel.options[supplierSel.selectedIndex].getAttribute("value")
         var orderQtySel = $(uiSection).find('#order_qty_sel')[0]
         var qty = orderQtySel.options[orderQtySel.selectedIndex].getAttribute("value")

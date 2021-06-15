@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Products;
 use App\Models\Suppliers;
@@ -121,8 +122,22 @@ class PendingOrders extends Model
                 break;
         }
 
-        $AllProducts = (new Products())->where('id', '>', -1)->get();
+        $Result = $this->AllTheProducts($request);
+        switch ($Result['status']) {
+            case 'ok':
+                # code...
+                $AllProducts = $Result['products'];
+                break;
+        
+            case 'error':
+                $Message = $Result['message'][0];
+                return view('debug', ['message' => $Message . " 2"]);
+                break;
 
+            default:
+            # code...
+                break;
+        }
         return view('pendingorders', 
             [
                 'tabid' => $TabId,
@@ -325,6 +340,27 @@ class PendingOrders extends Model
                 }
             }
             return ['status' => 'ok', 'orders' => $Orders];
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message];
+        }
+    }
+
+    /**
+     * 
+     * @return String status [ok error]
+     * 
+     */
+    public function AllTheProducts($request)
+    {
+        # code...
+        try {
+            //code...
+            $Products = DB::table('products')
+                ->join('suppliers', 'products.default_supplier_id', '=', 'suppliers.id')
+                ->select('products.*', 'suppliers.pickup', 'suppliers.last_pickup_id')->get();
+            return ['status' => 'ok', 'products' => $Products];
         } catch (\Throwable $th) {
             //throw $th;
             $Message = $this->ErrorInfo($th);

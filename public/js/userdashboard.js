@@ -1,4 +1,12 @@
 $(document).ready(function(){
+    var qtySelectHtml = ""
+    for(var i = 0; i < 201; i++){
+        qtySelectHtml += "<option value='" + i + "'>" + i + "</option>"
+    }
+
+    var qtySelect = document.getElementById('qty')
+    qtySelect.innerHTML = qtySelectHtml
+
     $('.page-header').hide()
     $('.page_title_frame').hide()
     document.getElementById('navbarSupportedContent').style.zIndex = 1
@@ -7,7 +15,7 @@ $(document).ready(function(){
     setupTimers()
 })
 
-var timeoutInMiliseconds = 60000;
+var timeoutInMiliseconds = 10000;
 var timeoutId; 
   
 function startTimer() { 
@@ -17,6 +25,7 @@ function startTimer() {
   
 function doInactive() {
     // does whatever you need it to actually do - probably signs them out or stops polling the server for info
+    window.location = "/userdashboard"
 }
  
 function setupTimers () {
@@ -24,8 +33,6 @@ function setupTimers () {
     document.addEventListener("mousedown", resetTimer, false)
     document.addEventListener("keypress", resetTimer, false)
     document.addEventListener("touchmove", resetTimer, false)
-     
-    startTimer();
 }
 
 function resetTimer() { 
@@ -72,7 +79,12 @@ function productClick(productId){
 }
 
 function orderClick(productId){
-    var qty = $('#order_top_id').find('#qty').val()
+    var qtySelect = $('#order_top_id').find('#qty')[0]
+    var qty = qtySelect.selectedIndex
+
+    console.log(qtySelect)    
+    console.log(qty)
+    
     if(qty > 0)
     {
         $.post('/markascounted',

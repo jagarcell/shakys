@@ -300,15 +300,47 @@ class Orders extends Model
              if(count($Orders) == 0){
                 return ['status' => 'notfound', 'element_tag' => $ElementTag];
              }
+             // Transaction to update the order and products records
              DB::beginTransaction();
+
+             // Update each order line
              foreach($OrderLines as $Key => $OrderLine){
-                 DB::table('order_lines')->where('id', $OrderLine['id'])->update(['available_qty' => $OrderLine['available_qty']]);
+                DB::table('order_lines')->where('id', $OrderLine['id'])->update(['available_qty' => $OrderLine['available_qty']]);
+                // Get the line to fetch the product
+                $Lines = DB::table('order_lines')->where('id', $OrderLine['id'])->get();
+                if(count($Lines) > 0){
+                    $Line = $Lines[0];
+                    // Fetch the product
+                    $Products = DB::table('products')->where('id', $Line->product_id)->get();
+                    if(count($Products) > 0){
+                        $Product = $Products[0];
+                        // If this line has available quantity ...
+                        if($OrderLine['available_qty'] > 0){
+                            // ... then reset the counted flag and next count date
+                            $DaysToCount = $Product->days_to_count;
+                            $NextCountDate = new \DateTime();
+                            $NextCountDate = date_modify($NextCountDate, "+" . $DaysToCount . " day");
+                            DB::table('products')
+                            ->where('id', $Product->id)
+                            ->update(['next_count_date' => $NextCountDate, 'counted' => false]);
+                        }
+                        else{
+                            // ... in case that available quantity is zero then reset just the counted flag 
+                            DB::table('products')
+                            ->where('id', $Product->id)
+                            ->update(['counted' => false]);
+                        }                        
+                    }
+                }
              }
+
+             // Update the order's header
              DB::table('orders')->where('id', $Orders[0]->id)->update(['received' => true]);
              DB::commit();
-             return ['status' => 'ok', 'order_line' => $OrderLines, 'element_tag' => $ElementTag];
+             // If all went right return an OK status
+             return ['status' => 'ok', 'element_tag' => $ElementTag];
          } catch (\Throwable $th) {
-             //throw $th;
+             // If something went wrong return an error
              DB::rollback();
              $Message = $this->ErrorInfo($th);
              return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
