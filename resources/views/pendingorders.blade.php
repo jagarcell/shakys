@@ -293,12 +293,12 @@
                             <div class="submit_order_button_wrap">
                                 <input type="button" value="Submit order" class="submit_order_button" onclick="submitOrderButtonClick('approval_{{$order->id}}')">
                             </div>
+                            <div id="action_result_message_tab_4" class="action_result_message" hidden></div>
                         </div>
                         @endforeach
                         @else
                         <div class="empty_tab_text">THERE ARE NO ORDERS FOR APPROVAL</div>
                         @endif
-                        <div id="action_result_message_tab_4" class="action_result_message" hidden></div>
                     </div>
 
                     <!-- SUBMITTED ORDERS TAB -->
