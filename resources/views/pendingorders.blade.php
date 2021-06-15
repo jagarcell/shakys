@@ -31,6 +31,7 @@
             <div id="add_to_order_button" class="add_to_order_button" style="display:none;">
                 <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;width:100%;" onclick="addToOrderClick('add_to_order_check', 'counted_')">
             </div>
+
             <div id="all_products_add_to_order_button" class="add_to_order_button" style="display:none;">
                 <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;width:100%;" onclick="addToOrderClick('all_products_add_to_order_check', 'all_')">
             </div>
@@ -114,7 +115,7 @@
                                     </select>
                                 </div>
                                 <div id="pickup" class="order_data_field">
-                                    <label id="pickup_user_label" class="order_data_field_label">Delivery</label>
+                                    <label id="pickup_user_label" class="order_data_field_label">Type</label>
                                     <select id="order_pickup_select" onchange="orderPickupSelectChange(this)">
                                         <option value="pickup" {{$countedProduct->pickup == 'pickup' ? 'selected':''}}>Pickup</option>
                                         <option value="delivery" {{$countedProduct->pickup == 'delivery' ? 'selected':''}}>Delivery</option>
@@ -176,7 +177,7 @@
                                     </select>
                                 </div>
                                 <div id="pickup" class="order_data_field">
-                                    <label id="pickup_user_label" class="order_data_field_label">Delivery</label>
+                                    <label id="pickup_user_label" class="order_data_field_label">Type</label>
                                     <select id="order_pickup_select" onchange="orderPickupSelectChange(this)">
                                         <option value="pickup" {{$allProduct->pickup == 'pickup' ? 'selected':''}}>Pickup</option>
                                         <option value="delivery" {{$allProduct->pickup == 'delivery' ? 'selected':''}}>Delivery</option>
@@ -221,7 +222,7 @@
                                     <label>Supplier</label>
                                     <select id="order_supplier_select" class="order_supplier_display_select">
                                         @foreach($suppliers as $key => $supplier)
-                                        <option value="{{$supplier->id}}" {{$supplier->id == $order->default_supplier_id ? 'selected':''}}>
+                                        <option value="{{$supplier->id}}" {{$supplier->id == $order->supplier_id ? 'selected':''}}>
                                         {{$supplier->name}}
                                         </option>
                                         @endforeach
@@ -293,7 +294,7 @@
                             <div class="submit_order_button_wrap">
                                 <input type="button" value="Submit order" class="submit_order_button" onclick="submitOrderButtonClick('approval_{{$order->id}}')">
                             </div>
-                            <div id="action_result_message_tab_4" class="action_result_message" hidden></div>
+                            <div id="action_result_message" class="action_result_message" hidden></div>
                         </div>
                         @endforeach
                         @else

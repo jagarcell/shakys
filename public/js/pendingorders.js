@@ -121,7 +121,7 @@ function orderClick(productId){
                 switch (data.status) {
                     case 'ok':
                         var product = data.product
-                        var markAsCounted = document.getElementById(product.id)
+                        var markAsCounted = document.getElementById('pending_' + product.id)
                         markAsCounted.outerHTML = ""
                         var products = $('.product')
                         $.each(products, function(index, product){
@@ -251,16 +251,24 @@ function submitOrderButtonClick(order_id){
         function(data, status){
             if(status == 'success'){
                 var elementTag = data.element_tag
-                console.log(elementTag)
                 console.log(document.getElementById(elementTag))
-                console.log($(elemntTag))
-                var actionResultMessage = $(elementTag).find('#action_result_message_tab_4')
+                var actionResultMessage = $('#' + elementTag).find('#action_result_message')
+                console.log(actionResultMessage)
                 switch (data.status) {
                     case 'ok':
-                        var order = document.getElementById(elementTag)
-                        order.outerHTML = ""
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                alignTop:false,
+                                message:"THE ORDER WAS SENT TO " + data.order.email,
+                                param:elementTag,
+                            }, function(frame, elementTag){
+                                frame.hide()
+                                var order = document.getElementById(elementTag)
+                                order.outerHTML = ""
+                            }
+                        )
                         break
-                
                     case 'error':
                         var message = getMessageFromErrorInfo(data.message)
                         reportResult(
@@ -282,9 +290,10 @@ function submitOrderButtonClick(order_id){
                             }, function(frame, param){
                                 frame.hide()
                             }
-                        )    
+                        )   
+                        break 
                     case 'noemail':
-                        report(
+                        reportResult(
                             {
                                 frame:actionResultMessage,
                                 message:"THE ORDER WAS SUBMITTED BUT THERE IS NO EMAIL WHERE TO SEND IT",
@@ -461,7 +470,7 @@ function addToOrderClick(addCheckClass, prefixToReplace) {
             orderPickupGuySelect.style.fontStyle = 'italic'
             return
         }
-        
+
         $.post('/addtoorder',
             {
                 _token: $('meta[name="csrf-token"]').attr('content'),
