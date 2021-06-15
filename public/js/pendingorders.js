@@ -251,6 +251,7 @@ function submitOrderButtonClick(order_id){
         function(data, status){
             if(status == 'success'){
                 var elementTag = data.element_tag
+                var actionResultMessage = $(order_id).find('action_result_message_tab_4')
                 switch (data.status) {
                     case 'ok':
                         var order = document.getElementById(elementTag)
@@ -258,9 +259,38 @@ function submitOrderButtonClick(order_id){
                         break
                 
                     case 'error':
-
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                alignTop:false,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
                         break
-    
+                    case 'emailnotsent':
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:"ORDER SUBMITTED BUT EMAIL NOT SENT",
+                                alignTop:false,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )    
+                    case 'noemail':
+                        report(
+                            {
+                                frame:actionResultMessage,
+                                message:"THE ORDER WAS SUBMITTED BUT THERE IS NO EMAIL WHERE TO SEND IT",
+                                alignTop:false,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+                        break        
                     default:
                         break
                 }

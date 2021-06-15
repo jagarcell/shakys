@@ -39,7 +39,7 @@
                 <!-- TABS MENU -->
                 <div class="w-tab-menu">
                     <a id="tab_1" data-w-tab="Tab 1" class="w-inline-block w-tab-link w--current" onclick="tabClick(this)">
-                        <div>Pending To Count</div>
+                        <div>Due To Count</div>
                     </a>
                     <a id="tab_2" data-w-tab="Tab 2" class="w-inline-block w-tab-link" onclick="tabClick(this)">
                         <div>Counted</div>
@@ -57,7 +57,6 @@
 
                 <!-- TABS CONTENT -->
                 <div class="w-tab-content">
-                
                     <!-- PENDING TO COUNT PRODUCTS -->
                     <div data-w-tab="Tab 1" class="w-tab-pane w--tab-active">
                         @if(count($products) > 0)
@@ -299,6 +298,7 @@
                         @else
                         <div class="empty_tab_text">THERE ARE NO ORDERS FOR APPROVAL</div>
                         @endif
+                        <div id="action_result_message_tab_4" class="action_result_message" hidden></div>
                     </div>
 
                     <!-- SUBMITTED ORDERS TAB -->

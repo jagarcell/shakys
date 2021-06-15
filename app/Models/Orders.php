@@ -178,8 +178,11 @@ class Orders extends Model
                 break;
 
             case 'error':
-                return ['status' => 'notsent', 'message' => $Result['message'], 'element_tag' => $ElementTag];    
+                return ['status' => 'emailnotsent', 'message' => $Result['message'], 'element_tag' => $ElementTag];    
                 break;
+            case 'noemail':
+                return ['status' => 'noemail', 'element_tag' => $ElementTag];
+                break;    
             default:
                 # code...
                 break;
@@ -190,9 +193,10 @@ class Orders extends Model
       * 
       * @param Request $request ['id']
       *
-      * @return String ['status' => 'ok' 'error' 'not found']
+      * @return String ['status' => 'ok' 'error' 'notfound']
       * @return String ['message' => 'error message']
       * @return Mixed  ['element_tag' => 'element_tag']
+      *
       */
 
       
