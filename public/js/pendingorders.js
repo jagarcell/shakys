@@ -401,6 +401,7 @@ function receivedOrderButtonClick(orderId) {
 }
 
 function addToOrderClick(addCheckClass, prefixToReplace) {
+    console.log(prefixToReplace)
     var checkedToOrder = $('.' + addCheckClass + ':checkbox:checked')
     $.each(checkedToOrder, function(index, toOrder){
         var uiSection = garcellParentNodeByClassName(toOrder, 'ui_section')
