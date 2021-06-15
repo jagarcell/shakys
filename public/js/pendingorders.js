@@ -405,6 +405,7 @@ function addToOrderClick(addCheckClass, prefixToReplace) {
     var checkedToOrder = $('.' + addCheckClass + ':checkbox:checked')
     $.each(checkedToOrder, function(index, toOrder){
         var uiSection = garcellParentNodeByClassName(toOrder, 'ui_section')
+        console.log(uiSection)
         var supplierSel = $(uiSection).find('#product_supplier_select')[0]
         var productId = uiSection.id.replace(prefixToReplace, '')
         var supplierId = supplierSel.options[supplierSel.selectedIndex].getAttribute("value")
