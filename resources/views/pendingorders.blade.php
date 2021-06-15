@@ -146,7 +146,7 @@
                         </div>
                         @endforeach
                         @else
-                        <div class="empty_tab_text">THERE ARE NO PRODUCTS COUNTED</div>
+                        <div class="empty_tab_text">THERE ARE NO COUNTED PRODUCTS</div>
                         @endif
                     </div>
 
