@@ -253,6 +253,7 @@ function submitOrderButtonClick(order_id){
                 var elementTag = data.element_tag
                 console.log(elementTag)
                 console.log(document.getElementById(elementTag))
+                console.log($(elemntTag))
                 var actionResultMessage = $(elementTag).find('#action_result_message_tab_4')
                 switch (data.status) {
                     case 'ok':
