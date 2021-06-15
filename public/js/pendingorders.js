@@ -436,9 +436,10 @@ function addToOrderClick(addCheckClass, prefixToReplace) {
                 qty:qty,
                 pickup_guy_id:orderPickupGuy,
                 product_id:productId,
-                element_tag:productId,
+                element_tag:uiSection.id,
             }, function(data, status){
                 if(status == 'success'){
+                    console.log(data)
                     var elementTag = data.element_tag
                     switch (data.status) {
                         case 'ok':
