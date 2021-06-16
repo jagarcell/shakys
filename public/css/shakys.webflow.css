@@ -1451,6 +1451,7 @@ body {
 }
 
 .authenticated_user {
+  width: 35%;
   position: absolute;
   padding-right: 10px;
   padding-top: 10px;
@@ -2571,6 +2572,10 @@ body {
 }
 
 @media screen and (max-width: 479px) {
+
+  .authenticated_user {
+    width: 40%;
+  }
 
   .location_name {
     -webkit-box-pack: center;

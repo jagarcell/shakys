@@ -28,14 +28,17 @@
         @section('content')
         <input id="tab_id" value="{{$tabid}}" hidden></input>
         <div class="pending_content">
+            <!-- COUNTED PRODUCT ADD TO ORDER BUTTON -->
             <div id="add_to_order_button" class="add_to_order_button" style="display:none;">
                 <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;width:100%;" onclick="addToOrderClick('add_to_order_check', 'counted_')">
             </div>
 
+            <!-- ALL PRODUCTS ADD TO ORDER BUTTON -->
             <div id="all_products_add_to_order_button" class="add_to_order_button" style="display:none;">
                 <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;width:100%;" onclick="addToOrderClick('all_products_add_to_order_check', 'all_')">
             </div>
 
+            <!-- ACTION TABS -->
             <div data-duration-in="300" data-duration-out="100" class="w-tabs">
                 <!-- TABS MENU -->
                 <div class="w-tab-menu">
@@ -218,6 +221,9 @@
                         @foreach($orders as $key => $order)
                         <div id="approval_{{$order->id}}" class="order_section shadowRight">
                             <div class="order_segment">
+                                <label style="width:100%;">Order #{{$order->id}}</label>
+                            </div>
+                            <div class="order_segment">
                                 <div class="order_supplier_select_wrap">
                                     <label>Supplier</label>
                                     <select id="order_supplier_select" class="order_supplier_display_select">
@@ -307,6 +313,9 @@
                         @if(count($submittedorders) > 0)
                         @foreach($submittedorders as $key => $submittedOrder)
                         <div id="submitted_{{$submittedOrder->id}}" class="order_section shadowRight">
+                            <div class="order_segment"> 
+                                <label style="width:100%;">Order #{{$submittedOrder->id}}</label>
+                            </div>
                             <div class="order_segment">
                                 <div class="order_supplier_select_wrap">
                                     <label>Supplier</label>
@@ -389,6 +398,7 @@
                 </div>
             </div>
 
+            <!-- DIALOG FOR THE PRODUCT REQUESTS -->
             <div id="order_top_most" class="order_top_most" hidden>
                 <div id="popup_product" class="order_frame">
                     <div class="order_close_bar">

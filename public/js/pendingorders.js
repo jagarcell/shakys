@@ -251,9 +251,8 @@ function submitOrderButtonClick(order_id){
         function(data, status){
             if(status == 'success'){
                 var elementTag = data.element_tag
-                console.log(document.getElementById(elementTag))
                 var actionResultMessage = $('#' + elementTag).find('#action_result_message')
-                console.log(actionResultMessage)
+
                 switch (data.status) {
                     case 'ok':
                         reportResult(
@@ -419,7 +418,6 @@ function receivedOrderButtonClick(orderId) {
                 var elementTag = data.element_tag
                 switch (data.status) {
                     case 'ok':
-                        console.log(data)
                         var submittedOrdersTab = document.getElementById('submitted_orders_tab')
                         var order = $(submittedOrdersTab).find("#" + elementTag)[0]
 
@@ -427,10 +425,29 @@ function receivedOrderButtonClick(orderId) {
                         break
  
                     case 'notfound':
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:"ORDER NOT FOUND",
+                                alignTop:false,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
                         
                         break
 
                     case 'error':
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                alignTop:false,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
                         
                         break
                 
