@@ -16,7 +16,7 @@ $(document).ready(function(){
 })
 
 var timeoutInMiliseconds = 10000;
-var timeoutId; 
+var timeoutId;
   
 function startTimer() { 
     // window.setTimeout returns an Id that can be used to start and stop a timer

@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        @section('title', 'Pending Orders')
+        @section('title', 'Orders')
 
         <link href="/css/webflow.css" rel="stylesheet" type="text/css">
         <link href="/css/pendingorders.css" rel="stylesheet" type="text/css">
@@ -24,7 +24,7 @@
         </style>
     </head>
     <body class="antialiased bodyClass">
-        @section('page_title', 'PENDING ORDERS')
+        @section('page_title', 'ORDERS')
         @section('content')
         <input id="tab_id" value="{{$tabid}}" hidden></input>
         <div class="pending_content" hidden>
@@ -46,7 +46,7 @@
                         <div>Due To Count</div>
                     </a>
                     <a id="tab_2" data-w-tab="Tab 2" class="w-inline-block w-tab-link" onclick="tabClick(this)">
-                        <div>Counted</div>
+                        <div>Requests</div>
                     </a>
                     <a id="tab_3" data-w-tab="Tab 3" class="w-inline-block w-tab-link" onclick="tabClick(this)">
                         <div>All The Products</div>
@@ -408,11 +408,11 @@
                     <div id="order_product" class="order_product">internal-description</div>
                     <div class="form-block-2 w-form">
                         <form id="email-form-2" class="order_form">
-                            <label for="name">Request</label>
+                            <label for="name">Qty</label>
                             <select id="qty" class="order_qty_select order_qty_tag">
                                 <option value="0" style="text-align:right;text-align-last:right;">0</option>
                             </select>
-                            <input type="button" value="Order" class="order_button w-button" onclick="orderClick('product-id')">
+                            <input type="button" value="Request" class="order_button w-button" onclick="orderClick('product-id')">
                         </form>
                     </div>
                 </div>
