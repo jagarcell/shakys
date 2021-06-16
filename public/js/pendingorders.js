@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    // Create an options HTML for all the product quantity selects
     var optionsHTML = ""
     for(var i = 1; i < 201; i++){
         optionsHTML += "<option value='" + i + "'>" + i + "</option>"
@@ -24,11 +25,13 @@ $(document).ready(function(){
         orderQtyDisplaySelect.options[orderQtyDisplaySelect.getAttribute("qty")].setAttribute("selected", "")
     })
 
-    // Obtains the Tab ID from the hidden input that holds it
+    // Obtains the last active Tab ID from the hidden input that holds it
+    // That value came from the backend through blade
     var tabId = $('#tab_id').val()
     // Gets the tab element
     var tab = document.getElementById(tabId)
-    // Opens the Tab element
+
+    // Opens the last active Tab element
     openTab(tab)
 })
 
@@ -63,6 +66,7 @@ function openTab(element){
     else{
         $('#all_products_add_to_order_button').hide()
     }
+    $('.pending_content').show()
 }
 
 function tabClick(element) {

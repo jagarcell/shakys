@@ -27,7 +27,7 @@
         @section('page_title', 'PENDING ORDERS')
         @section('content')
         <input id="tab_id" value="{{$tabid}}" hidden></input>
-        <div class="pending_content">
+        <div class="pending_content" hidden>
             <!-- COUNTED PRODUCT ADD TO ORDER BUTTON -->
             <div id="add_to_order_button" class="add_to_order_button" style="display:none;">
                 <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;width:100%;" onclick="addToOrderClick('add_to_order_check', 'counted_')">
