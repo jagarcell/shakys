@@ -299,6 +299,28 @@ class Users extends Model
         }
     }
 
+    public function IsTypeAdmin($email)
+    {
+        # code...
+        try {
+            //code...
+            $Users = $this->where('email', $email)->get();
+            if(count($Users) == 0){
+                return false;
+            }
+            $User = $Users[0];
+            if($User->user_type == 'admin'){
+                return true;
+            }
+            else{
+                return false;
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return false;
+        }
+    }
+
     /**
      * 
      * @param $th
