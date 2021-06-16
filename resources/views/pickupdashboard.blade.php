@@ -31,8 +31,9 @@
             @foreach($orders as $key => $order)
             <div id="{{$order->id}}" class="pickup_order">
                 <a class="pickup_order_header shadowRight" onclick="pickupOrderClick(this)">
+                    <div class="order_number">Order #{{$order->id}}</div>
                     <div>
-                        {{$order->supplier_name}}    
+                        {{$order->supplier_name}}
                     </div>
                     <div>
                         {{$order->supplier_address}}

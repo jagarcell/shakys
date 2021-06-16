@@ -494,7 +494,6 @@ function editButtonClick(productId) {
             element_tag:productId,
         }, function(data, status){
             if(status == 'success'){
-                console.log(data)
                 var actionResultMessage = $('#' + data.element_tag).find('#action_result_message')
                 var element_tag = data.element_tag
                 switch (data.status) {

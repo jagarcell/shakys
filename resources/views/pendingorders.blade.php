@@ -124,9 +124,9 @@
                                         <option value="delivery" {{$countedProduct->pickup == 'delivery' ? 'selected':''}}>Delivery</option>
                                     </select>
                                 </div>
-                                <div id="order_pickup_guy_wrap" class="order_data_field" {{$countedProduct->pickup == 'delivery' ? 'hidden':''}}>
+                                <div id="order_pickup_guy_wrap" class="order_data_field">
                                     <label id="counted_pickup_user_select" class="order_data_field_label">Pickup Guy</label>
-                                    <select id="order_pickup_guy_select" onchange="orderPickupGuySelectChange(this)">
+                                    <select id="order_pickup_guy_select" onchange="orderPickupGuySelectChange(this)" {{$countedProduct->pickup == 'delivery' ? 'disabled':''}}>
                                         <option value="-1" selected disabled>Select one</option>
                                         @foreach($pickupusers as $key => $pickupuser)
                                         <option value="{{$pickupuser->id}}" {{$pickupuser->id == $countedProduct->last_pickup_id ? 'selected':''}}>
@@ -179,23 +179,25 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div id="pickup" class="order_data_field">
-                                    <label id="pickup_user_label" class="order_data_field_label">Type</label>
-                                    <select id="order_pickup_select" onchange="orderPickupSelectChange(this)">
-                                        <option value="pickup" {{$allProduct->pickup == 'pickup' ? 'selected':''}}>Pickup</option>
-                                        <option value="delivery" {{$allProduct->pickup == 'delivery' ? 'selected':''}}>Delivery</option>
-                                    </select>
-                                </div>
-                                <div id="order_pickup_guy_wrap" class="order_data_field" {{$allProduct->pickup == 'delivery' ? 'hidden':''}}>
-                                    <label id="all_pickup_user_select" class="order_data_field_label">Pickup Guy</label>
-                                    <select id="order_pickup_guy_select" onchange="orderPickupGuySelectChange(this)">
-                                        <option value="-1" selected disabled>Select one</option>
-                                        @foreach($pickupusers as $key => $pickupuser)
-                                        <option value="{{$pickupuser->id}}" {{$pickupuser->id == $allProduct->last_pickup_id ? 'selected':''}}>
-                                            {{$pickupuser->name}}
-                                        </option>
-                                        @endforeach
-                                    </select>
+                                <div>
+                                    <div id="pickup" class="order_data_field">
+                                        <label id="pickup_user_label" class="order_data_field_label">Type</label>
+                                        <select id="order_pickup_select" onchange="orderPickupSelectChange(this)">
+                                            <option value="pickup" {{$allProduct->pickup == 'pickup' ? 'selected':''}}>Pickup</option>
+                                            <option value="delivery" {{$allProduct->pickup == 'delivery' ? 'selected':''}}>Delivery</option>
+                                        </select>
+                                    </div>
+                                    <div id="order_pickup_guy_wrap" class="order_data_field" >
+                                        <label id="all_pickup_user_select" class="order_data_field_label">Pickup Guy</label>
+                                        <select id="order_pickup_guy_select"  onchange="orderPickupGuySelectChange(this)" {{$allProduct->pickup == 'delivery' ? 'disabled':''}}>
+                                            <option value="-1" selected disabled>Select one</option>
+                                            @foreach($pickupusers as $key => $pickupuser)
+                                            <option value="{{$pickupuser->id}}" {{$pickupuser->id == $allProduct->last_pickup_id ? 'selected':''}}>
+                                                {{$pickupuser->name}}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="order_data_field">
                                     <label class="order_data_field_label">Request</label>
@@ -297,9 +299,11 @@
                                 </div>
                                 @endforeach
                             </div>
+
                             <div class="submit_order_button_wrap">
                                 <input type="button" value="Submit order" class="submit_order_button" onclick="submitOrderButtonClick('approval_{{$order->id}}')">
                             </div>
+
                             <div id="action_result_message" class="action_result_message" hidden></div>
                         </div>
                         @endforeach

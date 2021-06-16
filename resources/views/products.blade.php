@@ -193,9 +193,10 @@
                                 <input id="days_to_count" type="text" class="text_field box_shadow w-input" maxlength="256" name="DaysToCount" placeholder="Days To Count" required="">
                             </div>
                             <div class="field_wrap">
-                            <div class="field_label">Measure Unit</div>
+                                <div class="field_label">Measure Unit</div>
                                 <input id="measure_unit" type="text" class="text_field box_shadow w-input" maxlength="256" name="measure_unit" placeholder="Measure Unit" required="">
                             </div>
+
                             <div class="field_wrap">
                                 <div class="field_label">Default Supplier</div>
                                 <select id="default_supplier" class="text_field box_shadow w-input" maxlength="256" name="default_supplier" data-name="default_supplier">

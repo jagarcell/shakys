@@ -200,10 +200,10 @@ function indexOfValue(select, value) {
 function orderPickupSelectChange(orderPickupGuySelect) {
     orderPickupGuySelect.style = ""
     if(orderPickupGuySelect.options[orderPickupGuySelect.options.selectedIndex].value == 'pickup'){
-        $(garcellParentNodeByClassName(orderPickupGuySelect, 'ui_section')).find('#order_pickup_guy_wrap').show()
+        $(garcellParentNodeByClassName(orderPickupGuySelect, 'ui_section')).find('#order_pickup_guy_select')[0].removeAttribute("disabled")
     }
     else{
-        $(garcellParentNodeByClassName(orderPickupGuySelect, 'ui_section')).find('#order_pickup_guy_wrap').hide()
+        $(garcellParentNodeByClassName(orderPickupGuySelect, 'ui_section')).find('#order_pickup_guy_select')[0].setAttribute("disabled", "")
     }
 }
 

@@ -23,6 +23,12 @@ select{
   font-family: inherit;
 }
 
+.order_number{
+  width: 100%;
+  text-align: right;
+  padding-right: 20px;
+}
+
 .show_all_desktop{
   display: block;
 }
