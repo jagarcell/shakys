@@ -164,6 +164,20 @@ class PendingOrders extends Model
         try {
             //code...
             $CountedProducts = (new Products())->where('counted', true)->where('qty_to_order', '>', 0)->get();
+            foreach($CountedProducts as $Key => $CountedProduct){
+                $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                    ->where('supplier_id', $CountedProduct->default_supplier_id)
+                    ->where('product_id', $CountedProduct->id)
+                    ->get();
+                if(count($SuppliersProductsPivots) > 0){
+                    $SuppliersProductsPivot = $SuppliersProductsPivots[0];
+                    $CountedProduct->supplier_price = $SuppliersProductsPivot->supplier_price;
+                }    
+                else{
+                    $CountedProduct->supplier_price = 0;
+                }
+            }
+                
             return ['status' => 'ok', 'countedproducts' => $CountedProducts];
         } catch (\Throwable $th) {
             //throw $th;
@@ -250,7 +264,13 @@ class PendingOrders extends Model
                                 $SuppliersProductsPivot = $SuppliersProductsPivots[0];
                                 $orderLine->supplier_code = $SuppliersProductsPivot->supplier_code;
                                 $orderLine->supplier_description = $SuppliersProductsPivot->supplier_description;
-                            }    
+                                $orderLine->supplier_price = $SuppliersProductsPivot->supplier_price;
+                            }
+                            else{
+                                $orderLine->supplier_code = "";
+                                $orderLine->supplier_description = "";
+                                $orderLine->supplier_price = 0;
+                            }
                         }
                     }
                     else{
@@ -360,6 +380,19 @@ class PendingOrders extends Model
             $Products = DB::table('products')
                 ->join('suppliers', 'products.default_supplier_id', '=', 'suppliers.id')
                 ->select('products.*', 'suppliers.pickup', 'suppliers.last_pickup_id')->get();
+            foreach($Products as $Key => $Product){
+                $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                    ->where('supplier_id', $Product->default_supplier_id)
+                    ->where('product_id', $Product->id)->get();
+
+                    if(count($SuppliersProductsPivots) > 0){
+                    $SuppliersProductsPivot = $SuppliersProductsPivots[0];
+                    $Product->supplier_price = $SuppliersProductsPivot->supplier_price;
+                }
+                else{
+                    $Product->supplier_price = 0;
+                }
+            }
             return ['status' => 'ok', 'products' => $Products];
         } catch (\Throwable $th) {
             //throw $th;

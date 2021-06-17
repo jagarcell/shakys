@@ -132,6 +132,8 @@ Route::post('/createuser', 'UsersController@CreateUser');
   Route::post('/updateproduct', 'ProductsController@UpdateProduct');
   
   Route::post('/markascounted', 'ProductsController@MarkAsCounted');
+  
+  Route::get('/getsupplierprice','ProductsController@GetSupplierPrice');
 
 /****************************************
  *                                      *

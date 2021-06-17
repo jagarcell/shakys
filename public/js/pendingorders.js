@@ -162,19 +162,26 @@ function orderClick(productId){
 }
 
 function supplierSelChange(supplierSel) {
+    console.log(supplierSel)
     var uiSection = $(garcellParentNodeByClassName(supplierSel, 'ui_section'))
+    console.log(uiSection[0])
     var supplier = supplierSel.options[supplierSel.options.selectedIndex]
+    var supplier_id = supplier.getAttribute("value")
+    var product_id = uiSection[0].getAttribute("productId")
+
     supplierSel.style = ""
 
     // Check if the supplier is pickup or delivery
     var orderPickupGuySelect = uiSection.find('#order_pickup_guy_select')[0]
     var orderPickupSelect = uiSection.find('#order_pickup_select')[0]
+    var orderPriceField = uiSection.find('#order_price_field')
+
     if(supplier.getAttribute('pickup') == 'delivery'){
-        uiSection.find('#order_pickup_guy_wrap').hide()
+        orderPickupGuySelect.setAttribute("disabled", "")
         orderPickupSelect.selectedIndex = indexOfValue(orderPickupSelect, 'delivery')
     }
     else{
-        uiSection.find('#order_pickup_guy_wrap').show()
+        orderPickupGuySelect.removeAttribute("disabled")
         orderPickupSelect.selectedIndex = indexOfValue(orderPickupSelect, 'pickup')
     }
 
@@ -185,6 +192,35 @@ function supplierSelChange(supplierSel) {
     else{
         orderPickupGuySelect.selectedIndex = 0
     }
+
+    $.get('getsupplierprice',
+        {
+            supplier_id:supplier_id,
+            product_id:product_id,
+            element_tag:uiSection[0].id,
+        }, function(data, status){
+            if(status == 'success'){
+                var element_tag = data.element_tag
+                var uiSection = document.getElementById(element_tag)
+                var orderPriceField = $(uiSection).find('.order_price_field')[0]
+                switch (data.status) {
+                    case 'ok':
+                        $(orderPriceField).val(data.supplier_price)
+                        break;
+
+                    case 'error':
+                        break
+
+                    case 'notfound':
+                        $(orderPriceField).val(0)
+                        break
+
+                    default:
+                        break;
+                }
+            }
+        }
+    )
 }
 
 function indexOfValue(select, value) {

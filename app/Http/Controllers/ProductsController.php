@@ -73,4 +73,9 @@ class ProductsController extends Controller
         # code...
         return (new Products())->UpdateProduct($request);
     }
+
+    public function GetSupplierPrice(Request $request)
+    {
+        return (new Products())->GetSupplierPrice($request);
+    }
 }

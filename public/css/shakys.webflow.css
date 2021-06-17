@@ -23,6 +23,48 @@ select{
   font-family: inherit;
 }
 
+.order_qty_select{
+  text-align-last: right;
+}
+
+.order_price_field{
+  text-align: right;
+  border-radius: 5px;
+  width: 100%;
+  padding-right: 50px;
+}
+
+.all_product_description{
+  text-align: left;
+  width: 100%;
+}
+
+.add_to_order_label_wrap{
+  text-align: center;
+}
+
+.add_to_order_label{
+  display: block;
+}
+
+.order_data_field_wrap{
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: left;
+  width: 35%;
+}
+
+.order_data_field_wrap_small{
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: left;
+  width: 15%;
+}
+
+.order_data_field_select{
+  width: 100%;
+}
+
 .order_number{
   width: 100%;
   text-align: right;
@@ -208,6 +250,8 @@ select{
 
 .product_qty_display_select{
   text-align-last: center;
+  width: 100%;
+  padding-right: 0px;
 }
 
 .product_int_desc{
@@ -443,7 +487,7 @@ select{
 }
 
 .product_pic {
-  width: 64px;
+  width: 128px;
   border-radius: 10px;
 }
 
@@ -457,6 +501,8 @@ select{
   font-size: inherit;
   line-height: 1.5em;
   text-align: -webkit-center;
+  position: absolute;
+  bottom: 0;  
 }
 
 .product_description {
@@ -1351,7 +1397,7 @@ body {
   padding-right: 10px;
   padding-left: 10px;
   padding-top: 10px;
-  background-color: black;
+  background-color: dimgrey;
   border-radius: 5px;
   margin-top: 10px;
   color: wheat;
@@ -1727,6 +1773,8 @@ body {
 
 .text_field{
   width: 100%;
+  min-height: 40px;
+  border-radius: 5px;
 }
 
 .add_buttons_frame {
@@ -1753,7 +1801,7 @@ body {
   display: -ms-flexbox;
   display: flex;
   width: 100%;
-  min-height:25px;
+  min-height:40px;
   max-height: 80px;
   padding-left: 20px;
   padding-right: 20px;
@@ -1766,7 +1814,7 @@ body {
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  border-radius: 12px;
+  border-radius: 5px;
   background-color: #8d8d8d;
 }
 
@@ -1871,6 +1919,7 @@ body {
 
 .po_description {
   width: 60%;
+  position: relative;
 }
 
 .po_due_date {
@@ -1880,6 +1929,62 @@ body {
 }
 
 @media screen and (max-width: 991px) {
+
+  .product_description_text {
+    position: relative;
+  }
+
+  .counted_product_description{
+    width: 100%;
+  }
+    
+  .all_product_description{
+    text-align: center;
+    width: 100%;
+  }
+
+  .po_pic_frame {
+    width: 100%;
+  }
+
+  .po_description {
+    width: 100%;
+    margin-top: 40px;
+  }
+
+  .ui_section {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+
+  .po_to_count_section {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+
+  .order_data_field_wrap{
+      padding-left: 10px;
+      padding-right: 10px;
+      width: 60%;
+      margin-left: 20%;
+      text-align: left;
+  }
+
+    
+  .order_data_field_wrap_small{
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 60%;
+    text-align: left;
+    margin-left: 20%;
+  }
+
   .pickup_orders{
     font-size: 10px;
   }
@@ -2009,6 +2114,9 @@ body {
 
 @media screen and (max-width: 767px) {
   
+  .order_price_field{
+    width: 60%;
+  }
   .show_all_desktop{
     display: none;
   }
@@ -2137,10 +2245,7 @@ body {
   .order_segment{
     display: block;
   }
-  .counted_product_description{
-    width: 100%;
-  }
-
+  
   .order_supplier_select_wrap{
     width: 100%;
   }
@@ -2206,14 +2311,6 @@ body {
 
   .search_form {
     width: 100%;
-  }
-
-  .ui_section {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
   }
 
   .add_frame{
@@ -2550,23 +2647,6 @@ body {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
-  }
-
-  .po_to_count_section {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-  }
-
-  .po_pic_frame {
-    width: 100%;
-  }
-
-  .po_description {
-    width: 100%;
-    margin-top: 40px;
   }
 
   .po_due_date {

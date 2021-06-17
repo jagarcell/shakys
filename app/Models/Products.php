@@ -364,6 +364,39 @@ class Products extends Model
 
     /**
      * 
+     * @param Request ['product_id' 'supplier_id']
+     * @param String 'element_tag' 
+     * 
+     * @return string status 'ok' 'error' 'notfound'
+     * 
+     */
+    public function GetSupplierPrice($request)
+    {
+        try {
+            $SupplierId = $request['supplier_id'];
+            $ProductId = $request['product_id'];
+            $ElementTag = $request['element_tag'];
+
+            $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                ->where('supplier_id', $SupplierId)
+                ->where('product_id', $ProductId)->get();
+            
+            if(count($SuppliersProductsPivots) == 0){
+                return ['status' => 'notfound', 'supplier_id' => $SupplierId, 'product_id' => $ProductId, 'element_tag' => $ElementTag];
+            }
+
+            $SuppliersProductsPivot = $SuppliersProductsPivots[0];
+            return ['status' => 'ok', 'supplier_price' => $SuppliersProductsPivot->supplier_price, 'element_tag' => $ElementTag];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this-ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
+        }
+    }
+
+    /**
+     * 
      * @param $th
      * 
      * @return $Message

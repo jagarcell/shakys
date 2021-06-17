@@ -204,15 +204,15 @@
                         <div class="user_section horizontal">
                             <div class="user_edit_section">
                                 <div class="user_field_header">USER</div>
-                                <div class="user_field_content">{{$user->name}}</div>
+                                <div class="user_field_content shadowRight">{{$user->name}}</div>
                             </div>
                             <div class="user_edit_section">
                                 <div class="user_field_header">EMAIL</div>
-                                <div class="user_field_content">{{$user->email}}</div>
+                                <div class="user_field_content shadowRight">{{$user->email}}</div>
                             </div>
                             <div class="user_edit_section two">
                                 <div class="user_field_header">TYPE</div>
-                                <div class="user_field_content">{{$user->user_type}}</div>
+                                <div class="user_field_content shadowRight">{{$user->user_type}}</div>
                             </div>
                             <div class="user_edit_section center" id="edit_buttons">
                                 <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('{{$user->id}}')">
@@ -239,15 +239,15 @@
                         <div class="user_section horizontal">
                             <div class="user_edit_section">
                                 <div class="user_field_header box_shadow">USER</div>
-                                <div class="user_field_content">user-name</div>
+                                <div class="user_field_conten shadowRightt">user-name</div>
                             </div>
                             <div class="user_edit_section">
                                 <div class="user_field_header box_shadow">EMAIL</div>
-                                <div class="user_field_content">user-email</div>
+                                <div class="user_field_content shadowRight">user-email</div>
                             </div>
                             <div class="user_edit_section two">
                                 <div class="user_field_header box_shadow">TYPE</div>
-                                <div class="user_field_content">user-type</div>
+                                <div class="user_field_content shadowRight">user-type</div>
                             </div>
                             <div class="user_edit_section center" id="edit_buttons">
                                 <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('user-id')">

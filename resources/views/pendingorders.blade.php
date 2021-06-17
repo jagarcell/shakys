@@ -91,12 +91,12 @@
 
                     </div>
 
-                    <!-- COUNTED PRODUCTS -->
+                    <!-- COUNTED PRODUCTS (REQUESTS) -->
                     <div data-w-tab="Tab 2" class="w-tab-pane">
                         @if(count($countedproducts) > 0)
                         @foreach($countedproducts as $key => $countedProduct)
                         <!-- HERE A PRODUCT IS SHOWN WITH A RED/BLACK BACKGROUND -->
-                        <div id="counted_{{$countedProduct->id}}" class="ui_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
+                        <div id="counted_{{$countedProduct->id}}" productId="{{$countedProduct->id}}" class="ui_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
                             <div class="po_to_count_section">
                                 <div class="po_pic_frame">
                                     <img src="{{$countedProduct->image_path}}" loading="lazy" alt="" class="product_pic">
@@ -107,43 +107,60 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div id="order_data" class="order_data">
-                                <div class="order_data_field">
-                                    <label id="supplier_select_label" class="order_data_field_label">Supplier</label>
-                                    <select id="product_supplier_select" onchange="supplierSelChange(this)">
-                                        <option value="-1" selected disabled>Select a supplier</option>
-                                        @foreach($suppliers as $key => $supplier)
-                                        <option value="{{$supplier->id}}" pickup="{{$supplier->pickup}}" last_pickup_guy="{{$supplier->last_pickup_id}}" {{$supplier->id == $countedProduct->default_supplier_id ? 'selected':''}}>{{$supplier->name}}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="order_data_field_wrap">
+                                    <div class="order_data_field">
+                                        <label id="supplier_select_label" class="order_data_field_label">Supplier</label>
+                                        <select id="product_supplier_select" productId="{{$countedProduct->id}}" class="order_data_field_select" onchange="supplierSelChange(this)">
+                                            <option value="-1" selected disabled>Select a supplier</option>
+                                            @foreach($suppliers as $key => $supplier)
+                                            <option value="{{$supplier->id}}" pickup="{{$supplier->pickup}}" last_pickup_guy="{{$supplier->last_pickup_id}}" {{$supplier->id == $countedProduct->default_supplier_id ? 'selected':''}}>{{$supplier->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                                <div id="pickup" class="order_data_field">
-                                    <label id="pickup_user_label" class="order_data_field_label">Type</label>
-                                    <select id="order_pickup_select" onchange="orderPickupSelectChange(this)">
-                                        <option value="pickup" {{$countedProduct->pickup == 'pickup' ? 'selected':''}}>Pickup</option>
-                                        <option value="delivery" {{$countedProduct->pickup == 'delivery' ? 'selected':''}}>Delivery</option>
-                                    </select>
+
+                                <div class="order_data_field_wrap">
+                                    <div id="pickup" class="order_data_field">
+                                        <label id="pickup_user_label" class="order_data_field_label">Type</label>
+                                        <select id="order_pickup_select" class="order_data_field_select" onchange="orderPickupSelectChange(this)">
+                                            <option value="pickup" {{$countedProduct->pickup == 'pickup' ? 'selected':''}}>Pickup</option>
+                                            <option value="delivery" {{$countedProduct->pickup == 'delivery' ? 'selected':''}}>Delivery</option>
+                                        </select>
+                                    </div>
+                                    <div id="order_pickup_guy_wrap" class="order_data_field">
+                                        <label id="counted_pickup_user_select" class="order_data_field_label">Pickup Guy</label>
+                                        <select id="order_pickup_guy_select" class="order_data_field_select" onchange="orderPickupGuySelectChange(this)" {{$countedProduct->pickup == 'delivery' ? 'disabled':''}}>
+                                            <option value="-1" selected disabled>Select one</option>
+                                            @foreach($pickupusers as $key => $pickupuser)
+                                            <option value="{{$pickupuser->id}}" {{$pickupuser->id == $countedProduct->last_pickup_id ? 'selected':''}}>
+                                                {{$pickupuser->name}}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                                <div id="order_pickup_guy_wrap" class="order_data_field">
-                                    <label id="counted_pickup_user_select" class="order_data_field_label">Pickup Guy</label>
-                                    <select id="order_pickup_guy_select" onchange="orderPickupGuySelectChange(this)" {{$countedProduct->pickup == 'delivery' ? 'disabled':''}}>
-                                        <option value="-1" selected disabled>Select one</option>
-                                        @foreach($pickupusers as $key => $pickupuser)
-                                        <option value="{{$pickupuser->id}}" {{$pickupuser->id == $countedProduct->last_pickup_id ? 'selected':''}}>
-                                            {{$pickupuser->name}}
-                                        </option>
-                                        @endforeach
-                                    </select>
+
+                                <div class="order_data_field_wrap">
+                                    <div class="order_data_field">
+                                        <label class="order_data_field_label">Price</label>
+                                        <input value="{{$countedProduct->supplier_price}}" class="order_price_field" disabled>
+                                    </div>
+                                    <div class="order_data_field">
+                                        <label class="order_data_field_label">Request</label>
+                                        <select id="order_qty_sel" class="order_qty_select order_data_field_select" qty_to_order={{$countedProduct->qty_to_order}}>
+                                            <option value="0">0</option>
+                                        </select>
+                                    </div>
+
                                 </div>
-                                <div class="order_data_field">
-                                    <label class="order_data_field_label">Request</label>
-                                    <select id="order_qty_sel" class="order_qty_select" qty_to_order={{$countedProduct->qty_to_order}}>
-                                        <option value="0">0</option>
-                                    </select>
-                                </div>
-                                <div class="order_data_field">
-                                    <label class="order_data_field_label">Add to order</label>
-                                    <input type="checkbox" id="order_check" class="add_to_order_check">
+
+                                <div class="order_data_field_wrap">
+                                    <div class="order_data_field add_to_order_label_wrap">
+                                        <label class="order_data_field_label add_to_order_label">Add to order</label>
+                                        <input type="checkbox" id="order_check" class="add_to_order_check">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -158,7 +175,7 @@
                         @if(count($allproducts) > 0)
                         @foreach($allproducts as $key => $allProduct)
                         <!-- HERE A PRODUCT IS SHOWN WITH A RED/BLACK BACKGROUND -->
-                        <div id="all_{{$allProduct->id}}" class="ui_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
+                        <div id="all_{{$allProduct->id}}" productId="{{$allProduct->id}}" class="ui_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
                             <div class="po_to_count_section">
                                 <div class="po_pic_frame">
                                     <img src="{{$allProduct->image_path}}" loading="lazy" alt="" class="product_pic">
@@ -170,26 +187,29 @@
                                 </div>
                             </div>
                             <div id="order_data" class="order_data">
-                                <div class="order_data_field">
-                                    <label id="supplier_select_label" class="order_data_field_label">Supplier</label>
-                                    <select id="product_supplier_select" onchange="supplierSelChange(this)">
-                                        <option value="-1" selected disabled>Select a supplier</option>
-                                        @foreach($suppliers as $key => $supplier)
-                                        <option value="{{$supplier->id}}" pickup="{{$supplier->pickup}}" last_pickup_guy="{{$supplier->last_pickup_id}}" {{$supplier->id == $allProduct->default_supplier_id ? 'selected':''}}>{{$supplier->name}}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="order_data_field_wrap">
+                                    <div class="order_data_field">
+                                        <label id="supplier_select_label" class="order_data_field_label">Supplier</label>
+                                        <select id="product_supplier_select" productId="{{$allProduct->id}}" class="order_data_field_select" onchange="supplierSelChange(this)">
+                                            <option value="-1" selected disabled>Select a supplier</option>
+                                            @foreach($suppliers as $key => $supplier)
+                                            <option value="{{$supplier->id}}" pickup="{{$supplier->pickup}}" last_pickup_guy="{{$supplier->last_pickup_id}}" {{$supplier->id == $allProduct->default_supplier_id ? 'selected':''}}>{{$supplier->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                                <div>
+
+                                <div class="order_data_field_wrap">
                                     <div id="pickup" class="order_data_field">
                                         <label id="pickup_user_label" class="order_data_field_label">Type</label>
-                                        <select id="order_pickup_select" onchange="orderPickupSelectChange(this)">
+                                        <select id="order_pickup_select" class="order_data_field_select" onchange="orderPickupSelectChange(this)">
                                             <option value="pickup" {{$allProduct->pickup == 'pickup' ? 'selected':''}}>Pickup</option>
                                             <option value="delivery" {{$allProduct->pickup == 'delivery' ? 'selected':''}}>Delivery</option>
                                         </select>
                                     </div>
                                     <div id="order_pickup_guy_wrap" class="order_data_field" >
                                         <label id="all_pickup_user_select" class="order_data_field_label">Pickup Guy</label>
-                                        <select id="order_pickup_guy_select"  onchange="orderPickupGuySelectChange(this)" {{$allProduct->pickup == 'delivery' ? 'disabled':''}}>
+                                        <select id="order_pickup_guy_select" class="order_data_field_select"  onchange="orderPickupGuySelectChange(this)" {{$allProduct->pickup == 'delivery' ? 'disabled':''}}>
                                             <option value="-1" selected disabled>Select one</option>
                                             @foreach($pickupusers as $key => $pickupuser)
                                             <option value="{{$pickupuser->id}}" {{$pickupuser->id == $allProduct->last_pickup_id ? 'selected':''}}>
@@ -199,15 +219,26 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="order_data_field">
-                                    <label class="order_data_field_label">Request</label>
-                                    <select id="order_qty_sel" class="order_qty_select" qty_to_order={{$allProduct->qty_to_order}}>
-                                        <option value="0">0</option>
-                                    </select>
+
+                                <div class="order_data_field_wrap_small">
+                                    <div class="order_data_field">
+                                        <label class="order_data_field_label">Price</label>
+                                        <input value="{{$allProduct->supplier_price}}" class="order_price_field" disabled>
+                                    </div>
+
+                                    <div class="order_data_field">
+                                        <label class="order_data_field_label">Request</label>
+                                        <select id="order_qty_sel" class="order_qty_select order_data_field_select" qty_to_order={{$allProduct->qty_to_order}}>
+                                            <option value="0">0</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="order_data_field">
-                                    <label class="order_data_field_label">Add to order</label>
-                                    <input type="checkbox" id="order_check" class="all_products_add_to_order_check">
+
+                                <div class="order_data_field_wrap_small">
+                                    <div class="order_data_field add_to_order_label_wrap">
+                                        <label class="order_data_field_label add_to_order_label">Add to order</label>
+                                        <input type="checkbox" id="order_check" class="all_products_add_to_order_check">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -279,6 +310,12 @@
                                             <label>In-store Description</label>
                                             <input class="product_int_desc" value="{{$orderLine->internal_description}}" disabled></input>
                                         </div>
+                                        <div class="order_display_qty">
+                                            <label>Price</label>
+                                            <input value="{{$orderLine->supplier_price}}" class="order_price_field" disabled>
+
+                                        </div>
+
                                     </div>
                                     <div class="order_line">
                                         <div class="product_code_wrap">
