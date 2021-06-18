@@ -17,4 +17,10 @@ class PendingOrdersController extends Controller
     {
         return (new PendingOrders())->ShowPendingOrdersPanel($request);
     }
+
+    public function GetPricesForSupplier(Request $request)
+    {
+        # code...
+        return (new PendingOrders())->GetPricesForSupplier($request);
+    }
 }

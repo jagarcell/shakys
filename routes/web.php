@@ -153,6 +153,8 @@ Route::post('/createuser', 'UsersController@CreateUser');
 
   Route::get('/showpendingorderspanel','PendingOrdersController@ShowPendingOrdersPanel');
 
+  Route::get('/getpricesforsupplier','PendingOrdersController@GetPricesForSupplier');
+
 /****************************************
  *                                      *
  *           USER DASHBOARD             *

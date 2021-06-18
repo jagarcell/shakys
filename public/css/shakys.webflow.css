@@ -23,6 +23,20 @@ select{
   font-family: inherit;
 }
 
+.product_info{
+  display: block;
+  width: 85%;
+}
+
+.qty_info{
+  display: block;
+  width: 15%;
+}
+
+.product_field_component{
+  width: 100%;
+}
+
 .order_qty_select{
   text-align-last: right;
 }
@@ -31,7 +45,7 @@ select{
   text-align: right;
   border-radius: 5px;
   width: 100%;
-  padding-right: 50px;
+  padding-right: 40px;
 }
 
 .all_product_description{
@@ -188,6 +202,7 @@ select{
 }
 
 .order_line_section{
+  display: flex;
   margin-top: 40px;
   border: outset;
   width: 90%;
@@ -235,8 +250,8 @@ select{
 }
 
 .product_code_wrap{
-  width: 30%;
-  text-align: center;
+  width: 40%;
+  padding-left: 5%;
 }
 
 .order_display_lines{
@@ -244,34 +259,36 @@ select{
 }
 
 .product_int_desc_wrap{
-  width: 50%;
-  text-align: center;
+  width: 60%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.product_qty_price_wrap{
+  width: 15%; 
 }
 
 .product_qty_display_select{
-  text-align-last: center;
+  text-align-last: end;
   width: 100%;
-  padding-right: 0px;
+  padding-right: 35px;
 }
 
 .product_int_desc{
   border-radius: 5px;
   text-align: center;
-  width: 90%;
-  padding-left: 5px;
-  padding-right: 5px;
+  width: 100%;
 }
 
 .product_int_code{
   border-radius: 5px;
-  text-align: center;
-  width: 60%;
   padding-left: 5px;
   padding-right: 5px;
+  width: 100%;
 }
 
 .order_display_qty{
-  width: 15%;
+  width: 100%;
 }
 
 .order_display_qty_desktop{
@@ -2113,9 +2130,30 @@ body {
 }
 
 @media screen and (max-width: 767px) {
-  
+  .qty_info {
+    width: 100%;
+  }
+  .product_info {
+    width: 100%;
+  } 
+  .order_line_section {
+    display: block;
+    width: 90%;
+  }
+
+  .product_qty_price_wrap {
+    width: 100%;
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+
+  .product_int_desc_wrap {
+    width: 100%;
+    padding-left: 10%;
+    padding-right: 10%;
+  }
   .order_price_field{
-    width: 60%;
+    width: 100%;
   }
   .show_all_desktop{
     display: none;
@@ -2211,27 +2249,29 @@ body {
 
   .order_display_qty{
     width: 100%;
-    text-align: center;
+    text-align: left;
+    padding-right: 10%;
+    padding-left: 10%;
   }
 
   .product_qty_display_select{
-    width: 60%;
+    width: 100%;
   }
 
   .product_int_desc{
-    width: 60%;
+    width: 100%;
   }
 
   .product_qty_display_input {
-    width: 60%;
-  }
-
-  .product_int_desc_wrap{
     width: 100%;
+    text-align-last: right;
+    padding-right: 40px !important;
   }
 
   .product_code_wrap{
     width: 100%;
+    padding-right: 10%;
+    padding-left: 10%;
   }
   
   .order_line{

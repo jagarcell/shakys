@@ -403,6 +403,40 @@ class PendingOrders extends Model
 
     /**
      * 
+     * @param Request ['supplier_id' array 'product_ids']
+     * 
+     * @return String status 'ok' 'error'
+     * 
+     */
+    public function GetPricesForSupplier($request)
+    {
+        try {
+            $ProductIds = $request['product_ids'];
+            $SupplierId = $request['supplier_id'];
+            $ElementTag = $request['element_tag'];
+
+            $ProductsPrices = array();
+
+            foreach($ProductIds as $key => $ProductId){
+                $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                ->where('supplier_id', $SupplierId)
+                ->where('product_id', $ProductId)->get();
+                if(count($SuppliersProductsPivots) > 0){
+                    $SuppliersProductsPivot = $SuppliersProductsPivots[0];
+                    $ProductsPrices[$ProductId] = $SuppliersProductsPivot->supplier_price;
+                }
+            }
+
+            return ['status' => 'ok', 'productsprices' => $ProductsPrices, 'element_tag' => $ElementTag];
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
+        }
+    }
+
+    /**
+     * 
      * @param $th
      * 
      * @return $Message

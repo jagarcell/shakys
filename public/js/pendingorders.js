@@ -565,3 +565,60 @@ function addToOrderClick(addCheckClass, prefixToReplace) {
         )
     })
 }
+
+function orderSupplierSelectChange(supplierSelect, orderSectionId){
+    var orderSection = document.getElementById(orderSectionId)
+    var supplierId = supplierSelect.options[supplierSelect.selectedIndex].getAttribute("value") 
+    var prices = $(orderSection).find('.approval_order_price')
+    var productIdsArray = []
+    $.each(prices, function(index, price){
+        productIdsArray.push(price.getAttribute("productId"))
+    })
+    $.get('getpricesforsupplier',
+        {
+            supplier_id:supplierId,
+            product_ids:productIdsArray,
+            element_tag:orderSectionId,
+        }, function(data, status){
+            if(status == 'success'){
+                var element_tag = data.element_tag
+                var actionResultMessage = $('#' + element_tag).find('#action_result_message')
+                switch (data.status) {
+                    case 'ok':
+                        var productsPrices = data.productsprices
+                        var orderSection = document.getElementById(orderSectionId)
+                        var prices = $(orderSection).find('.approval_order_price')
+ 
+                        $.each(prices, function(index, price){
+                            var productId = price.getAttribute("productId")
+                            var productPrice = productsPrices[productId]
+
+                            if(productPrice !== undefined){
+                                price.setAttribute("value", productPrice)
+                            }
+                            else{
+                                price.setAttribute("value", 0)
+                            }
+                        })
+                        break
+
+                    case 'error':
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                alignTop:false,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+                        break
+                    
+                    default:
+                        break
+                }
+            }
+        }
+    )
+}
