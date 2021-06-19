@@ -294,7 +294,7 @@ class Orders extends Model
 
      /**
       * 
-      * @param Request ['id' 'order_lines:{id, avilable_qy}' 'element_tag']
+      * @param Request ['id' 'order_lines:{id, avilable_qty}' 'element_tag']
       *
       * @return String status ['ok' 'error' 'notfound' '419']
       * 
@@ -317,7 +317,12 @@ class Orders extends Model
 
              // Update each order line
              foreach($OrderLines as $Key => $OrderLine){
-                DB::table('order_lines')->where('id', $OrderLine['id'])->update(['available_qty' => $OrderLine['available_qty']]);
+                DB::table('order_lines')->where('id', $OrderLine['id'])
+                    ->update(
+                        [
+                            'available_qty' => $OrderLine['available_qty'],
+                        ]
+                    );
                 // Get the line to fetch the product
                 $Lines = DB::table('order_lines')->where('id', $OrderLine['id'])->get();
                 if(count($Lines) > 0){
@@ -337,7 +342,7 @@ class Orders extends Model
                             ->update(['next_count_date' => $NextCountDate, 'counted' => false]);
                         }
                         else{
-                            // ... in case that available quantity is zero then reset just the counted flag 
+                            // ... in case that the available quantity is zero then reset just the counted flag 
                             DB::table('products')
                             ->where('id', $Product->id)
                             ->update(['counted' => false]);

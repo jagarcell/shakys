@@ -23,9 +23,34 @@ select{
   font-family: inherit;
 }
 
+.product_input_1{
+  width:100%;
+  padding-right:5px;
+}
+
+.product_input_2{
+  width:100%;
+  padding-right: 35px;
+}
+
+.product_input_3{
+  width: 100%;
+  padding-right: 5px;
+}
+
+.order_line_price_wrap{
+  width: 100%;
+  display: flex;
+}
+
+.order_line_info_wrap{
+  width: 100%;
+  display: flex;
+}
+
 .product_info{
   display: block;
-  width: 85%;
+  width: 100%;
 }
 
 .qty_info{
@@ -197,13 +222,12 @@ select{
 }
 
 .product_qty_display_input{
-  width: 100%;
   border-radius: 5px;
-  text-align-last: center;
+  text-align-last: right;
 }
 
 .order_line_section{
-  display: flex;
+  display: block;
   margin-top: 40px;
   border: outset;
   width: 90%;
@@ -291,6 +315,24 @@ select{
 
 .order_display_qty{
   width: 100%;
+}
+
+.order_display_qty_1{
+  width: 33.33%;
+  padding-left: 2%;
+  padding-right: 9%;
+}
+
+.order_display_qty_2{
+  width: 33.33%;
+  padding-left: 4%;
+  padding-right: 7%;
+}
+
+.order_display_qty_3{
+  width: 33.33%;
+  padding-left: 9%;
+  padding-right: 2%;
 }
 
 .order_display_qty_desktop{
@@ -1522,7 +1564,7 @@ body {
 }
 
 .authenticated_user {
-  width: 35%;
+  width: 100%;
   position: absolute;
   padding-right: 10px;
   padding-top: 10px;
@@ -2132,6 +2174,40 @@ body {
 }
 
 @media screen and (max-width: 767px) {
+  
+  .product_input_1{
+    width:75%;
+    padding-right:5px;
+  }
+
+  .product_input_3{
+    width: 75%;
+    padding-right: 5px;
+  }
+
+  .order_line_price_wrap{
+    display: block;
+  }
+
+  .order_display_qty_1{
+    padding-left: 10%;
+    padding-right: 0%;
+  }
+
+  .order_display_qty_2{
+    padding-left: 10%;
+    padding-right: 0%;
+  }
+
+  .order_display_qty_3{
+    padding-left: 10%;
+    padding-right: 0%;
+  }
+
+  .order_line_info_wrap{
+    display: block;
+  }
+
   .qty_info {
     width: 100%;
     padding-right: 0%;
@@ -2140,7 +2216,6 @@ body {
     width: 100%;
   } 
   .order_line_section {
-    display: block;
     width: 90%;
   }
 
@@ -2266,9 +2341,7 @@ body {
   }
 
   .product_qty_display_input {
-    width: 100%;
     text-align-last: right;
-    padding-right: 40px !important;
   }
 
   .product_code_wrap{
@@ -2701,11 +2774,6 @@ body {
 }
 
 @media screen and (max-width: 479px) {
-
-  .authenticated_user {
-    width: 40%;
-  }
-
   .location_name {
     -webkit-box-pack: center;
     -webkit-justify-content: center;

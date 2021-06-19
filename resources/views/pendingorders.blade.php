@@ -360,9 +360,11 @@
                         @if(count($submittedorders) > 0)
                         @foreach($submittedorders as $key => $submittedOrder)
                         <div id="submitted_{{$submittedOrder->id}}" class="order_section shadowRight">
+                            <!-- ORDER HEADER -->                        
                             <div class="order_segment"> 
                                 <label style="width:100%;">Order #{{$submittedOrder->id}}</label>
                             </div>
+
                             <div class="order_segment">
                                 <div class="order_supplier_select_wrap">
                                     <label>Supplier</label>
@@ -385,72 +387,85 @@
                                 </div>
                             </div>
                             
+                            <!-- ORDER LINES -->
                             <div class="order_display_lines">
                                 @foreach($submittedOrder->order_lines as $key => $orderLine)
-                                <div id="{{$orderLine->id}}" class="order_line_section">
-                                    <div class="product_info">
-                                        <div class="order_line">
-                                            <div class="product_code_wrap">
-                                                <label>Product</label>
-                                                <input class="product_int_code" value="{{$orderLine->internal_code}}" disabled></input>
+                                <!-- ORDER LINE -->
+                                <div id="{{$orderLine->id}}" class="order_line_section submitted_order_line">
+                                    <div class="order_line_info_wrap">
+                                        <!-- PRODUCT INFO -->
+                                        <div class="product_info">
+                                            <!-- IN-STORE PRODUCT INFO -->
+                                            <div class="order_line">
+                                                <div class="product_code_wrap">
+                                                    <label>Product</label>
+                                                    <input class="product_int_code" value="{{$orderLine->internal_code}}" disabled></input>
+                                                </div>
+                                                <div class="product_int_desc_wrap">
+                                                    <label>In-store Description</label>
+                                                    <input class="product_int_desc" value="{{$orderLine->internal_description}}" disabled></input>
+                                                </div>
                                             </div>
-                                            <div class="product_int_desc_wrap">
-                                                <label>In-store Description</label>
-                                                <input class="product_int_desc" value="{{$orderLine->internal_description}}" disabled></input>
-                                            </div>
-                                        </div>
 
-                                        <div class="order_line order_line_2">
-                                            <div class="product_code_wrap">
-                                                <label>Supplier Code</label>
-                                                <input class="product_int_code" value="{{$orderLine->supplier_code}}" disabled></input>
+                                            <!-- SUPPLIER PRODUCT INFO -->
+                                            <div class="order_line order_line_2">
+                                                <div class="product_code_wrap">
+                                                    <label>Supplier Code</label>
+                                                    <input class="product_int_code" value="{{$orderLine->supplier_code}}" disabled></input>
+                                                </div>
+                                                <div class="product_int_desc_wrap">
+                                                    <label>Supplier Description</label>
+                                                    <input class="product_int_desc" value="{{$orderLine->supplier_description}}" disabled></input>
+                                                </div>
                                             </div>
-                                            <div class="product_int_desc_wrap">
-                                                <label>Supplier Description</label>
-                                                <input class="product_int_desc" value="{{$orderLine->supplier_description}}" disabled></input>
-                                            </div>
-                                            <!--div class="order_display_qty_mobile order_display_qty">
-                                                <label>Ordered</label>
-                                                <input class="product_qty_display_input" value="{{$orderLine->qty}}" disabled>
-                                                </input>
-                                            </div -->
                                         </div>
                                     </div>
-                                    <div class="qty_info">
-                                        <div class="order_display_qty">
+                                    <div class="order_line_price_wrap">
+                                        <!-- QUANTITY INFO -->
+                                        <div class="order_display_qty_1">
                                             <label>Ordered</label>
-                                            <input class="product_qty_display_input" value="{{$orderLine->qty}}" disabled>
+                                            <input class="product_qty_display_input product_input_1" value="{{$orderLine->qty}}" disabled>
                                             </input>
                                         </div>
-                                        <div class="order_display_qty">
+                                        <div class="order_display_qty_2">
                                             <label>Available</label>
-                                            <select class="order_qty_select product_qty_display_input available_qty" style="padding-right:10px;" qty_to_order="{{$orderLine->available_qty}}" lineId="{{$orderLine->id}}">
+                                            <select class="order_qty_select product_qty_display_input available_qty product_input_2" qty_to_order="{{$orderLine->available_qty}}" lineId="{{$orderLine->id}}">
                                                 <option value="0">0</option>
                                             </select>
                                         </div>
-                                    </div>
+                                        <!-- ORDER LINE PRICE -->
+                                        <div class="order_display_qty_3">
+                                            <label>Supplier price</label>
+                                            <input class="product_qty_display_input submitted_supplier_price product_input_3" value="{{$orderLine->supplier_price}}">
+                                            </input>
+                                        </div>
+                                    </div>    
                                 </div>
                                 @endforeach
                             </div>
+
+                            <!-- ACTION BUTTONS SECTION -->
                             <div class="submitted_order_buttons_wrap">
                                 <div class="submitted_order_button_wrap">
                                     <input type="button" value="Resend order" class="submitted_order_button" onclick="resendOrderButtonClick('submitted_{{$submittedOrder->id}}')">
                                 </div>
                                 <div class="submitted_order_button_wrap">
-                                    <input type="button" value="Receive order" class="submitted_order_button" onclick="receivedOrderButtonClick('submitted_{{$submittedOrder->id}}')">
+                                    <input type="button" value="Receive order" class="submitted_order_button" onclick="receiveOrderButtonClick('submitted_{{$submittedOrder->id}}')">
                                 </div>
                             </div>
-                             <div id="action_result_message_{{$submittedOrder->id}}" class="action_result_message" hidden></div>
+                            <!-- ACTION RESULT MESSAGE FRAME -->
+                            <div id="action_result_message_{{$submittedOrder->id}}" class="action_result_message" hidden></div>
                         </div>
                         @endforeach
                         @else
+                        <!-- EMPTY ORDERS MESSAGE -->
                         <div class="empty_tab_text">THERE ARE NO SUBMITTED ORDERS</div>
                         @endif
                     </div>
                 </div>
             </div>
 
-            <!-- DIALOG FOR THE PRODUCT REQUESTS -->
+            <!-- POP UP DIALOG FOR THE PRODUCT REQUESTS -->
             <div id="order_top_most" class="order_top_most" hidden>
                 <div id="popup_product" class="order_frame">
                     <div class="order_close_bar">

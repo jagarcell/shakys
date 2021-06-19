@@ -318,6 +318,7 @@ class PendingOrders extends Model
                         $orderLine->internal_description = $Product->internal_description;
                         $orderLine->supplier_code = "";
                         $orderLine->supplier_description = "";
+                        $orderLine->supplier_price = 0;
 
                         $Suppliers = (new Suppliers())->where('id', $Order->supplier_id)->get();
                         if(count($Suppliers) > 0){
@@ -329,6 +330,8 @@ class PendingOrders extends Model
                                 $SuppliersProductsPivot = $SuppliersProductsPivots[0];
                                 $orderLine->supplier_code = $SuppliersProductsPivot->supplier_code;
                                 $orderLine->supplier_description = $SuppliersProductsPivot->supplier_description;
+                                $orderLine->supplier_price = $SuppliersProductsPivot->supplier_price;
+
                             }    
                         }
                     }
@@ -337,6 +340,7 @@ class PendingOrders extends Model
                         $orderLine->internal_description = "";
                         $orderLine->supplier_code = "";
                         $orderLine->supplier_description = "";
+                        $orderLine->supplier_price = 0;
                     }
                 }
                 $Order->date = (new \DateTime($Order->date))->format("m-d-Y");

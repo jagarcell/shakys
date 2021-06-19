@@ -300,6 +300,7 @@ function submitOrderButtonClick(order_id){
                                 frame:actionResultMessage,
                                 alignTop:false,
                                 message:"THE ORDER WAS SENT TO " + data.order.email,
+                                error:false,
                                 param:elementTag,
                             }, function(frame, elementTag){
                                 frame.hide()
@@ -426,13 +427,15 @@ function resendOrderButtonClick(orderId){
     )
 }
 
-function receivedOrderButtonClick(orderId) {
+function receiveOrderButtonClick(orderId) {
     var actionResultMessage = $('#action_result_message_' + orderId.replace('submitted_', ''))
     var submittedOrdersTab = document.getElementById('submitted_orders_tab')
     var order = $(submittedOrdersTab).find("#" + orderId)
-    var order_lines = order.find('.' + 'available_qty')
+    var order_lines = order.find('.submitted_order_line')
+    
     var lines = []
 
+    /* Show a message for the oreder receiving process */
     reportResult(
         {
             frame:actionResultMessage,
@@ -441,11 +444,14 @@ function receivedOrderButtonClick(orderId) {
             alignTop:false,
         }
     )
-
+    /* Prepare the order lines param array */    
     $.each(order_lines, function(index, order_line){
-        lines.push({id:order_line.getAttribute("lineId"), available_qty:order_line.selectedIndex})
+        var available_qty = $(order_line).find('.available_qty')[0].selectedIndex
+        var supplier_price = $(order_line).find('.submitted_supplier_price')[0].getAttribute("value")
+        lines.push({id:order_line.getAttribute("lineId"), available_qty:available_qty, supplier_price:supplier_price})
     })
 
+    /* Request to receive the order */
     $.post('/receiveorder',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
@@ -474,7 +480,6 @@ function receivedOrderButtonClick(orderId) {
                                 frame.hide()
                             }
                         )
-                        
                         break
 
                     case 'error':
@@ -488,7 +493,6 @@ function receivedOrderButtonClick(orderId) {
                                 frame.hide()
                             }
                         )
-                        
                         break
                 
                     default:
