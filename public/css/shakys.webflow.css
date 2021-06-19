@@ -595,6 +595,8 @@ select{
   -ms-flex-direction: row;
   flex-direction: row;
   background-color: transparent;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .product_pic_frame {
