@@ -31,6 +31,7 @@ select{
 .qty_info{
   display: block;
   width: 15%;
+  padding-right: 2%;
 }
 
 .product_field_component{
@@ -196,7 +197,7 @@ select{
 }
 
 .product_qty_display_input{
-  width: 85%;
+  width: 100%;
   border-radius: 5px;
   text-align-last: center;
 }
@@ -250,8 +251,8 @@ select{
 }
 
 .product_code_wrap{
-  width: 40%;
-  padding-left: 5%;
+  width: 35%;
+  padding-left: 2%;
 }
 
 .order_display_lines{
@@ -259,19 +260,20 @@ select{
 }
 
 .product_int_desc_wrap{
-  width: 60%;
-  padding-left: 5%;
-  padding-right: 5%;
+  width: 65%;
+  padding-left: 2%;
+  padding-right: 2%;
 }
 
 .product_qty_price_wrap{
-  width: 15%; 
+  width: 15%;
+  padding-right: 2%; 
 }
 
 .product_qty_display_select{
   text-align-last: end;
   width: 100%;
-  padding-right: 35px;
+  padding-right: 30px;
 }
 
 .product_int_desc{
@@ -2132,6 +2134,7 @@ body {
 @media screen and (max-width: 767px) {
   .qty_info {
     width: 100%;
+    padding-right: 0%;
   }
   .product_info {
     width: 100%;
