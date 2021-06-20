@@ -835,6 +835,16 @@ function fromEditToShow(product, added) {
 
 /**
  * 
+ * @param {string} productId 
+ * @returns
+ *  
+ */
+function unitLinkDialogClose(productId) {
+    alert(productId)
+}
+
+/**
+ * 
  * @param {string} status
  *                  'notfound'
  *                  'emailtaken'

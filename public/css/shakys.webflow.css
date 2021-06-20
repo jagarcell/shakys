@@ -23,6 +23,40 @@ select{
   font-family: inherit;
 }
 
+.unit_link_dialog_close_icon{
+  margin-right: 10px;
+  position: absolute;
+  top: 10px;
+  right: 5px;
+}
+
+.dialog_close_bar{
+  height: 40px;
+  width: 100%;
+  background-color: blue;
+  color: white;
+  opacity: 100%;
+}
+.unit_link_dialog_frame{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+.unit_link_dialog{
+  position: fixed;
+  margin-top: 20vh;
+  height: 60vh;
+  margin-left: 30vw;
+  width: 40vw;
+  background-color: dimgrey;
+  border-radius: 5px;
+  overflow: hidden;
+  text-align: end;
+}
+
 .product_input_1{
   width:100%;
   padding-right:5px;
