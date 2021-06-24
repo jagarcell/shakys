@@ -23,11 +23,106 @@ select{
   font-family: inherit;
 }
 
-.unit_link_dialog_close_icon{
-  margin-right: 10px;
+.default_unit_label{
+  margin-top: 5%;
+    text-align: left;
+    color: white;
+}
+
+.default_measure_unit_button_frame{
+  position: relative;
+  width: 20%;
+}
+
+.default_measure_unit_button{
   position: absolute;
+  bottom: 10%;
+  right: 10%;
+  width: fit-content !important;
+}
+
+.measure_unit_input{
+  width: 80%;
+  display: block;
+  text-align: left;
+}
+
+.default_measure_select_frame{
+  width: 100%;
+}
+
+.default_unit_label{
+  margin-top: 5%;
+  text-align: left;
+  width: 90%;
+  color: white;
+}
+
+.default_measure_select{
+  width: 90%;
+}
+
+.product_measure_units_display{
+  background: transparent;
+  border: none;
+  width: 100%;
+  padding-left: 0px;  
+}
+
+.unit_link_accept_button{
+  margin-top: 8%;
+}
+
+.unit_link_product_description{
+  width: 100%;
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.unit_link_product_description_frame{
+  padding-top: 5%;
+  padding-bottom: 5%;
+  color: white;
+}
+
+.units_close_bar_text{
+  position: relative;
+  left: 10px;
   top: 10px;
-  right: 5px;
+  width: 95%;
+  text-align: left;
+}
+
+.unit_link_checkbox{
+  border-radius: 5px;
+}
+
+.unit_link_checkboxes{
+  text-align: left;
+  height: 60%;
+  overflow-y: auto;
+  border: 1px solid white;
+  padding: 6px;
+  border-radius: 5px;
+  color: white;
+}
+
+.unit_link_dialog_body{
+  display: block;
+  text-align: -webkit-center;
+  height: 90%;
+  padding-bottom: 10%;
+  padding-right: 5%;
+  padding-left: 5%;
+}
+
+.unit_link_dialog_close_icon{
+  top: 10px;
+  right: 10px;
+  position: relative;
 }
 
 .dialog_close_bar{
@@ -36,9 +131,11 @@ select{
   background-color: blue;
   color: white;
   opacity: 100%;
+  display: flex;
 }
+
 .unit_link_dialog_frame{
-  position: absolute;
+  position: fixed;
   left: 0px;
   top: 0px;
   width: 100%;
@@ -46,11 +143,10 @@ select{
 }
 
 .unit_link_dialog{
-  position: fixed;
-  margin-top: 20vh;
-  height: 60vh;
-  margin-left: 30vw;
-  width: 40vw;
+  margin-top: 5%;
+  height: 80%;
+  margin-left: 30%;
+  width: 40%;
   background-color: dimgrey;
   border-radius: 5px;
   overflow: hidden;
@@ -2810,6 +2906,15 @@ body {
 }
 
 @media screen and (max-width: 479px) {
+  
+  .default_measure_unit_button_frame{
+    width: 30%;
+  }
+
+  .measure_unit_input {
+    width: 70%;
+  }
+
   .location_name {
     -webkit-box-pack: center;
     -webkit-justify-content: center;

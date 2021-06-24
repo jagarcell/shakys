@@ -55,7 +55,16 @@
                             <input id="code" type="text" class="text_field box_shadow w-input" maxlength="50" placeholder="Product Code" required="">
                             <input id="description" type="text" class="text_field box_shadow w-input" maxlength="150" placeholder="Product Description" required="">
                             <input id="days_to_count" type="number" class="text_field box_shadow w-input" maxlength="256" name="DaysToCount" data-name="DaysToCount" placeholder="Days To Count" required="">
-                            <input id="measure_unit" type="text" class="text_field box_shadow w-input" maxlength="256" name="measure_unit" data-name="measure_unit" placeholder="Measure Unit" required="">
+                            <div class="field_wrap" style="display:flex;">
+                                <div class="measure_unit_input">
+                                    <div class="field_label">Default Measure Unit</div>
+                                    <input id="measure_unit" type="text" class="text_field box_shadow w-input">
+                                </div>
+                                <div class="default_measure_unit_button_frame">
+                                    <input type="button" value="Units" class="edition_button accept_button box_shadow w-button default_measure_unit_button" onclick="measuresButtonClick(-1)">
+                                </div>
+                            </div>
+                            <!--input type="button" value="Measure Units" class="edition_button accept_button box_shadow w-button" onclick="measuresButtonClick(-1)"-->
                             <select id="default_supplier" class="text_field box_shadow w-input" maxlength="256" name="default_supplier" data-name="default_supplier">
                                 <option value="-1" selected="" placeholder="Default Supplier (Optional)">Default Supplier (Optional)</option>
                             </select>
@@ -74,7 +83,7 @@
         <div id="products_list_wrap">    
             @if(count($products) > 0)
             @foreach($products as $key => $product)
-            <div id="{{$product->id}}">
+            <div id="{{$product->id}}" class="product_edition">
                 <div class="section">
                     <div class="pic_frame">
                         <img src="{{$product->image_path}}" loading="lazy" sizes="(max-width: 479px) 80vw, 256px" srcset="{{$product->image_path}} 500w, {{$product->image_path}} 512w" alt="" class="picture box_shadow">
@@ -94,8 +103,8 @@
                                 <div id="days_to_count" class="data_field box_shadow">{{$product->days_to_count}}</div>
                             </div>
                             <div class="field_wrap">
-                                <div class="field_label">Measure Unit</div>
-                                <div id="measure_unit" class="data_field box_shadow">{{$product->measure_unit}}</div>
+                                <div class="field_label">Default Measure Unit</div>
+                                <div id="measure_unit" class="data_field box_shadow">{{$product->default_measure_unit}}</div>
                             </div>
                             <div class="field_wrap">
                                 <div class="field_label">Default Supplier</div>
@@ -113,9 +122,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="action_result_message" class="action_result_message" hidden></div>
                     </div>
                 </div>
+                <div id="action_result_message" class="action_result_message" hidden></div>
             </div>
             @endforeach
             @else
@@ -144,7 +153,7 @@
                             <div id="days_to_count" class="data_field box_shadow">days-to-count</div>
                         </div>
                         <div class="field_wrap">
-                            <div class="field_label">Measure Unit</div>
+                            <div class="field_label">Default Measure Unit</div>
                             <div id="measure_unit" class="data_field box_shadow">measure-unit</div>
                         </div>
                         <div class="field_wrap">
@@ -164,8 +173,8 @@
                         </div>
                     </div>
                 </div>
-                <div id="action_result_message" class="action_result_message" hidden></div>
             </div>
+            <div id="action_result_message" class="action_result_message" hidden></div>
         </div>
      
         <!-- THIS IS THE HTML TO BE SHOWN FROM JS TO EDIT A PRODUCT WHEN THE USER CLICKS EDIT -->
@@ -192,9 +201,14 @@
                                 <div class="field_label">Days To Count</div>
                                 <input id="days_to_count" type="text" class="text_field box_shadow w-input" maxlength="256" name="DaysToCount" placeholder="Days To Count" required="">
                             </div>
-                            <div class="field_wrap">
-                                <div class="field_label">Measure Unit</div>
-                                <input id="measure_unit" type="text" class="text_field box_shadow w-input" maxlength="256" name="measure_unit" placeholder="Measure Unit" required="">
+                            <div class="field_wrap" style="display:flex;">
+                                <div class="measure_unit_input">
+                                    <div class="field_label">Default Measure Unit</div>
+                                    <input id="measure_unit" type="text" class="text_field box_shadow w-input">
+                                </div>
+                                <div class="default_measure_unit_button_frame">
+                                    <input type="button" value="Units" class="edition_button accept_button box_shadow w-button default_measure_unit_button" onclick="measuresButtonClick('product-id')">
+                                </div>
                             </div>
 
                             <div class="field_wrap">
@@ -260,11 +274,42 @@
 
         <!-- DIALOG TO LINK THE MEASURE UNITS TO A PRODUCT -->
         <div id="unit_link_dialog_frame" class="unit_link_dialog_frame" style="display:none;">
-            <div class="unit_link_dialog">
+        </div>
+
+        <!-- THIS IS THE HTML FOR THE PRODUCT-UNITS LINK DIALOG -->
+        <!-- THIS WILL BE USED FROM JS TO CREATE DIALOGS DYNAMICALLY -->
+        <div id="unit_link_dialog_frame_html" hidden>
+            <div class="unit_link_dialog shadowRight">
                 <div class="dialog_close_bar">
-                    <a class="unit_link_dialog_close_icon" onclick="unitLinkDialogClose('product-id')">X</a>
+                    <div class="units_close_bar_text">Select units for</div>
+                    <a class="unit_link_dialog_close_icon" onclick="unitLinkDialogClose()">X</a>
                 </div>
+                <div class="unit_link_dialog_body">
+                    <div class="unit_link_product_description_frame">
+                        <input value="product-description" class="unit_link_product_description" disabled>
+                    </div>
+                    <div id="unit_link_checkboxes" class="unit_link_checkboxes">
+                        @foreach($measureunits as $key => $measureunit)
+                        <label for="unit_{{$measureunit->id}}"><input type="checkbox" id="unit_{{$measureunit->id}}" measure_id="{{$measureunit->id}}" text="{{$measureunit->unit_description}}" class="unit_link_checkbox" onchange="measureUnitChange('unit_{{$measureunit->id}}')" /> {{$measureunit->unit_description}}</label>
+                        @endforeach
+                    </div>
+                    <div class="default_measure_select_frame">
+                        <div class="default_unit_label">Default unit</div>
+                        <select class="default_measure_select">
+                            <option value="-1" selected disabled>Select a default unit</option>
+                        </select>
+                        <input type="text" class="selected_index" hidden>
+                    </div>
+                    <div class="unit_link_accept_button">
+                        <input type="button" value="Accept Changes" class="accept_button box_shadow w-button" onclick="acceptUnitChanges('product-id')">
+                    </div>
+                    
+                </div>    
             </div>
+        </div>
+
+        <!-- THIS ELEMENT IS RESERVED TO HOLD THE TEMPORARILY ACCEPTED MEASURE UNITS -->
+        <div id="unit_link_dialog_frame_html_saved" hidden>
         </div>
      
         <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
@@ -273,6 +318,7 @@
         <script src="/js/dropzone.js"></script>    
         <script src="/js/garcellLib.js"></script>
         <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+
         @endsection
     </body>
 </html>

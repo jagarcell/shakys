@@ -37,6 +37,12 @@ $(document).ready(function(){
  * Shows the data entry form to add a product.
  */
 function addIconClick() {
+    var productEditions = $('#products_list_wrap').find('.product_edition')
+    $.each(productEditions, function(index, productEdition){
+        discardEditChanges(productEdition.id)
+    })
+
+    measuresDialogCreate(-1, false)
     $.get('/getsuppliers', function(data, status){
         if(status == 'success'){
             switch (data.status) {
@@ -90,6 +96,7 @@ function discardButtonClick() {
 
     productImage = document.getElementById('product_image')
     productImage.MyDropzone.removeAllFiles()
+    clearUnitsChange()
 }
 
 /**
@@ -97,6 +104,9 @@ function discardButtonClick() {
  */
 function createButtonClick() {
     var productForm = document.getElementById('product_form')
+    var defaultMeasureSelect = $('#unit_link_dialog_frame').find('.default_measure_select')[0]
+    var defaultMeasureUnitId = defaultMeasureSelect.options[defaultMeasureSelect.selectedIndex].getAttribute('value')
+
     if(productForm.checkValidity()){
         $.post('/createproduct',
             {
@@ -104,7 +114,7 @@ function createButtonClick() {
                 internal_code:$('#add_section_frame').find('#code').val(),
                 internal_description:$('#add_section_frame').find('#description').val(),
                 days_to_count:$('#add_section_frame').find('#days_to_count').val(),
-                measure_unit:$('#add_section_frame').find('#measure_unit').val(),
+                default_measure_unit_id:defaultMeasureUnitId,
                 default_supplier_id:document.getElementById('default_supplier').selectedOptions[0].value,
                 image_to_upload:$('#add_section_frame').find('#image_to_upload').val(),
             }, function(data, status){
@@ -129,6 +139,8 @@ function createButtonClick() {
                                     discardButtonClick()                                    
                                 }
                             )
+                            saveUnitChanges(product.id)
+                            clearUnitsChange()
                             break;
                         case 'error':
                             var message = getMessageFromErrorInfo(data.message)
@@ -432,6 +444,7 @@ function deleteButtonClick(productId) {
                                 frame:actionResultMessage,
                                 message:"THE PRODUCT WAS SUCCESSFULLY DELETED!",
                                 error:false,
+                                alignTop:false,
                                 param:productId,
                             }, function(frame, productId){
                                 var section = document.getElementById(productId)
@@ -488,6 +501,8 @@ function deleteButtonClick(productId) {
  *  
  */
 function editButtonClick(productId) {
+    discardEditChanges(-1)
+
     $.get('/getproduct',
         {
             id:productId,
@@ -574,7 +589,9 @@ function editButtonClick(productId) {
                                 }
                             }
                         )
-                       break;
+
+                       measuresDialogCreate(product.id)
+                       break
                 
                     case 'error':
                         var message = getMessageFromErrorInfo(data.message)
@@ -628,6 +645,16 @@ function editButtonClick(productId) {
  *  
  */
 function discardEditChanges(productId) {
+    unitLinkDialogClose()
+    if(productId == -1){
+        var productEditions = $('#products_list_wrap').find('.product_edition')
+        $.each(productEditions, function(index, productEdition){
+            discardEditChanges(productEdition.id)
+            discardButtonClick()
+        })
+        return
+    }
+
     $.get('/getproduct',
         {
             id:productId,
@@ -643,7 +670,7 @@ function discardEditChanges(productId) {
                         var sectionHtml = document.getElementById('section_html').innerHTML
 
                         sectionHtml = sectionHtml.replace(/image-path/g, product.image_path)
-                        sectionHtml = sectionHtml.replace(/internal-description/g, product.internal_code)
+                        sectionHtml = sectionHtml.replace(/internal-code/g, product.internal_code)
                         sectionHtml = sectionHtml.replace(/internal-description/g, product.internal_description)
                         sectionHtml = sectionHtml.replace(/days-to-count/g, product.days_to_count)
                         sectionHtml = sectionHtml.replace(/measure-unit/g, product.measure_unit)
@@ -651,6 +678,7 @@ function discardEditChanges(productId) {
                         sectionHtml = sectionHtml.replace(/section_html/g, product.id)
 
                         section.innerHTML = sectionHtml
+                        clearUnitsChange()
                        break;
 
                     case 'error':
@@ -706,11 +734,13 @@ function discardEditChanges(productId) {
  */
 function acceptEditChanges(productId){
     var productForm = $(document.getElementById(productId)).find('#product_form')
+    
     if(productForm[0].checkValidity()){
         var internalCode = productForm.find('#code').val()
         var internalDescription = productForm.find('#description').val()
         var daysToCount = productForm.find('#days_to_count').val()
-        var measureUnit = productForm.find('#measure_unit').val()
+        var defaultMeasureSelect = $('#unit_link_dialog_frame').find('.default_measure_select')[0]
+        var defaultMeasureUnitId = defaultMeasureSelect.options[defaultMeasureSelect.selectedIndex].getAttribute("value")
         var defaultSupplierId = productForm.find('#default_supplier').val()
         var imagePath = productForm.find('#image_to_upload').val()
 
@@ -721,7 +751,7 @@ function acceptEditChanges(productId){
                 internal_code:internalCode,
                 internal_description:internalDescription,
                 days_to_count:daysToCount,
-                measure_unit:measureUnit,
+                default_measure_unit_id:defaultMeasureUnitId,
                 default_supplier_id:defaultSupplierId,
                 image_path:imagePath,
                 element_tag:productId,
@@ -735,7 +765,7 @@ function acceptEditChanges(productId){
                             var section = document.getElementById(product.id)
                             var sectionHtml = document.getElementById('section_html').innerHTML
 
-                            sectionHtml = sectionHtml.replace(/internal-description/g, product.internal_code)
+                            sectionHtml = sectionHtml.replace(/internal-code/g, product.internal_code)
                             sectionHtml = sectionHtml.replace(/internal-description/g, product.internal_description)
                             sectionHtml = sectionHtml.replace(/days-to-count/g, product.days_to_count)
                             sectionHtml = sectionHtml.replace(/measure-unit/g, product.measure_unit)
@@ -744,6 +774,8 @@ function acceptEditChanges(productId){
                             sectionHtml = sectionHtml.replace(/image-path/g, product.image_path)
                             
                             section.innerHTML = sectionHtml
+                            saveUnitChanges(product.id)
+                            clearUnitsChange()
                             break;
 
                         case 'notfound':
@@ -799,7 +831,7 @@ function acceptEditChanges(productId){
         )
     }
     else{
-        reportValidity()
+        productForm[0].reportValidity()
     }
 }
 
@@ -815,7 +847,6 @@ function fromEditToShow(product, added) {
     sectionHtml = sectionHtml.replace(/image-path/g, product.image_path)
     sectionHtml = sectionHtml.replace(/internal-code/g, product.internal_code)
     sectionHtml = sectionHtml.replace(/internal-description/g, product.internal_description)
-    sectionHtml = sectionHtml.replace(/days-to-count/g, product.days_to_count)
     sectionHtml = sectionHtml.replace(/days-to-count/g, product.days_to_count)
     sectionHtml = sectionHtml.replace(/measure-unit/g, product.measure_unit)
     sectionHtml = sectionHtml.replace(/default-supplier-name/g, product.default_supplier_name)
@@ -835,12 +866,290 @@ function fromEditToShow(product, added) {
 
 /**
  * 
- * @param {string} productId 
- * @returns
+ * Action to close the product-units link dialog
+ * 
  *  
  */
-function unitLinkDialogClose(productId) {
-    alert(productId)
+function unitLinkDialogClose() {
+    var unitLinkDialogFrame = document.getElementById('unit_link_dialog_frame')
+
+    unitLinkDialogFrame.style.display = 'none'
+}
+
+function measuresButtonClick(productId) {
+    measuresDialogCreate(productId, true)
+}
+
+/**
+ * 
+ * Action to open the product-units link dialog
+ *  
+ *  
+ */
+function measuresDialogCreate(productId, show = false) {
+    var unitLinkDialogFrameHtml = document.getElementById('unit_link_dialog_frame_html')
+    var unitLinkDialogFrame = document.getElementById('unit_link_dialog_frame')
+    var unitLinkDialogFrameHtmlSaved = document.getElementById('unit_link_dialog_frame_html_saved')
+
+    // If this is a new product to be created ...
+    if(productId == -1){
+        // ... and there is not a previous dialog saved ... 
+
+        if($(unitLinkDialogFrameHtmlSaved).find('.unit_link_dialog').length == 0){
+            // ... set a new dialog data 
+            unitLinkDialogFrame.innerHTML = unitLinkDialogFrameHtml.innerHTML
+            unitLinkDialogFrame.innerHTML = unitLinkDialogFrame.innerHTML.replace(/product-id/g, -1)
+            unitLinkDialogFrame.innerHTML = unitLinkDialogFrame.innerHTML.replace(/product-description/g, "New product")
+        }
+        else{
+            // ... there is dialog saved then restore it
+            var unitLinkDialogFrameHtmlSaved = document.getElementById('unit_link_dialog_frame_html_saved')
+
+            unitLinkDialogFrame.innerHTML = unitLinkDialogFrameHtmlSaved.innerHTML
+
+            var defaultMeasureSelect = $(unitLinkDialogFrame).find('.default_measure_select')[0]
+            var selectedIndex = $(unitLinkDialogFrame).find('.selected_index').val()
+            console.log(selectedIndex)
+            defaultMeasureSelect.options[selectedIndex].setAttribute('selected', true)
+        }
+        // Check if the dialog will be shown after cretion 
+        if(show){
+            unitLinkDialogFrame.style.display = 'block'
+        }
+
+        return
+    }
+
+    // This is a product for edition
+    // Let's check if there is a previous dialog saved
+    if($(unitLinkDialogFrameHtmlSaved).find('.unit_link_dialog').length == 0){
+        // This is a new dialog, no previous information saved 
+        unitLinkDialogFrame.innerHTML = unitLinkDialogFrameHtml.innerHTML
+
+        // If this is a new product to be created ...
+        if(productId == -1){
+            // ... and there is not a previous dialog 
+            //  saved set a new dialog data 
+            unitLinkDialogFrame.innerHTML = unitLinkDialogFrameHtml.innerHTML
+            unitLinkDialogFrame.innerHTML = unitLinkDialogFrame.innerHTML.replace(/product-id/g, -1)
+            unitLinkDialogFrame.innerHTML = unitLinkDialogFrame.innerHTML.replace(/product-description/g, "New product")
+        }
+        else{
+            // As this a product for edition then let's
+            // request the units linked to this product
+            $.get('/getproductunits',
+                {
+                    product_id:productId,
+                    element_tag:productId,
+                }, function(data, status){
+                    if (status == 'success'){
+                        var element_tag = data.element_tag
+                        switch (data.status) {
+                            case 'ok':
+                                var measureUnits = data.measureunits
+                                var product = data.product
+                                var defaultMeasureSelect = $(unitLinkDialogFrame).find('.default_measure_select')[0]
+
+                                // As the backend gave us the units
+                                // let's populate the list with them
+                                $.each(measureUnits, function(index, measureUnit){
+                                    $(unitLinkDialogFrame).find('#unit_' + measureUnit.id)[0].setAttribute('checked', true)
+                                    var option = document.createElement("option")
+                                    option.value = measureUnit.id
+                                    option.text = measureUnit.unit_description
+                                    defaultMeasureSelect.add(option)
+                                    if(measureUnit.default_unit !== undefined){
+                                        defaultMeasureSelect.options[index + 1].setAttribute('selected', '')
+                                    }
+                                })
+                                // Update other dialog data
+                                unitLinkDialogFrame.innerHTML = unitLinkDialogFrame.innerHTML.replace(/product-id/g, product.id)
+                                unitLinkDialogFrame.innerHTML = unitLinkDialogFrame.innerHTML.replace(/product-description/g, product.internal_description)
+                                // Show if indicated
+                                if(show){
+                                    unitLinkDialogFrame.style.display = 'block'
+                                }
+                                break
+                        
+                            default:
+                                break
+                        }
+                    }
+                }
+            )
+        }
+    }
+    else{
+        // There is a previous dialog with information saved
+        var unitLinkDialogFrameHtmlSaved = document.getElementById('unit_link_dialog_frame_html_saved')
+
+        // Restore the previous dialog
+        unitLinkDialogFrame.innerHTML = unitLinkDialogFrameHtmlSaved.innerHTML
+
+        var defaultMeasureSelect = $(unitLinkDialogFrame).find('.default_measure_select')[0]
+        var selectedIndex = $(unitLinkDialogFrame).find('.selected_index')[0].getAttribute('value')
+
+        console.log(selectedIndex)
+
+        defaultMeasureSelect.options[selectedIndex].setAttribute('selected', true)
+
+        // Show if indicated
+        if(show){
+            unitLinkDialogFrame.style.display = 'block'
+        }
+    }
+}
+
+/**
+ * 
+ * @param {string} productId
+ *  
+ */
+function acceptUnitChanges(productId){
+    var unitLinkDialogFrame = document.getElementById('unit_link_dialog_frame')
+    var unitLinkDialogFrameHtmlSaved = document.getElementById('unit_link_dialog_frame_html_saved')
+    var defaultUnitSelect = $(unitLinkDialogFrame).find('.default_measure_select')[0]
+    var selectedIndex = $(unitLinkDialogFrame).find('.selected_index')[0]
+
+    console.log($(unitLinkDialogFrame).find('.default_measure_select')[0].selectedIndex)
+    selectedIndex.setAttribute("value", $(unitLinkDialogFrame).find('.default_measure_select')[0].selectedIndex)
+    
+
+    var measureUnit = ''
+    if(productId == -1){
+        measureUnit = $('#add_section_frame').find('#measure_unit')
+    }
+    else{
+        measureUnit = $('#' + productId).find('#measure_unit')
+    }
+    measureUnit.val(defaultUnitSelect.options[defaultUnitSelect.selectedIndex].text)
+    unitLinkDialogFrameHtmlSaved.innerHTML = unitLinkDialogFrame.innerHTML
+    unitLinkDialogFrame.style.display = 'none'
+}
+
+/**
+ * 
+ * @param {string} productId 
+ * @returns 
+ */
+function saveUnitChanges(productId) {
+    var unitLinkCheckboxes = $('#unit_link_dialog_frame').find('.unit_link_checkbox')
+    var measureUnits = []
+    $.each(unitLinkCheckboxes, function(index, unitLinkCheckbox){
+        measureUnits.push(
+            {
+                id:unitLinkCheckbox.getAttribute('measure_id'),
+                checked:unitLinkCheckbox.getAttribute('checked')
+            }
+        )
+    })
+    $.post('/setproductunits',
+        {
+            _token:$('meta[name="csrf-token"]').attr('content'),
+            product_id:productId,
+            measure_units:measureUnits,
+            element_tag:productId,
+        }, function(data, status){
+            if(status == 'success'){
+                var elementTag = data.element_tag
+                var actionResultMessage = $('#' + elementTag).find('#action_result_message')
+                switch (data.status) {
+                    case 'ok':
+                        unitLinkDialogClose()
+                        break
+                    case 'error':
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+                        break
+                    case '419':
+                        unitLinkDialogClose()
+                        var message = getStatusMessage('419')
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                            }
+                        )
+                    default:
+                        break
+                }
+            }
+        }
+    )
+}
+
+/**
+ * 
+ * Takes actions when a measure unit selection is changed
+ * 
+ * @param {string} checkboxId
+ *  
+ */
+function measureUnitChange(checkboxId) {
+    // Set variables for the measure units select
+    // and for the changing unit selection
+    var defaultMeasureSelect = $('#unit_link_dialog_frame').find('.default_measure_select')[0]
+    var checkBox = document.getElementById(checkboxId)
+
+    if(checkBox.getAttribute('checked') !== null){
+        // Change from selected to not selected
+        // Set to not checked
+        checkBox.removeAttribute('checked')
+    }
+    else{
+        // Change from not selected to selected
+        // Set to checked
+        checkBox.setAttribute('checked', true)
+    }
+
+    // Set flag to checked unit not found
+    var found = false
+
+    // Loop through the default unit select options
+    for(var i = 0; i < defaultMeasureSelect.options.length; i++){
+        var option = defaultMeasureSelect.options[i]
+        // If an option matches the checked unit ...
+        if(option.value == checkBox.getAttribute("measure_id")){
+            // ... then set found to true
+            found = true
+            // If the found option exists is being unchecked ..
+            if(checkBox.getAttribute('checked') === null){
+                // ... and is selected ..
+                if(option.selected){
+                    // ... then set the selection to none
+                    defaultMeasureSelect.selectedIndex = 0
+                }
+                // Remove the found option
+                defaultMeasureSelect.remove(i)
+            }
+            // No more loop as the option was found
+            break
+        }
+    }
+    // If no option was found during the loop ...
+    if(!found){
+        // ... then create it
+        var option = document.createElement("option")
+        option.value = checkBox.getAttribute("measure_id")
+        option.text = checkBox.getAttribute("text")
+        defaultMeasureSelect.add(option)
+    }
+}
+
+function clearUnitsChange() {
+    var unitLinkDialogFrameHtmlSaved = document.getElementById('unit_link_dialog_frame_html_saved')
+    var unitLinkDialogFrame = document.getElementById('unit_link_dialog_frame')
+
+    unitLinkDialogFrameHtmlSaved.innerHTML = ""
+    unitLinkDialogFrame.innerHTML = ""
+    
 }
 
 /**
