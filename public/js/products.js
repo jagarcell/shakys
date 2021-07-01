@@ -198,7 +198,7 @@ function createButtonClick() {
  *  
  */
 function suppliersButtonClick(productId) {
-
+    discardEditChanges(-1)
     $.get('/getproduct',
         {
             id:productId,
