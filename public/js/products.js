@@ -538,7 +538,6 @@ function editButtonClick(productId) {
                         productForm.find('.default_supplier').val(product.default_supplier_name)
                         productForm.find('.image_to_upload').val(product.image_path)
 
-                        section.style.display = 'block'
                         $('#product_image_' + product.id).addClass('dropzone')
     
                         let mockFile = { name: product.image_name, size: product.image_size }
@@ -594,6 +593,7 @@ function editButtonClick(productId) {
                                             }
                                             supplierSelect.add(option)
                                         })
+                                        section.style.display = 'block'
                                     }
                                 }
                             }
