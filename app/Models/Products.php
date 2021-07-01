@@ -458,6 +458,12 @@ class Products extends Model
              $ProductId = $request['product_id'];
              $ElementTag = $request['element_tag'];
 
+             $MeasureUnits = (new MeasureUnits())->where('id', '>', -1)->get();
+
+             if($ProductId == -1){
+                 return ['status' => 'ok', 'element_tag' => $ElementTag, 'measureunits' => $MeasureUnits, 'productunits' => []];
+             }
+
              $Products = $this->where('id', $ProductId)->get();
              if(count($Products) == 0){
                  return ['status' => 'notfound', 'element_tag' => $ElementTag];
@@ -465,19 +471,19 @@ class Products extends Model
 
              $Product = $Products[0];
 
-             $MeasureUnits = DB::table('product_units_pivots')
+             $ProductUnits = DB::table('product_units_pivots')
                                 ->join('measure_units', function($join) use ($ProductId){
                                     $join->on('measure_units.id', '=', 'product_units_pivots.measure_unit_id')
                                     ->where('product_units_pivots.product_id', '=', $ProductId);
                                 })->select('measure_units.*')->get();
 
-             foreach($MeasureUnits as $Key => $MeasureUnit){
-                if($MeasureUnit->id == $Product->default_measure_unit_id){
-                    $MeasureUnit->default_unit = true;
+             foreach($ProductUnits as $Key => $ProductUnit){
+                if($ProductUnit->id == $Product->default_measure_unit_id){
+                    $ProductUnit->default_unit = true;
                 }
              }
 
-            return ['status' => 'ok', 'measureunits' => $MeasureUnits, 'product' => $Product, 'element_tag' => $ElementTag];
+            return ['status' => 'ok', 'measureunits' => $MeasureUnits, 'productunits' => $ProductUnits, 'product' => $Product, 'element_tag' => $ElementTag];
          } catch (\Throwable $th) {
              $Message = $this->ErrorInfo($th);
              return['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];

@@ -7,8 +7,7 @@ $(document).ready(function(){
     var qtySelect = document.getElementById('qty')
     qtySelect.innerHTML = qtySelectHtml
 
-    $('.page-header').hide()
-    $('.page_title_frame').hide()
+    $('.hide-this').hide()
     document.getElementById('navbarSupportedContent').style.zIndex = 1
     document.getElementById('navbarSupportedContent').style.position = 'sticky'
 

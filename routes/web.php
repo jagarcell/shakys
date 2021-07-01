@@ -193,3 +193,13 @@ Route::get('/searchfor', 'UserDashboardController@SearchFor');
 
   Route::get('/getsuppliersproductspivot', 'SuppliersProductsPivotsController@GetPivot');
  
+ /***************************************
+  *                                     *
+  *           MEASURE UNITS             *
+  *                                     *
+  **************************************/
+ 
+  Route::post('/createmeasureunit','MeasureUnitsController@CreateMeasureUnit');
+
+  Route::post('/removemeasureunit', 'MeasureUnitsController@RemoveMeasureUnit');
+  
