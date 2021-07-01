@@ -508,20 +508,16 @@ function deleteButtonClick(productId) {
  *  
  */
 function editButtonClick(productId) {
-
-    alert(productId)    
     discardEditChanges(-1)
-    alert('discard')
     $.get('/getproduct',
         {
             id:productId,
             element_tag:productId,
         }, function(data, status){
-            alert(status)
             if(status == 'success'){
                 var actionResultMessage = $('#' + data.element_tag).find('#action_result_message')
                 var element_tag = data.element_tag
-                alert(data.status)
+
                 switch (data.status) {
                     case 'ok':
                         var product = data.product
@@ -541,7 +537,8 @@ function editButtonClick(productId) {
                         productForm.find('.measure_unit')[0].setAttribute("default_measure_unit_id", product.default_measure_unit_id)
                         productForm.find('.default_supplier').val(product.default_supplier_name)
                         productForm.find('.image_to_upload').val(product.image_path)
-        
+
+                        alert(productForm.find('.code').val())
                         $('#product_image_' + product.id).addClass('dropzone')
     
                         let mockFile = { name: product.image_name, size: product.image_size }
@@ -584,7 +581,6 @@ function editButtonClick(productId) {
                                 element_tag:product.id
                             }, function (data, status) {
                                 if(status == 'success'){
-                                    alert('suppliers - ' + data.status)
                                     if(data.status == 'ok'){
                                         var section = document.getElementById(data.element_tag)
                                         var supplierSelect = $(section).find('.product_form').find('.default_supplier')[0]
