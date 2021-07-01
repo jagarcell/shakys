@@ -511,12 +511,13 @@ function editButtonClick(productId) {
 
     alert(productId)    
     discardEditChanges(-1)
-
+    alert('discard')
     $.get('/getproduct',
         {
             id:productId,
             element_tag:productId,
         }, function(data, status){
+            alert(status)
             if(status == 'success'){
                 var actionResultMessage = $('#' + data.element_tag).find('#action_result_message')
                 var element_tag = data.element_tag
