@@ -521,6 +521,7 @@ function editButtonClick(productId) {
             if(status == 'success'){
                 var actionResultMessage = $('#' + data.element_tag).find('#action_result_message')
                 var element_tag = data.element_tag
+                alert(data.status)
                 switch (data.status) {
                     case 'ok':
                         var product = data.product
@@ -583,6 +584,7 @@ function editButtonClick(productId) {
                                 element_tag:product.id
                             }, function (data, status) {
                                 if(status == 'success'){
+                                    alert('suppliers - ' + data.status)
                                     if(data.status == 'ok'){
                                         var section = document.getElementById(data.element_tag)
                                         var supplierSelect = $(section).find('.product_form').find('.default_supplier')[0]
