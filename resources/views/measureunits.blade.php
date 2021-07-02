@@ -150,7 +150,7 @@
         <div id="accept_cancel_unit_link_dialog_frame_html" hidden>
             <div class="accept_cancel_unit_link_dialog shadowRight">
                 <div class="accept_cancel_dialog_close_bar">
-                    <div class="accept_cancel_units_close_bar_text">This unit is linked to this and/or other products</div>
+                    <div class="accept_cancel_units_close_bar_text">This unit is linked to one or more products</div>
                     <a class="accept_cancel_unit_link_dialog_close_icon" onclick="acceptCancelUnitLinkDialogClose()">X</a>
                 </div>
                 <div class="accept_cancel_unit_link_dialog_body">
