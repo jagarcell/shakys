@@ -45,7 +45,7 @@
                 <img src="/images/products.png" loading="lazy" width="150" sizes="150px" srcset="/images/products-p-500.png 500w, images/products.png 600w" alt="" class="option_image">
                 <div class="option_text">PRODUCTS </div>
             </a>
-            <a href="/showpendingorderspanel" data-w-id="dd404975-5144-4daa-172d-139e14ceec86" class="option_frame box_shadow">
+            <a href="/measureunits" data-w-id="dd404975-5144-4daa-172d-139e14ceec86" class="option_frame box_shadow">
                 <img src="/images/measure.png" loading="lazy" sizes="150px" width="150" srcset="/images/measure.png 500w, images/measure.png 600w" alt="" class="option_image">
                 <div class="option_text">MEASURE UNITS</div>
             </a>
