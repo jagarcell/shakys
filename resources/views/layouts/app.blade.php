@@ -39,7 +39,7 @@
                     <a href="/listproducts">Products</a>
                 </div>    
                 <div class="app-menu-option">
-                    <a href="/">Measure Units</a>
+                    <a href="/measureunits">Measure Units</a>
                 </div>    
                 <div class="app-menu-option">
                     <a href="/users">Users</a>
@@ -70,7 +70,7 @@
                     <a href="/listproducts">Products</a>
                 </div>    
                 <div class="app-menu-option">
-                    <a href="/">Measure Units</a>
+                    <a href="/measureunits">Measure Units</a>
                 </div>    
                 <div class="app-menu-option">
                     <a href="/users">Users</a>

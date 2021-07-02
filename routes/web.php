@@ -198,8 +198,13 @@ Route::get('/searchfor', 'UserDashboardController@SearchFor');
   *           MEASURE UNITS             *
   *                                     *
   **************************************/
+
+  Route::get('/measureunits','MeasureUnitsController@MeasureUnits');
  
   Route::post('/createmeasureunit','MeasureUnitsController@CreateMeasureUnit');
 
   Route::post('/removemeasureunit', 'MeasureUnitsController@RemoveMeasureUnit');
-  
+
+  Route::get('/getmeasureunit','MeasureUnitsController@GetMeasureUnit');
+
+  Route::post('/updatemeasureunit', 'MeasureUnitsController@UpdateMeasureUnit');

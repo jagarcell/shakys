@@ -593,7 +593,6 @@ function editButtonClick(productId) {
                                             }
                                             supplierSelect.add(option)
                                         })
-                                        section.style.display = 'block'
                                     }
                                 }
                             }
@@ -740,8 +739,6 @@ function discardEditChanges(productId) {
  *  
  */
 function acceptEditChanges(productId){
-    console.log(productId)
-
     var productForm = $(document.getElementById(productId)).find('.product_form')
     
     if(productForm[0].checkValidity()){
@@ -894,7 +891,6 @@ function measuresButtonClick(productId) {
  *  
  */
 function measuresDialogCreate(productId, show = false) {
-
     // Let's request the units linked to this product
     // as well as the whole set of available units
     $.get('/getproductunits',
@@ -1181,7 +1177,6 @@ function clearUnitsChange() {
 
     unitLinkDialogFrameHtmlSaved.innerHTML = ""
     unitLinkDialogFrame.innerHTML = ""
-    
 }
 
 /**
@@ -1230,7 +1225,6 @@ function openAcceptCancelUnitLinkDialog(measureUnit){
 
     acceptCancelUnitLinkDialogFrame.innerHTML = acceptCancelUnitLinkDialogFrameHtml
     acceptCancelUnitLinkDialogFrame.style.display = 'block'
-
 }
 
 /**
