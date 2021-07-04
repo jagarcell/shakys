@@ -92,8 +92,20 @@ function productClick(productId){
                         var product = data.product
                         var orderTopMostHTML = document.getElementById('order_top_most').innerHTML
                         var orderTopId = document.getElementById('order_top_id')
-
                         orderTopId.innerHTML = orderTopMostHTML
+                        var measureUnitSelect = $(orderTopId).find('#measure_unit')[0]
+
+                        // Let's prepare the measure units select
+                        $.each(product.measure_units, function(index, measureUnit){
+                            var option = document.createElement("option")
+                            option.value = measureUnit.id
+                            option.text = measureUnit.unit_description
+                            if(product.default_measure_unit_id == measureUnit.id){
+                                option.setAttribute("selected", true)
+                            }
+                            measureUnitSelect.options.add(option)
+                        })                        
+
                         $(orderTopId).find('#product_order_image')[0].src = product.image_path
                         orderTopId.innerHTML = orderTopId.innerHTML.replace(/internal-description/g, product.internal_description)
                         orderTopId.innerHTML = orderTopId.innerHTML.replace(/product-id/g, product.id)
@@ -112,6 +124,9 @@ function productClick(productId){
 
 function orderClick(productId){
     var qty = $('#order_top_id').find('#qty').val()
+    var measureUnitSelect = $('#order_top_id').find('#measure_unit')[0]
+    var measureUnitId = measureUnitSelect.options[measureUnitSelect.selectedIndex].value
+ 
     if(qty > 0)
     {
         $.post('/markascounted',
@@ -119,6 +134,7 @@ function orderClick(productId){
             _token:$('meta[name="csrf-token"]').attr('content'),
             id:productId,
             qty_to_order:qty,
+            measure_unit_id:measureUnitId,
             element_tag:productId,
         }, function(data, status){
             if(status == 'success'){
@@ -126,6 +142,7 @@ function orderClick(productId){
                     case 'ok':
                         var product = data.product
                         var markAsCounted = document.getElementById('pending_' + product.id)
+
                         markAsCounted.outerHTML = ""
                         var products = $('.product')
                         $.each(products, function(index, product){
@@ -162,9 +179,7 @@ function orderClick(productId){
 }
 
 function supplierSelChange(supplierSel) {
-    console.log(supplierSel)
     var uiSection = $(garcellParentNodeByClassName(supplierSel, 'ui_section'))
-    console.log(uiSection[0])
     var supplier = supplierSel.options[supplierSel.options.selectedIndex]
     var supplier_id = supplier.getAttribute("value")
     var product_id = uiSection[0].getAttribute("productId")
@@ -511,6 +526,8 @@ function addToOrderClick(addCheckClass, prefixToReplace) {
         var productId = uiSection.id.replace(prefixToReplace, '')
         var supplierId = supplierSel.options[supplierSel.selectedIndex].getAttribute("value")
         var orderQtySel = $(uiSection).find('#order_qty_sel')[0]
+        var orderUnitSelect = $(uiSection).find('.order_unit_sel')[0]
+        var measuretUnitId = orderUnitSelect.options[orderUnitSelect.selectedIndex].getAttribute("value")
         var qty = orderQtySel.options[orderQtySel.selectedIndex].getAttribute("value")
         var orderPickupSelect = $(uiSection).find('#order_pickup_select')[0]
         var pickup = orderPickupSelect.options[orderPickupSelect.selectedIndex].getAttribute("value")
@@ -538,12 +555,12 @@ function addToOrderClick(addCheckClass, prefixToReplace) {
                 supplier_id:supplierId,
                 pickup:pickup,
                 qty:qty,
+                measure_unit_id:measuretUnitId,
                 pickup_guy_id:orderPickupGuy,
                 product_id:productId,
                 element_tag:uiSection.id,
             }, function(data, status){
                 if(status == 'success'){
-                    console.log(data)
                     var elementTag = data.element_tag
                     switch (data.status) {
                         case 'ok':

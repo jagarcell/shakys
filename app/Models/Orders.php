@@ -22,7 +22,7 @@ class Orders extends Model
      * 
      * Create a purchase order
      * 
-     * @param Request [supplier_id, product_id, qty, pickup, pickup_guy_id]
+     * @param Request [supplier_id, product_id, qty, measure_unit_id pickup, pickup_guy_id]
      * 
      * @return String status [ok, error, 419]
      * @return String message (if error)
@@ -34,6 +34,7 @@ class Orders extends Model
             $SupplierId = $request['supplier_id'];
             $ProductId = $request['product_id'];
             $Qty = $request['qty'];
+            $MeasureUnitId = $request['measure_unit_id'];
             $Pickup = $request['pickup'];
             $PickupGuyId = $request['pickup_guy_id'];
             $ElementTag = $request['element_tag'];
@@ -77,7 +78,10 @@ class Orders extends Model
             if(count($Orders) > 0){
                 // Ongoing order
                 $Order = $Orders[0];
-                $Products = (new OrderLines())->where('order_id', $Order->id)->where('product_id', $ProductId)->get();
+                $Products = (new OrderLines())
+                    ->where('order_id', $Order->id)
+                    ->where('product_id', $ProductId)
+                    ->where('measure_unit_id', $MeasureUnitId)->get();
                 // Check if the product is already in the ongoing order
                 if(count($Products) > 0){
                     // Lets add quantity to this products
@@ -91,6 +95,7 @@ class Orders extends Model
                     $OrderLines->order_id = $Order->id;
                     $OrderLines->product_id = $ProductId;
                     $OrderLines->qty = $Qty;
+                    $OrderLines->measure_unit_id = $MeasureUnitId;
                     $OrderLines->save();
                 }
             }
@@ -106,6 +111,7 @@ class Orders extends Model
                 $OrderLines->order_id = $this->id;
                 $OrderLines->product_id = $ProductId;
                 $OrderLines->qty = $Qty;
+                $OrderLines->measure_unit_id = $MeasureUnitId;
                 $OrderLines->save();
             }
 

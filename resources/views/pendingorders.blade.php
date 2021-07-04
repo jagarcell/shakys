@@ -156,10 +156,21 @@
 
                                 </div>
 
-                                <div class="order_data_field_wrap">
+                                <div class="order_data_field_wrap order_unit">
                                     <div class="order_data_field add_to_order_label_wrap">
                                         <label class="order_data_field_label add_to_order_label">Add to order</label>
                                         <input type="checkbox" id="order_check" class="add_to_order_check">
+                                    </div>
+                                    <div class="order_data_field">
+                                        <label class="order_data_field_label">Unit</label>
+                                        <select class="order_data_field_select order_unit_sel">
+                                            <option value="-1" disable>Select A Unit ...</option>
+                                            @foreach($countedProduct->measure_units as $key => $measureUnit)
+                                            <option value="{{$measureUnit->id}}" {{$measureUnit->id == $countedProduct->default_measure_unit_id ? 'selected': ''}}>
+                                                {{$measureUnit->unit_description}}
+                                            </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -220,7 +231,7 @@
                                     </div>
                                 </div>
 
-                                <div class="order_data_field_wrap_small">
+                                <div class="order_data_field_wrap">
                                     <div class="order_data_field">
                                         <label class="order_data_field_label">Price</label>
                                         <input value="{{$allProduct->supplier_price}}" class="order_price_field" disabled>
@@ -234,10 +245,21 @@
                                     </div>
                                 </div>
 
-                                <div class="order_data_field_wrap_small">
+                                <div class="order_data_field_wrap order_unit">
                                     <div class="order_data_field add_to_order_label_wrap">
                                         <label class="order_data_field_label add_to_order_label">Add to order</label>
                                         <input type="checkbox" id="order_check" class="all_products_add_to_order_check">
+                                    </div>
+                                    <div class="order_data_field">
+                                        <label class="order_data_field_label">Unit</label>
+                                        <select class="order_data_field_select order_unit_sel">
+                                            <option value="-1" disable>Select A Unit ...</option>
+                                            @foreach($allProduct->measure_units as $key => $measureUnit)
+                                            <option value="{{$measureUnit->id}}" {{$measureUnit->id == $allProduct->default_measure_unit_id ? 'selected': ''}}>
+                                                {{$measureUnit->unit_description}}
+                                            </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -301,43 +323,57 @@
                             <div class="order_display_lines">
                                 @foreach($order->order_lines as $key => $orderLine)
                                 <div id="{{$orderLine->id}}" class="order_line_section approval_order_line">
-                                    <div class="order_line">
-                                        <div class="product_code_wrap">
-                                            <div class="product_field_component">
-                                                <label>Product</label>
-                                                <input class="product_int_code" value="{{$orderLine->internal_code}}" disabled></input>
+                                    <div class="order_line_wrap">
+                                        <div class="order_line">
+                                            <div class="product_code_wrap">
+                                                <div class="product_field_component">
+                                                    <label>Product</label>
+                                                    <input class="product_int_code" value="{{$orderLine->internal_code}}" disabled></input>
+                                                </div>
+                                                <div class="product_field_component">
+                                                    <label>Supplier Code</label>
+                                                    <input class="product_int_code" value="{{$orderLine->supplier_code}}" disabled></input>
+                                                </div>
                                             </div>
-                                            <div class="product_field_component">
-                                                <label>Supplier Code</label>
-                                                <input class="product_int_code" value="{{$orderLine->supplier_code}}" disabled></input>
+
+                                            <div class="product_int_desc_wrap">
+                                                <div class="product_field_component">
+                                                    <label>In-store Description</label>
+                                                    <input class="product_int_desc" value="{{$orderLine->internal_description}}" disabled></input>
+                                                </div>
+                                                <div class="product_field_component">
+                                                    <label>Supplier Description</label>
+                                                    <input class="product_int_desc" value="{{$orderLine->supplier_description}}" disabled></input>
+                                                </div>
                                             </div>
                                         </div>
-
-                                        <div class="product_int_desc_wrap">
-                                            <div class="product_field_component">
-                                                <label>In-store Description</label>
-                                                <input class="product_int_desc" value="{{$orderLine->internal_description}}" disabled></input>
+                                        <div class="order_line">
+                                            <div class="product_qty_price_wrap">
+                                                <div class="product_field_component">
+                                                </div>
                                             </div>
-                                            <div class="product_field_component">
-                                                <label>Supplier Description</label>
-                                                <input class="product_int_desc" value="{{$orderLine->supplier_description}}" disabled></input>
+                                            <div class="product_qty_price_wrap">
+                                                <div class="product_field_component">
+                                                    <label>Price</label>
+                                                    <input value="{{$orderLine->supplier_price}}" class="order_price_field approval_order_price" productId="{{$orderLine->product_id}}" disabled>
+
+                                                </div>
+                                            </div>
+                                            <div class="product_qty_price_wrap">
+                                                <div class="product_field_component">
+                                                    <label>Requested</label>
+                                                    <select id="product_qty_display_select" class="product_qty_display_select qty_select" qty="{{$orderLine->qty}}">
+                                                        <option value="0" selected>0</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="product_qty_price_wrap product_unit">
+                                                <div class="product_field_component">
+                                                    <label>Unit</label>
+                                                    <input disabled class="product_unit_display order_price_field" value="{{$orderLine->unit_description}}">
+                                                </div>
                                             </div>
                                         </div>
-
-                                        <div class="product_qty_price_wrap">
-                                            <div class="product_field_component">
-                                                <label>Price</label>
-                                                <input value="{{$orderLine->supplier_price}}" class="order_price_field approval_order_price" productId="{{$orderLine->product_id}}" disabled>
-
-                                            </div>
-                                            <div class="product_field_component">
-                                                <label>Requested</label>
-                                                <select id="product_qty_display_select" class="product_qty_display_select qty_select" qty="{{$orderLine->qty}}">
-                                                    <option value="0" selected>0</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>
                                 @endforeach
@@ -427,16 +463,21 @@
                                             <input class="product_qty_display_input product_input_1" value="{{$orderLine->qty}}" disabled>
                                             </input>
                                         </div>
-                                        <div class="order_display_qty_2">
+                                        <div class="order_display_qty_1">
                                             <label>Available</label>
                                             <select class="order_qty_select product_qty_display_input available_qty product_input_2" qty_to_order="{{$orderLine->available_qty}}" lineId="{{$orderLine->id}}">
                                                 <option value="0">0</option>
                                             </select>
                                         </div>
                                         <!-- ORDER LINE PRICE -->
-                                        <div class="order_display_qty_3">
-                                            <label>Supplier price</label>
+                                        <div class="order_display_qty_1">
+                                            <label>Price</label>
                                             <input class="product_qty_display_input submitted_supplier_price product_input_3" value="{{$orderLine->supplier_price}}">
+                                            </input>
+                                        </div>
+                                        <div class="order_display_qty_1">
+                                            <label>Unit</label>
+                                            <input disabled class="product_unit_display product_qty_display_input" value="{{$orderLine->unit_description}}">
                                             </input>
                                         </div>
                                     </div>    
@@ -473,14 +514,21 @@
                     </div>
                     <img id="product_order_image" src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" width="64" alt="" class="order_image">
                     <div id="order_product" class="order_product">internal-description</div>
-                    <div class="form-block-2 w-form">
-                        <form id="email-form-2" class="order_form">
-                            <label for="name">Qty</label>
-                            <select id="qty" class="order_qty_select order_qty_tag">
-                                <option value="0" style="text-align:right;text-align-last:right;">0</option>
-                            </select>
+                    <div class="form-block-2">
+                        <label for="name">Units</label>
+                        <!-- input id="qty" type="number" class="order_qty w-input" placeholder="" value="0" min="0"-->
+                        <select id="measure_unit" class="order_qty w-input">
+                            <option value="-1" disable>Select A Measure Unit ...</option>
+                        </select>
+                    </div>
+                    <div class="form-block-2">
+                        <label for="name">Qty</label>
+                        <select id="qty" class="order_qty order_qty_select order_qty_tag">
+                            <option value="0" style="text-align:right;text-align-last:right;">0</option>
+                        </select>
+                        <div class="request_button_frame">
                             <input type="button" value="Request" class="order_button w-button" onclick="orderClick('product-id')">
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -246,14 +246,23 @@ class Products extends Model
                 }
             }
 
-            $MeasureUnits = (new MeasureUnits())->where('id', $Product->default_measure_unit_id)->get();
-            if(count($MeasureUnits) > 0){
-                $MeasureUnit = $MeasureUnits[0];
-                $Product->measure_unit = $MeasureUnit->unit_description;
+            $DefaultMeasureUnits = (new MeasureUnits())->where('id', $Product->default_measure_unit_id)->get();
+            if(count($DefaultMeasureUnits) > 0){
+                $DefaultMeasureUnit = $DefaultMeasureUnits[0];
+                $Product->measure_unit = $DefaultMeasureUnit->unit_description;
             }
             else{
                 $Product->measure_unit = "";
             }
+
+            $ProductId = $Product->id;
+
+            $MeasureUnits = DB::table('product_units_pivots')->join('measure_units', function($join) use ($ProductId){
+                $join->on('product_units_pivots.measure_unit_id', '=', 'measure_units.id')
+                ->where('product_units_pivots.product_id', '=', $ProductId);
+            })->select('measure_units.*')->get();
+
+            $Product->measure_units = $MeasureUnits;
 
             return ['status' => 'ok', 'product' => $Product, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
@@ -372,9 +381,8 @@ class Products extends Model
 
     /**
      * 
-     * @param Request ['id']
-     * @param Double ['qty_to_order']
-     * @param Object element_tag
+     * @param Request id qty_to_order measure_unit_id element_tag   
+     * @param Object 
      * 
      * @return [status => 'ok']
      *         [status => 'notfound']
@@ -392,14 +400,30 @@ class Products extends Model
             //code...
             $Id = $request['id'];
             $QtyToOrder = $request['qty_to_order'];
+            $MeasureUnitId = $request['measure_unit_id'];
             $ElementTag = $request['element_tag'];
+
             $Products = $this->where('id', $Id)->get();
             if(count($Products) == 0){
                 return ['status' => 'notfound', 'element_tag' => $ElementTag];
             }
-            $this->where('id', $Id)->update(['counted' => true, 'qty_to_order' => $QtyToOrder]);
+
             $Product = $Products[0];
             $Product->counted = true;
+
+            $UpdatedProductUnitsPivots = (new ProductUnitsPivots())
+                ->where('product_id', $Product->id)
+                ->where('measure_unit_id', $MeasureUnitId)->update(['qty_to_order' => $QtyToOrder]);
+
+            // If there is a link to the measure unit 
+            if($UpdatedProductUnitsPivots > 0){
+                // The qty to order is asigned to that measure unit
+                $this->where('id', $Id)->update(['counted' => true, 'qty_to_order' => 0]);
+            }
+            else{
+                // Othewise it is asigned to the product itself
+                $this->where('id', $Id)->update(['counted' => true, 'qty_to_order' => $QtyToOrder]);
+            }
             return ['status' => 'ok', 'product' => $Product, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             //throw $th;
@@ -443,8 +467,7 @@ class Products extends Model
 
     /**
      * 
-     * @param Request [product_id]
-     * @param String 'element_tag'
+     * @param Request product_id, element_tag
      * 
      * @return String status 'ok' 'error' 'notfound'
      * @return Mixed measureunits

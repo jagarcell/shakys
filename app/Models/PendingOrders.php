@@ -12,6 +12,8 @@ use App\Models\Users;
 use App\Models\Orders;
 use App\Models\OrderLines;
 use App\Models\SuppliersProductsPivots;
+use App\Models\ProductUnitsPivots;
+use App\Models\MeasureUnits;
 
 class PendingOrders extends Model
 {
@@ -57,6 +59,7 @@ class PendingOrders extends Model
                 $Product->image_path = config('app')['nophoto'];
                 $CountedProducts = [];
                 array_push($CountedProducts, $Product);
+                return view('debug', ['message' => 'ERROR COUNTED PRODUCTS']);
                 break;
             default:
                 # code...
@@ -71,6 +74,7 @@ class PendingOrders extends Model
                 break;
             case 'error':
                 $PickupUsers = [];
+                return view('debug', ['message' => 'PICKUP USERS']);
                 break;
             default:
                 # code...
@@ -116,6 +120,8 @@ class PendingOrders extends Model
                 break;
             case 'error':
                 $SubmittedOrders = [];
+                return view('debug', ['message' => 'ERROR SUBMITTED ORDERS']);
+
                 break;
             default:
                 # code...
@@ -176,8 +182,18 @@ class PendingOrders extends Model
                 else{
                     $CountedProduct->supplier_price = 0;
                 }
-            }
+
+                $ProductId = $CountedProduct->id;
+
+                $ProductUnits = DB::table('product_units_pivots')
+                ->join('measure_units', function($join) use ($ProductId){
+                    $join->on('measure_units.id', '=', 'product_units_pivots.measure_unit_id')
+                    ->where('product_units_pivots.product_id', '=', $ProductId);
+                })->select('measure_units.*')->get();
+
+                $CountedProduct->measure_units = $ProductUnits;
                 
+            }
             return ['status' => 'ok', 'countedproducts' => $CountedProducts];
         } catch (\Throwable $th) {
             //throw $th;
@@ -272,12 +288,23 @@ class PendingOrders extends Model
                                 $orderLine->supplier_price = 0;
                             }
                         }
+
+                        $MeasureUnits = (new MeasureUnits())->where('id', $orderLine->measure_unit_id)->get();
+                        if(count($MeasureUnits) > 0){
+                            $MeasureUnit = $MeasureUnits[0];
+                            $orderLine->unit_description = $MeasureUnit->unit_description;
+                        }
+                        else{
+                            $orderLine->unit_description = "";
+                        }
+                        
                     }
                     else{
                         $orderLine->internal_code = "";
                         $orderLine->internal_description = "";
                         $orderLine->supplier_code = "";
                         $orderLine->supplier_description = "";
+                        $orderLine->unit_description = "";
                     }
                 }
                 $Order->date = (new \DateTime($Order->date))->format("m-d-Y");
@@ -334,6 +361,15 @@ class PendingOrders extends Model
 
                             }    
                         }
+
+                        $MeasureUnits = (new MeasureUnits())->where('id', $orderLine->measure_unit_id)->get();
+                        if(count($MeasureUnits) > 0){
+                            $MeasureUnit = $MeasureUnits[0];
+                            $orderLine->unit_description = $MeasureUnit->unit_description;
+                        }
+                        else{
+                            $orderLine->unit_description = "";
+                        }
                     }
                     else{
                         $orderLine->internal_code = "";
@@ -341,6 +377,7 @@ class PendingOrders extends Model
                         $orderLine->supplier_code = "";
                         $orderLine->supplier_description = "";
                         $orderLine->supplier_price = 0;
+                        $orderLine->unit_description = "";
                     }
                 }
                 $Order->date = (new \DateTime($Order->date))->format("m-d-Y");
@@ -396,6 +433,16 @@ class PendingOrders extends Model
                 else{
                     $Product->supplier_price = 0;
                 }
+
+                $ProductId = $Product->id;
+
+                $ProductUnits = DB::table('product_units_pivots')
+                ->join('measure_units', function($join) use ($ProductId){
+                    $join->on('measure_units.id', '=', 'product_units_pivots.measure_unit_id')
+                    ->where('product_units_pivots.product_id', '=', $ProductId);
+                })->select('measure_units.*')->get();
+
+                $Product->measure_units = $ProductUnits;
             }
             return ['status' => 'ok', 'products' => $Products];
         } catch (\Throwable $th) {

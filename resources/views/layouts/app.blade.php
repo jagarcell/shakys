@@ -19,6 +19,7 @@
     </head>
     
     <body>
+        @if(Auth::user() !== null && Auth::user()->user_type == 'admin')
         <div class="page-header hide-this">
             <a href="/" class="logo-frame">
                 <img src="/images/logo.png" loading="lazy" sizes="(max-width: 767px) 100vw, 53vw" srcset="/images/logo.png 500w, /images/logo.png 512w" alt="" class="logo">
@@ -90,7 +91,8 @@
         <div class="page_title_frame hide-this">
             <div class="page_title text_shadow box_shadow">@yield('page_title')</div>
         </div>
- 
+        @endif
+
         @if(isset($unauthorized_user))
         <div id="unauthorized_action" class="unauthorized_action"><span>Unauthorized action for this user!</span></div>
         @endif
@@ -104,10 +106,10 @@
             <ul class="navbar-nav" style="text-shadow: 2px 2px 4px black;">
                 <!-- Authentication Links -->
                 @guest
-                    <div id="loginDiv" style="display: inline;">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                    </li>
+                    <div id="loginDiv" style="display: inline; text-decoration:underline;">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        </li>
                     </div>
                 @else
                     <li class="nav-item dropdown">

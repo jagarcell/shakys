@@ -23,6 +23,16 @@ select{
   font-family: inherit;
 }
 
+.product_unit{
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.request_button_frame{
+  width: 100%;
+  text-align: center;
+}
+
 .section_wrap {
   border-bottom: 1px solid #000;
 }
@@ -265,6 +275,7 @@ select{
 .order_line_price_wrap{
   width: 100%;
   display: flex;
+  padding-right: 2%;
 }
 
 .order_line_info_wrap{
@@ -291,6 +302,14 @@ select{
   text-align-last: right;
 }
 
+.product_unit_display{
+  text-align-last: right;
+  padding-right: 10px;
+  width: 100%;
+  border-radius: 5px;
+  height: 30px;
+}
+
 .order_price_field{
   text-align: right;
   border-radius: 5px;
@@ -315,7 +334,7 @@ select{
   padding-left: 10px;
   padding-right: 10px;
   text-align: left;
-  width: 35%;
+  width: 25%;
 }
 
 .order_data_field_wrap_small{
@@ -448,6 +467,7 @@ select{
 .product_qty_display_input{
   border-radius: 5px;
   text-align-last: right;
+  min-height: 30px;
 }
 
 .order_line_section{
@@ -499,7 +519,7 @@ select{
 }
 
 .product_code_wrap{
-  width: 35%;
+  width: 25%;
   padding-left: 2%;
 }
 
@@ -508,25 +528,26 @@ select{
 }
 
 .product_int_desc_wrap{
-  width: 65%;
+  width: 75%;
   padding-left: 2%;
   padding-right: 2%;
 }
 
 .product_qty_price_wrap{
-  width: 15%;
-  padding-right: 2%; 
+  width: 25%;
+  padding-right: 2%;
+  padding-left: 2%;
 }
 
 .product_qty_display_select{
   text-align-last: end;
   width: 100%;
-  padding-right: 30px;
+  padding-right: 40px;
 }
 
 .product_int_desc{
   border-radius: 5px;
-  text-align: center;
+  padding-left: 5px;
   width: 100%;
 }
 
@@ -542,9 +563,8 @@ select{
 }
 
 .order_display_qty_1{
-  width: 33.33%;
+  width: 25%;
   padding-left: 2%;
-  padding-right: 9%;
 }
 
 .order_display_qty_2{
@@ -671,19 +691,15 @@ select{
 }
 
 .order_qty{
-  width: 80px;
-  text-align: right;
+  width: 200px;
   text-align: end;
   display: block;
-  height: 30px;
-  padding-right: 0px !important;
+  padding-right: 30px;
   padding-top: 0px !important;
   padding-bottom: 0px !important;
-  text-align: right !important;
   font-size: 12px !important;
-  border-radius: 5px;
   margin-bottom: 10px;
-  text-align-last: center;
+  text-align-last: right;
 }
 
 .location_name_text {
@@ -712,6 +728,7 @@ select{
 
 .order_product {
   margin-top: 10px;
+  margin-bottom: 10px;
   width: 80%;
   text-align: center;
 }
@@ -2299,7 +2316,15 @@ body {
 }
 
 @media screen and (max-width: 991px) {
-  
+  .order_unit{
+    flex-direction: column-reverse;
+    display: flex;  
+  }
+
+  .po_due_date {
+    width: 100%;
+  }
+
   .app-menu-option{
     font-size: 12px;
     width: 100%;
@@ -2549,12 +2574,10 @@ body {
   }
 
   .product_input_1{
-    width:75%;
     padding-right:5px;
   }
 
   .product_input_3{
-    width: 75%;
     padding-right: 5px;
   }
 
@@ -2564,7 +2587,7 @@ body {
 
   .order_display_qty_1{
     padding-left: 10%;
-    padding-right: 0%;
+    width: 92%;
   }
 
   .order_display_qty_2{
@@ -2715,6 +2738,7 @@ body {
 
   .product_qty_display_input {
     text-align-last: right;
+    padding-right: 35px;
   }
 
   .product_code_wrap{
@@ -2742,20 +2766,7 @@ body {
   .order_date_wrap{
     width: 100%;
   }
-  
-  .order_qty{
-    display: block;
-    height: 30px;
-    padding-right: 0px !important;
-    padding-top: 0px !important;
-    padding-bottom: 0px !important;
-    text-align: right !important;
-    font-size: 12px !important;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    text-align-last: center;
-  }
-  
+    
   .order_frame {
     width: 70vw;
     margin-left: 15vw;
@@ -3139,8 +3150,6 @@ body {
   }
 
   .po_due_date {
-    width: 100%;
-    text-align: center;
     margin-top: 10px;
     margin-bottom: 40px;  
   }
