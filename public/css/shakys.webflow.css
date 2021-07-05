@@ -803,7 +803,6 @@ select{
   font-size: inherit;
   line-height: 1.5em;
   text-align: -webkit-center;
-  position: absolute;
   bottom: 0;  
 }
 
@@ -2330,10 +2329,6 @@ body {
     width: 100%;
     text-align: left;
     height: 12.5%;
-  }
-
-  .product_description_text {
-    position: relative;
   }
 
   .counted_product_description{

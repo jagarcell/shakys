@@ -155,7 +155,7 @@ Route::post('/createuser', 'UsersController@CreateUser');
   *                                     *
   **************************************/
 
-  Route::get('/showpendingorderspanel','PendingOrdersController@ShowPendingOrdersPanel');
+  Route::get('/showpendingorderspanel','PendingOrdersController@ShowPendingOrdersPanel')->middleware('checkusersstate');
 
   Route::get('/getpricesforsupplier','PendingOrdersController@GetPricesForSupplier');
 
