@@ -43,6 +43,9 @@ function createButtonClick() {
                                 unitSectionHTML = unitSectionHTML.replace(/unit-id/g, measureUnit.id)
                                 unitSectionHTML = unitSectionHTML.replace(/unit-description/g, measureUnit.unit_description)
                                 productsListWrap.innerHTML = unitSectionHTML + productsListWrap.innerHTML
+
+                                document.getElementById('unit_description').value = ""
+
                                 $(productsListWrap).find('#' + measureUnit.id)[0].classList.add("measure_unit_edition")
                                 $(productsListWrap).find('#' + measureUnit.id)[0].style.display = 'block'
                             }   
