@@ -89,7 +89,7 @@
         <div style="min-height:15vh;" {{(Auth::user() !== null && Auth::user()->user_type == 'admin') ? 'hidden':''}}>
         </div>
 
-        <div class="page_title_frame hide-this">
+        <div class="page_title_frame hide-this" {{(Auth::user() !== null && Auth::user()->user_type == 'admin') ? '':'hidden'}}>
             <div class="page_title text_shadow box_shadow">@yield('page_title')</div>
         </div>
 
