@@ -23,6 +23,13 @@ select{
   font-family: inherit;
 }
 
+.no_pickup_orders{
+  color: red;
+  text-align: center;
+  font-size: 42px;
+  line-height: 1.5em;  
+}
+
 .product_unit{
   display: flex;
   flex-direction: column-reverse;

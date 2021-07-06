@@ -18,7 +18,7 @@
         @yield('headsection')
     </head>
     
-    <body>
+    <body style="position:relative;">
         <div class="page-header hide-this" {{(Auth::user() !== null && Auth::user()->user_type == 'admin') ? '':'hidden'}}>
             <a href="/" class="logo-frame">
                 <img src="/images/logo.png" loading="lazy" sizes="(max-width: 767px) 100vw, 53vw" srcset="/images/logo.png 500w, /images/logo.png 512w" alt="" class="logo">
@@ -55,10 +55,10 @@
                 </div>    
             </div>
         </div>
-        <a class="app-mobile-menu" onclick="appMobileMenu()">
+        <a class="app-mobile-menu" onclick="appMobileMenu()" {{(Auth::user() !== null && Auth::user()->user_type == 'admin') ? '':'hidden'}}>
             <img src="/images/mobile.png">
         </a>
-        <div class="app-mobile-menu-options-wrap" {{(Auth::user() !== null && Auth::user()->user_type == 'admin') ? '':'hidden'}}>
+        <div class="app-mobile-menu-options-wrap">
             <div id="app-mobile-menu-options" class="app-mobile-menu-options shadowRight" style="display:none;">
                 <div class="app-menu-option">
                     <a href="/">Home</a>
@@ -86,8 +86,6 @@
                 </div>    
             </div>
         </div>
-        <div style="min-height:15vh;" {{(Auth::user() !== null && Auth::user()->user_type == 'admin') ? 'hidden':''}}>
-        </div>
 
         <div class="page_title_frame hide-this" {{(Auth::user() !== null && Auth::user()->user_type == 'admin') ? '':'hidden'}}>
             <div class="page_title text_shadow box_shadow">@yield('page_title')</div>
@@ -103,7 +101,7 @@
             </ul>
 
             <!-- Right Side Of Navbar -->
-            <ul class="navbar-nav" style="text-shadow: 2px 2px 4px black;">
+            <ul class="navbar-nav" style="text-shadow: 2px 2px 4px black;position:absolute;top:0;right:5px;">
                 <!-- Authentication Links -->
                 @guest
                     <div id="loginDiv" style="display: inline; text-decoration:underline;">
@@ -131,6 +129,8 @@
                     </li>
                 @endguest
             </ul>
+        </div>
+        <div style="min-height:10vh;" {{(Auth::user() !== null && Auth::user()->user_type == 'admin') ? 'hidden':''}}>
         </div>
  
         <!-- Scripts -->
