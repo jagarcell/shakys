@@ -119,7 +119,7 @@ Route::post('/createuser', 'UsersController@CreateUser');
   *                                     *
   **************************************/
 
-  Route::get('/listproducts', 'ProductsController@ListProducts');
+  Route::get('/listproducts', 'ProductsController@ListProducts')->middleware('checkusersstate');
 
   Route::post('/productimgupload', 'ProductsController@ProductImgUpload');
 
