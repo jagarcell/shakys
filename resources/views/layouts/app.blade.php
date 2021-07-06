@@ -58,7 +58,7 @@
         <a class="app-mobile-menu" onclick="appMobileMenu()">
             <img src="/images/mobile.png">
         </a>
-        <div class="app-mobile-menu-options-wrap">
+        <div class="app-mobile-menu-options-wrap" {{(Auth::user() !== null && Auth::user()->user_type == 'admin') ? '':'hidden'}}>
             <div id="app-mobile-menu-options" class="app-mobile-menu-options shadowRight" style="display:none;">
                 <div class="app-menu-option">
                     <a href="/">Home</a>
