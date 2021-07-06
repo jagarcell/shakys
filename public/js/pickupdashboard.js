@@ -95,6 +95,9 @@ function allDone(orderId) {
                         // Remove this order from the list
                         // Will only come up again after a refresh 
                         order.outerHTML = ""
+                        if($('.pickup_order').length == 0){
+                            $('.no_pickup_orders').show()
+                        }
                         break
                 
                     default:
