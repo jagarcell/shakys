@@ -13,6 +13,7 @@ use App\Models\Suppliers;
 use App\Models\Users;
 use App\Mail\OrderEmail;
 use App\Models\SuppliersProductsPivots;
+use App\Models\ProductUnitsPivots;
 
 class Orders extends Model
 {
@@ -34,6 +35,7 @@ class Orders extends Model
             $SupplierId = $request['supplier_id'];
             $ProductId = $request['product_id'];
             $Qty = $request['qty'];
+            $OriginalUnitId = $request['original_unit_id'];
             $MeasureUnitId = $request['measure_unit_id'];
             $Pickup = $request['pickup'];
             $PickupGuyId = $request['pickup_guy_id'];
@@ -116,6 +118,9 @@ class Orders extends Model
             }
 
             (new Products())->where('id', $ProductId)->update(['default_supplier_id' => $Supplier->id, 'qty_to_order' => 0]);
+
+            (new ProductUnitsPivots())->where('product_id', $ProductId)
+                ->where('measure_unit_id', $OriginalUnitId)->update(['qty_to_order' => 0]);
 
             (new Suppliers())->where('id', $SupplierId)->update(['pickup' => $Pickup, 'last_pickup_id' => $PickupGuyId]);
 
@@ -300,7 +305,7 @@ class Orders extends Model
 
      /**
       * 
-      * @param Request ['id' 'order_lines:{id, avilable_qty}' 'element_tag']
+      * @param Request ['id' 'order_lines:{id, avilable_qty, supplier_price}' 'element_tag']
       *
       * @return String status ['ok' 'error' 'notfound' '419']
       * 
@@ -309,7 +314,7 @@ class Orders extends Model
      {
          # code...
          $Id = $request['id'];
-         $OrderLines = $request['order_lines'];
+         $Lines = $request['order_lines'];
          $ElementTag = $request['element_tag'];
 
          try {
@@ -318,27 +323,33 @@ class Orders extends Model
              if(count($Orders) == 0){
                 return ['status' => 'notfound', 'element_tag' => $ElementTag];
              }
+
+             $Order = $Orders[0];
+
              // Transaction to update the order and products records
              DB::beginTransaction();
 
              // Update each order line
-             foreach($OrderLines as $Key => $OrderLine){
-                DB::table('order_lines')->where('id', $OrderLine['id'])
+             foreach($Lines as $Key => $Line){
+                DB::table('order_lines')->where('id', $Line['id'])
                     ->update(
                         [
-                            'available_qty' => $OrderLine['available_qty'],
+                            'available_qty' => $Line['available_qty'],
                         ]
                     );
+
                 // Get the line to fetch the product
-                $Lines = DB::table('order_lines')->where('id', $OrderLine['id'])->get();
-                if(count($Lines) > 0){
-                    $Line = $Lines[0];
+                $OrderLines = DB::table('order_lines')->where('id', $Line['id'])->get();
+                if(count($OrderLines) > 0){
+                    
+
+                    $OrderLine = $OrderLines[0];
                     // Fetch the product
-                    $Products = DB::table('products')->where('id', $Line->product_id)->get();
+                    $Products = DB::table('products')->where('id', $OrderLine->product_id)->get();
                     if(count($Products) > 0){
                         $Product = $Products[0];
                         // If this line has available quantity ...
-                        if($OrderLine['available_qty'] > 0){
+                        if($Line['available_qty'] > 0){
                             // ... then reset the counted flag and next count date
                             $DaysToCount = $Product->days_to_count;
                             $NextCountDate = new \DateTime();
@@ -352,7 +363,24 @@ class Orders extends Model
                             DB::table('products')
                             ->where('id', $Product->id)
                             ->update(['counted' => false]);
-                        }                        
+                        }
+
+                        // Fetch the suppliers products pivot
+                        $UpdatedSupplierProductsPivots = DB::table('suppliers_products_pivots')
+                            ->where('supplier_id', $Order->supplier_id)
+                            ->where('product_id', $OrderLine->product_id)
+                            ->where('measure_unit_id', $OrderLine->measure_unit_id)->update(['supplier_price' => $Line['supplier_price']]);
+                
+                        if($UpdatedSupplierProductsPivots == 0){
+                            $SuppliersProductsPivot = (new SuppliersProductsPivots());
+                            $SuppliersProductsPivot->supplier_id = $Order->supplier_id;
+                            $SuppliersProductsPivot->product_id = $Product->id;
+                            $SuppliersProductsPivot->supplier_code = "";
+                            $SuppliersProductsPivot->supplier_description = "";
+                            $SuppliersProductsPivot->supplier_price = $Line['supplier_price'];
+                            $SuppliersProductsPivot->measure_unit_id = $OrderLine->measure_unit_id;
+                            $SuppliersProductsPivot->save();
+                        }    
                     }
                 }
              }

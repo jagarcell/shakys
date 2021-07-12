@@ -59,6 +59,7 @@ class PendingOrders extends Model
                 $Product->image_path = config('app')['nophoto'];
                 $CountedProducts = [];
                 array_push($CountedProducts, $Product);
+                dd($CountedProducts);
                 return view('debug', ['message' => 'ERROR COUNTED PRODUCTS']);
                 break;
             default:
@@ -164,12 +165,13 @@ class PendingOrders extends Model
      * 
      * @return Object products
      */
+    /*
     public function CountedProducts($request)
     {
         # code...
         try {
             //code...
-            $CountedProducts = (new Products())->where('counted', true)->where('qty_to_order', '>', 0)->get();
+            $CountedProducts = (new Products())->where('counted', true)->get();
             foreach($CountedProducts as $Key => $CountedProduct){
                 $SuppliersProductsPivots = (new SuppliersProductsPivots())
                     ->where('supplier_id', $CountedProduct->default_supplier_id)
@@ -193,6 +195,68 @@ class PendingOrders extends Model
 
                 $CountedProduct->measure_units = $ProductUnits;
                 
+            }
+            return ['status' => 'ok', 'countedproducts' => $CountedProducts];
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message];
+        }
+    
+    }
+    */
+
+    /**
+     * 
+     * This function shows the products that have been counted
+     * and that should be considered to be ordered to the supplier
+     * 
+     * @return Object products
+     */
+    public function CountedProducts($request)
+    {
+        # code...
+        try {
+            //code...
+            $CountedProducts = DB::table('products')
+                ->leftJoin('product_units_pivots', 'products.id', '=', 'product_units_pivots.product_id')
+                ->leftJoin('measure_units', 'product_units_pivots.measure_unit_id', '=', 'measure_units.id')
+                ->where('products.counted', '=', 1)
+                ->where('products.qty_to_order', '>', 0)
+                ->orWhere('product_units_pivots.qty_to_order', '>', 0)
+                ->select('products.*', 
+                        'product_units_pivots.qty_to_order as qty_ordered', 
+                        'measure_units.unit_description',
+                        'measure_units.id as measure_unit_id')->get();
+
+            foreach($CountedProducts as $Key => $CountedProduct){
+                $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                    ->where('supplier_id', $CountedProduct->default_supplier_id)
+                    ->where('product_id', $CountedProduct->id)
+                    ->get();
+                if(count($SuppliersProductsPivots) > 0){
+                    $SuppliersProductsPivot = $SuppliersProductsPivots[0];
+                    $CountedProduct->supplier_price = $SuppliersProductsPivot->supplier_price;
+                }    
+                else{
+                    $CountedProduct->supplier_price = 0;
+                }
+
+                $ProductId = $CountedProduct->id;
+
+                $ProductUnits = DB::table('product_units_pivots')
+                ->join('measure_units', function($join) use ($ProductId){
+                    $join->on('measure_units.id', '=', 'product_units_pivots.measure_unit_id')
+                    ->where('product_units_pivots.product_id', '=', $ProductId);
+                })->select('measure_units.*')->get();
+
+                $CountedProduct->measure_units = $ProductUnits;
+                if($CountedProduct->qty_ordered !== null){
+                    $CountedProduct->qty_to_order = $CountedProduct->qty_ordered;
+                }
+                if($CountedProduct->unit_description === null){
+                    $CountedProduct->unit_description = "";
+                }
             }
             return ['status' => 'ok', 'countedproducts' => $CountedProducts];
         } catch (\Throwable $th) {
@@ -418,22 +482,45 @@ class PendingOrders extends Model
         # code...
         try {
             //code...
-            $Products = DB::table('products')
-                ->join('suppliers', 'products.default_supplier_id', '=', 'suppliers.id')
-                ->select('products.*', 'suppliers.pickup', 'suppliers.last_pickup_id')->get();
-            foreach($Products as $Key => $Product){
-                $SuppliersProductsPivots = (new SuppliersProductsPivots())
-                    ->where('supplier_id', $Product->default_supplier_id)
-                    ->where('product_id', $Product->id)->get();
 
-                    if(count($SuppliersProductsPivots) > 0){
-                    $SuppliersProductsPivot = $SuppliersProductsPivots[0];
-                    $Product->supplier_price = $SuppliersProductsPivot->supplier_price;
+            $Products = DB::table('products')
+            ->leftJoin('product_units_pivots', 'products.id', '=', 'product_units_pivots.product_id')
+            ->leftJoin('measure_units', 'product_units_pivots.measure_unit_id', '=', 'measure_units.id')
+            ->leftJoin('suppliers_products_pivots', 'suppliers_products_pivots.product_id', '=', 'products.id')
+            ->leftJoin('suppliers', 'suppliers.id', '=', 'suppliers_products_pivots.supplier_id')
+            ->select('products.*', 
+                    'product_units_pivots.qty_to_order as qty_ordered', 
+                    'measure_units.unit_description',
+                    'suppliers_products_pivots.supplier_price',
+                    'suppliers.id as supplier_id',
+                    'suppliers.pickup',
+                    'suppliers.last_pickup_id',
+                    'measure_units.id as measure_unit_id')->get();
+
+            foreach($Products as $Key => $Product){
+                if($Product->supplier_id === null){
+                    $Product->supplier_id = -1;
                 }
-                else{
+                if($Product->measure_unit_id === null){
+                    $Product->measure_unit_id = -1;
+                }
+                if($Product->supplier_price === null){
                     $Product->supplier_price = 0;
                 }
+/*
+                $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                    ->where('supplier_id', $Product->default_supplier_id)
+                    ->where('product_id', $Product->id)
+                    ->where('measure_unit_id', $Product->measure_unit_id)->get();
 
+                    if(count($SuppliersProductsPivots) > 0){
+                        $SuppliersProductsPivot = $SuppliersProductsPivots[0];
+                        $Product->supplier_price = $SuppliersProductsPivot->supplier_price;
+                    }
+                    else{
+                        $Product->supplier_price = 0;
+                    }
+*/
                 $ProductId = $Product->id;
 
                 $ProductUnits = DB::table('product_units_pivots')
@@ -444,6 +531,7 @@ class PendingOrders extends Model
 
                 $Product->measure_units = $ProductUnits;
             }
+
             return ['status' => 'ok', 'products' => $Products];
         } catch (\Throwable $th) {
             //throw $th;

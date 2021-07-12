@@ -434,7 +434,7 @@ class Products extends Model
 
     /**
      * 
-     * @param Request ['product_id' 'supplier_id']
+     * @param Request ['product_id' 'measure_unit_id' 'supplier_id']
      * @param String 'element_tag' 
      * 
      * @return string status 'ok' 'error' 'notfound'
@@ -443,13 +443,15 @@ class Products extends Model
     public function GetSupplierPrice($request)
     {
         try {
-            $SupplierId = $request['supplier_id'];
             $ProductId = $request['product_id'];
+            $MeasureUnitId = $request['measure_unit_id'];
+            $SupplierId = $request['supplier_id'];
             $ElementTag = $request['element_tag'];
 
             $SuppliersProductsPivots = (new SuppliersProductsPivots())
                 ->where('supplier_id', $SupplierId)
-                ->where('product_id', $ProductId)->get();
+                ->where('product_id', $ProductId)
+                ->where('measure_unit_id', $MeasureUnitId)->get();
             
             if(count($SuppliersProductsPivots) == 0){
                 return ['status' => 'notfound', 'supplier_id' => $SupplierId, 'product_id' => $ProductId, 'element_tag' => $ElementTag];

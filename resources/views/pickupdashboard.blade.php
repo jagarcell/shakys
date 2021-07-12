@@ -48,6 +48,9 @@
                             <div class="order_detail_description">
                                 Description
                             </div>
+                            <div class="order_detail_unit">
+                                Unit
+                            </div>
                             <div class="order_detail_qty">
                                 Ordered
                             </div>
@@ -72,6 +75,10 @@
                                 <div class="order_detail_description">
                                     <div class="individual_label">Description</div>
                                     <div class="order_detail_line_field">{{$line->product_description}}</div>
+                                </div>
+                                <div class="order_detail_unit">
+                                    <div class="individual_label">Unit</div>
+                                    <div class="order_detail_line_field">{{$line->unit_description}}</div>
                                 </div>
                                 <div class="order_detail_qty">
                                     <div class="individual_label">Ordered</div>

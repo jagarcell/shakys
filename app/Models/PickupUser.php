@@ -12,6 +12,7 @@ use App\Models\Orders;
 use App\Models\Suppliers;
 use App\Models\OrderLines;
 use App\Models\Products;
+use App\Models\MeasureUnits;
 use App\Models\SuppliersProductsPivots;
 
 class PickupUser extends Model
@@ -66,6 +67,15 @@ class PickupUser extends Model
                                 $OrderLine->product_code = "ERROR";
                                 $OrderLine->product_description = "THIS PRODUCT WAS NOT FOUND";
                             }
+                        }
+
+                        $MeasureUnits = (new MeasureUnits())->where('id', $OrderLine->measure_unit_id)->get();
+                        if(count($MeasureUnits) > 0){
+                            $MeasureUnit = $MeasureUnits[0];
+                            $OrderLine->unit_description = $MeasureUnit->unit_description;
+                        }
+                        else{
+                            $OrderLine->unit_description = "";
                         }
                     }
                     $Order->lines = $OrderLines;

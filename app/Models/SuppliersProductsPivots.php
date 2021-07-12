@@ -20,8 +20,8 @@ class SuppliersProductsPivots extends Model
      *                  'product_id',
      *                  'supplier_id',
      *                  'supplier_code',
-     *                  'supplier_description'
-     *                  'element_tag'
+     *                  'supplier_description',
+     *                  'element_tag',
      *                ]
      * 
      * @return String status ['ok' 'error']

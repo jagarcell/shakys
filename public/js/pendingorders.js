@@ -282,7 +282,16 @@ function submitOrderButtonClick(order_id){
     var orderPickupUserSelect = $(order).find('#order_pickup_user_select')[0]
     var orderLines = document.getElementsByClassName('approval_order_line')
     var lines = []
+    var actionResultMessage = $('#' + order_id).find('#action_result_message')
 
+    reportResult(
+        {
+            frame:actionResultMessage,
+            alignTop:false,
+            message:"PROCESSING ORDER",
+            error:false,
+        }
+    )    
     $.each(orderLines, function(index, orderLine){
         var productQtySelect = $(orderLine).find('#product_qty_display_select')[0]
         var line = 
@@ -293,6 +302,8 @@ function submitOrderButtonClick(order_id){
         lines.push(line)
     })
     
+
+
     $.post('/submitorder',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
@@ -462,8 +473,8 @@ function receiveOrderButtonClick(orderId) {
     /* Prepare the order lines param array */    
     $.each(order_lines, function(index, order_line){
         var available_qty = $(order_line).find('.available_qty')[0].selectedIndex
-        var supplier_price = $(order_line).find('.submitted_supplier_price')[0].getAttribute("value")
-        lines.push({id:order_line.getAttribute("lineId"), available_qty:available_qty, supplier_price:supplier_price})
+        var supplier_price = $(order_line).find('.submitted_supplier_price').val()
+        lines.push({id:order_line.id, available_qty:available_qty, supplier_price:supplier_price})
     })
 
     /* Request to receive the order */
@@ -528,6 +539,7 @@ function addToOrderClick(addCheckClass, prefixToReplace) {
         var orderQtySel = $(uiSection).find('#order_qty_sel')[0]
         var orderUnitSelect = $(uiSection).find('.order_unit_sel')[0]
         var measuretUnitId = orderUnitSelect.options[orderUnitSelect.selectedIndex].getAttribute("value")
+        var originalUnitId = orderUnitSelect.getAttribute("original_unit_id")
         var qty = orderQtySel.options[orderQtySel.selectedIndex].getAttribute("value")
         var orderPickupSelect = $(uiSection).find('#order_pickup_select')[0]
         var pickup = orderPickupSelect.options[orderPickupSelect.selectedIndex].getAttribute("value")
@@ -555,6 +567,7 @@ function addToOrderClick(addCheckClass, prefixToReplace) {
                 supplier_id:supplierId,
                 pickup:pickup,
                 qty:qty,
+                original_unit_id:originalUnitId,
                 measure_unit_id:measuretUnitId,
                 pickup_guy_id:orderPickupGuy,
                 product_id:productId,
