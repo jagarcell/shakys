@@ -152,7 +152,7 @@
                     <label for="name">Units</label>
                     <!-- input id="qty" type="number" class="order_qty w-input" placeholder="" value="0" min="0"-->
                     <select id="measure_unit" class="order_qty w-input">
-                        <option value="-1" disable>Select A Measure Unit ...</option>
+                        <option value="-1" disabled>Select A Measure Unit ...</option>
                     </select>
                 </div>
                 <div class="form-block-2">

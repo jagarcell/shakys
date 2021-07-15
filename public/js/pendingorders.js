@@ -126,7 +126,12 @@ function orderClick(productId){
     var qty = $('#order_top_id').find('#qty').val()
     var measureUnitSelect = $('#order_top_id').find('#measure_unit')[0]
     var measureUnitId = measureUnitSelect.options[measureUnitSelect.selectedIndex].value
- 
+
+    if(measureUnitId == -1){
+        alert("YOU MUST SELECT A UNIT!")
+        return
+    }
+
     if(qty > 0)
     {
         $.post('/markascounted',
@@ -178,12 +183,15 @@ function orderClick(productId){
     }
 }
 
-function supplierSelChange(supplierSel) {
-    var uiSection = $(garcellParentNodeByClassName(supplierSel, 'ui_section'))
+function supplierSelChange(uiSectionId) {
+    var uiSection = $('#' + uiSectionId)
+    supplierSel = uiSection.find('#product_supplier_select')[0]
     var supplier = supplierSel.options[supplierSel.options.selectedIndex]
     var supplier_id = supplier.getAttribute("value")
     var product_id = uiSection[0].getAttribute("productId")
-
+    var measure_unit_selected_index = uiSection.find('.order_unit_sel')[0].selectedIndex
+    var measure_unit_id = uiSection.find('.order_unit_sel')[0].options[measure_unit_selected_index].value
+ 
     supplierSel.style = ""
 
     // Check if the supplier is pickup or delivery
@@ -212,6 +220,7 @@ function supplierSelChange(supplierSel) {
         {
             supplier_id:supplier_id,
             product_id:product_id,
+            measure_unit_id:measure_unit_id,
             element_tag:uiSection[0].id,
         }, function(data, status){
             if(status == 'success'){
@@ -273,6 +282,10 @@ function orderTypeSelectChange(orderTypeSelect, orderId){
 
 function orderPickupGuySelectChange(orderPickupGuySelect){
     orderPickupGuySelect.style = ""
+}
+
+function orderUnitSelectChange(uiSectionId) {
+    supplierSelChange(uiSectionId)
 }
 
 function submitOrderButtonClick(order_id){

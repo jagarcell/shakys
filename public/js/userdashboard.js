@@ -97,11 +97,15 @@ function productClick(productId){
 }
 
 function orderClick(productId){
-    console.log(productId)
     var qtySelect = $('#order_top_id').find('#qty')[0]
     var qty = qtySelect.selectedIndex
     var measureUnitSelect = $('#order_top_id').find('#measure_unit')[0]
     var measureUnitId = measureUnitSelect.options[measureUnitSelect.selectedIndex].value
+    
+    if(measureUnitId == -1){
+        alert("YOU MUST SELECT A UNIT!")
+        return
+    }
 
     if(qty > 0)
     {

@@ -14,6 +14,7 @@ use App\Models\OrderLines;
 use App\Models\Products;
 use App\Models\MeasureUnits;
 use App\Models\SuppliersProductsPivots;
+use App\Models\ProductUnitsPivots;
 
 class PickupUser extends Model
 {
@@ -46,27 +47,34 @@ class PickupUser extends Model
                     $OrderLines = (new OrderLines())->where('order_id', $Order->id)->get();
                     
                     foreach($OrderLines as $Key => $OrderLine){
-
-                        $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                        $ProductUnitsPivots = (new ProductUnitsPivots())
                             ->where('product_id', $OrderLine->product_id)
+                            ->where('product_units_pivot_id', $OrderLine->product_units_pivots_id)->get();
+
+                        if(count($ProductUnitsPivots) > 0){
+                            $ProductUnitsPivot = $ProductUnitsPivots[0];
+                            $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                            ->where('product_units_pivot_id', $ProductUnitsPivot->id)
                             ->where('supplier_id', $Order->supplier_id)->get();
 
-                        if(count($SuppliersProductsPivots) > 0){
-                            $SuppliersProductsPivot = $SuppliersProductsPivots[0];
-                            $OrderLine->product_code = $SuppliersProductsPivot->supplier_code;
-                            $OrderLine->product_description = $SuppliersProductsPivot->supplier_description;
-                        }
-                        else{
-                            $Products = (new Products())->where('id', $OrderLine->product_id)->get();
-                            if(count($Products) > 0){
-                                $Product = $Products[0];
-                                $OrderLine->product_code = "";
-                                $OrderLine->product_description = $Product->internal_description;
+                            if(count($SuppliersProductsPivots) > 0){
+                                $SuppliersProductsPivot = $SuppliersProductsPivots[0];
+                                $OrderLine->product_code = $SuppliersProductsPivot->supplier_code;
+                                $OrderLine->product_description = $SuppliersProductsPivot->supplier_description;
                             }
                             else{
-                                $OrderLine->product_code = "ERROR";
-                                $OrderLine->product_description = "THIS PRODUCT WAS NOT FOUND";
+                                $Products = (new Products())->where('id', $OrderLine->product_id)->get();
+                                if(count($Products) > 0){
+                                    $Product = $Products[0];
+                                    $OrderLine->product_code = "";
+                                    $OrderLine->product_description = $Product->internal_description;
+                                }
+                                else{
+                                    $OrderLine->product_code = "ERROR";
+                                    $OrderLine->product_description = "THIS PRODUCT WAS NOT FOUND";
+                                }
                             }
+
                         }
 
                         $MeasureUnits = (new MeasureUnits())->where('id', $OrderLine->measure_unit_id)->get();

@@ -230,17 +230,29 @@ class Orders extends Model
                     $OrderLine->product_description = "";
                     if(count($Products) > 0){
                         $Product = $Products[0];
-                        $SuppliersProductsPivots = (new SuppliersProductsPivots())
+
+                        $ProductUnitsPivots = (new ProductUnitsPivots())
+                        ->where('product_id', $OrderLine->product_id)
+                        ->where('measure_unit_id', $OrderLine->measure_unit_id)->get();
+
+                        if(count($ProductUnitsPivots) > 0){
+                            $ProductUnitsPivot = $ProductUnitsPivots[0];
+
+                            $SuppliersProductsPivots = (new SuppliersProductsPivots())
                             ->where('supplier_id', $Order->supplier_id)
-                            ->where('product_id', $Product->id)->get();
-                        if(count($SuppliersProductsPivots) > 0){
-                            $SuppliersProductsPivot = $SuppliersProductsPivots[0];
-                            $OrderLine->product_code = $SuppliersProductsPivot->supplier_code;
-                            $OrderLine->product_description = $SuppliersProductsPivot->supplier_description;
-                        }
-                        else{
+                            ->where('product_units_pivot_id', $ProductUnitsPivot->id)->get();
+
                             $OrderLine->product_code = $Product->internal_code;
                             $OrderLine->product_description = $Product->internal_description;
+
+                            if(count($SuppliersProductsPivots) > 0){
+                                $SuppliersProductsPivot = $SuppliersProductsPivots[0];
+                                if(strlen($SuppliersProductsPivot->supplier_code) > 0
+                                    || strlen($SuppliersProductsPivot->supplier_description) > 0){
+                                    $OrderLine->product_code = $SuppliersProductsPivot->supplier_code;
+                                    $OrderLine->product_description = $SuppliersProductsPivot->supplier_description;
+                                }
+                            }
                         }
                     }
                 }
@@ -341,8 +353,6 @@ class Orders extends Model
                 // Get the line to fetch the product
                 $OrderLines = DB::table('order_lines')->where('id', $Line['id'])->get();
                 if(count($OrderLines) > 0){
-                    
-
                     $OrderLine = $OrderLines[0];
                     // Fetch the product
                     $Products = DB::table('products')->where('id', $OrderLine->product_id)->get();
@@ -356,7 +366,12 @@ class Orders extends Model
                             $NextCountDate = date_modify($NextCountDate, "+" . $DaysToCount . " day");
                             DB::table('products')
                             ->where('id', $Product->id)
-                            ->update(['next_count_date' => $NextCountDate, 'counted' => false]);
+                            ->update([
+                                'next_count_date' => $NextCountDate, 
+                                'counted' => false,
+                                'default_supplier_id' => $Order->supplier_id,
+                                'default_measure_unit_id' => $OrderLine->measure_unit_id,
+                            ]);
                         }
                         else{
                             // ... in case that the available quantity is zero then reset just the counted flag 
@@ -365,22 +380,30 @@ class Orders extends Model
                             ->update(['counted' => false]);
                         }
 
-                        // Fetch the suppliers products pivot
-                        $UpdatedSupplierProductsPivots = DB::table('suppliers_products_pivots')
-                            ->where('supplier_id', $Order->supplier_id)
+                        // Fecth the product units pivot
+                        $ProductUnitsPivots = (new ProductUnitsPivots())
                             ->where('product_id', $OrderLine->product_id)
-                            ->where('measure_unit_id', $OrderLine->measure_unit_id)->update(['supplier_price' => $Line['supplier_price']]);
-                
-                        if($UpdatedSupplierProductsPivots == 0){
-                            $SuppliersProductsPivot = (new SuppliersProductsPivots());
-                            $SuppliersProductsPivot->supplier_id = $Order->supplier_id;
-                            $SuppliersProductsPivot->product_id = $Product->id;
-                            $SuppliersProductsPivot->supplier_code = "";
-                            $SuppliersProductsPivot->supplier_description = "";
-                            $SuppliersProductsPivot->supplier_price = $Line['supplier_price'];
-                            $SuppliersProductsPivot->measure_unit_id = $OrderLine->measure_unit_id;
-                            $SuppliersProductsPivot->save();
-                        }    
+                            ->where('measure_unit_id', $OrderLine->measure_unit_id)->get();
+
+                        if(count($ProductUnitsPivots) > 0){
+                            $ProductUnitsPivot = $ProductUnitsPivots[0];
+                            // Fetch the suppliers/product-unit pivot
+                            $UpdatedSupplierProductsPivots = DB::table('suppliers_products_pivots')
+                                ->where('supplier_id', $Order->supplier_id)
+                                ->where('product_units_pivot_id', $ProductUnitsPivot->id)
+                                ->update(['supplier_price' => $Line['supplier_price']]);
+                    
+                            if($UpdatedSupplierProductsPivots == 0){
+                                $SuppliersProductsPivot = (new SuppliersProductsPivots());
+                                $SuppliersProductsPivot->supplier_id = $Order->supplier_id;
+                                $SuppliersProductsPivot->product_units_pivot_id = $ProductUnitsPivot->id;
+                                $SuppliersProductsPivot->supplier_code = "";
+                                $SuppliersProductsPivot->supplier_description = "";
+                                $SuppliersProductsPivot->supplier_price = $Line['supplier_price'];
+                                $SuppliersProductsPivot->measure_unit_id = $OrderLine->measure_unit_id;
+                                $SuppliersProductsPivot->save();
+                            }    
+                        }
                     }
                 }
              }

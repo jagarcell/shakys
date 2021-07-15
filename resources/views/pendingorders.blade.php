@@ -112,7 +112,7 @@
                                 <div class="order_data_field_wrap">
                                     <div class="order_data_field">
                                         <label id="supplier_select_label" class="order_data_field_label">Supplier</label>
-                                        <select id="product_supplier_select" productId="{{$countedProduct->id}}" class="order_data_field_select" onchange="supplierSelChange(this)">
+                                        <select id="product_supplier_select" productId="{{$countedProduct->id}}" class="order_data_field_select" onchange="supplierSelChange('counted_{{$countedProduct->id}}')">
                                             <option value="-1" selected disabled>Select a supplier</option>
                                             @foreach($suppliers as $key => $supplier)
                                             <option value="{{$supplier->id}}" pickup="{{$supplier->pickup}}" last_pickup_guy="{{$supplier->last_pickup_id}}" {{$supplier->id == $countedProduct->default_supplier_id ? 'selected':''}}>{{$supplier->name}}</option>
@@ -163,7 +163,7 @@
                                     </div>
                                     <div class="order_data_field">
                                         <label class="order_data_field_label">Unit</label>
-                                        <select class="order_data_field_select order_unit_sel" original_unit_id="{{$countedProduct->measure_unit_id}}">
+                                        <select class="order_data_field_select order_unit_sel" original_unit_id="{{$countedProduct->measure_unit_id}}" onchange="orderUnitSelectChange('counted_{{$countedProduct->id}}')">
                                             <option value="-1" disable>Select A Unit ...</option>
                                             @foreach($countedProduct->measure_units as $key => $measureUnit)
                                             <option value="{{$measureUnit->id}}" {{$measureUnit->id == $countedProduct->measure_unit_id ? 'selected': ''}}>
@@ -201,10 +201,10 @@
                                 <div class="order_data_field_wrap">
                                     <div class="order_data_field">
                                         <label id="supplier_select_label" class="order_data_field_label">Supplier</label>
-                                        <select id="product_supplier_select" productId="{{$allProduct->id}}" class="order_data_field_select" onchange="supplierSelChange(this)">
+                                        <select id="product_supplier_select" productId="{{$allProduct->id}}" class="order_data_field_select" onchange="supplierSelChange('all_{{$allProduct->id}}')">
                                             <option value="-1" selected disabled>Select a supplier</option>
                                             @foreach($suppliers as $key => $supplier)
-                                            <option value="{{$supplier->id}}" pickup="{{$supplier->pickup}}" last_pickup_guy="{{$supplier->last_pickup_id}}" {{$supplier->id == $allProduct->supplier_id ? 'selected':''}}>{{$supplier->name}}</option>
+                                            <option value="{{$supplier->id}}" pickup="{{$supplier->pickup}}" last_pickup_guy="{{$supplier->last_pickup_id}}" {{$supplier->id == $allProduct->default_supplier_id ? 'selected' : ''}}>{{$supplier->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -234,7 +234,7 @@
                                 <div class="order_data_field_wrap">
                                     <div class="order_data_field">
                                         <label class="order_data_field_label">Price</label>
-                                        <input value="{{$allProduct->supplier_price}}" class="order_price_field" disabled>
+                                        <input class="order_price_field" value='{{$allProduct->supplier_price}}' disabled>
                                     </div>
                                     <div class="order_data_field">
                                         <label class="order_data_field_label">Request</label>
@@ -251,10 +251,10 @@
                                     </div>
                                     <div class="order_data_field">
                                         <label class="order_data_field_label">Unit</label>
-                                        <select class="order_data_field_select order_unit_sel">
+                                        <select class="order_data_field_select order_unit_sel" onchange="orderUnitSelectChange('all_{{$allProduct->id}}')">
                                             <option value="-1" disable>Select A Unit ...</option>
                                             @foreach($allProduct->measure_units as $key => $measureUnit)
-                                            <option value="{{$measureUnit->id}}" {{$measureUnit->id == $allProduct->measure_unit_id ? 'selected': ''}}>
+                                            <option value="{{$measureUnit->id}}" {{$measureUnit->id == $allProduct->default_measure_unit_id ? 'selected': ''}}>
                                                 {{$measureUnit->unit_description}}
                                             </option>
                                             @endforeach
@@ -277,6 +277,7 @@
                             <div class="order_segment">
                                 <label style="width:100%;">Order #{{$order->id}}</label>
                             </div>
+                            
                             <div class="order_segment">
                                 <div class="order_supplier_select_wrap">
                                     <label>Supplier</label>
@@ -517,7 +518,7 @@
                         <label for="name">Units</label>
                         <!-- input id="qty" type="number" class="order_qty w-input" placeholder="" value="0" min="0"-->
                         <select id="measure_unit" class="order_qty w-input">
-                            <option value="-1" disable>Select A Measure Unit ...</option>
+                            <option value="-1" disabled>Select A Measure Unit ...</option>
                         </select>
                     </div>
                     <div class="form-block-2">

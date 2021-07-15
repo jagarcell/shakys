@@ -229,21 +229,6 @@ class Products extends Model
             if(isset($request['suppliers'])){
                 $Suppliers = (new Suppliers())->where('id', '>', -1)->get();
                 $Product->suppliers = $Suppliers;
-
-                if(isset($SupplierId)){
-                    $SuppliersProductsPivots = (new SuppliersProductsPivots())
-                    ->where('product_id', $Product->id)
-                    ->where('supplier_id', $SupplierId)->get();
-                }
-                else{
-                    $SuppliersProductsPivots = (new SuppliersProductsPivots())
-                    ->where('product_id', $Product->id)
-                    ->where('supplier_id', $Product->default_supplier_id)->get();
-                }
-                if(count($SuppliersProductsPivots) > 0){
-                    $SuppliersProductsPivot = $SuppliersProductsPivots[0];
-                    $Product->supplier_product_pivot = $SuppliersProductsPivot;
-                }
             }
 
             $DefaultMeasureUnits = (new MeasureUnits())->where('id', $Product->default_measure_unit_id)->get();
@@ -448,10 +433,18 @@ class Products extends Model
             $SupplierId = $request['supplier_id'];
             $ElementTag = $request['element_tag'];
 
-            $SuppliersProductsPivots = (new SuppliersProductsPivots())
-                ->where('supplier_id', $SupplierId)
+            $ProductUnitsPivots = (new ProductUnitsPivots())
                 ->where('product_id', $ProductId)
                 ->where('measure_unit_id', $MeasureUnitId)->get();
+            if(count($ProductUnitsPivots) == 0){
+                return ['status' => 'notfound', 'supplier_id' => $SupplierId, 'product_id' => $ProductId, 'element_tag' => $ElementTag];
+            }
+
+            $ProductUnitsPivot = $ProductUnitsPivots[0];
+
+            $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                ->where('supplier_id', $SupplierId)
+                ->where('product_units_pivot_id', $ProductUnitsPivot->id)->get();
             
             if(count($SuppliersProductsPivots) == 0){
                 return ['status' => 'notfound', 'supplier_id' => $SupplierId, 'product_id' => $ProductId, 'element_tag' => $ElementTag];

@@ -103,6 +103,10 @@ function discardButtonClick() {
  * Action to create a new product.
  */
 function createButtonClick() {
+    if(!unitsSelected()){
+        alert("YOU MUST SELECT AT LEAST ONE UNIT FOR THE PRODUCT!")
+        return
+    }
     measuresDialogCreate(-1, false)
 
     var productForm = $('#add_section_frame').find('.product_form')[0]
@@ -739,6 +743,11 @@ function discardEditChanges(productId) {
  *  
  */
 function acceptEditChanges(productId){
+    if(!unitsSelected()){
+        alert("YOU MUST SELECT AT LEAST ONE UNIT FOR THE PRODUCT!")
+        return
+    }
+
     var productForm = $(document.getElementById(productId)).find('.product_form')
     
     if(productForm[0].checkValidity()){
@@ -964,6 +973,10 @@ function measuresDialogCreate(productId, show = false) {
  *  
  */
 function acceptUnitChanges(productId){
+    if(!unitsSelected()){
+        alert("YOU MUST SELECT AT LEAST ONE UNIT FOR THE PRODUCT!")
+        return
+    }
     var unitLinkDialogFrame = document.getElementById('unit_link_dialog_frame')
     var unitLinkDialogFrameHtmlSaved = document.getElementById('unit_link_dialog_frame_html_saved')
     var defaultUnitSelect = $(unitLinkDialogFrame).find('.default_measure_select')[0]
@@ -1045,6 +1058,18 @@ function acceptUnitChanges(productId){
 
 
     unitLinkDialogFrame.style.display = 'none'
+}
+
+function unitsSelected() {
+    var unitLinkCheckboxes = $('#unit_link_dialog_frame').find('.unit_link_checkbox:checkbox:checked')
+
+    if(unitLinkCheckboxes.length == 0){
+        return false
+    }
+    else{
+        return true
+    }
+
 }
 
 /**
