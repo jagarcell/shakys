@@ -450,6 +450,7 @@ class PendingOrders extends Model
                 $Product->measure_units = $ProductUnits;
                 $Product->pickup = "";
                 $Product->last_pickup_id = -1;
+                $Product->supplier_price = 0;
 
                 $Suppliers = (new Suppliers())->where('id', $Product->default_supplier_id)->get();
                 if(count($Suppliers) > 0){
@@ -460,8 +461,6 @@ class PendingOrders extends Model
                     $ProductUnitsPivots = (new ProductUnitsPivots())
                         ->where('measure_unit_id', $Product->default_measure_unit_id)
                         ->where('product_id', $Product->id)->get();
-
-                    $Product->supplier_price = 0;
 
                     if(count($ProductUnitsPivots) > 0){
                         $ProductUnitsPivot = $ProductUnitsPivots[0];
