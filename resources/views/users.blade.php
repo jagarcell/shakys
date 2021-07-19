@@ -169,7 +169,7 @@
                     </div>
                     <div class="user_section horizontal">
                         <div class="user_edit_section">
-                            <div class="user_field_header">USER</div>
+                            <div class="user_field_header">USER NAME</div>
                             <div id="user_name" class="user_field_content">user_name</div>
                         </div>
                         <div class="user_edit_section">
@@ -203,7 +203,7 @@
                         </div>
                         <div class="user_section horizontal">
                             <div class="user_edit_section">
-                                <div class="user_field_header">USER</div>
+                                <div class="user_field_header">USER NAME</div>
                                 <div class="user_field_content shadowRight">{{$user->name}}</div>
                             </div>
                             <div class="user_edit_section">
@@ -238,7 +238,7 @@
                         </div>
                         <div class="user_section horizontal">
                             <div class="user_edit_section">
-                                <div class="user_field_header box_shadow">USER</div>
+                                <div class="user_field_header box_shadow">USER NAME</div>
                                 <div class="user_field_conten shadowRightt">user-name</div>
                             </div>
                             <div class="user_edit_section">
