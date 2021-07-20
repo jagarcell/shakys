@@ -142,7 +142,8 @@ function createButtonClick() {
                                     frame:actionResultMessage,
                                     message:"THE PRODUCT WAS SUCCESSFULLY REGISTERED",
                                     error:false,
-                                    param:product
+                                    param:product,
+                                    timeout:1000,
                                 }, function(frame, product){
                                     fromEditToShow(product, true)
                                     frame.hide()
@@ -900,6 +901,15 @@ function measuresButtonClick(productId) {
  *  
  */
 function measuresDialogCreate(productId, show = false) {
+    var unitLinkDialogFrame = document.getElementById('unit_link_dialog_frame')
+
+    if(productId == -1 && $(unitLinkDialogFrame).find('.unit_link_dialog').length > 0){
+        // Check if the dialog will be shown after cretion 
+        if(show){
+            unitLinkDialogFrame.style.display = 'block'
+        }
+        return
+    }
     // Let's request the units linked to this product
     // as well as the whole set of available units
     $.get('/getproductunits',
@@ -916,9 +926,7 @@ function measuresDialogCreate(productId, show = false) {
                         var product = data.product
                         var unitLinkDialogFrame = document.getElementById('unit_link_dialog_frame')
                         var unitLinkDialogFrameHtml = document.getElementById('unit_link_dialog_frame_html')
-
                         unitLinkDialogFrame.innerHTML = unitLinkDialogFrameHtml.innerHTML
-
                         var defaultMeasureSelect = $(unitLinkDialogFrame).find('.default_measure_select')[0]
                         var unitLinkCheckboxFrameHtml = document.getElementById('unit_link_checkbox_frame_html')
                     
@@ -1092,6 +1100,7 @@ function saveUnitChanges(productId) {
             }
         )
     })
+
     $.post('/setproductunits',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),

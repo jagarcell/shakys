@@ -53,7 +53,7 @@
                     <div class="data_entry">
                         <div class="add_form_frame w-form">
                             <form class="product_form add_frame">
-                                <input type="text" class="code text_field box_shadow w-input" maxlength="50" placeholder="Product Code" required="">
+                                <input type="text" class="code text_field box_shadow w-input" maxlength="50" placeholder="Product Code">
                                 <input type="text" class="description text_field box_shadow w-input" maxlength="150" placeholder="Product Description" required="">
                                 <input type="number" class="days_to_count text_field box_shadow w-input" min="0" placeholder="Days To Count" required="">
                                 <div class="field_wrap" style="display:flex;">

@@ -101,7 +101,7 @@ class Products extends Model
                 return ['status' => 'exist', 'element_tag' => $ElementTag];
             }
             //code...
-            $this->internal_code = $Code;
+            $this->internal_code = $Code == null ? "" : $Code;
             $this->internal_description = $Description;
             $this->days_to_count = $DaysToCount;
             $this->default_measure_unit_id = $DefaultMeasureUnitId;
