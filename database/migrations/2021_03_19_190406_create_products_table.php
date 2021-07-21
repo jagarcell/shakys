@@ -15,7 +15,7 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('internal_code', 50)->nullable();
+            $table->string('internal_code', 50)->default('');
             $table->string('internal_description', 150)->default('');
             $table->integer('days_to_count')->default(0);
             $table->string('measure_unit')->nullable();
