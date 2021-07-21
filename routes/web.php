@@ -41,6 +41,10 @@ Route::get('/error/{message}', function($message){
 
 require __DIR__.'/auth.php';
 
+Route::get('/vue', function(){
+    return view('vue');
+});
+
 /*********************************
  *           USERS               *
  ********************************/
