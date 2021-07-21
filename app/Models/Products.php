@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Suppliers;
 use App\Models\SuppliersProductsPivots;
+use App\Models\ProductUnitsPivots;
+use App\Models\MeasureUnits;
 
 class Products extends Model
 {
@@ -34,8 +37,26 @@ class Products extends Model
                     }
                 }
                 $Product->default_supplier_name = $DefaultSupplierName;
+
+                $DefaultMeasureUnits = (new MeasureUnits())->where('id', $Product->default_measure_unit_id)->get();
+                $DefaultMeasureUnitName = "";
+                if(count($DefaultMeasureUnits) > 0){
+                    $DefaultMeasureUnit = $DefaultMeasureUnits[0];
+                    $DefaultMeasureUnitName = $DefaultMeasureUnit->unit_description;
+                }
+                $Product->default_measure_unit = $DefaultMeasureUnitName;
+                $ProductId = $Product->id;
+
+                $ProductMeasureUnits = DB::table('product_units_pivots')->join('measure_units', function($join) use ($ProductId){
+                    $join->on('product_units_pivots.measure_unit_id', '=', 'measure_units.id')
+                    ->where('product_units_pivots.product_id', '=', $ProductId);
+                })->select('measure_units.*')->get();
+
+                $Product->measure_units = $ProductMeasureUnits;
             }
-            return View('products', ['products' => $Products]);
+
+            $MeasureUnits = (new MeasureUnits())->where('id', '>', -1)->get();
+            return View('products', ['products' => $Products, 'measureunits' => $MeasureUnits]);
         } catch (\Throwable $th) {
             //throw $th;
             $Message = $this->ErrorInfo($th);
@@ -67,7 +88,7 @@ class Products extends Model
         $Code = $request['internal_code'];
         $Description = $request['internal_description'];
         $DaysToCount = $request['days_to_count'];
-        $MeasureUnit = $request['measure_unit'];
+        $DefaultMeasureUnitId = $request['default_measure_unit_id'];
         $DefaultSupplierId = $request['default_supplier_id'];
         $ImageToUpload = $request['image_to_upload'];
         $ElementTag = $request['element_tag'];
@@ -80,10 +101,10 @@ class Products extends Model
                 return ['status' => 'exist', 'element_tag' => $ElementTag];
             }
             //code...
-            $this->internal_code = $Code;
+            $this->internal_code = $Code == null ? "" : $Code;
             $this->internal_description = $Description;
             $this->days_to_count = $DaysToCount;
-            $this->measure_unit = $MeasureUnit;
+            $this->default_measure_unit_id = $DefaultMeasureUnitId;
             $this->default_supplier_id = $DefaultSupplierId;
             $ImagePath = $ImageToUpload == null ? $Config['nophoto']: $Config['products_images_path'] . $ImageToUpload;
             if(!\File::exists($ImagePath)){
@@ -102,12 +123,20 @@ class Products extends Model
             if($Supplier !== null){
                 $DefaultSupplierName = $Supplier->name;
             }
+
+            $UnitDescription = "";
+            $MeasureUnits = (new MeasureUnits())->where('id', $DefaultMeasureUnitId)->get();
+            if(count($MeasureUnits) > 0){
+                $MeasureUnit = $MeasureUnits[0];
+                $UnitDescription = $MeasureUnit->unit_description;
+            }
+
             $Product = [
                 'id' => $this->id, 
                 'internal_code' => $this->internal_code,
                 'internal_description' => $this->internal_description,
                 'days_to_count' => $this->days_to_count,
-                'measure_unit' => $this->measure_unit,
+                'measure_unit' => $UnitDescription,
                 'default_supplier_id' => $this->default_supplier_id,
                 'image_path' => $this->image_path,
                 'default_supplier_name' => $DefaultSupplierName
@@ -200,22 +229,26 @@ class Products extends Model
             if(isset($request['suppliers'])){
                 $Suppliers = (new Suppliers())->where('id', '>', -1)->get();
                 $Product->suppliers = $Suppliers;
-
-                if(isset($SupplierId)){
-                    $SuppliersProductsPivots = (new SuppliersProductsPivots())
-                    ->where('product_id', $Product->id)
-                    ->where('supplier_id', $SupplierId)->get();
-                }
-                else{
-                    $SuppliersProductsPivots = (new SuppliersProductsPivots())
-                    ->where('product_id', $Product->id)
-                    ->where('supplier_id', $Product->default_supplier_id)->get();
-                }
-                if(count($SuppliersProductsPivots) > 0){
-                    $SuppliersProductsPivot = $SuppliersProductsPivots[0];
-                    $Product->supplier_product_pivot = $SuppliersProductsPivot;
-                }
             }
+
+            $DefaultMeasureUnits = (new MeasureUnits())->where('id', $Product->default_measure_unit_id)->get();
+            if(count($DefaultMeasureUnits) > 0){
+                $DefaultMeasureUnit = $DefaultMeasureUnits[0];
+                $Product->measure_unit = $DefaultMeasureUnit->unit_description;
+            }
+            else{
+                $Product->measure_unit = "";
+            }
+
+            $ProductId = $Product->id;
+
+            $MeasureUnits = DB::table('product_units_pivots')->join('measure_units', function($join) use ($ProductId){
+                $join->on('product_units_pivots.measure_unit_id', '=', 'measure_units.id')
+                ->where('product_units_pivots.product_id', '=', $ProductId);
+            })->select('measure_units.*')->get();
+
+            $Product->measure_units = $MeasureUnits;
+
             return ['status' => 'ok', 'product' => $Product, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             //throw $th;
@@ -250,7 +283,7 @@ class Products extends Model
         $InternalCode = $request['internal_code'];
         $InternalDescription = $request['internal_description'];
         $DaysToCount = $request['days_to_count'];
-        $MeasureUnit = $request['measure_unit'];
+        $DefaultMeasureUnitId = $request['default_measure_unit_id'];
         $DefaultSupplierId = $request['default_supplier_id'];
         $ImagePath = $request['image_path'];
         $ElementTag = $request['element_tag'];
@@ -292,7 +325,7 @@ class Products extends Model
                     'internal_code' => $InternalCode,
                     'internal_description' => $InternalDescription,
                     'days_to_count' => $DaysToCount,
-                    'measure_unit' => $MeasureUnit,
+                    'default_measure_unit_id' => $DefaultMeasureUnitId,
                     'default_supplier_id' => $DefaultSupplierId,
                     'image_path' => $ImagePath,
                     'next_count_date' => $NextCountDate,
@@ -305,13 +338,20 @@ class Products extends Model
                 $DefaultSupplierName = $Suppliers[0]->name;
             }
 
+            $UnitDescription = "";
+            $MeasureUnits = (new MeasureUnits())->where('id', $DefaultMeasureUnitId)->get();
+            if(count($MeasureUnits) > 0){
+                $MeasureUnit = $MeasureUnits[0];
+                $UnitDescription = $MeasureUnit->unit_description;
+            }
+
             $Product =
                 [
                     'id' => $Id,
                     'internal_code' => $InternalCode,
                     'internal_description' => $InternalDescription,
                     'days_to_count' => $DaysToCount,
-                    'measure_unit' => $MeasureUnit,
+                    'measure_unit' => $UnitDescription,
                     'default_supplier_id' => $DefaultSupplierId,
                     'image_path' => $ImagePath,
                     'default_supplier_name' => $DefaultSupplierName,
@@ -326,9 +366,8 @@ class Products extends Model
 
     /**
      * 
-     * @param Request ['id']
-     * @param Double ['qty_to_order']
-     * @param Object element_tag
+     * @param Request id qty_to_order measure_unit_id element_tag   
+     * @param Object 
      * 
      * @return [status => 'ok']
      *         [status => 'notfound']
@@ -346,14 +385,30 @@ class Products extends Model
             //code...
             $Id = $request['id'];
             $QtyToOrder = $request['qty_to_order'];
+            $MeasureUnitId = $request['measure_unit_id'];
             $ElementTag = $request['element_tag'];
+
             $Products = $this->where('id', $Id)->get();
             if(count($Products) == 0){
                 return ['status' => 'notfound', 'element_tag' => $ElementTag];
             }
-            $this->where('id', $Id)->update(['counted' => true, 'qty_to_order' => $QtyToOrder]);
+
             $Product = $Products[0];
             $Product->counted = true;
+
+            $UpdatedProductUnitsPivots = (new ProductUnitsPivots())
+                ->where('product_id', $Product->id)
+                ->where('measure_unit_id', $MeasureUnitId)->update(['qty_to_order' => $QtyToOrder]);
+
+            // If there is a link to the measure unit 
+            if($UpdatedProductUnitsPivots > 0){
+                // The qty to order is asigned to that measure unit
+                $this->where('id', $Id)->update(['counted' => true, 'qty_to_order' => 0]);
+            }
+            else{
+                // Othewise it is asigned to the product itself
+                $this->where('id', $Id)->update(['counted' => true, 'qty_to_order' => $QtyToOrder]);
+            }
             return ['status' => 'ok', 'product' => $Product, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             //throw $th;
@@ -362,6 +417,144 @@ class Products extends Model
         }
     }
 
+    /**
+     * 
+     * @param Request ['product_id' 'measure_unit_id' 'supplier_id']
+     * @param String 'element_tag' 
+     * 
+     * @return string status 'ok' 'error' 'notfound'
+     * 
+     */
+    public function GetSupplierPrice($request)
+    {
+        try {
+            $ProductId = $request['product_id'];
+            $MeasureUnitId = $request['measure_unit_id'];
+            $SupplierId = $request['supplier_id'];
+            $ElementTag = $request['element_tag'];
+
+            $ProductUnitsPivots = (new ProductUnitsPivots())
+                ->where('product_id', $ProductId)
+                ->where('measure_unit_id', $MeasureUnitId)->get();
+            if(count($ProductUnitsPivots) == 0){
+                return ['status' => 'notfound', 'supplier_id' => $SupplierId, 'product_id' => $ProductId, 'element_tag' => $ElementTag];
+            }
+
+            $ProductUnitsPivot = $ProductUnitsPivots[0];
+
+            $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                ->where('supplier_id', $SupplierId)
+                ->where('product_units_pivot_id', $ProductUnitsPivot->id)->get();
+            
+            if(count($SuppliersProductsPivots) == 0){
+                return ['status' => 'notfound', 'supplier_id' => $SupplierId, 'product_id' => $ProductId, 'element_tag' => $ElementTag];
+            }
+
+            $SuppliersProductsPivot = $SuppliersProductsPivots[0];
+            return ['status' => 'ok', 'supplier_price' => $SuppliersProductsPivot->supplier_price, 'element_tag' => $ElementTag];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this-ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
+        }
+    }
+
+    /**
+     * 
+     * @param Request product_id, element_tag
+     * 
+     * @return String status 'ok' 'error' 'notfound'
+     * @return Mixed measureunits
+     * @return Mixed product
+     * 
+     */
+
+     public function GetProductUnits($request)
+     {
+         try {
+             $ProductId = $request['product_id'];
+             $ElementTag = $request['element_tag'];
+
+             $MeasureUnits = (new MeasureUnits())->where('id', '>', -1)->get();
+
+             if($ProductId == -1){
+                 return ['status' => 'ok', 'element_tag' => $ElementTag, 'measureunits' => $MeasureUnits, 'productunits' => []];
+             }
+
+             $Products = $this->where('id', $ProductId)->get();
+             if(count($Products) == 0){
+                 return ['status' => 'notfound', 'element_tag' => $ElementTag];
+             }
+
+             $Product = $Products[0];
+
+             $ProductUnits = DB::table('product_units_pivots')
+                                ->join('measure_units', function($join) use ($ProductId){
+                                    $join->on('measure_units.id', '=', 'product_units_pivots.measure_unit_id')
+                                    ->where('product_units_pivots.product_id', '=', $ProductId);
+                                })->select('measure_units.*')->get();
+
+             foreach($ProductUnits as $Key => $ProductUnit){
+                if($ProductUnit->id == $Product->default_measure_unit_id){
+                    $ProductUnit->default_unit = true;
+                }
+             }
+
+            return ['status' => 'ok', 'measureunits' => $MeasureUnits, 'productunits' => $ProductUnits, 'product' => $Product, 'element_tag' => $ElementTag];
+         } catch (\Throwable $th) {
+             $Message = $this->ErrorInfo($th);
+             return['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
+         }
+     }
+
+     /**
+      * 
+      * @param Request [product_id  array measure_units[id, checked] element_tag]
+      *
+      * @return String status 'ok' 'error' 'notfound'
+      * @return String message (in case of error)
+      * @return Object element_tag (always)
+      *
+      */
+
+      public function SetProductUnits($request)
+      {
+        try {
+            $ProductId = $request['product_id'];
+            $MeasureUnits = $request['measure_units'];
+            $ElementTag = $request['element_tag'];
+
+            foreach($MeasureUnits as $Key => $MeasureUnit){
+                $ProductUnitsPivots = (new ProductUnitsPivots())
+                    ->where('measure_unit_id', $MeasureUnit['id'])
+                    ->where('product_id', $ProductId)->get();
+
+                if($MeasureUnit['checked'] !== null){
+                    if(count($ProductUnitsPivots) == 0){
+                        $ProductUnitsPivot = (new ProductUnitsPivots());
+                        $ProductUnitsPivot->measure_unit_id = $MeasureUnit['id'];
+                        $ProductUnitsPivot->product_id = $ProductId;
+                        $ProductUnitsPivot->save();
+
+                    }
+                }
+                else{
+                    if(count($ProductUnitsPivots) > 0){
+                        $ProductUnitsPivot = $ProductUnitsPivots[0];
+                        (new ProductUnitsPivots())->where('id', $ProductUnitsPivot->id)->delete();
+                    }
+                }                
+            }
+            
+            return ['status' => 'ok', 'element_tag' => $ElementTag];
+        } catch (\Throwable $th) {
+            $Message = $this->ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
+        }
+      }
+
+      
     /**
      * 
      * @param $th

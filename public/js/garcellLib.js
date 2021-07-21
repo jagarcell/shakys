@@ -19,6 +19,7 @@ function garcellParentNodeById(element, parentId) {
  **         '"undefined" if no element was found'
  */
 function garcellParentNodeByClassName(element, parentClass) {
+    element = element !== 'undefined' ? element.parentNode : element
     while (element !== 'undefined') {
         if(element.className.includes(parentClass)){
             return element

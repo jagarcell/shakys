@@ -26,7 +26,7 @@
 
     return obj;
   }
-
+  
   function ownKeys(object, enumerableOnly) {
     var keys = Object.keys(object);
 

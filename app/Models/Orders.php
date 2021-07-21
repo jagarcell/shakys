@@ -13,6 +13,7 @@ use App\Models\Suppliers;
 use App\Models\Users;
 use App\Mail\OrderEmail;
 use App\Models\SuppliersProductsPivots;
+use App\Models\ProductUnitsPivots;
 
 class Orders extends Model
 {
@@ -22,7 +23,7 @@ class Orders extends Model
      * 
      * Create a purchase order
      * 
-     * @param Request [supplier_id, product_id, qty, pickup, pickup_guy_id]
+     * @param Request [supplier_id, product_id, qty, measure_unit_id pickup, pickup_guy_id]
      * 
      * @return String status [ok, error, 419]
      * @return String message (if error)
@@ -34,6 +35,8 @@ class Orders extends Model
             $SupplierId = $request['supplier_id'];
             $ProductId = $request['product_id'];
             $Qty = $request['qty'];
+            $OriginalUnitId = $request['original_unit_id'];
+            $MeasureUnitId = $request['measure_unit_id'];
             $Pickup = $request['pickup'];
             $PickupGuyId = $request['pickup_guy_id'];
             $ElementTag = $request['element_tag'];
@@ -77,7 +80,10 @@ class Orders extends Model
             if(count($Orders) > 0){
                 // Ongoing order
                 $Order = $Orders[0];
-                $Products = (new OrderLines())->where('order_id', $Order->id)->where('product_id', $ProductId)->get();
+                $Products = (new OrderLines())
+                    ->where('order_id', $Order->id)
+                    ->where('product_id', $ProductId)
+                    ->where('measure_unit_id', $MeasureUnitId)->get();
                 // Check if the product is already in the ongoing order
                 if(count($Products) > 0){
                     // Lets add quantity to this products
@@ -91,6 +97,7 @@ class Orders extends Model
                     $OrderLines->order_id = $Order->id;
                     $OrderLines->product_id = $ProductId;
                     $OrderLines->qty = $Qty;
+                    $OrderLines->measure_unit_id = $MeasureUnitId;
                     $OrderLines->save();
                 }
             }
@@ -106,10 +113,14 @@ class Orders extends Model
                 $OrderLines->order_id = $this->id;
                 $OrderLines->product_id = $ProductId;
                 $OrderLines->qty = $Qty;
+                $OrderLines->measure_unit_id = $MeasureUnitId;
                 $OrderLines->save();
             }
 
             (new Products())->where('id', $ProductId)->update(['default_supplier_id' => $Supplier->id, 'qty_to_order' => 0]);
+
+            (new ProductUnitsPivots())->where('product_id', $ProductId)
+                ->where('measure_unit_id', $OriginalUnitId)->update(['qty_to_order' => 0]);
 
             (new Suppliers())->where('id', $SupplierId)->update(['pickup' => $Pickup, 'last_pickup_id' => $PickupGuyId]);
 
@@ -169,22 +180,34 @@ class Orders extends Model
             $Message = $this->ErrorInfo($th);
             return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
         }
-        try {
-            //code...
+        
+        $Result = $this->EmailOrder($request);
+        switch ($Result['status']) {
+            case 'ok':
+                # code...
+                return ['status' => 'ok', 'order' => $Result['order'], 'element_tag' => $ElementTag];
+                break;
 
-        } catch (\Throwable $th) {
-            //throw $th;
+            case 'error':
+                return ['status' => 'emailnotsent', 'message' => $Result['message'], 'element_tag' => $ElementTag];    
+                break;
+            case 'noemail':
+                return ['status' => 'noemail', 'element_tag' => $ElementTag];
+                break;    
+            default:
+                # code...
+                break;
         }
-        return ['status' => 'ok', 'element_tag' => $ElementTag];
      }
 
      /**
       * 
       * @param Request $request ['id']
       *
-      * @return String ['status' => 'ok' 'error' 'not found']
+      * @return String ['status' => 'ok' 'error' 'notfound']
       * @return String ['message' => 'error message']
       * @return Mixed  ['element_tag' => 'element_tag']
+      *
       */
 
       
@@ -207,17 +230,29 @@ class Orders extends Model
                     $OrderLine->product_description = "";
                     if(count($Products) > 0){
                         $Product = $Products[0];
-                        $SuppliersProductsPivots = (new SuppliersProductsPivots())
+
+                        $ProductUnitsPivots = (new ProductUnitsPivots())
+                        ->where('product_id', $OrderLine->product_id)
+                        ->where('measure_unit_id', $OrderLine->measure_unit_id)->get();
+
+                        if(count($ProductUnitsPivots) > 0){
+                            $ProductUnitsPivot = $ProductUnitsPivots[0];
+
+                            $SuppliersProductsPivots = (new SuppliersProductsPivots())
                             ->where('supplier_id', $Order->supplier_id)
-                            ->where('product_id', $Product->id)->get();
-                        if(count($SuppliersProductsPivots) > 0){
-                            $SuppliersProductsPivot = $SuppliersProductsPivots[0];
-                            $OrderLine->product_code = $SuppliersProductsPivot->supplier_code;
-                            $OrderLine->product_description = $SuppliersProductsPivot->supplier_description;
-                        }
-                        else{
+                            ->where('product_units_pivot_id', $ProductUnitsPivot->id)->get();
+
                             $OrderLine->product_code = $Product->internal_code;
                             $OrderLine->product_description = $Product->internal_description;
+
+                            if(count($SuppliersProductsPivots) > 0){
+                                $SuppliersProductsPivot = $SuppliersProductsPivots[0];
+                                if(strlen($SuppliersProductsPivot->supplier_code) > 0
+                                    || strlen($SuppliersProductsPivot->supplier_description) > 0){
+                                    $OrderLine->product_code = $SuppliersProductsPivot->supplier_code;
+                                    $OrderLine->product_description = $SuppliersProductsPivot->supplier_description;
+                                }
+                            }
                         }
                     }
                 }
@@ -255,14 +290,6 @@ class Orders extends Model
                     $Order->instructions4 = "North Bergen, NJ, 074407";
                     $Order->instructions5 = "Phone: +1 201-520-9351";
                 }
-
-                if(strlen($Order->email) > 0){
-                    Mail::to($Order->email)->send((new OrderEmail($Order))->subject($Subject));
-                    return ['status' => 'ok', 'order' => $Order, 'element_tag' => $ElementTag];
-                }
-                else{
-                    return ['status' => 'noemail', 'element_tag' => $ElementTag];
-                }
             }
             else{
                 return ['status' => 'notfound', 'element_tag' => $ElementTag];
@@ -270,8 +297,128 @@ class Orders extends Model
         } catch (\Throwable $th) {
             //throw $th;
             $Message = $this->ErrorInfo($th);
-            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
+            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag, 'th' => $th];
         }
+        try {
+            //code...
+            if(strlen($Order->email) > 0){
+                Mail::to($Order->email)->send((new OrderEmail($Order))->subject($Subject));
+            }
+            else{
+                return ['status' => 'noemail', 'element_tag' => $ElementTag];
+            }
+        } catch (\Exception $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag, 'th' => $th, 'email' => $Order->email, 'subject' => $Subject];
+        }
+        return ['status' => 'ok', 'order' => $Order, 'element_tag' => $ElementTag];
+     }
+
+     /**
+      * 
+      * @param Request ['id' 'order_lines:{id, avilable_qty, supplier_price}' 'element_tag']
+      *
+      * @return String status ['ok' 'error' 'notfound' '419']
+      * 
+      */
+     public function ReceiveOrder($request)
+     {
+         # code...
+         $Id = $request['id'];
+         $Lines = $request['order_lines'];
+         $ElementTag = $request['element_tag'];
+
+         try {
+             //code...
+             $Orders = $this->where('id', $Id)->get();
+             if(count($Orders) == 0){
+                return ['status' => 'notfound', 'element_tag' => $ElementTag];
+             }
+
+             $Order = $Orders[0];
+
+             // Transaction to update the order and products records
+             DB::beginTransaction();
+
+             // Update each order line
+             foreach($Lines as $Key => $Line){
+                DB::table('order_lines')->where('id', $Line['id'])
+                    ->update(
+                        [
+                            'available_qty' => $Line['available_qty'],
+                        ]
+                    );
+
+                // Get the line to fetch the product
+                $OrderLines = DB::table('order_lines')->where('id', $Line['id'])->get();
+                if(count($OrderLines) > 0){
+                    $OrderLine = $OrderLines[0];
+                    // Fetch the product
+                    $Products = DB::table('products')->where('id', $OrderLine->product_id)->get();
+                    if(count($Products) > 0){
+                        $Product = $Products[0];
+                        // If this line has available quantity ...
+                        if($Line['available_qty'] > 0){
+                            // ... then reset the counted flag and next count date
+                            $DaysToCount = $Product->days_to_count;
+                            $NextCountDate = new \DateTime();
+                            $NextCountDate = date_modify($NextCountDate, "+" . $DaysToCount . " day");
+                            DB::table('products')
+                            ->where('id', $Product->id)
+                            ->update([
+                                'next_count_date' => $NextCountDate, 
+                                'counted' => false,
+                                'default_supplier_id' => $Order->supplier_id,
+                                'default_measure_unit_id' => $OrderLine->measure_unit_id,
+                            ]);
+                        }
+                        else{
+                            // ... in case that the available quantity is zero then reset just the counted flag 
+                            DB::table('products')
+                            ->where('id', $Product->id)
+                            ->update(['counted' => false]);
+                        }
+
+                        // Fecth the product units pivot
+                        $ProductUnitsPivots = (new ProductUnitsPivots())
+                            ->where('product_id', $OrderLine->product_id)
+                            ->where('measure_unit_id', $OrderLine->measure_unit_id)->get();
+
+                        if(count($ProductUnitsPivots) > 0){
+                            $ProductUnitsPivot = $ProductUnitsPivots[0];
+                            // Fetch the suppliers/product-unit pivot
+                            $UpdatedSupplierProductsPivots = DB::table('suppliers_products_pivots')
+                                ->where('supplier_id', $Order->supplier_id)
+                                ->where('product_units_pivot_id', $ProductUnitsPivot->id)
+                                ->update(['supplier_price' => $Line['supplier_price']]);
+                    
+                            if($UpdatedSupplierProductsPivots == 0){
+                                $SuppliersProductsPivot = (new SuppliersProductsPivots());
+                                $SuppliersProductsPivot->supplier_id = $Order->supplier_id;
+                                $SuppliersProductsPivot->product_units_pivot_id = $ProductUnitsPivot->id;
+                                $SuppliersProductsPivot->supplier_code = "";
+                                $SuppliersProductsPivot->supplier_description = "";
+                                $SuppliersProductsPivot->supplier_price = $Line['supplier_price'];
+                                $SuppliersProductsPivot->measure_unit_id = $OrderLine->measure_unit_id;
+                                $SuppliersProductsPivot->save();
+                            }    
+                        }
+                    }
+                }
+             }
+
+             // Update the order's header
+             DB::table('orders')->where('id', $Orders[0]->id)->update(['received' => true]);
+             DB::commit();
+             // If all went right return an OK status
+             return ['status' => 'ok', 'element_tag' => $ElementTag];
+         } catch (\Throwable $th) {
+             // If something went wrong return an error
+             DB::rollback();
+             $Message = $this->ErrorInfo($th);
+             return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
+         }
      }
 
      /**

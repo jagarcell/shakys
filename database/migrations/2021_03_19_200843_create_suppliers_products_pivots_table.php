@@ -16,7 +16,7 @@ class CreateSuppliersProductsPivotsTable extends Migration
         Schema::create('suppliers_products_pivots', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('supplier_id')->default(-1);
-            $table->bigInteger('product_id')->default(-1);
+            $table->bigInteger('product_units_pivot_id')->default(-1);
             $table->string('supplier_code', 50)->nullable();
             $table->string('supplier_description', 150)->default('');
             $table->timestamps();

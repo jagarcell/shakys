@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Errors\ErrorInfo;
 use App\Models\Products;
 use App\Models\Suppliers;
+use App\Models\MeasureUnits;
 
 class SuppliersProductsPivots extends Model
 {
@@ -19,8 +20,8 @@ class SuppliersProductsPivots extends Model
      *                  'product_id',
      *                  'supplier_id',
      *                  'supplier_code',
-     *                  'supplier_description'
-     *                  'element_tag'
+     *                  'supplier_description',
+     *                  'element_tag',
      *                ]
      * 
      * @return String status ['ok' 'error']
@@ -59,6 +60,7 @@ class SuppliersProductsPivots extends Model
             $Products = (new Products())->where('id', $ProductId)->get();
             if(count($Products) > 0){
                 $Product = $Products[0];
+                
                 $Suppliers = (new Suppliers())->where('id', $Product->default_supplier_id)->get();
                 if(count($Suppliers) > 0){
                     $Supplier = $Suppliers[0];
@@ -66,6 +68,15 @@ class SuppliersProductsPivots extends Model
                 }
                 else{
                     $Product->default_supplier_name = "";
+                }
+
+                $MeasureUnits = (new MeasureUnits())->where('id', $Product->default_measure_unit_id)->get();
+                if(count($MeasureUnits) > 0){
+                    $MeasureUnit = $MeasureUnits[0];
+                    $Product->measure_unit = $MeasureUnit->unit_description;
+                }
+                else{
+                    $Product->measure_unit = "";
                 }
             }
             else{

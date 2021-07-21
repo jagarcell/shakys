@@ -27,6 +27,89 @@
     <body class="antialiased bodyClass">
         @section('page_title', 'PICKUP PANEL')
         @section('content')
+        <div class="pickup_orders">
+            @foreach($orders as $key => $order)
+            <div id="{{$order->id}}" class="pickup_order" {{count($orders) > 0 ? '':'hidden'}}>
+                <a class="pickup_order_header shadowRight" onclick="pickupOrderClick(this)">
+                    <div class="order_number">Order #{{$order->id}}</div>
+                    <div>
+                        {{$order->supplier_name}}
+                    </div>
+                    <div>
+                        {{$order->supplier_address}}
+                    </div>
+                </a>
+                <div class="order_details_wrap" style="display:none;">
+                    <div class="order_details">
+                        <div class="order_details_labels shadowRight">
+                            <div class="order_detail_code">
+                                Code
+                            </div>
+                            <div class="order_detail_description">
+                                Description
+                            </div>
+                            <div class="order_detail_unit">
+                                Unit
+                            </div>
+                            <div class="order_detail_qty">
+                                Ordered
+                            </div>
+                            <div class="order_detail_qty">
+                                Available
+                            </div>
+                            <div class="order_detail_qty show_all_desktop">
+                                <a style="text-decoration-line: underline;" onclick="showAllOrderLinesClick('{{$order->id}}')">Show All</></a>
+                            </div>
+                        </div>
+                        <div class="order_details_body shadowRight">
+                            <div class="order_detail_qty show_all_mobile">
+                                <a style="text-decoration-line: underline;" onclick="showAllOrderLinesClick('{{$order->id}}')">Show All</></a>
+                            </div>
+
+                            @foreach($order->lines as $key => $line)
+                            <div id="{{$order->id}}_{{$line->id}}" lineid="{{$line->id}}" class="order_detail_line">
+                                <div class="order_detail_code">
+                                    <div class="individual_label">Code</div>
+                                    <div class="order_detail_line_field">{{$line->product_code}}</div>
+                                </div>
+                                <div class="order_detail_description">
+                                    <div class="individual_label">Description</div>
+                                    <div class="order_detail_line_field">{{$line->product_description}}</div>
+                                </div>
+                                <div class="order_detail_unit">
+                                    <div class="individual_label">Unit</div>
+                                    <div class="order_detail_line_field">{{$line->unit_description}}</div>
+                                </div>
+                                <div class="order_detail_qty">
+                                    <div class="individual_label">Ordered</div>
+                                    <div class="order_detail_line_field">{{$line->qty}}</div>
+                                </div>
+                                <div class="order_detail_qty">
+                                    <div class="individual_label">Available</div>
+                                    <select id="available_{{$order->id}}_{{$line->id}}" class="order_detail_line_field order_detail_qty_purchased" qty="{{$line->qty}}"></select>
+                                </div>
+                                <div class="order_detail_qty">
+                                    <div class="individual_label"></div>
+                                    <a class="hide_order_line_button" onclick="hideOrderLineClick('{{$order->id}}_{{$line->id}}')">Check</a>
+                                </div>
+                            </div>
+                            @endforeach
+                            <div class="all_done"><a style="text-decoration:underline;" onclick="allDone('{{$order->id}}')">Complete The Order!</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        <div class="no_pickup_orders" {{count($orders) > 0 ? 'hidden':''}}>
+                THERE ARE NOT PENDING ORDERS
+        </div>
+        <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+        <script src="/js/webflow.js" type="text/javascript"></script>
+        <script src="/js/pickupdashboard.js" type="text/javascript"></script>
+        <script src="/js/dropzone.js"></script>
+        <script src="/js/garcellLib.js"></script>
+
         <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
         <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
         @endsection    

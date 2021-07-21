@@ -25,5 +25,9 @@ class OrdersController extends Controller
         # code...
         return (new Orders())->EmailOrder($request);
     }
-    
+
+    public function ReceiveOrder(Request $request)
+    {
+        return (new Orders())->ReceiveOrder($request);
+    }
 }

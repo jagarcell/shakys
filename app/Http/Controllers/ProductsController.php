@@ -73,4 +73,21 @@ class ProductsController extends Controller
         # code...
         return (new Products())->UpdateProduct($request);
     }
+
+    public function GetSupplierPrice(Request $request)
+    {
+        return (new Products())->GetSupplierPrice($request);
+    }
+
+    public function GetProductUnits(Request $request)
+    {
+        # code...
+        return (new Products())->GetProductUnits($request);
+    }
+
+    public function SetProductUnits(Request $request)
+    {
+        # code...
+        return (new Products())->SetProductUnits($request);
+    }
 }

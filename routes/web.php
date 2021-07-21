@@ -41,6 +41,10 @@ Route::get('/error/{message}', function($message){
 
 require __DIR__.'/auth.php';
 
+Route::get('/vue', function(){
+    return view('vue');
+});
+
 /*********************************
  *           USERS               *
  ********************************/
@@ -119,7 +123,7 @@ Route::post('/createuser', 'UsersController@CreateUser');
   *                                     *
   **************************************/
 
-  Route::get('/listproducts', 'ProductsController@ListProducts');
+  Route::get('/listproducts', 'ProductsController@ListProducts')->middleware('checkusersstate');
 
   Route::post('/productimgupload', 'ProductsController@ProductImgUpload');
 
@@ -132,6 +136,12 @@ Route::post('/createuser', 'UsersController@CreateUser');
   Route::post('/updateproduct', 'ProductsController@UpdateProduct');
   
   Route::post('/markascounted', 'ProductsController@MarkAsCounted');
+  
+  Route::get('/getsupplierprice','ProductsController@GetSupplierPrice');
+
+  Route::get('/getproductunits', 'ProductsController@GetProductUnits');
+
+  Route::post('/setproductunits', 'ProductsController@SetProductUnits');
 
 /****************************************
  *                                      *
@@ -141,13 +151,17 @@ Route::post('/createuser', 'UsersController@CreateUser');
 
  Route::get('/pickupdashboard', 'PickupUserController@ShowDashboard');
 
+ Route::post('/completeorder', 'PickupUserController@CompleteOrder');
+
  /***************************************
   *                                     * 
   *          PENDING ORDERS             *
   *                                     *
   **************************************/
 
-  Route::get('/showpendingorderspanel','PendingOrdersController@ShowPendingOrdersPanel');
+  Route::get('/showpendingorderspanel','PendingOrdersController@ShowPendingOrdersPanel')->middleware('checkusersstate');
+
+  Route::get('/getpricesforsupplier','PendingOrdersController@GetPricesForSupplier');
 
 /****************************************
  *                                      *
@@ -171,6 +185,8 @@ Route::get('/searchfor', 'UserDashboardController@SearchFor');
 
  Route::post('/emailorder', 'OrdersController@EmailOrder');
 
+ Route::post('/receiveorder', 'OrdersController@ReceiveOrder');
+
  /***************************************
   *                                     *
   *      SUPPLIERS-PRODUCTS PIVOTS      *
@@ -181,3 +197,18 @@ Route::get('/searchfor', 'UserDashboardController@SearchFor');
 
   Route::get('/getsuppliersproductspivot', 'SuppliersProductsPivotsController@GetPivot');
  
+ /***************************************
+  *                                     *
+  *           MEASURE UNITS             *
+  *                                     *
+  **************************************/
+
+  Route::get('/measureunits','MeasureUnitsController@MeasureUnits');
+ 
+  Route::post('/createmeasureunit','MeasureUnitsController@CreateMeasureUnit');
+
+  Route::post('/removemeasureunit', 'MeasureUnitsController@RemoveMeasureUnit');
+
+  Route::get('/getmeasureunit','MeasureUnitsController@GetMeasureUnit');
+
+  Route::post('/updatemeasureunit', 'MeasureUnitsController@UpdateMeasureUnit');

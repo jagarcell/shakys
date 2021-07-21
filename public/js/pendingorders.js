@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    // Create an options HTML for all the product quantity selects
     var optionsHTML = ""
     for(var i = 1; i < 201; i++){
         optionsHTML += "<option value='" + i + "'>" + i + "</option>"
@@ -24,11 +25,13 @@ $(document).ready(function(){
         orderQtyDisplaySelect.options[orderQtyDisplaySelect.getAttribute("qty")].setAttribute("selected", "")
     })
 
-    // Obtains the Tab ID from the hidden input that holds it
+    // Obtains the last active Tab ID from the hidden input that holds it
+    // That value came from the backend through blade
     var tabId = $('#tab_id').val()
     // Gets the tab element
     var tab = document.getElementById(tabId)
-    // Opens the Tab element
+
+    // Opens the last active Tab element
     openTab(tab)
 })
 
@@ -63,6 +66,7 @@ function openTab(element){
     else{
         $('#all_products_add_to_order_button').hide()
     }
+    $('.pending_content').show()
 }
 
 function tabClick(element) {
@@ -78,7 +82,7 @@ function closeOrder(){
 function productClick(productId){
     $.get('/getproduct',
         {
-            id:productId,
+            id:productId.replace('pending_', ''),
             element_tag:productId,
         }, function(data, status){
             if(status == 'success'){
@@ -88,8 +92,20 @@ function productClick(productId){
                         var product = data.product
                         var orderTopMostHTML = document.getElementById('order_top_most').innerHTML
                         var orderTopId = document.getElementById('order_top_id')
-
                         orderTopId.innerHTML = orderTopMostHTML
+                        var measureUnitSelect = $(orderTopId).find('#measure_unit')[0]
+
+                        // Let's prepare the measure units select
+                        $.each(product.measure_units, function(index, measureUnit){
+                            var option = document.createElement("option")
+                            option.value = measureUnit.id
+                            option.text = measureUnit.unit_description
+                            if(product.default_measure_unit_id == measureUnit.id){
+                                option.setAttribute("selected", true)
+                            }
+                            measureUnitSelect.options.add(option)
+                        })                        
+
                         $(orderTopId).find('#product_order_image')[0].src = product.image_path
                         orderTopId.innerHTML = orderTopId.innerHTML.replace(/internal-description/g, product.internal_description)
                         orderTopId.innerHTML = orderTopId.innerHTML.replace(/product-id/g, product.id)
@@ -108,6 +124,14 @@ function productClick(productId){
 
 function orderClick(productId){
     var qty = $('#order_top_id').find('#qty').val()
+    var measureUnitSelect = $('#order_top_id').find('#measure_unit')[0]
+    var measureUnitId = measureUnitSelect.options[measureUnitSelect.selectedIndex].value
+
+    if(measureUnitId == -1){
+        alert("YOU MUST SELECT A UNIT!")
+        return
+    }
+
     if(qty > 0)
     {
         $.post('/markascounted',
@@ -115,13 +139,15 @@ function orderClick(productId){
             _token:$('meta[name="csrf-token"]').attr('content'),
             id:productId,
             qty_to_order:qty,
+            measure_unit_id:measureUnitId,
             element_tag:productId,
         }, function(data, status){
             if(status == 'success'){
                 switch (data.status) {
                     case 'ok':
                         var product = data.product
-                        var markAsCounted = document.getElementById(product.id)
+                        var markAsCounted = document.getElementById('pending_' + product.id)
+
                         markAsCounted.outerHTML = ""
                         var products = $('.product')
                         $.each(products, function(index, product){
@@ -157,20 +183,28 @@ function orderClick(productId){
     }
 }
 
-function supplierSelChange(supplierSel) {
-    var uiSection = $(garcellParentNodeByClassName(supplierSel, 'ui_section'))
+function supplierSelChange(uiSectionId) {
+    var uiSection = $('#' + uiSectionId)
+    supplierSel = uiSection.find('#product_supplier_select')[0]
     var supplier = supplierSel.options[supplierSel.options.selectedIndex]
+    var supplier_id = supplier.getAttribute("value")
+    var product_id = uiSection[0].getAttribute("productId")
+    var measure_unit_selected_index = uiSection.find('.order_unit_sel')[0].selectedIndex
+    var measure_unit_id = uiSection.find('.order_unit_sel')[0].options[measure_unit_selected_index].value
+ 
     supplierSel.style = ""
 
     // Check if the supplier is pickup or delivery
     var orderPickupGuySelect = uiSection.find('#order_pickup_guy_select')[0]
     var orderPickupSelect = uiSection.find('#order_pickup_select')[0]
+    var orderPriceField = uiSection.find('#order_price_field')
+
     if(supplier.getAttribute('pickup') == 'delivery'){
-        uiSection.find('#order_pickup_guy_wrap').hide()
+        orderPickupGuySelect.setAttribute("disabled", "")
         orderPickupSelect.selectedIndex = indexOfValue(orderPickupSelect, 'delivery')
     }
     else{
-        uiSection.find('#order_pickup_guy_wrap').show()
+        orderPickupGuySelect.removeAttribute("disabled")
         orderPickupSelect.selectedIndex = indexOfValue(orderPickupSelect, 'pickup')
     }
 
@@ -181,6 +215,36 @@ function supplierSelChange(supplierSel) {
     else{
         orderPickupGuySelect.selectedIndex = 0
     }
+
+    $.get('getsupplierprice',
+        {
+            supplier_id:supplier_id,
+            product_id:product_id,
+            measure_unit_id:measure_unit_id,
+            element_tag:uiSection[0].id,
+        }, function(data, status){
+            if(status == 'success'){
+                var element_tag = data.element_tag
+                var uiSection = document.getElementById(element_tag)
+                var orderPriceField = $(uiSection).find('.order_price_field')[0]
+                switch (data.status) {
+                    case 'ok':
+                        $(orderPriceField).val(data.supplier_price)
+                        break;
+
+                    case 'error':
+                        break
+
+                    case 'notfound':
+                        $(orderPriceField).val(0)
+                        break
+
+                    default:
+                        break;
+                }
+            }
+        }
+    )
 }
 
 function indexOfValue(select, value) {
@@ -196,10 +260,10 @@ function indexOfValue(select, value) {
 function orderPickupSelectChange(orderPickupGuySelect) {
     orderPickupGuySelect.style = ""
     if(orderPickupGuySelect.options[orderPickupGuySelect.options.selectedIndex].value == 'pickup'){
-        $(garcellParentNodeByClassName(orderPickupGuySelect, 'ui_section')).find('#order_pickup_guy_wrap').show()
+        $(garcellParentNodeByClassName(orderPickupGuySelect, 'ui_section')).find('#order_pickup_guy_select')[0].removeAttribute("disabled")
     }
     else{
-        $(garcellParentNodeByClassName(orderPickupGuySelect, 'ui_section')).find('#order_pickup_guy_wrap').hide()
+        $(garcellParentNodeByClassName(orderPickupGuySelect, 'ui_section')).find('#order_pickup_guy_select')[0].setAttribute("disabled", "")
     }
 }
 
@@ -220,6 +284,10 @@ function orderPickupGuySelectChange(orderPickupGuySelect){
     orderPickupGuySelect.style = ""
 }
 
+function orderUnitSelectChange(uiSectionId) {
+    supplierSelChange(uiSectionId)
+}
+
 function submitOrderButtonClick(order_id){
     var order = document.getElementById(order_id)
     var orderSupplierSelect = $(order).find('#order_supplier_select')[0]
@@ -227,7 +295,16 @@ function submitOrderButtonClick(order_id){
     var orderPickupUserSelect = $(order).find('#order_pickup_user_select')[0]
     var orderLines = document.getElementsByClassName('approval_order_line')
     var lines = []
+    var actionResultMessage = $('#' + order_id).find('#action_result_message')
 
+    reportResult(
+        {
+            frame:actionResultMessage,
+            alignTop:false,
+            message:"PROCESSING ORDER",
+            error:false,
+        }
+    )    
     $.each(orderLines, function(index, orderLine){
         var productQtySelect = $(orderLine).find('#product_qty_display_select')[0]
         var line = 
@@ -238,10 +315,12 @@ function submitOrderButtonClick(order_id){
         lines.push(line)
     })
     
+
+
     $.post('/submitorder',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
-            order_id:order_id,
+            order_id:order_id.replace('approval_', ''),
             supplier_id:orderSupplierSelect.options[orderSupplierSelect.selectedIndex].getAttribute('value'),
             order_type:orderTypeSelect.options[orderTypeSelect.selectedIndex].getAttribute('value'),
             pickup_user_id:orderPickupUserSelect.options[orderPickupUserSelect.selectedIndex].getAttribute('value'),
@@ -251,16 +330,58 @@ function submitOrderButtonClick(order_id){
         function(data, status){
             if(status == 'success'){
                 var elementTag = data.element_tag
+                var actionResultMessage = $('#' + elementTag).find('#action_result_message')
+
                 switch (data.status) {
                     case 'ok':
-                        var order = document.getElementById(elementTag)
-                        order.outerHTML = ""
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                alignTop:false,
+                                message:"THE ORDER WAS SENT TO " + data.order.email,
+                                error:false,
+                                param:elementTag,
+                            }, function(frame, elementTag){
+                                frame.hide()
+                                var order = document.getElementById(elementTag)
+                                order.outerHTML = ""
+                            }
+                        )
                         break
-                
                     case 'error':
-
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                alignTop:false,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
                         break
-    
+                    case 'emailnotsent':
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:"ORDER SUBMITTED BUT EMAIL NOT SENT",
+                                alignTop:false,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )   
+                        break 
+                    case 'noemail':
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:"THE ORDER WAS SUBMITTED BUT THERE IS NO EMAIL WHERE TO SEND IT",
+                                alignTop:false,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+                        break        
                     default:
                         break
                 }
@@ -270,14 +391,23 @@ function submitOrderButtonClick(order_id){
 }
 
 function resendOrderButtonClick(orderId){
+    var actionResultMessage = $('#action_result_message_' + orderId.replace('submitted_', ''))
+    reportResult(
+        {
+            frame:actionResultMessage,
+            message:"SENDING THE ORDER ...",
+            error:false,
+            alignTop:false,
+        }
+    )
     $.post('/emailorder',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
-            order_id:orderId,
-            element_tag:orderId,
+            order_id:orderId.replace('submitted_', ''),
+            element_tag:orderId.replace('submitted_', ''),
         }, function(data, status){
             if(status == 'success'){
-                var elementTag = data.element_tag;
+                var elementTag = data.element_tag
                 var actionResultMessage = $('#action_result_message_' + elementTag)
                 switch (data.status) {
                     case 'ok':
@@ -336,42 +466,125 @@ function resendOrderButtonClick(orderId){
     )
 }
 
-function addToOrderClick(addCheckClass) {
+function receiveOrderButtonClick(orderId) {
+    var actionResultMessage = $('#action_result_message_' + orderId.replace('submitted_', ''))
+    var submittedOrdersTab = document.getElementById('submitted_orders_tab')
+    var order = $(submittedOrdersTab).find("#" + orderId)
+    var order_lines = order.find('.submitted_order_line')
+    
+    var lines = []
+
+    /* Show a message for the oreder receiving process */
+    reportResult(
+        {
+            frame:actionResultMessage,
+            error:false,
+            message:"RECEIVING THE ORDER ...",
+            alignTop:false,
+        }
+    )
+    /* Prepare the order lines param array */    
+    $.each(order_lines, function(index, order_line){
+        var available_qty = $(order_line).find('.available_qty')[0].selectedIndex
+        var supplier_price = $(order_line).find('.submitted_supplier_price').val()
+        lines.push({id:order_line.id, available_qty:available_qty, supplier_price:supplier_price})
+    })
+
+    /* Request to receive the order */
+    $.post('/receiveorder',
+        {
+            _token:$('meta[name="csrf-token"]').attr('content'),
+            id:orderId.replace('submitted_', ''),
+            order_lines:lines,
+            element_tag:orderId,
+        }, function(data, status){
+            if(status == 'success'){
+                var actionResultMessage = $('#action_result_message_' + orderId)
+                var elementTag = data.element_tag
+                switch (data.status) {
+                    case 'ok':
+                        var submittedOrdersTab = document.getElementById('submitted_orders_tab')
+                        var order = $(submittedOrdersTab).find("#" + elementTag)[0]
+
+                        order.outerHTML = ""
+                        break
+ 
+                    case 'notfound':
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:"ORDER NOT FOUND",
+                                alignTop:false,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+                        break
+
+                    case 'error':
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                alignTop:false,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+                        break
+                
+                    default:
+                        break
+                }
+            }
+        }
+    )
+}
+
+function addToOrderClick(addCheckClass, prefixToReplace) {
     var checkedToOrder = $('.' + addCheckClass + ':checkbox:checked')
     $.each(checkedToOrder, function(index, toOrder){
         var uiSection = garcellParentNodeByClassName(toOrder, 'ui_section')
         var supplierSel = $(uiSection).find('#product_supplier_select')[0]
-        var productId = uiSection.id
+        var productId = uiSection.id.replace(prefixToReplace, '')
         var supplierId = supplierSel.options[supplierSel.selectedIndex].getAttribute("value")
         var orderQtySel = $(uiSection).find('#order_qty_sel')[0]
+        var orderUnitSelect = $(uiSection).find('.order_unit_sel')[0]
+        var measuretUnitId = orderUnitSelect.options[orderUnitSelect.selectedIndex].getAttribute("value")
+        var originalUnitId = orderUnitSelect.getAttribute("original_unit_id")
         var qty = orderQtySel.options[orderQtySel.selectedIndex].getAttribute("value")
         var orderPickupSelect = $(uiSection).find('#order_pickup_select')[0]
         var pickup = orderPickupSelect.options[orderPickupSelect.selectedIndex].getAttribute("value")
+        
         var orderPickupGuySelect = $(uiSection).find('#order_pickup_guy_select')[0]
         var orderPickupGuy = orderPickupGuySelect.options[orderPickupGuySelect.selectedIndex].getAttribute("value")
-        
+
         if(supplierId == -1){
             supplierSel.style.color = 'red'
             supplierSel.style.backgroundColor = 'cadetblue'
             supplierSel.style.fontStyle = 'italic'
             return
         }
-        if(orderPickupGuy == -1){
+
+        if(pickup == 'pickup' && orderPickupGuy == -1){
             orderPickupGuySelect.style.color = 'red'
             orderPickupGuySelect.style.backgroundColor = 'cadetblue'
             orderPickupGuySelect.style.fontStyle = 'italic'
             return
         }
-        
+
         $.post('/addtoorder',
             {
                 _token: $('meta[name="csrf-token"]').attr('content'),
                 supplier_id:supplierId,
                 pickup:pickup,
                 qty:qty,
+                original_unit_id:originalUnitId,
+                measure_unit_id:measuretUnitId,
                 pickup_guy_id:orderPickupGuy,
                 product_id:productId,
-                element_tag:productId,
+                element_tag:uiSection.id,
             }, function(data, status){
                 if(status == 'success'){
                     var elementTag = data.element_tag
@@ -398,4 +611,61 @@ function addToOrderClick(addCheckClass) {
             }
         )
     })
+}
+
+function orderSupplierSelectChange(supplierSelect, orderSectionId){
+    var orderSection = document.getElementById(orderSectionId)
+    var supplierId = supplierSelect.options[supplierSelect.selectedIndex].getAttribute("value") 
+    var prices = $(orderSection).find('.approval_order_price')
+    var productIdsArray = []
+    $.each(prices, function(index, price){
+        productIdsArray.push(price.getAttribute("productId"))
+    })
+    $.get('getpricesforsupplier',
+        {
+            supplier_id:supplierId,
+            product_ids:productIdsArray,
+            element_tag:orderSectionId,
+        }, function(data, status){
+            if(status == 'success'){
+                var element_tag = data.element_tag
+                var actionResultMessage = $('#' + element_tag).find('#action_result_message')
+                switch (data.status) {
+                    case 'ok':
+                        var productsPrices = data.productsprices
+                        var orderSection = document.getElementById(orderSectionId)
+                        var prices = $(orderSection).find('.approval_order_price')
+ 
+                        $.each(prices, function(index, price){
+                            var productId = price.getAttribute("productId")
+                            var productPrice = productsPrices[productId]
+
+                            if(productPrice !== undefined){
+                                price.setAttribute("value", productPrice)
+                            }
+                            else{
+                                price.setAttribute("value", 0)
+                            }
+                        })
+                        break
+
+                    case 'error':
+                        var message = getMessageFromErrorInfo(data.message)
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:message,
+                                alignTop:false,
+                            }, function(frame, param){
+                                frame.hide()
+                            }
+                        )
+                        break
+                    
+                    default:
+                        break
+                }
+            }
+        }
+    )
 }
