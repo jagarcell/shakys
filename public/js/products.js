@@ -530,6 +530,8 @@ function editButtonClick(productId) {
                         var section = document.getElementById(product.id)
                         var addSectionHtml = document.getElementById('add_section_html')
 
+                        measuresDialogCreate(product.id, false)
+
                         section.innerHTML = addSectionHtml.innerHTML
                         section.innerHTML = section.innerHTML.replace(/product-image/g, 'product_image_' + product.id)
                         section.innerHTML = section.innerHTML.replace(/product-id/g, product.id)
