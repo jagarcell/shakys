@@ -51,8 +51,11 @@
                 <form id="user_form" class="user_form">
                     @csrf
                     <div class="user_data_1">
+                        <input id="add_user_username" type="text" class="user_username w-input" maxlength="256" name="username" data-name="name" placeholder="Username" :value="old('username')" required autofocus />
+                    </div>
+                    <div class="user_data_1">
                         <input id="add_user_name" type="text" class="user_name w-input" maxlength="256" name="name" data-name="name" placeholder="Name" id="name" :value="old('name')" required autofocus />
-                        <input id="add_user_email" type="email" class="user_email w-input" maxlength="256" name="email" data-name="email" placeholder="Email" id="email" :value="old('email')" required />
+                        <input id="add_user_email" type="email" class="user_email w-input" maxlength="256" name="email" data-name="email" placeholder="Email" id="email" :value="old('email')"/>
                         <select id="add_user_type" class="user_type w-input" name="user_type" id="user_type" :value="old('user_type'>">
                         @auth
                         @if(Auth::user()->user_type == 'admin')
@@ -117,7 +120,7 @@
                             </div>
                             <div class="user_email">
                                 <div class="field_label">Email</div>
-                                <input id="edited_email" type="email" class="edited_email w-input" maxlength="256" name="email" placeholder="Email" required>
+                                <input id="edited_email" type="email" class="edited_email w-input" maxlength="256" name="email" placeholder="Email">
                             </div>
                             <div class="user_type">
                                 <div class="edited_user_type field_label">User Type</div>
@@ -167,23 +170,35 @@
                 <div id="user_edit_frame">    
                     <div id="user_edit_action_result" class="user_edit_action_result" hidden>
                     </div>
-                    <div class="user_section horizontal">
-                        <div class="user_edit_section">
-                            <div class="user_field_header">USER NAME</div>
-                            <div id="user_name" class="user_field_content">user_name</div>
+                    <div class="user_sections_wraper">
+                        <div class="user_data_wraper">
+                            <div class="user_section horizontal">
+                                <div class="user_edit_section">
+                                    <div class="user_field_header">USERNAME</div>
+                                    <div id="user_username" class="user_field_content shadowRight">user_username</div>
+                                </div>
+                                <div class="user_edit_section">
+                                    <div class="user_field_header">NAME</div>
+                                    <div id="user_name" class="user_field_content shadowRight">user_name</div>
+                                </div>
+                            </div>
+                            <div class="user_section horizontal">
+                                <div class="user_edit_section">
+                                    <div class="user_field_header">EMAIL</div>
+                                    <div id="user_email" class="user_field_content shadowRight">user_email</div>
+                                </div>
+                                    <div class="user_edit_section two">
+                                    <div class="user_field_header">USER TYPE</div>
+                                    <div id="user_type" class="user_field_content shadowRight">user_type</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="user_edit_section">
-                            <div class="user_field_header">EMAIL</div>
-                            <div id="user_email" class="user_field_content">user_email</div>
-                        </div>
-                            <div class="user_edit_section two">
-                            <div class="user_field_header">TYPE</div>
-                            <div id="user_type" class="user_field_content">user_type</div>
-                        </div>
-                        <div class="user_edit_section center" id="edit_buttons">
-                            <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('user_id')">
-                            <input type="button" id="delete_user" class="add_user_button delete_button box_shadow edit delete w-button" value="DELETE" onclick="deleteUser('user_id')">
-                            <input type="button" id="new_user_password" class="add_user_button discard_button box_shadow edit password w-button" value="PASSWD" onclick="newPassword('user_id')">
+                        <div class="user_section horizontal user_buttons_wraper">
+                            <div class="user_edit_section center" id="edit_buttons">
+                                <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('user_id')">
+                                <input type="button" id="delete_user" class="add_user_button delete_button box_shadow edit delete w-button" value="DELETE" onclick="deleteUser('user_id')">
+                                <input type="button" id="new_user_password" class="add_user_button discard_button box_shadow edit password w-button" value="PASSWD" onclick="newPassword('user_id')">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -198,26 +213,38 @@
             @foreach($users as $key => $user)
             <div id="{{$user->id}}" class="user_div">
                 <div id="user_edit_wrap">
-                    <div id="user_edit_frame">    
+                    <div id="user_edit_frame">
                         <div id="user_edit_action_result" class="user_edit_action_result" hidden>
                         </div>
-                        <div class="user_section horizontal">
-                            <div class="user_edit_section">
-                                <div class="user_field_header">USER NAME</div>
-                                <div class="user_field_content shadowRight">{{$user->name}}</div>
+                        <div class="user_sections_wraper">
+                            <div class="user_data_wraper">
+                                <div class="user_section horizontal">
+                                    <div class="user_edit_section">
+                                        <div class="user_field_header">USERNAME</div>
+                                        <div class="user_field_content shadowRight">{{$user->username}}</div>
+                                    </div>
+                                    <div class="user_edit_section">
+                                        <div class="user_field_header">NAME</div>
+                                        <div class="user_field_content shadowRight">{{$user->name}}</div>
+                                    </div>
+                                </div>
+                                <div class="user_section horizontal">
+                                    <div class="user_edit_section">
+                                        <div class="user_field_header">EMAIL</div>
+                                        <div class="user_field_content shadowRight">{{$user->email}}</div>
+                                    </div>
+                                    <div class="user_edit_section two">
+                                        <div class="user_field_header">USER TYPE</div>
+                                        <div class="user_field_content shadowRight">{{$user->user_type}}</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="user_edit_section">
-                                <div class="user_field_header">EMAIL</div>
-                                <div class="user_field_content shadowRight">{{$user->email}}</div>
-                            </div>
-                            <div class="user_edit_section two">
-                                <div class="user_field_header">TYPE</div>
-                                <div class="user_field_content shadowRight">{{$user->user_type}}</div>
-                            </div>
-                            <div class="user_edit_section center" id="edit_buttons">
-                                <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('{{$user->id}}')">
-                                <input type="button" id="delete_user" class="add_user_button delete_button box_shadow edit delete w-button" value="DELETE" onclick="deleteUser('{{$user->id}}')">
-                                <input type="button" id="new_user_password" class="add_user_button discard_button box_shadow edit password w-button" value="PASSWD" onclick="newPassword('{{$user->id}}')">
+                            <div class="user_section horizontal user_buttons_wraper">
+                                <div class="user_edit_section center" id="edit_buttons">
+                                    <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('{{$user->id}}')">
+                                    <input type="button" id="delete_user" class="add_user_button delete_button box_shadow edit delete w-button" value="DELETE" onclick="deleteUser('{{$user->id}}')">
+                                    <input type="button" id="new_user_password" class="add_user_button discard_button box_shadow edit password w-button" value="PASSWD" onclick="newPassword('{{$user->id}}')">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -236,23 +263,33 @@
                     <div id="user_edit_frame">
                         <div id="user_edit_action_result" class="user_edit_action_result" hidden>
                         </div>
-                        <div class="user_section horizontal">
-                            <div class="user_edit_section">
-                                <div class="user_field_header box_shadow">USER NAME</div>
-                                <div class="user_field_conten shadowRightt">user-name</div>
-                            </div>
-                            <div class="user_edit_section">
-                                <div class="user_field_header box_shadow">EMAIL</div>
-                                <div class="user_field_content shadowRight">user-email</div>
-                            </div>
-                            <div class="user_edit_section two">
-                                <div class="user_field_header box_shadow">TYPE</div>
-                                <div class="user_field_content shadowRight">user-type</div>
-                            </div>
-                            <div class="user_edit_section center" id="edit_buttons">
-                                <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('user-id')">
-                                <input type="button" id="delete_user" class="add_user_button delete_button box_shadow edit delete w-button" value="DELETE" onclick="deleteUser('user-id')">
-                                <input type="button" id="new_user_password" class="add_user_button discard_button box_shadow edit password w-button" value="PASSWD" onclick="newPassword('user-id')">
+                        <div class="user_sections_wraper">
+                            <div class="user_data_wraper">
+                                <div class="user_section horizontal">
+                                    <div class="user_edit_section">
+                                        <div class="user_field_header">USERNAME</div>
+                                        <div class="user_field_content shadowRight">{{$user->username}}</div>
+                                    </div>
+                                    <div class="user_edit_section">
+                                        <div class="user_field_header">NAME</div>
+                                        <div class="user_field_content shadowRight">{{$user->name}}</div>
+                                    </div>
+                                </div>
+                                <div class="user_section horizontal">
+                                    <div class="user_edit_section">
+                                        <div class="user_field_header">EMAIL</div>
+                                        <div class="user_field_content shadowRight">user-email</div>
+                                    </div>
+                                    <div class="user_edit_section two">
+                                        <div class="user_field_header">USER TYPE</div>
+                                        <div class="user_field_content shadowRight">user-type</div>
+                                    </div>
+                                    <div class="user_edit_section center" id="edit_buttons">
+                                        <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('user-id')">
+                                        <input type="button" id="delete_user" class="add_user_button delete_button box_shadow edit delete w-button" value="DELETE" onclick="deleteUser('user-id')">
+                                        <input type="button" id="new_user_password" class="add_user_button discard_button box_shadow edit password w-button" value="PASSWD" onclick="newPassword('user-id')">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -100,17 +100,11 @@ class Users extends Model
         # code...
         $UserId = $request['user_id'];
         $Name = $request['name'];
-        $Email = $request['email'];
+        $Email = $request['email'] !== null ? $request['email'] :'';
         $UserType = $request['user_type'];
         $ElementTag = $request['element_tag'];
 
         try {
-            // CHECK IF THE USER HASN'T BEEN DELETED
-            $Users = $this->where('id', $UserId)->get();
-            if(count($Users) == 0){
-                return ['status' => 'notfound', 'element_tag' => $ElementTag];
-            }
-
             // IF THE USER TYPE TO BE UPDATED IS 'user' WE CHECK
             // THAT WE HAVE AT LEAST ONE 'admin' USER AND THAN THAT
             // 'admin' USER IS NOT THE SAME BEING UPDATED HERE AS 'user'
@@ -128,22 +122,17 @@ class Users extends Model
                 }
             }
 
-            // SEARCH IF THERE IS ANY USER WITH THIS EMAIL 
-            $Users = $this->where('email', $Email)->get();
-            if(count($Users) > 0){
-                $User = $Users[0];
-                // IF THE USER WITH THIS EMAIL IS THE SAME THAT IS BEING UPDATED ...
-                if($User->id != $UserId){
-                    // ... THEN THERE IS NOT EMAIL REUSE
-                    return['status' => 'emailtaken', 'element_tag' => $ElementTag];
-                }
-            }
-
             // UPDATE THE USER DATA
             $this->where('id', $UserId)->update(['name' => $Name, 'email' => $Email, 'user_type' => $UserType]);
 
+            // CHECK IF THE USER HASN'T BEEN DELETED
+            $Users = $this->where('id', $UserId)->get();
+            if(count($Users) == 0){
+                return ['status' => 'notfound', 'element_tag' => $ElementTag];
+            }
+
             // RETURN status ok AND USER DATA
-            $User = ['id' => $UserId, 'name' => $Name, 'email' => $Email, 'user_type' => $UserType];
+            $User = $Users[0];
             return ['status' => 'ok', 'user' => $User, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             // EXCEPTION THROWN RETURN status error;
@@ -270,7 +259,8 @@ class Users extends Model
     public function CreateUser($request)
     {
         # code...
-        $Email = $request['email'];
+        $UserName = $request['user_name'];
+        $Email = $request['email'] !== null ? $request['email'] : '';
         $Name = $request['name'];
         $UserType = $request['user_type'];
         $Password = $request['password'];
@@ -279,19 +269,20 @@ class Users extends Model
 
         try {
             //code...
-            $Users = $this->where('email', $Email)->get();
+            $Users = $this->where('username', $UserName)->get();
             if(count($Users) > 0){
-                return ['status' => 'emailtaken', 'element_tag' => $ElementTag];
+                return ['status' => 'usernametaken', 'element_tag' => $ElementTag];
             }
             if($Password != $ConfirmPassword){
                 return ['status' => 'passwordmissmatch', 'element_tag' => $ElementTag, 'p' => $Password, 'cp' => $ConfirmPassword];
             }
+            $this->username = $UserName;
             $this->email = $Email;
             $this->name = $Name;
             $this->user_type = $UserType;
             $this->password = Hash::make($Password);
             $this->save();
-            $User = ['id' => $this->id, 'email' => $this->email, 'name' => $this->name, 'user_type' => $this->user_type];
+            $User = ['id' => $this->id, 'username' => $this->username, 'email' => $this->email, 'name' => $this->name, 'user_type' => $this->user_type];
             return ['status' => 'ok', 'user' => $User, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             //throw $th;

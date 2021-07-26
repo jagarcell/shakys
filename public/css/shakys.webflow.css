@@ -23,6 +23,19 @@ select{
   font-family: inherit;
 }
 
+.user_sections_wraper{
+  display: flex;
+  width: 100%;
+}
+
+.user_data_wraper{
+  width: 75%;
+}
+
+.user_buttons_wraper{
+  width: 25%;
+}
+
 .no_pickup_orders{
   color: red;
   text-align: center;
@@ -1704,7 +1717,7 @@ body {
 
 .user_edit_section {
   padding-left: 10px;
-  width: 28%;
+  width: 50%;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   -ms-grid-row-align: center;
@@ -1729,7 +1742,7 @@ body {
   display: -ms-flexbox;
   display: flex;
   width: 115px;
-  height: 100px;
+  height: 100%;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
@@ -1761,6 +1774,7 @@ body {
   border-radius: 5px;
   margin-top: 10px;
   color: wheat;
+  min-height: 35px;
 }
 
 
@@ -2551,6 +2565,18 @@ body {
 }
 
 @media screen and (max-width: 767px) {
+  .user_buttons_wraper{
+    width: 100%;
+  }
+
+  .user_data_wraper{
+    width: 100%;
+  }
+
+  .user_sections_wraper{
+    display: block;
+  }
+
   .app-menu-option{
     text-align: left;
   }
@@ -3053,11 +3079,11 @@ body {
   .option_text {
     font-size: 18px;
   }
-
+/*
   .user_section {
     height: 375px;
   }
-
+*/
   .user_section.horizontal {
     padding-bottom: 0px;
     -webkit-box-orient: vertical;
