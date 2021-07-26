@@ -210,7 +210,7 @@ function saveUser(element) {
                                 frame:reportFrame,
                                 message:"THE USER WAS SUCCESSFULLY UPDATED!",
                                 error:false,
-                                param:user
+                                param:user,
                             },
                             function(frame, param){
                                 var user = param
@@ -219,6 +219,7 @@ function saveUser(element) {
                                 var user_section = $('#' + user.id)
                 
                                 user_section[0].innerHTML = user_data[0].innerHTML
+                                user_section.find('#user_username')[0].innerHTML = user.username
                                 user_section.find('#user_name')[0].innerHTML = user.name
                                 user_section.find('#user_email')[0].innerHTML = user.email
                                 user_section.find('#user_type')[0].innerHTML = user.user_type
@@ -322,6 +323,7 @@ function discard(element) {
                         var user = data.user
         
                         user_section[0].innerHTML = user_data[0].innerHTML
+                        user_section.find('#user_username')[0].innerHTML = user.username
                         user_section.find('#user_name')[0].innerHTML = user.name
                         user_section.find('#user_email')[0].innerHTML = user.email
                         user_section.find('#user_type')[0].innerHTML = user.user_type
@@ -549,6 +551,7 @@ function userCreateClick(userCreateButton) {
     var user_form = $('#user_form')
 
     if((user_form[0]).checkValidity()){
+        var userName = user_form.find('#add_user_username').val()
         var name = user_form.find('#add_user_name').val()
         var email = user_form.find('#add_user_email').val()
         var type = user_form.find('#add_user_type').val()
@@ -558,6 +561,7 @@ function userCreateClick(userCreateButton) {
         $.post('/createuser',
             {
                 _token: $('meta[name="csrf-token"]').attr('content'),
+                user_name:userName,
                 name:name,
                 email:email,
                 user_type:type,
@@ -579,6 +583,7 @@ function userCreateClick(userCreateButton) {
                             function(frame, user){
                                 frame.hide()
                                 $('#user_add_form').hide()
+                                $('#add_user_username').val('')
                                 $('#add_user_email').val('')
                                 $('#add_user_name').val('')
                                 $('#add_user_password').val('')
