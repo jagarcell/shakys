@@ -27,6 +27,7 @@
     <body class="antialiased bodyClass">
         @section('page_title', 'SUPPLIERS')
         @section('content')
+        <!-- HTML TO SHOW THE SUPPLIERS ADD FORM --> 
         <div id="add_section_div">
             <div id="supplier_add_icon" class="supplier_add_icon">
                 <input type="button" class="add_input" value="+" onclick="supplierAddClick()">
@@ -43,7 +44,8 @@
                         <div class="supplier_data_form_block w-form">
                             <form id="supplier_data_entry_form_add" class="supplier_data_form">
                                 @csrf
-                                <input id="supplier_email_entry" type="email" class="supplier_entry w-input" maxlength="256" name="email" data-name="Email" placeholder="Email" id="supplier_email" required="">
+                                <input id="supplier_code_entry" type="text" class="supplier_entry w-input" maxlength="256" name="code" data-name="Code" placeholder="Code" id="supplier_code" required="">
+                                <input id="supplier_email_entry" type="email" class="supplier_entry w-input" maxlength="256" name="email" data-name="Email" placeholder="Email" id="supplier_email">
                                 <div id="supplier_email_taken" class="supplier_email_taken" style="display:none;">This email has been taken!</div>
                                 <input id="supplier_name_entry" type="text" class="supplier_entry w-input" maxlength="256" name="name" data-name="Name" placeholder="Name" id="supplier_name" required="">
                                 <input id="supplier_address_entry" type="text" class="supplier_entry w-input" maxlength="256" name="supplier_address" data-name="supplier_address" placeholder="Address" id="supplier_address">
@@ -115,6 +117,7 @@
             </div>
         </div>
 
+        <!-- THIS IS THE LIST OF REGISTERED SUPPLIERS -->
         <div id="edit_sections_div">
             @if(isset($suppliers) && count($suppliers) > 0)
             @foreach($suppliers as $key => $supplier)
@@ -126,18 +129,30 @@
                     </div>
                     <div id="supplier_data_edit_frame" class="supplier_data_entry">
                         <div class="supplier_data_edit">
-                        <div class="field_wrap">
-                            <div class="field_label">Email</div>
-                            <div id="supplier_email" class="supplier_data_field box_shadow">{{$supplier->email}}</div>
+                            <div class="field_wrap">
+                                <div class="field_label">Code</div>
+                                <div id="supplier_email" class="supplier_data_field box_shadow">{{$supplier->code}}</div>
                             </div>
-                            <div class="field_label">Name</div>
-                            <div id="supplier_name" class="supplier_data_field box_shadow">{{$supplier->name}}</div>
-                            <div class="field_label">Address</div>
-                            <div id="supplier_address" class="supplier_data_field box_shadow">{{$supplier->address}}</div>
-                            <div class="field_label">Phone</div>
-                            <div id="supplier_phone" class="supplier_data_field box_shadow">{{$supplier->phone}}</div>
-                            <div class="field_label">Shipping</div>
-                           <div id="supplier_pickup" class="supplier_data_field box_shadow">{{$supplier->pickup}}</div>
+                            <div class="field_wrap">
+                                <div class="field_label">Email</div>
+                                <div id="supplier_email" class="supplier_data_field box_shadow">{{$supplier->email}}</div>
+                            </div>
+                            <div class="field_wrap">
+                                <div class="field_label">Name</div>
+                                <div id="supplier_name" class="supplier_data_field box_shadow">{{$supplier->name}}</div>
+                            </div>
+                            <div class="field_wrap">
+                                <div class="field_label">Address</div>
+                                <div id="supplier_address" class="supplier_data_field box_shadow">{{$supplier->address}}</div>
+                            </div>
+                            <div class="field_wrap">
+                                <div class="field_label">Phone</div>
+                                <div id="supplier_phone" class="supplier_data_field box_shadow">{{$supplier->phone}}</div>
+                            </div>
+                            <div class="field_wrap">
+                                <div class="field_label">Shipping</div>
+                                <div id="supplier_pickup" class="supplier_data_field box_shadow">{{$supplier->pickup}}</div>
+                            </div>
                             <div class="supplier_data_entry_buttons">
                                 <a class="add_user_button edit_button box_shadow edit w-button" onclick="editClick(this)">Edit</a>
                                 <a class="add_user_button delete_button box_shadow delete edit w-button" onclick="deleteClick(this)">Delete</a>
@@ -162,6 +177,10 @@
                     </div>
                     <div id="supplier_data_edit_frame" class="supplier_data_entry">
                         <div class="supplier_data_edit">
+                            <div class="field_wrap">
+                                <div class="field_label">Code</div>
+                                <div id="supplier_code" class="supplier_data_field box_shadow">supplier-code</div>
+                            </div>
                             <div class="field_wrap">
                                 <div class="field_label">Email</div>
                                 <div id="supplier_email" class="supplier_data_field box_shadow">supplier-email</div>
