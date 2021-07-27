@@ -58,6 +58,7 @@ function newSupplier(newSupplierButton) {
 
     if(supplier_data_entry_form.checkValidity()){
         supplier_data_entry_form = $(supplier_data_entry_form)
+        var code = supplier_data_entry_form.find('#supplier_code_entry').val()
         var email = supplier_data_entry_form.find('#supplier_email_entry').val()
         var name = supplier_data_entry_form.find('#supplier_name_entry').val()
         var address = supplier_data_entry_form.find('#supplier_address_entry').val()
@@ -68,6 +69,7 @@ function newSupplier(newSupplierButton) {
         $.post('/addsupplier', 
             {
                 _token: $('meta[name="csrf-token"]').attr('content'),
+                code:code,
                 email:email,
                 name:name,
                 address:address,
@@ -97,6 +99,7 @@ function newSupplier(newSupplierButton) {
                                     $('#supplier_add_section').hide()
                                     $('#supplier_add_icon').show()
                                     supplier_data_entry_form = $('#' + element_tag)
+                                    supplier_data_entry_form.find('#supplier_code_entry').val('')
                                     supplier_data_entry_form.find('#supplier_email_entry').val('')
                                     supplier_data_entry_form.find('#supplier_name_entry').val('')
                                     supplier_data_entry_form.find('#supplier_address_entry').val('')
@@ -112,6 +115,7 @@ function newSupplier(newSupplierButton) {
             
                                     var editHTML = supplier_edit_section.innerHTML
                                     editHTML = editHTML.replace(/supplier-id/g, supplier.id)
+                                    editHTML = editHTML.replace(/supplier-code/g, supplier.code)
                                     editHTML = editHTML.replace(/supplier-image-path/g, supplier.image_path)
                                     editHTML = editHTML.replace(/supplier-email/g, supplier.email)
                                     editHTML = editHTML.replace(/supplier-name/g, supplier.name)
@@ -439,6 +443,7 @@ function acceptChanges(acceptChangesButton) {
                                 innerHTML = supplier_edit_section.innerHTML
             
                                 innerHTML = innerHTML.replace(/supplier-image-path/g, supplier.image_path)
+                                innerHTML = innerHTML.replace(/supplier-code/g, supplier.code)
                                 innerHTML = innerHTML.replace(/supplier-email/g, supplier.email)
                                 innerHTML = innerHTML.replace(/supplier-name/g, supplier.name)
                                 innerHTML = innerHTML.replace(/supplier-address/g, supplier.address)
@@ -538,6 +543,7 @@ function discardChanges(discardChangesButton) {
                         var innerHTML = supplier_edit_section.innerHTML
         
                         innerHTML = innerHTML.replace(/supplier-image-path/g, supplier.image_path)
+                        innerHTML = innerHTML.replace(/supplier-code/g, supplier.code)
                         innerHTML = innerHTML.replace(/supplier-email/g, supplier.email)
                         innerHTML = innerHTML.replace(/supplier-name/g, supplier.name)
                         innerHTML = innerHTML.replace(/supplier-address/g, supplier.address)

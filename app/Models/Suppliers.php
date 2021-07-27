@@ -40,6 +40,7 @@ class Suppliers extends Model
     public function AddSupplier($request)
     {
         # code...
+        $Code = $request['code'];
         $Name = $request['name'];
         $Email = $request['email'];
         $Address = $request['address'];
@@ -49,14 +50,15 @@ class Suppliers extends Model
         $ElementTag = $request['element_tag'];
         try {
             //code...
-            $Suppliers = $this->where('email', $Email)->get();
+            $Suppliers = $this->where('code', $Code)->get();
 
             if(count($Suppliers) > 0){
-                return ['status' => 'emailtaken', 'element_tag' => $ElementTag];
+                return ['status' => 'codetaken', 'element_tag' => $ElementTag];
             }
-    
+
+            $this->code = $Code;
             $this->name = $Name;
-            $this->email = $Email;
+            $this->email = $Email !== null ? $Email: '';
             $this->address = $Address;
             $this->phone = $Phone;
             $this->pickup = $Pickup;
@@ -69,6 +71,7 @@ class Suppliers extends Model
 
             $Supplier = [
                 'id' => $this->id, 
+                'code' => $this->code,
                 'name' => $this->name, 
                 'email' => $this->email, 
                 'address' => $this->address,
@@ -112,6 +115,7 @@ class Suppliers extends Model
             else{
                 $Supplier->image_name = $Supplier->image_path;
             }
+
             return ['status' => 'ok', 'supplier' => $Supplier, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             //throw $th;
@@ -166,7 +170,7 @@ class Suppliers extends Model
         # code...
         $Id = $request['id'];
         $Name = $request['name'];
-        $Email = $request['email'];
+        $Email = $request['email'] !== null ? $request['email'] : '';
         $Address = $request['address'];
         $Phone = $request['phone'];
         $Pickup = $request['pickup'];

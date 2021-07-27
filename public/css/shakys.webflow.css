@@ -2011,6 +2011,7 @@ body {
   border-radius: 5px;
   padding-left: 20px;
   margin-bottom: 10px;
+  min-height: 35px;
 }
 
 .products_body {
