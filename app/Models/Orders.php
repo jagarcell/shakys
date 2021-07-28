@@ -327,6 +327,7 @@ class Orders extends Model
         try {
             // Set the parameters
             $OrderId = $request['id'];
+            $PreviousURL = $request['previousURL'];
             $ElementTag = $request['element_tag'];
 
             // Find the order
@@ -401,6 +402,7 @@ class Orders extends Model
                     $Order->instructions4 = "North Bergen, NJ, 074407";
                     $Order->instructions5 = "Phone: +1 201-520-9351";
                 }
+                $Order->previousURL = $PreviousURL;
                 $order = $Order;
                 return View('orderpreview', compact('Order'));                
             }

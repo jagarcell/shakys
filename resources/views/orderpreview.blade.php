@@ -9,7 +9,7 @@
         <div style="display:grid;">
             <a href="/exporttopdf?id={{$Order->id}}">Export To PDF</a>
             <br>
-            <a href="/showpendingorderspanel?tab_id=tab_5">Back To Orders</a>
+            <a href="/{{$Order->previousURL}}">Back To Orders</a>
         </div>
     </div>
     @if(isset($Order->instructions1))
