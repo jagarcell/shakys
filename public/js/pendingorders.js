@@ -440,8 +440,14 @@ function resendOrderButtonClick(orderId){
                             {
                                 frame:actionResultMessage,
                                 message:"THERE IS NO EMAIL REGISTERED",
-                            }, function(frame, parama){
-                                frame.hide()
+                                alignTop:false,
+                                timeout:1,
+                            }, function(frame, param){
+                                console.log(elementTag)
+                                frame[0].innerHTML += 
+                                    "<div style='color:blue; text-decoration:underline;'><a href='/orderpreview?id=" + elementTag + "'>View The Order</a></div>";
+                                console.log(frame[0].innerHTML)
+        
                             }
                         )
                         break        
@@ -451,7 +457,7 @@ function resendOrderButtonClick(orderId){
                             {
                                 frame:actionResultMessage,
                                 message:message,
-                                alignTop:false
+                                alignTop:true,
                             }, function(frame, param){
                                 frame.hide()
                             }

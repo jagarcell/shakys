@@ -14,6 +14,7 @@ use App\Models\Users;
 use App\Mail\OrderEmail;
 use App\Models\SuppliersProductsPivots;
 use App\Models\ProductUnitsPivots;
+use PDF;
 
 class Orders extends Model
 {
@@ -314,6 +315,206 @@ class Orders extends Model
         }
         return ['status' => 'ok', 'order' => $Order, 'element_tag' => $ElementTag];
      }
+
+     /**
+      * 
+      * @param Request ['id]
+      *
+      * @return View
+      */
+     public function OrderPreview($request)
+     {
+        try {
+            // Set the parameters
+            $OrderId = $request['id'];
+            $ElementTag = $request['element_tag'];
+
+            // Find the order
+            $Orders = $this->where('id', $OrderId)->get();
+
+            if(count($Orders) > 0){
+                $Order = $Orders[0];
+                $OrderLines = (new OrderLines())->where('order_id', $Order->id)->get();
+                foreach($OrderLines as $Key => $OrderLine){
+                    $Products = (new Products())->where('id', $OrderLine->product_id)->get();
+                    $OrderLine->product_code = "";
+                    $OrderLine->product_description = "";
+                    if(count($Products) > 0){
+                        $Product = $Products[0];
+
+                        $ProductUnitsPivots = (new ProductUnitsPivots())
+                        ->where('product_id', $OrderLine->product_id)
+                        ->where('measure_unit_id', $OrderLine->measure_unit_id)->get();
+
+                        if(count($ProductUnitsPivots) > 0){
+                            $ProductUnitsPivot = $ProductUnitsPivots[0];
+
+                            $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                            ->where('supplier_id', $Order->supplier_id)
+                            ->where('product_units_pivot_id', $ProductUnitsPivot->id)->get();
+
+                            $OrderLine->product_code = $Product->internal_code;
+                            $OrderLine->product_description = $Product->internal_description;
+
+                            if(count($SuppliersProductsPivots) > 0){
+                                $SuppliersProductsPivot = $SuppliersProductsPivots[0];
+                                if(strlen($SuppliersProductsPivot->supplier_code) > 0
+                                    || strlen($SuppliersProductsPivot->supplier_description) > 0){
+                                    $OrderLine->product_code = $SuppliersProductsPivot->supplier_code;
+                                    $OrderLine->product_description = $SuppliersProductsPivot->supplier_description;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                $Order->lines = $OrderLines;
+
+                $Order->supplier_name = "";
+                $Order->email = "";
+ 
+                $Suppliers =  (new Suppliers())->where('id', $Order->supplier_id)->get();
+                if(count($Suppliers) > 0){
+                    $Order->supplier_name = $Suppliers[0]->name;
+                    $Order->email = $Suppliers[0]->email;
+                    $Order->supplier_address = $Suppliers[0]->address;
+                }
+                
+                $Order->pickup_user_name = "";
+                $PickupUsers = (new Users())->where('id', $Order->pickup_guy_id)->get();
+                if($Order->pickup == 'pickup'){
+                    if(count($PickupUsers) > 0){
+                        $PickupUser = $PickupUsers[0];
+                        $Order->pickup_user_name = $PickupUser->name;
+                        $Order->email = $PickupUser->email;
+                    }
+                    $Subject = "Order for pickup";
+                    $Order->instructions1 = "Please pickup this order from:";
+                    $Order->instructions2 = $Order->supplier_name;
+                    $Order->instructions3 = $Order->supplier_address;
+                }
+                else{
+                    $Subject = "Shaky's Purchase Order";
+                    $Order->instructions1 = "Please deliver this order to:";
+                    $Order->instructions2 = "Shaky's Juice Bar & Cafe";
+                    $Order->instructions3 = "6235 Kennedy Blvd, Local #1";
+                    $Order->instructions4 = "North Bergen, NJ, 074407";
+                    $Order->instructions5 = "Phone: +1 201-520-9351";
+                }
+                $order = $Order;
+                return View('orderpreview', compact('Order'));                
+            }
+            else{
+                return ['status' => 'notfound', 'element_tag' => $ElementTag];
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag, 'th' => $th];
+        }
+     }
+
+     /**
+      * 
+      * @param Request ['id']
+      *
+      * @return View
+      *
+      */
+      public function ExportToPdf($request)
+      {
+          # code...
+          try {
+            // Set the parameters
+            $OrderId = $request['id'];
+            $ElementTag = $request['element_tag'];
+
+            // Find the order
+            $Orders = $this->where('id', $OrderId)->get();
+
+            if(count($Orders) > 0){
+                $Order = $Orders[0];
+                $OrderLines = (new OrderLines())->where('order_id', $Order->id)->get();
+                foreach($OrderLines as $Key => $OrderLine){
+                    $Products = (new Products())->where('id', $OrderLine->product_id)->get();
+                    $OrderLine->product_code = "";
+                    $OrderLine->product_description = "";
+                    if(count($Products) > 0){
+                        $Product = $Products[0];
+
+                        $ProductUnitsPivots = (new ProductUnitsPivots())
+                        ->where('product_id', $OrderLine->product_id)
+                        ->where('measure_unit_id', $OrderLine->measure_unit_id)->get();
+
+                        if(count($ProductUnitsPivots) > 0){
+                            $ProductUnitsPivot = $ProductUnitsPivots[0];
+
+                            $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                            ->where('supplier_id', $Order->supplier_id)
+                            ->where('product_units_pivot_id', $ProductUnitsPivot->id)->get();
+
+                            $OrderLine->product_code = $Product->internal_code;
+                            $OrderLine->product_description = $Product->internal_description;
+
+                            if(count($SuppliersProductsPivots) > 0){
+                                $SuppliersProductsPivot = $SuppliersProductsPivots[0];
+                                if(strlen($SuppliersProductsPivot->supplier_code) > 0
+                                    || strlen($SuppliersProductsPivot->supplier_description) > 0){
+                                    $OrderLine->product_code = $SuppliersProductsPivot->supplier_code;
+                                    $OrderLine->product_description = $SuppliersProductsPivot->supplier_description;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                $Order->lines = $OrderLines;
+
+                $Order->supplier_name = "";
+                $Order->email = "";
+ 
+                $Suppliers =  (new Suppliers())->where('id', $Order->supplier_id)->get();
+                if(count($Suppliers) > 0){
+                    $Order->supplier_name = $Suppliers[0]->name;
+                    $Order->email = $Suppliers[0]->email;
+                    $Order->supplier_address = $Suppliers[0]->address;
+                }
+                
+                $Order->pickup_user_name = "";
+                $PickupUsers = (new Users())->where('id', $Order->pickup_guy_id)->get();
+                if($Order->pickup == 'pickup'){
+                    if(count($PickupUsers) > 0){
+                        $PickupUser = $PickupUsers[0];
+                        $Order->pickup_user_name = $PickupUser->name;
+                        $Order->email = $PickupUser->email;
+                    }
+                    $Subject = "Order for pickup";
+                    $Order->instructions1 = "Please pickup this order from:";
+                    $Order->instructions2 = $Order->supplier_name;
+                    $Order->instructions3 = $Order->supplier_address;
+                }
+                else{
+                    $Subject = "Shaky's Purchase Order";
+                    $Order->instructions1 = "Please deliver this order to:";
+                    $Order->instructions2 = "Shaky's Juice Bar & Cafe";
+                    $Order->instructions3 = "6235 Kennedy Blvd, Local #1";
+                    $Order->instructions4 = "North Bergen, NJ, 074407";
+                    $Order->instructions5 = "Phone: +1 201-520-9351";
+                }
+                $order = $Order;
+                $pdf = PDF::loadView('orderpdf', compact('order'));
+                $DateStamp = (new \DateTime())->format("Y_m_d_h_i_s");
+                return $pdf->download("order_" . $DateStamp . ".pdf");
+            }
+            else{
+                return ['status' => 'notfound', 'element_tag' => $ElementTag];
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag, 'th' => $th];
+        }
+}
 
      /**
       * 

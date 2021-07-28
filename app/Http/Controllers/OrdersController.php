@@ -26,6 +26,18 @@ class OrdersController extends Controller
         return (new Orders())->EmailOrder($request);
     }
 
+    public function OrderPreview(Request $request)
+    {
+        # code...
+        return (new Orders())->OrderPreview($request);
+    }
+    
+    public function ExportToPdf(Request $request)
+    {
+        # code...
+        return (new Orders())->ExportToPdf($request);
+    }
+
     public function ReceiveOrder(Request $request)
     {
         return (new Orders())->ReceiveOrder($request);
