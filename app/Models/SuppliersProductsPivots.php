@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 use App\Errors\ErrorInfo;
 use App\Models\Products;
 use App\Models\Suppliers;
 use App\Models\MeasureUnits;
+use App\Models\ProductUnitsPivots;
+use App\Models\SuppProdPivots;
 
 class SuppliersProductsPivots extends Model
 {
@@ -41,20 +44,21 @@ class SuppliersProductsPivots extends Model
             if($SupplierId == -1){
                 return ['status' => 'nodata', 'element_tag' => $ElementTag];
             }
-            $SupplierProductPivots = $this->where('product_id', $ProductId)->where('supplier_id', $SupplierId)->get();
+            $SupplierProductPivots = (new SuppProdPivots())->where('product_id', $ProductId)->where('supplier_id', $SupplierId)->get();
             if(count($SupplierProductPivots) > 0){
                 $Id = $SupplierProductPivots[0]->id;
                 // Update action
-                $this->where('id', $Id)->update(['supplier_code' => $SupplierCode, 'supplier_description' => $SupplierDescription]);
+                (new SuppProdPivots())->where('id', $Id)->update(['supplier_code' => $SupplierCode, 'supplier_description' => $SupplierDescription]);
             }
             else{
                 // Create action
-                $this->product_id = $ProductId;
-                $this->supplier_id = $SupplierId;
-                $this->supplier_code = $SupplierCode;
-                $this->supplier_description = $SupplierDescription;
-                $this->save();
-                $Id = $this->id;
+                $SuppProdPivots = (new SuppProdPivots());
+                $SuppProdPivots->product_id = $ProductId;
+                $SuppProdPivots->supplier_id = $SupplierId;
+                $SuppProdPivots->supplier_code = $SupplierCode;
+                $SuppProdPivots->supplier_description = $SupplierDescription;
+                $SuppProdPivots->save();
+                $Id = $SuppProdPivots->id;
             }
 
             $Products = (new Products())->where('id', $ProductId)->get();
@@ -128,7 +132,7 @@ class SuppliersProductsPivots extends Model
 
         try {
             //code...
-            $SuppliersProductsPivots = $this->where('product_id', $ProductId)->where('supplier_id', $SupplierId)->get();
+            $SuppliersProductsPivots = (new SuppProdPivots())->where('product_id', $ProductId)->where('supplier_id', $SupplierId)->get();
             if(count($SuppliersProductsPivots) > 0){
                 $SuppliersProductsPivot = $SuppliersProductsPivots[0];
                 return ['status' => 'ok', 'suppliersproductspivot' => $SuppliersProductsPivot, 'element_tag' => $ElementTag];
