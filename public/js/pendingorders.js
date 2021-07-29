@@ -366,8 +366,10 @@ function submitOrderButtonClick(order_id){
                                 frame:actionResultMessage,
                                 message:"ORDER SUBMITTED BUT EMAIL NOT SENT",
                                 alignTop:false,
+                                timeout:1,
                             }, function(frame, param){
-                                frame.hide()
+                                frame[0].innerHTML += 
+                                    "<div style='color:blue; text-decoration:underline;'><a href='/orderpreview?id=" + elementTag.replace('approval_', '') + "&previousURL=showpendingorderspanel?tab_id=tab_5'>View The Order</a></div>";
                             }
                         )   
                         break 
@@ -375,10 +377,12 @@ function submitOrderButtonClick(order_id){
                         reportResult(
                             {
                                 frame:actionResultMessage,
-                                message:"THE ORDER WAS SUBMITTED BUT THERE IS NO EMAIL WHERE TO SEND IT",
+                                message:"ORDER SUBMITTED BUT EMAIL NOT SENT",
                                 alignTop:false,
+                                timeout:1,
                             }, function(frame, param){
-                                frame.hide()
+                                frame[0].innerHTML += 
+                                    "<div style='color:blue; text-decoration:underline;'><a href='/orderpreview?id=" + elementTag.replace('approval_', '') + "&previousURL=showpendingorderspanel?tab_id=tab_5'>View The Order</a></div>";
                             }
                         )
                         break        
@@ -440,8 +444,12 @@ function resendOrderButtonClick(orderId){
                             {
                                 frame:actionResultMessage,
                                 message:"THERE IS NO EMAIL REGISTERED",
-                            }, function(frame, parama){
-                                frame.hide()
+                                alignTop:false,
+                                timeout:1,
+                            }, function(frame, param){
+                                console.log(elementTag)
+                                frame[0].innerHTML += 
+                                    "<div style='color:blue; text-decoration:underline;'><a href='/orderpreview?id=" + elementTag + "&previousURL=showpendingorderspanel?tab_id=tab_5'>View The Order</a></div>";
                             }
                         )
                         break        
@@ -451,7 +459,7 @@ function resendOrderButtonClick(orderId){
                             {
                                 frame:actionResultMessage,
                                 message:message,
-                                alignTop:false
+                                alignTop:true,
                             }, function(frame, param){
                                 frame.hide()
                             }

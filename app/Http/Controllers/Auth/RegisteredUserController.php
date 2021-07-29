@@ -38,20 +38,34 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|confirmed|min:8',
-//            'user_type' => 'required|string|min:1',
-        ]);
+        if($request['email'] !== null){
+            $request->validate([
+                'username' => 'required|string|max:255',
+                'name' => 'required|string|max:255',
+                'email' => 'email|max:255',
+                'password' => 'required|string|confirmed|min:8',
+    //            'user_type' => 'required|string|min:1',
+            ]);
+    
+        }
+        else{
+            $request->validate([
+                'username' => 'required|string|max:255',
+                'name' => 'required|string|max:255',
+     //           'email' => 'email|max:255',
+                'password' => 'required|string|confirmed|min:8',
+    //            'user_type' => 'required|string|min:1',
+            ]);
+        }
 
         $Users = (new Users())->where('id', '>', -1)->get();
 
         if(count($Users) == 0)
         {
             Auth::login($user = User::create([
+                'username' => $request->username,
                 'name' => $request->name,
-                'email' => $request->email,
+                'email' => $request->email !== null ? $request->email : '',
                 'password' => Hash::make($request->password),
                 'user_type' => 'admin',
             ]));
@@ -59,8 +73,9 @@ class RegisteredUserController extends Controller
         else
         {
             $user = User::create([
+                'username' => $request->username,
                 'name' => $request->name,
-                'email' => $request->email,
+                'email' => $request->email !== null ? $request->email : '',
                 'password' => Hash::make($request->password),
                 'user_type' => $request->user_type,
             ]);

@@ -32,6 +32,10 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+Route::get('/goback', function(){
+    return session()->all();
+});
+
 /**
  * Error page
  */
@@ -184,6 +188,10 @@ Route::get('/searchfor', 'UserDashboardController@SearchFor');
  Route::post('/submitorder', 'OrdersController@SubmitOrder');
 
  Route::post('/emailorder', 'OrdersController@EmailOrder');
+
+ Route::get('orderpreview', 'OrdersController@OrderPreview');
+ 
+ Route::get('exporttopdf', 'OrdersController@ExportToPdf');
 
  Route::post('/receiveorder', 'OrdersController@ReceiveOrder');
 
