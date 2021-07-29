@@ -357,6 +357,7 @@ function acceptSupplierProductChanges(productId){
  */
 function supplierProductSelectChange(supplierProductSelect, productId) {
     var supplierId = supplierProductSelect.options[supplierProductSelect.selectedIndex].value
+
     $.get('/getsuppliersproductspivot',
         {
             product_id:productId,
@@ -366,6 +367,7 @@ function supplierProductSelectChange(supplierProductSelect, productId) {
             if(status == 'success'){
                 var elementTag = data.element_tag
                 var productHtml = document.getElementById(elementTag)
+                console.log(data)
                 switch (data.status) {
                     case 'ok':
                         var suppliersProductsPivot = data.suppliersproductspivot
