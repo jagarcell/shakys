@@ -291,15 +291,24 @@ class PendingOrders extends Model
 
                             if(count($ProductUnitsPivots) > 0){
                                 $ProductUnitsPivot = $ProductUnitsPivots[0];
+
                                 $SuppliersProductsPivots = (new SuppliersProductsPivots())
                                 ->where('supplier_id', $Supplier->id)
                                 ->where('product_units_pivot_id', $ProductUnitsPivot->id)->get();
                                 if(count($SuppliersProductsPivots) > 0){
                                     $SuppliersProductsPivot = $SuppliersProductsPivots[0];
-                                    $orderLine->supplier_code = $SuppliersProductsPivot->supplier_code;
-                                    $orderLine->supplier_description = $SuppliersProductsPivot->supplier_description;
                                     $orderLine->supplier_price = $SuppliersProductsPivot->supplier_price;
                                 }
+
+                                $SuppliersProductsPivots = (new SuppProdPivots())
+                                ->where('supplier_id', $Supplier->id)
+                                ->where('product_id', $Product->id)->get();
+                                if(count($SuppliersProductsPivots) > 0){
+                                    $SuppliersProductsPivot = $SuppliersProductsPivots[0];
+                                    $orderLine->supplier_code = $SuppliersProductsPivot->supplier_code;
+                                    $orderLine->supplier_description = $SuppliersProductsPivot->supplier_description;
+                                }
+
                             }    
                         }
 
@@ -376,12 +385,19 @@ class PendingOrders extends Model
 
                                 if(count($SuppliersProductsPivots) > 0){
                                     $SuppliersProductsPivot = $SuppliersProductsPivots[0];
-                                    $orderLine->supplier_code = $SuppliersProductsPivot->supplier_code;
-                                    $orderLine->supplier_description = $SuppliersProductsPivot->supplier_description;
                                     $orderLine->supplier_price = $SuppliersProductsPivot->supplier_price;
                                 }    
-                            }
+                                
+                                $SuppliersProductsPivots = (new SuppProdPivots())
+                                ->where('supplier_id', $Supplier->id)
+                                ->where('product_id', $Product->id)->get();
 
+                                if(count($SuppliersProductsPivots) > 0){
+                                    $SuppliersProductsPivot = $SuppliersProductsPivots[0];
+                                    $orderLine->supplier_code = $SuppliersProductsPivot->supplier_code;
+                                    $orderLine->supplier_description = $SuppliersProductsPivot->supplier_description;
+                                }    
+                            }
                         }
 
                         $MeasureUnits = (new MeasureUnits())->where('id', $orderLine->measure_unit_id)->get();

@@ -239,9 +239,9 @@ class Orders extends Model
                         if(count($ProductUnitsPivots) > 0){
                             $ProductUnitsPivot = $ProductUnitsPivots[0];
 
-                            $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                            $SuppliersProductsPivots = (new SuppProdPivots())
                             ->where('supplier_id', $Order->supplier_id)
-                            ->where('product_units_pivot_id', $ProductUnitsPivot->id)->get();
+                            ->where('product_id', $Product->id)->get();
 
                             $OrderLine->product_code = $Product->internal_code;
                             $OrderLine->product_description = $Product->internal_description;
@@ -350,9 +350,9 @@ class Orders extends Model
                         if(count($ProductUnitsPivots) > 0){
                             $ProductUnitsPivot = $ProductUnitsPivots[0];
 
-                            $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                            $SuppliersProductsPivots = (new SuppProdPivots())
                             ->where('supplier_id', $Order->supplier_id)
-                            ->where('product_units_pivot_id', $ProductUnitsPivot->id)->get();
+                            ->where('product_id', $Product->id)->get();
 
                             $OrderLine->product_code = $Product->internal_code;
                             $OrderLine->product_description = $Product->internal_description;
@@ -451,9 +451,9 @@ class Orders extends Model
                         if(count($ProductUnitsPivots) > 0){
                             $ProductUnitsPivot = $ProductUnitsPivots[0];
 
-                            $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                            $SuppliersProductsPivots = (new SuppProdPivots())
                             ->where('supplier_id', $Order->supplier_id)
-                            ->where('product_units_pivot_id', $ProductUnitsPivot->id)->get();
+                            ->where('product_id', $Product->id)->get();
 
                             $OrderLine->product_code = $Product->internal_code;
                             $OrderLine->product_description = $Product->internal_description;
