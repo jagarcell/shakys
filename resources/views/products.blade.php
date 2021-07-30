@@ -29,7 +29,7 @@
         @section('content')
      
         <!-- THIS IS THE SECTION THAT HOLDS THE HTML FOR THE ADDING ICON AND THE ADDING ACTION FORM -->
-        <div id="add_section_wrap" class="add_section_wrap">
+        <div id="add_section_wrap" class="add_section_wrap add_icon_visible">
             <!-- THIS IS WHERE ACTION RESULT MESSAGES WILL BE SHOWN -->
             <div id="action_result_message" class="action_result_message" hidden>
             </div>
@@ -43,8 +43,8 @@
 
             <!-- THIS IS THE SECTION THAT IS USED TO ENTER DATA TO BE CREATED -->
             <!-- IT WILL BE SHOWN WHEN THE USER CLICKS ON THE ADD ICON -->
-            <div class="section_wrap">
-                <div id="add_section_frame" class="section" style="display:none;">
+            <div id="add_section_frame_wrap">
+                <div id="add_section_frame" class="add_section" style="display:none;">
                     <div class="pic_frame">
                         <form id="product_image" action="/productimgupload" method="post" enctype="multipart/form-data" class="box_shadow">
                             @csrf
@@ -80,7 +80,10 @@
                 </div>
             </div>
         </div>
-    
+        <div style="border-top:solid 1px; width:100%;">
+
+        </div>
+
         <!-- THIS IS THE LIST OF PRODUCTS IN THE DATABASE RECEIVED FROM THE SERVER -->
         <div id="products_list_wrap">    
             @if(count($products) > 0)
@@ -127,6 +130,47 @@
                             </div>
                         </div>
                     </div>
+                    <div class="section">
+                        <div class="pic_frame">
+                            <img src="{{$product->image_path}}" loading="lazy" sizes="(max-width: 479px) 80vw, 256px" srcset="{{$product->image_path}} 500w, {{$product->image_path}} 512w" alt="" class="picture box_shadow">
+                        </div>
+                        <div id="supplier_data_edit_frame" class="data_entry">
+                            <div class="data_edit">
+                                <div class="field_wrap">
+                                    <div class="field_label">Product Code</div>
+                                    <div class="code data_field box_shadow">{{$product->internal_code}}</div>
+                                </div>
+                                <div class="field_wrap">
+                                    <div class="field_label">Description</div>
+                                    <div class="description data_field box_shadow">{{$product->internal_description}}</div>
+                                </div>
+                                <div class="field_wrap">
+                                    <div class="field_label">Days To Count</div>
+                                    <div class="days_to_count data_field box_shadow">{{$product->days_to_count}}</div>
+                                </div>
+                                <div class="field_wrap">
+                                    <div class="field_label">Default Measure Unit</div>
+                                    <div class="measure_unit data_field box_shadow">{{$product->default_measure_unit}}</div>
+                                </div>
+                                <div class="field_wrap">
+                                    <div class="field_label">Default Supplier</div>
+                                    <div class="default_supplier data_field box_shadow">{{$product->default_supplier_name}}</div>
+                                </div>
+                                <div class="data_entry_buttons">
+                                    <div>
+                                        <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$product->id}}')">
+                                    </div>
+                                    <div class="bottom_button">
+                                        <input type="button" class="supplier_product_button box_shadow w-button" value="Suppliers" onclick="suppliersButtonClick('{{$product->id}}')">
+                                    </div>
+                                    <div class="bottom_button">
+                                        <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('{{$product->id}}')">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="action_result_message" class="action_result_message" hidden></div>
                 </div>
             </div>

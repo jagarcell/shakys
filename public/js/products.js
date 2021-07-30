@@ -39,6 +39,8 @@ $(document).ready(function(){
  */
 function addIconClick() {
     var productEditions = $('#products_list_wrap').find('.product_edition')
+
+    $('#add_section_wrap').removeClass('add_icon_visible')
     $.each(productEditions, function(index, productEdition){
         discardEditChanges(productEdition.id)
     })
@@ -56,6 +58,7 @@ function addIconClick() {
                     })
                     $('#add_icon_frame').hide()
                     $('#add_section_frame').show()
+                    $('.page_title')[0].scrollIntoView(true)
 
                     break;
 
@@ -98,6 +101,8 @@ function discardButtonClick() {
     productImage = document.getElementById('product_image')
     productImage.MyDropzone.removeAllFiles()
     clearUnitsChange()
+
+    $('#add_section_wrap').addClass('add_icon_visible')
 }
 
 /**
@@ -367,7 +372,7 @@ function supplierProductSelectChange(supplierProductSelect, productId) {
             if(status == 'success'){
                 var elementTag = data.element_tag
                 var productHtml = document.getElementById(elementTag)
-                console.log(data)
+
                 switch (data.status) {
                     case 'ok':
                         var suppliersProductsPivot = data.suppliersproductspivot
