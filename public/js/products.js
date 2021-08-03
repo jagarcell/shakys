@@ -2,6 +2,10 @@ $(document).ready(function(){
     createProductImageDrop()
 })
 
+function productSearchClick() {
+     var productSearchText = document.getElementById('product_search_text').value
+     window.location ='/listproducts?search_text=' + productSearchText
+}
 
 /**
  *  Dropzone initialization
@@ -448,6 +452,7 @@ function discardSupplierProductChanges(productId) {
  *  
  */
 function deleteButtonClick(productId) {
+    discardEditChanges(-1)
     $.post('/deleteproduct',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),

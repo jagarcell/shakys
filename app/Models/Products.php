@@ -24,9 +24,36 @@ class Products extends Model
     public function ListProducts($request)
     {
         # code...
+        $SearchText = isset($request['search_text']) ? $request['search_text'] : "";
         try {
             //code...
-            $Products = $this->where('id', '>', -1)->get();
+            if(strlen($SearchText) == 0){
+                $Products = $this->where('id', '>', -1)->get();
+            }
+            else{
+                $Keywords = explode(" ", $SearchText);
+
+                $query = " where ((internal_description like '%";
+                $first = true;
+                foreach ($Keywords as $key => $Keyword) {
+                    # code...
+                    if($first){
+                        $first = false;
+                        $query = $query . $Keyword . "%')";
+                    }
+                    else{
+                        $query = $query . "or (internal_description like '%" . $Keyword . "%')";
+                    }
+                }
+                foreach ($Keywords as $key => $Keyword) {
+                    # code...
+                    $query = $query . "or (internal_code like '%" . $Keyword . "%')";
+                }
+        
+                $query = $query . ")";
+                $basequery = "select * from products";
+                $Products = DB::select($basequery . $query);
+            }
             for($i = 0; $i < count($Products); $i++){
                 $DefaultSupplierName = "";
                 $Product = $Products[$i];
