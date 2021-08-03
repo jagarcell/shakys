@@ -73,7 +73,7 @@ select{
 }
 
 .section_wrap {
-  border-bottom: 1px solid #000;
+  border-bottom: 15px solid #000;
   display:flex;
   padding-top: 40px;
   padding-bottom: 40px;
@@ -1949,7 +1949,7 @@ body {
   min-height: 30vh;
   padding-top: 20px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #000;
+  border-bottom: 15px solid #000;
   font-family: inherit;
   line-height: 1.5em;
 }
@@ -2529,11 +2529,6 @@ body {
 
   .add_icon_frame {
     border-bottom: 0px solid #000;
-  }
-
-  .supplier_section {
-    padding-top: 20px;
-    border-bottom: 1px solid #000;
   }
 
   .supplier_data_edit {
