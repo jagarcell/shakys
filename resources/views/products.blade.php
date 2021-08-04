@@ -29,7 +29,7 @@
         @section('content')
      
         <!-- THIS IS THE SECTION THAT HOLDS THE HTML FOR THE ADDING ICON AND THE ADDING ACTION FORM -->
-        <div id="add_section_wrap" class="add_section_wrap add_icon_visible">
+        <div id="add_section_wrap" class="add_section_wrap">
             <!-- THIS IS WHERE ACTION RESULT MESSAGES WILL BE SHOWN -->
             <div id="action_result_message" class="action_result_message" hidden>
             </div>

@@ -24,20 +24,27 @@ select{
 }
 
 .product_search_frame{
-  display: flex;
-  width: 70%;
+  position: absolute;
+  top: 25%;
+  left: 20%;
+  width: 60%;
+  height: 50%;
 }
 
 .product_search_bar{
-  width: 60%;
+  position: absolute;
+  left: 0;
+  width: 75%;
   height: 35px;
   border-radius: 15px;
   margin-right: 5%;
 }
 
 .product_search_button{
-  margin-right: 5%;
-  background:#3898ec;
+  position: absolute;
+  left: 80%;
+  top: 10%;
+  background: #3898ec;
   font-size: 20px;
   color: white;
 }
@@ -699,7 +706,7 @@ select{
 
 .add_to_order_button{
   position: sticky;
-  top: 5px;
+  top: 100px;
   width: 100px;
   margin-left: auto;
   margin-right: 5px;
@@ -1233,11 +1240,11 @@ body {
 .app-mobile-menu-options{
   color: white;
   position: fixed;
-  top: 85px;
-  left: 5%;
+  top: 60px;
+  left: 3%;
   width: 200px;
   height: 245px;
-  z-index: 1;
+  z-index: 12;
   background-color:dimgray;
   border-radius: 5px;
   padding-left: 10px;
@@ -1653,7 +1660,9 @@ body {
 }
 
 .add_icon_frame{
+  position: relative;
   width: 100%;
+  height: 10vh;
   text-align: end;
   padding: 10px;
   font-size: xx-large;
@@ -2091,26 +2100,32 @@ body {
 }
 
 .add_section_wrap {
-  position: relative;
+  position: sticky;
+  top:64px;
+  left: 0vw;
+  background: white;  
+  width: 98vw;
+  z-index: 11;
+  border-bottom: 1px solid black;
 }
+
 .add_icon_visible{
-  width: 99vw;
+  width: 100vw;
   background: white;
   position: sticky;
   left: 0vw;
   top: 64px;
-  z-index: 11;
   border-bottom: 1px solid black;}
 
 .add_icon {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
   height: 35px;
   background-color: transparent;
   color: #ef980e;
   font-size: inherit;
+  position: absolute;
+  left: 85%;
+  top: 20%;
+  width: 10px;
 }
 
 .add_section {
@@ -2481,10 +2496,6 @@ body {
     margin-top: 20px;
   }
 
-  .add_to_order_button{
-    top: 100px;
-  }
-
   .order_data{  
     display: block;
   }
@@ -2617,6 +2628,24 @@ body {
 }
 
 @media screen and (max-width: 767px) {
+  .product_search_button{
+    left: 32%;
+    top: 70%;
+    width: 36% !important;
+  }
+
+  .product_search_bar{
+    width: 100%;
+  }
+
+  .add_icon_frame{
+    height: 20vh;
+  }
+
+  .add_section_wrap{
+    top: 0;
+  }
+
   .user_form_block {
     padding-left: 50px;
     padding-right: 50px;  
@@ -3329,25 +3358,24 @@ body {
 }
 
 @media screen and (max-width: 499px) {
+  .product_search_button {
+    font-size: 12px;
+  }
+
+  .data_entry_buttons {
+    display: block;
+    text-align-last: center;
+  }
 
   .user_search_button {
     font-size: 12px;
   }
 
-  .product_search_button {
-    margin-right: 20%;
-  }
-
   .product_search_frame{
-    display: block;
-    width: 80%;
-  }
-
-  
-  .product_search_bar{
+    left: 20%;
     width: 60%;
   }
- 
+
   .accept_cancel_unit_link_dialog{
     font-size: 10px;
   }
