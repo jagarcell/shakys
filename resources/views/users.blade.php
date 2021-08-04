@@ -43,8 +43,14 @@
 
         <!-- HTML FOR THE NEW USER DATA ENTRY -->
         <div class="user_add_section">
-            <div id="user_add_icon" class="user_add_icon">
+            <div id="user_add_icon" class="user_add_icon_frame">
+                <div class="user_search_frame">
+                    <input id="user_search_text" type="text" class="user_search_bar" placeholder="Enter your search here">
+                    <input type="button" class="user_search_button shadowRight" value="Search" onclick="userSearchClick()">
+                </div>
+                <div id="user_add_icon" class="user_add_icon">
                     <input type="button" class="add_input" value="+" onclick="userAddClick(this)">
+                </div>
             </div>
             <div id="user_add_form" class="user_form_block" hidden>
                 <!--form method="POST" action="{{ route('register') }}" class="user_form"-->
@@ -88,7 +94,7 @@
                                     id="password_confirmation" required />
                         <div class="user_add_button">
                             <button type="button" data-wait="Please wait..." class="user_button accept_button" onclick="userCreateClick(this)">
-                                {{ __('Create User') }}
+                                {{ __('Create') }}
                             </button>
                             <button type="button" data-wait="Please wait..." class="user_button discard_button" onclick="userAbortClick(this)">
                                 {{ __('Abort') }}
@@ -284,11 +290,13 @@
                                         <div class="user_field_header">USER TYPE</div>
                                         <div class="user_field_content shadowRight">user-type</div>
                                     </div>
-                                    <div class="user_edit_section center" id="edit_buttons">
-                                        <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('user-id')">
-                                        <input type="button" id="delete_user" class="add_user_button delete_button box_shadow edit delete w-button" value="DELETE" onclick="deleteUser('user-id')">
-                                        <input type="button" id="new_user_password" class="add_user_button discard_button box_shadow edit password w-button" value="PASSWD" onclick="newPassword('user-id')">
-                                    </div>
+                                </div>
+                            </div>
+                            <div class="user_section horizontal user_buttons_wraper">
+                                <div class="user_edit_section center" id="edit_buttons">
+                                    <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('user-id')">
+                                    <input type="button" id="delete_user" class="add_user_button delete_button box_shadow edit delete w-button" value="DELETE" onclick="deleteUser('user-id')">
+                                    <input type="button" id="new_user_password" class="add_user_button discard_button box_shadow edit password w-button" value="PASSWD" onclick="newPassword('user-id')">
                                 </div>
                             </div>
                         </div>

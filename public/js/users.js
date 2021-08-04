@@ -4,6 +4,16 @@ $(document).ready(function(){
 
 /**
  * 
+ * To search users selectively
+ *  
+ */
+function userSearchClick() {
+    var searchText = document.getElementById('user_search_text').value
+    window.location = '/users?search_text=' + searchText
+}
+
+/**
+ * 
  * @param {string} userid
  **                userid:'The id of the user being edited'  
  */

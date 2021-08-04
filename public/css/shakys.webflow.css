@@ -1509,7 +1509,7 @@ body {
 }
 
 .user_div{
-  border-bottom: 1px solid #000;
+  border-bottom: 15px solid #000;
   padding-top: 30px;
   padding-bottom: 30px;
   display: block;
@@ -1564,6 +1564,10 @@ body {
   line-height: 1.5em;
 }
 
+.user_username{
+  width:30%;
+}
+
 .user_data_1 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1592,10 +1596,6 @@ body {
   justify-content: center;
 }
 
-.user_name{
-  width: 30%;
-}
-
 .user_email {
   width: 30%;
   margin-left: 5%;
@@ -1618,6 +1618,9 @@ body {
 
 .user_add_section{
   border-bottom: 1px solid #000;
+  position: sticky;
+  top: 64px;
+  background: white;
 }
 
 .user_add_button {
@@ -1637,7 +1640,7 @@ body {
 .user_button{
   border-radius: 5px;
   height: 25px;
-  width: 115px;
+  width: 90px;
   color: white;
   text-transform: uppercase;
   box-shadow: 4px 4px 3px 0 #000;
@@ -1668,15 +1671,48 @@ body {
 }
 
 .user_add_icon{
-  width: 100%;
   text-align: end;
   padding: 10px;
   font-size: xx-large;
   color: orange;
+  position: absolute;
+  left: 90%;
+  top: 10%;
+}
+
+.user_add_icon_frame{
+  height: 10vh;
+  position: relative;
+  width: 90%;
+}
+
+.user_search_frame{
+  position: absolute;
+  width: 70%;
+  left: 20%;
+  height: 100%;
+}
+  
+.user_search_bar{
+  width: 75%;
+  height: 35px;
+  max-height: 50%;
+  position: absolute;
+  top: 25%;
+}
+
+.user_search_button{
+  background: #3898ec;
+  font-size: 20px;
+  color: white;
+  max-width: 30%;
+  position: absolute;
+  left: 80%;
+  top: 30%;
 }
 
 .add_input {
-  min-height: 30px;
+  min-height: 100%;
   padding-bottom: 10px;
   background-color: transparent;
   width: 75px !important;
@@ -1776,7 +1812,7 @@ body {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  width: 115px;
+  width: 25%;
   height: 100%;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
@@ -2581,7 +2617,38 @@ body {
 }
 
 @media screen and (max-width: 767px) {
+  .user_form_block {
+    padding-left: 50px;
+    padding-right: 50px;  
+  }
+  
+  .user_search_bar {
+    width: 100%;
+    left: 0;
+  }
 
+  .user_add_icon{
+    top:25%;
+  }
+
+  .user_username{
+    width:100%;
+  }
+
+  .user_add_section{
+    top:0px;
+  }
+
+  .user_add_icon_frame {
+    height: 20vh;
+  }
+
+  .user_search_button {
+    left: 36%;
+    top: 65%;
+    font-size: 16px;
+  }
+  
   .add_icon_visible{
     top: 0px;
     left:0vw;
@@ -2649,7 +2716,7 @@ body {
   
   .app-mobile-menu{
     position: fixed;
-    left: 5%;
+    left: 3%;
     top: 15px;
     width: 42px;
     height: 42px;
@@ -3262,7 +3329,11 @@ body {
 }
 
 @media screen and (max-width: 499px) {
-   
+
+  .user_search_button {
+    font-size: 12px;
+  }
+
   .product_search_button {
     margin-right: 20%;
   }
