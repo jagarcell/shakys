@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class Users extends Model
 {
@@ -17,8 +18,50 @@ class Users extends Model
     public function ListUsers($request)
     {
         # code...
-        $users = $this->where('id', '>', -1)->get();
-        return View('users', ['users' => $users]);
+        $SearchText = isset($request['search_text']) ? $request['search_text'] : "";
+        try {
+            //code...
+            if(strlen($SearchText) == 0){
+                $users = $this->where('id', '>', -1)->get();
+            }
+            else{
+                $Keywords = explode(" ", $SearchText);
+
+                $query = " where ((name like '%";
+                $first = true;
+                foreach ($Keywords as $key => $Keyword) {
+                    # code...
+                    if($first){
+                        $first = false;
+                        $query = $query . $Keyword . "%')";
+                    }
+                    else{
+                        $query = $query . "or (name like '%" . $Keyword . "%')";
+                    }
+                }
+                foreach ($Keywords as $key => $Keyword) {
+                    # code...
+                    $query = $query . "or (email like '%" . $Keyword . "%')";
+                }
+                foreach ($Keywords as $key => $Keyword) {
+                    # code...
+                    $query = $query . "or (user_type like '%" . $Keyword . "%')";
+                }
+                foreach ($Keywords as $key => $Keyword) {
+                    # code...
+                    $query = $query . "or (username like '%" . $Keyword . "%')";
+                }
+        
+                $query = $query . ")";
+                $basequery = "select * from users";
+                $users = DB::select($basequery . $query);
+            }
+            return View('users', ['users' => $users]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return Redirect("/error/$Message[0]");
+        }
     }
 
     /**
