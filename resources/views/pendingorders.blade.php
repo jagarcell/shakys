@@ -29,13 +29,20 @@
         <input id="tab_id" value="{{$tabid}}" hidden></input>
         <div class="pending_content" hidden>
             <!-- COUNTED PRODUCT ADD TO ORDER BUTTON -->
-            <div id="add_to_order_button" class="add_to_order_button" style="display:none;">
-                <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;width:100%;" onclick="addToOrderClick('add_to_order_check', 'counted_')">
+            <div id="add_to_order_button" class="add_to_order_button_frame" display:none;">
+                <input type="button" value="Order" class="add_to_order_button shadowRight" onclick="addToOrderClick('add_to_order_check', 'counted_')">
             </div>
 
             <!-- ALL PRODUCTS ADD TO ORDER BUTTON -->
-            <div id="all_products_add_to_order_button" class="add_to_order_button" style="display:none;">
-                <input type="button" value="Order" class="shadowRight" style="background-color: #3898ec;width:100%;" onclick="addToOrderClick('all_products_add_to_order_check', 'all_')">
+            <div id="all_products_add_to_order_button" class="add_to_order_button_frame add_to_order_button_frame_mobile_height" style="display:none;">
+                <div class="all_products_search_frame">
+                    <input id="all_products_search_text" type="text" class="all_products_search_bar" placeholder="Enter your search here">
+                    <div class="search_product_icon">
+                        <img src="/images/MagnifierBk.png">
+                        <input type="button" class="all_products_search_button" onclick="allProductsSearchClick()">
+                    </div>
+                </div>
+                <input type="button" value="Order" class="add_to_order_button shadowRight" onclick="addToOrderClick('all_products_add_to_order_check', 'all_')">
             </div>
 
             <!-- ACTION TABS -->

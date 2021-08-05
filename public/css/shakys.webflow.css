@@ -23,6 +23,41 @@ select{
   font-family: inherit;
 }
 
+.search_product_icon{
+  position: absolute;
+  right: 1%;
+  top: 6%;
+  height: 4.5vh;
+  width: 4.5vh;
+}
+
+.all_products_search_frame{
+  position: absolute;
+  top: 25%;
+  right: 25%;
+  height: 50%;
+  width: 60%;
+}
+
+.all_products_search_bar{
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 4.5vh;
+  border-radius: 15px !important;
+  margin-right: 5%;
+  color: black;
+  padding-right: 40px !important;
+}
+
+.all_products_search_button{
+  position: absolute;
+  right: 0%;
+  top: 0%;
+  width: 100% !important;
+  background: transparent;
+}
+
 .product_search_frame{
   position: absolute;
   top: 25%;
@@ -704,15 +739,22 @@ select{
   width: auto;
 }
 
-.add_to_order_button{
+.add_to_order_button_frame{
   position: sticky;
-  top: 100px;
-  width: 100px;
-  margin-left: auto;
-  margin-right: 5px;
-  text-align: end;
+  top: 54px;
+  width: 100%;
+  height: 10vh;
   z-index: 1;
   color: white;
+  background: white;
+}
+
+.add_to_order_button{
+  background-color: #3898ec;
+  position: absolute;
+  right: 1%;
+  top: 25%;
+  height: 4.5vh !important;
 }
 
 .order_data_field_label{
@@ -3358,6 +3400,27 @@ body {
 }
 
 @media screen and (max-width: 499px) {
+  .all_products_search_frame{
+    top:15%;
+  }
+
+  .add_to_order_button{
+    top:50%;
+  }
+
+  .add_to_order_button_frame {
+    top: 0;
+  }
+ 
+  .add_to_order_button_frame_mobile_height{
+    height: 20vh;
+   }
+
+  .all_products_search_frame {
+    right: 5%;
+    width: 80%;
+  }
+
   .product_search_button {
     font-size: 12px;
   }

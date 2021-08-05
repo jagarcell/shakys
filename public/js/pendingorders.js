@@ -677,3 +677,8 @@ function orderSupplierSelectChange(supplierSelect, orderSectionId){
         }
     )
 }
+
+function allProductsSearchClick () {
+    var allProductsSearchText = document.getElementById('all_products_search_text').value
+    console.log(allProductsSearchText)
+}
