@@ -2676,10 +2676,6 @@ body {
     width: 100%;
   }
 
-  .add_icon_frame{
-    height: 20vh;
-  }
-
   .add_section_wrap{
     top: 0;
   }
@@ -3393,6 +3389,11 @@ body {
 }
 
 @media screen and (max-width: 499px) {
+  
+  .add_icon_frame{
+    height: 20vh;
+  }
+
   .user_add_icon_frame {
     height: 20vh;
   }
