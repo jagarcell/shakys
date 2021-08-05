@@ -3412,6 +3412,11 @@ body {
     height: 20vh;
    }
 
+  .all_products_search_frame {
+    right: 5%;
+    width: 70%;
+  }
+
   .product_search_button {
     font-size: 12px;
   }
