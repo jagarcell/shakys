@@ -2145,7 +2145,8 @@ body {
   top:64px;
   left: 0vw;
   background: white;  
-  width: 98vw;
+  width: 100vw;
+  min-height: 65px;
   z-index: 11;
   border-bottom: 1px solid black;
 }
