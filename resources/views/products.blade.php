@@ -36,9 +36,12 @@
 
             <!-- THIS IS THE ADD ICON -->
             <div id="add_icon_frame" class="add_icon_frame">
-                <div class="product_search_frame">
-                    <input id="product_search_text" type="text" class="product_search_bar" placeholder="Enter your search here">
-                    <input type="button" class="product_search_button shadowRight" value="Search" onclick="productSearchClick()">
+            <div class="all_products_search_frame">
+                <input id="product_search_text" type="text" class="all_products_search_bar" placeholder="Enter your search here">
+                    <div class="search_product_icon">
+                        <img src="/images/MagnifierBk.png">
+                        <input type="button" class="all_products_search_button" onclick="productSearchClick()">
+                    </div>
                 </div>
                 <div class="add_icon">
                     <input type="button" class="add_input" value="+" onclick="addIconClick()">
