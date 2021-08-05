@@ -1733,6 +1733,7 @@ body {
 
 .user_add_icon_frame{
   height: 10vh;
+  min-height: 65px;
   position: relative;
   width: 100%;
 }
