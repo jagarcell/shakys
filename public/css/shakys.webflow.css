@@ -3433,6 +3433,7 @@ body {
   .data_entry_buttons {
     display: block;
     text-align-last: center;
+    text-align: -webkit-center;
   }
 
   .user_search_button {
