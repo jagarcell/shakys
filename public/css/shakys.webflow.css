@@ -2222,7 +2222,8 @@ body {
 }
 
 .picture {
-  width: 256px;
+  width: 128px;
+  height: 128px;
   border-radius: 10px;
 }
 

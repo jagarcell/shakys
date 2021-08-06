@@ -29,9 +29,21 @@
         @section('content')
         <!-- HTML TO SHOW THE SUPPLIERS ADD FORM --> 
         <div id="add_section_div">
-            <div id="supplier_add_icon" class="supplier_add_icon">
-                <input type="button" class="supplier_add_input" value="+" onclick="supplierAddClick()">
+            <div class="all_products_search_frame">
+                <input id="product_search_text" type="text" class="all_products_search_bar" placeholder="Enter your search here">
+                    <div class="search_product_icon">
+                        <img src="/images/MagnifierBk.png">
+                        <input type="button" class="all_products_search_button" onclick="supplierSearchClick()">
+                    </div>
+                </div>
+                <div class="add_icon">
+                    <input type="button" class="add_input" value="+" onclick="supplierAddClick()">
+                </div>
             </div>
+
+            <!--div id="supplier_add_icon" class="supplier_add_icon">
+                <input type="button" class="supplier_add_input" value="+" onclick="supplierAddClick()">
+            </div-->
             <div id="action_result_message" class="action_result_message" hidden>action_result_message</div>
             <div id="supplier_add_section" style="display:none">
                 <div class="supplier_add_section">
