@@ -44,6 +44,7 @@ select{
   left: 0;
   width: 100%;
   height: 4.5vh;
+  min-height: 35px;
   border-radius: 15px !important;
   margin-right: 5%;
   color: black;
@@ -116,9 +117,6 @@ select{
 
 .section_wrap {
   border-bottom: 15px solid #000;
-  display:flex;
-  padding-top: 40px;
-  padding-bottom: 40px;
 }
 
 .default_unit_label{
@@ -1722,19 +1720,19 @@ body {
 }
 
 .user_add_icon{
-  text-align: end;
-  padding: 10px;
   font-size: xx-large;
   color: orange;
   position: absolute;
-  left: 90%;
-  top: 10%;
+  right: 13%;
+  height: 30px;
+  width: 30px;
 }
 
 .user_add_icon_frame{
   height: 10vh;
+  min-height: 65px;
   position: relative;
-  width: 90%;
+  width: 100%;
 }
 
 .user_search_frame{
@@ -1763,10 +1761,8 @@ body {
 }
 
 .add_input {
-  min-height: 100%;
-  padding-bottom: 10px;
-  background-color: transparent;
-  width: 75px !important;
+  height: 100% !important;
+  width: 100% !important;
 }
 
 .user_type {
@@ -2146,7 +2142,8 @@ body {
   top:64px;
   left: 0vw;
   background: white;  
-  width: 98vw;
+  width: 100vw;
+  min-height: 65px;
   z-index: 11;
   border-bottom: 1px solid black;
 }
@@ -2165,9 +2162,8 @@ body {
   color: #ef980e;
   font-size: inherit;
   position: absolute;
-  left: 85%;
   top: 20%;
-  width: 10px;
+  width: 30px;
 }
 
 .add_section {
@@ -2189,9 +2185,9 @@ body {
 }
 
 .measure_unit_section{
-  display: flex;
-  padding-top: 40px;
-  padding-bottom: 40px;  
+  padding-top: 20px;
+  padding-bottom: 20px;
+  width: 100%;
 }
 
 .pic_frame {
@@ -2354,6 +2350,7 @@ body {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
+  width: 100%;
 }
 
 .add_button {
@@ -2680,10 +2677,6 @@ body {
     width: 100%;
   }
 
-  .add_icon_frame{
-    height: 20vh;
-  }
-
   .add_section_wrap{
     top: 0;
   }
@@ -2700,6 +2693,7 @@ body {
 
   .user_add_icon{
     top:15%;
+    right: 5%;
   }
 
   .user_username{
@@ -3396,12 +3390,29 @@ body {
 }
 
 @media screen and (max-width: 499px) {
+  
+  .add_icon_frame{
+    height: 20vh;
+  }
+
+  .user_add_icon_frame {
+    height: 20vh;
+  }
+
+  .user_add_icon{
+    top:10%;
+  }
+
+  .add_icon {
+    top: 10%;
+  }
   .all_products_search_frame{
-    top:15%;
+    top:50%;
+    height: 25%;
   }
 
   .add_to_order_button{
-    top:50%;
+    top:10%;
   }
 
   .add_to_order_button_frame {
@@ -3424,6 +3435,7 @@ body {
   .data_entry_buttons {
     display: block;
     text-align-last: center;
+    text-align: -webkit-center;
   }
 
   .user_search_button {
