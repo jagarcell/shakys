@@ -1,5 +1,14 @@
 $(document).ready(function(){
     createProductImageDrop()
+
+    var productSearchText = document.getElementById('product_search_text')
+
+    productSearchText.addEventListener("keyup", function (event){
+        if(event.code == 'Enter'){
+            productSearchClick()
+        }        
+    })
+
 })
 
 function productSearchClick() {
