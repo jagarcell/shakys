@@ -2683,6 +2683,10 @@ body {
 }
 
 @media screen and (max-width: 767px) {
+  .product_section_wrap{
+    display: block;
+  }
+
   .product_search_button{
     left: 32%;
     top: 70%;
