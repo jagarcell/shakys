@@ -30,8 +30,11 @@ select{
 }
 
 .add_section_div{
-  position: relative;
   border-bottom: 1px solid black;
+  position: sticky;
+  top: 64px;
+  border-bottom: 1px solid black;
+  background: white;
 }
 
 .search_product_icon{
@@ -2697,6 +2700,11 @@ body {
 }
 
 @media screen and (max-width: 767px) {
+  
+  .add_section_div{
+    top: 0;
+  }
+
   .product_section_wrap{
     display: block;
   }
