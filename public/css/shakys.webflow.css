@@ -1772,6 +1772,13 @@ body {
   width: 100% !important;
 }
 
+.supplier_add_input {
+  position: absolute;
+  left:90%;
+  width: 30px;
+  height: 30px;
+}
+
 .user_type {
   width: 30%;
   margin-left: 5%;
@@ -2024,11 +2031,13 @@ body {
   padding: 10px;
   font-size: xx-large;
   color: orange;
+  min-height: 10vh;
 }
 
 .supplier_add_input {
   min-height: 30px;
   padding-bottom: 10px;
+  width: 40px !important;
 }
 
 .supplier_section {

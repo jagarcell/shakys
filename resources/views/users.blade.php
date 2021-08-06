@@ -45,7 +45,7 @@
         <div class="user_add_section">
             <div id="user_add_icon" class="user_add_icon_frame">
                 <div class="all_products_search_frame">
-                    <input id="all_products_search_text" type="text" class="all_products_search_bar" placeholder="Enter your search here">
+                    <input id="user_search_text" type="text" class="all_products_search_bar" placeholder="Enter your search here">
                     <div class="search_product_icon">
                         <img src="/images/MagnifierBk.png">
                         <input type="button" class="all_products_search_button" onclick="userSearchClick()">

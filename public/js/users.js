@@ -1,5 +1,13 @@
 $(document).ready(function(){
 
+    var usersSearchText = document.getElementById('user_search_text')
+
+    usersSearchText.addEventListener("keyup", function (event){
+        if(event.code == 'Enter'){
+            userSearchClick()
+        }        
+    })
+
 })
 
 /**

@@ -30,7 +30,7 @@
         <!-- HTML TO SHOW THE SUPPLIERS ADD FORM --> 
         <div id="add_section_div">
             <div id="supplier_add_icon" class="supplier_add_icon">
-                <input type="button" class="add_input" value="+" onclick="supplierAddClick()">
+                <input type="button" class="supplier_add_input" value="+" onclick="supplierAddClick()">
             </div>
             <div id="action_result_message" class="action_result_message" hidden>action_result_message</div>
             <div id="supplier_add_section" style="display:none">
