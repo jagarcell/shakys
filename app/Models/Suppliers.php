@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Suppliers extends Model
 {
@@ -14,7 +15,51 @@ class Suppliers extends Model
         # code...
         try {
             //code...
-            $Suppliers = $this->where('id', '>', -1)->orderBy('id', 'desc')->get();
+            $SearchText = isset($request['search_text']) ? $request['search_text'] : "";
+            if(strlen($SearchText) == 0){
+                $Suppliers = $this->where('id', '>', -1)->orderBy('id', 'desc')->get();
+
+            }
+            else{
+                $Keywords = explode(" ", $SearchText);
+
+                $query = " where ((name like '%";
+                $first = true;
+                foreach ($Keywords as $key => $Keyword) {
+                    # code...
+                    if($first){
+                        $first = false;
+                        $query = $query . $Keyword . "%')";
+                    }
+                    else{
+                        $query = $query . " or (name like '%" . $Keyword . "%')";
+                    }
+                }
+                foreach ($Keywords as $key => $Keyword) {
+                    # code...
+                    $query = $query . " or (email like '%" . $Keyword . "%')";
+                }
+                foreach ($Keywords as $key => $Keyword) {
+                    # code...
+                    $query = $query . " or (address like '%" . $Keyword . "%')";
+                }
+                foreach ($Keywords as $key => $Keyword) {
+                    # code...
+                    $query = $query . " or (phone like '%" . $Keyword . "%')";
+                }
+                foreach ($Keywords as $key => $Keyword) {
+                    # code...
+                    $query = $query . " or (pickup like '%" . $Keyword . "%')";
+                }
+                foreach ($Keywords as $key => $Keyword) {
+                    # code...
+                    $query = $query . " or (code like '%" . $Keyword . "%')";
+                }
+
+                $query = $query . ")";
+                $basequery = "select * from suppliers";
+                $Suppliers = DB::select($basequery . $query);
+            }
             return view('suppliers', ['suppliers' => $Suppliers]);
         } catch (\Throwable $th) {
             //throw $th;

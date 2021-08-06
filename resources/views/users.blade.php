@@ -120,8 +120,6 @@
                 <div class="user_form_block w-form">
                     <form id="user_edit_form" name="email-form" data-name="Email Form" class="user_form">
                         @csrf
-                        <div id="user_edit_message" class="user_edit_message" hidden>
-                        </div>
                         <div class="user_data_1">
                             <input id="edited_user_id" name="user_id" hidden>
                             <div class="user_name">
@@ -151,6 +149,8 @@
                                 <input id="edited_user_password" type="button" value="ABORT" data-wait="Please wait..." class="add_user_button discard_button box_shadow w-button" onclick="discard(this)">
                             </div>
                         </div>
+                        <div id="user_edit_message" class="user_edit_message" hidden>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -167,8 +167,8 @@
                     <input id="user_password_confirm" type="password" class="user_password_confirm w-input" maxlength="256" placeholder="Confirm New Password" required="">
                 </div>
                 <div class="user_password_section">
-                    <input id="new_password" type="button" value="CREATE NEW PASSWORD" data-wait="Please wait..." class="create_discard_passwd_button accept_button w-button" onclick="createPassword(this)">
-                    <input id="confirm_new_password" type="button" value="DISCARD NEW PASSWORD" data-wait="Please wait..." class="create_discard_passwd_button discard_button w-button" onclick="discardPassword(this)">
+                    <input id="new_password" type="button" value="CREATE" data-wait="Please wait..." class="create_discard_passwd_button accept_button w-button" onclick="createPassword(this)">
+                    <input id="confirm_new_password" type="button" value="DISCARD" data-wait="Please wait..." class="create_discard_passwd_button discard_button w-button" onclick="discardPassword(this)">
                 </div>
             </form>    
         </div>
@@ -178,8 +178,6 @@
         <div id="user_data" hidden>
             <div id="user_edit_wrap">
                 <div id="user_edit_frame">    
-                    <div id="user_edit_action_result" class="user_edit_action_result" hidden>
-                    </div>
                     <div class="user_sections_wraper">
                         <div class="user_data_wraper">
                             <div class="user_section horizontal">
@@ -211,6 +209,8 @@
                             </div>
                         </div>
                     </div>
+                    <div id="user_edit_action_result" class="user_edit_action_result" hidden>
+                    </div>
                 </div>
                 <div id="user_password_reset">
 
@@ -218,14 +218,12 @@
             </div>
         </div>
 
+        <!-- LIST OF REGISTERED USERS RECEIVED FROM THE VIEW REQUEST -->
         <div id="users_list">
-            <!-- LIST OF REGISTERED USERS RECEIVED FROM THE VIEW REQUEST -->
             @foreach($users as $key => $user)
             <div id="{{$user->id}}" class="user_div">
                 <div id="user_edit_wrap">
                     <div id="user_edit_frame">
-                        <div id="user_edit_action_result" class="user_edit_action_result" hidden>
-                        </div>
                         <div class="user_sections_wraper">
                             <div class="user_data_wraper">
                                 <div class="user_section horizontal">
@@ -257,6 +255,9 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="user_edit_action_result" class="user_edit_action_result" hidden>
+                            action_result_message
+                        </div>
                     </div>
                     <div id="user_password_reset">
 
@@ -271,8 +272,6 @@
             <div id="user-id" class="user_div">
                 <div id="user_edit_wrap">
                     <div id="user_edit_frame">
-                        <div id="user_edit_action_result" class="user_edit_action_result" hidden>
-                        </div>
                         <div class="user_sections_wraper">
                             <div class="user_data_wraper">
                                 <div class="user_section horizontal">
@@ -303,6 +302,8 @@
                                     <input type="button" id="new_user_password" class="add_user_button discard_button box_shadow edit password w-button" value="PASSWD" onclick="newPassword('user-id')">
                                 </div>
                             </div>
+                        </div>
+                        <div id="user_edit_action_result" class="user_edit_action_result" hidden>
                         </div>
                     </div>
                     <div id="user_password_reset">

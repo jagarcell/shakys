@@ -57,6 +57,7 @@ function edit(userid){
                                 frame:userEditActionResult,
                                 message:message,
                                 param:data.element_tag,
+                                alignTop:false,
                             }, function(frame, element_tag){
                                 frame.hide()
                                 var userData = document.getElementById(element_tag)
@@ -124,6 +125,7 @@ function deleteUser(userid){
                                         error:false,
                                         timeout:4000,
                                         param:element_tag,
+                                        alignTop:false,
                                     }, function(frame, element_tag){
                                         frame.hide()
                                         var edit_section = document.getElementById(element_tag)
@@ -138,7 +140,8 @@ function deleteUser(userid){
                                     {
                                         frame:user_edit_action_result,
                                         message:"THIS USER CAN NOT BE DELETED!<br>NO MORE admin LEFT!",
-                                        timeout:5000,                                
+                                        timeout:5000,
+                                        alignTop:false,
                                     },
                                     function(frame, param){
                                         frame.hide()
@@ -154,7 +157,8 @@ function deleteUser(userid){
                                         frame:user_edit_action_result,
                                         message:message,
                                         timeout:4000,
-                                        param:element_tag
+                                        param:element_tag,
+                                        alignTop:false,
                                     }, function(frame, element_tag){
                                         frame.hide()
                                         var edit_section = document.getElementById(element_tag)
@@ -229,6 +233,7 @@ function saveUser(element) {
                                 message:"THE USER WAS SUCCESSFULLY UPDATED!",
                                 error:false,
                                 param:user,
+                                alignTop:false,
                             },
                             function(frame, param){
                                 var user = param
@@ -357,6 +362,7 @@ function discard(element) {
                                 message:message,
                                 timeout:5000,
                                 param:data.element_tag,
+                                alignTop:false,
                             }, function(frame, element_tag){
                                 frame.hide()
                                 var user_section = $('#' + element_tag)
@@ -445,6 +451,7 @@ function createPassword(element) {
                                     message:"PASSWORD SUCCESFULLY CHANGED!",
                                     error:false,
                                     param:data.element_tag,
+                                    alignTop:false,
                                 }, function(frame, element_tag){
                                     frame.hide()
                                     var userSection = $('#' + element_tag)
@@ -488,6 +495,7 @@ function createPassword(element) {
                                 {
                                     frame:password_change_result,
                                     message:message,
+                                    alignTop:false,
                                 }, function(frame, param){
                                     frame.hide()
                                 }
@@ -597,6 +605,7 @@ function userCreateClick(userCreateButton) {
                                 message:"THE USER WAS SUCCESSFULLY CREATED!",
                                 error:false,
                                 param:user,
+                                alignTop:false,
                             },
                             function(frame, user){
                                 frame.hide()
