@@ -119,6 +119,13 @@ select{
   border-bottom: 15px solid #000;
 }
 
+.product_section_wrap {
+  border-bottom: 15px solid #000;
+  display: flex;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
 .default_unit_label{
   margin-top: 5%;
     text-align: left;

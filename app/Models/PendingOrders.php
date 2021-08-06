@@ -454,7 +454,34 @@ class PendingOrders extends Model
     public function AllTheProducts($request)
     {
         try {
-            $Products = DB::table('products')->where('id', '>', -1)->select('products.*')->get();
+            $SearchText = isset($request['search_text']) ? $request['search_text'] : "";
+            if(strlen($SearchText) == 0){
+                $Products = DB::table('products')->where('id', '>', -1)->select('products.*')->get();
+            }
+            else{
+                $Keywords = explode(" ", $SearchText);
+
+                $query = " where ((internal_description like '%";
+                $first = true;
+                foreach ($Keywords as $key => $Keyword) {
+                    # code...
+                    if($first){
+                        $first = false;
+                        $query = $query . $Keyword . "%')";
+                    }
+                    else{
+                        $query = $query . "or (internal_description like '%" . $Keyword . "%')";
+                    }
+                }
+                foreach ($Keywords as $key => $Keyword) {
+                    # code...
+                    $query = $query . "or (internal_code like '%" . $Keyword . "%')";
+                }
+        
+                $query = $query . ")";
+                $basequery = "select * from products";
+                $Products = DB::select($basequery . $query);
+            }
             foreach($Products as $Key => $Product){
                 $ProductId = $Product->id;
                 $ProductUnits = DB::table('product_units_pivots')
