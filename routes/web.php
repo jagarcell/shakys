@@ -211,7 +211,7 @@ Route::get('/searchfor', 'UserDashboardController@SearchFor');
   *                                     *
   **************************************/
 
-  Route::get('/measureunits','MeasureUnitsController@MeasureUnits');
+  Route::get('/measureunits','MeasureUnitsController@MeasureUnits')->middleware('checkusersstate');
  
   Route::post('/createmeasureunit','MeasureUnitsController@CreateMeasureUnit');
 
