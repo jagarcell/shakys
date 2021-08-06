@@ -117,9 +117,6 @@ select{
 
 .section_wrap {
   border-bottom: 15px solid #000;
-  display:flex;
-  padding-top: 40px;
-  padding-bottom: 40px;
 }
 
 .default_unit_label{
@@ -2188,9 +2185,9 @@ body {
 }
 
 .measure_unit_section{
-  display: flex;
-  padding-top: 40px;
-  padding-bottom: 40px;  
+  padding-top: 20px;
+  padding-bottom: 20px;
+  width: 100%;
 }
 
 .pic_frame {
@@ -2353,6 +2350,7 @@ body {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
+  width: 100%;
 }
 
 .add_button {
