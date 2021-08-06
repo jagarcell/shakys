@@ -110,7 +110,7 @@
             @if(count($products) > 0)
             @foreach($products as $key => $product)
             <div id="{{$product->id}}" class="product_edition">
-                <div class="section_wrap">
+                <div class="product_section_wrap">
                     <div class="section">
                         <div class="pic_frame">
                             <img src="{{$product->image_path}}" loading="lazy" sizes="(max-width: 479px) 80vw, 256px" srcset="{{$product->image_path}} 500w, {{$product->image_path}} 512w" alt="" class="picture box_shadow">
@@ -168,7 +168,7 @@
 
         <!-- THIS IS THE HTML TO BE USED BY JS TO SHOW A CREATED OR UPDATED PRODUCT -->
         <div id="section_html" style="display:none;">
-            <div class="section_wrap">
+            <div class="product_section_wrap">
                 <div class="section">
                     <div class="pic_frame">
                         <img src="image-path" loading="lazy" sizes="(max-width: 479px) 80vw, 256px" srcset="image-path 500w, image-path 512w" alt="" class="picture box_shadow">

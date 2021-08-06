@@ -5,6 +5,14 @@ $(document).ready(function(){
         optionsHTML += "<option value='" + i + "'>" + i + "</option>"
     }
 
+    var allProductsSearchText = document.getElementById('all_products_search_text')
+
+    allProductsSearchText.addEventListener("keyup", function (event){
+        if(event.code == 'Enter'){
+            allProductsSearchClick()
+        }        
+    })
+
     // Prepare the products qty selects
     var orderQtys = document.getElementsByClassName('order_qty_select')
     //
@@ -28,39 +36,39 @@ $(document).ready(function(){
     // Obtains the last active Tab ID from the hidden input that holds it
     // That value came from the backend through blade
     var tabId = $('#tab_id').val()
-    // Gets the tab element
-    var tab = document.getElementById(tabId)
 
     // Opens the last active Tab element
-    openTab(tab)
+    openTab(tabId)
 })
 
-function openTab(element){
+function openTab(tabId){
+    // Gets the tab element
+    var tab = document.getElementById(tabId)
     var tabLinks = document.getElementsByClassName('w-tab-link')
     var tabPanes = document.getElementsByClassName('w-tab-pane')
 
     $.each(tabLinks, function(index, tabLink){
         tabLink.classList.remove('w--current')
-        if(element.getAttribute('data-w-tab') == tabLink.getAttribute('data-w-tab')){
+        if(tab.getAttribute('data-w-tab') == tabLink.getAttribute('data-w-tab')){
             tabLink.classList.add('w--current')
         }
     })
 
     $.each(tabPanes, function(index, tabPane){
         tabPane.classList.remove('w--tab-active')
-        if(element.getAttribute('data-w-tab') == tabPane.getAttribute('data-w-tab')){
+        if(tab.getAttribute('data-w-tab') == tabPane.getAttribute('data-w-tab')){
             tabPane.classList.add('w--tab-active')
         }
     })
 
-    if(element.getAttribute('data-w-tab') == "Tab 2"){
+    if(tab.getAttribute('data-w-tab') == "Tab 2"){
         $('#add_to_order_button').show()
     }
     else{
         $('#add_to_order_button').hide()
     }
 
-    if(element.getAttribute('data-w-tab') == "Tab 3"){
+    if(tab.getAttribute('data-w-tab') == "Tab 3"){
         $('#all_products_add_to_order_button').show()
     }
     else{
@@ -680,5 +688,7 @@ function orderSupplierSelectChange(supplierSelect, orderSectionId){
 
 function allProductsSearchClick () {
     var allProductsSearchText = document.getElementById('all_products_search_text').value
-    console.log(allProductsSearchText)
+    // When a serach is clicked we redirect to pending orders panel 
+    // with the Tab ID of all the products and the search text 
+    window.location.replace('/showpendingorderspanel?tab_id=tab_3&search_text=' + allProductsSearchText)
 }
