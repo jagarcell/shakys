@@ -23,6 +23,20 @@ select{
   font-family: inherit;
 }
 
+.section_sub_wrap{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+.add_section_div{
+  border-bottom: 1px solid black;
+  position: sticky;
+  top: 64px;
+  border-bottom: 1px solid black;
+  background: white;
+}
+
 .search_product_icon{
   position: absolute;
   right: 1%;
@@ -1105,7 +1119,7 @@ select{
 }
 
 .field_wrap{
-  width: 90%;
+  width: 100%;
   font-family: inherit;
 }
 
@@ -1168,6 +1182,7 @@ select{
   line-height: 1.5em;
   text-align: center;
   padding: 30px;
+  border-bottom: 15px solid black;
 }
 
 .action_button{
@@ -1564,8 +1579,8 @@ body {
 
 .user_div{
   border-bottom: 15px solid #000;
-  padding-top: 30px;
-  padding-bottom: 30px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   display: block;
 }
 
@@ -1611,8 +1626,7 @@ body {
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
   flex-direction: row;
-  padding-top: 30px;
-  padding-bottom: 30px;}
+}
 
 .user_form {
   line-height: 1.5em;
@@ -2024,16 +2038,6 @@ body {
   color: #ed0000;
 }
 
-.supplier_add_icon{
-  width: 100%;
-  border-bottom: 1px solid #000;
-  text-align: end;
-  padding: 10px;
-  font-size: xx-large;
-  color: orange;
-  min-height: 10vh;
-}
-
 .supplier_add_input {
   min-height: 30px;
   padding-bottom: 10px;
@@ -2172,16 +2176,28 @@ body {
   top: 64px;
   border-bottom: 1px solid black;}
 
-.add_icon {
-  height: 35px;
-  background-color: transparent;
-  color: #ef980e;
-  font-size: inherit;
-  position: absolute;
-  top: 20%;
-  width: 30px;
-}
+  .add_icon {
+    height: 35px;
+    background-color: transparent;
+    color: #ef980e;
+    font-size: inherit;
+    position: absolute;
+    top: 20%;
+    width: 30px;
+  }
 
+  .supplier_add_icon {
+    height: 35px;
+    background-color: transparent;
+    color: #ef980e;
+    font-size: xx-large;
+    position: absolute;
+    left: 90%;
+    top: 10%;
+    width: 30px;
+    padding: 0;
+  }
+    
 .add_section {
   display: -webkit-box;
   display: -webkit-flex;
@@ -2222,7 +2238,8 @@ body {
 }
 
 .picture {
-  width: 256px;
+  width: 128px;
+  height: 128px;
   border-radius: 10px;
 }
 
@@ -2683,6 +2700,11 @@ body {
 }
 
 @media screen and (max-width: 767px) {
+  
+  .add_section_div{
+    top: 0;
+  }
+
   .product_section_wrap{
     display: block;
   }
@@ -3410,7 +3432,7 @@ body {
 }
 
 @media screen and (max-width: 499px) {
-  
+
   .add_icon_frame{
     height: 20vh;
   }

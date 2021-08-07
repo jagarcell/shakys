@@ -1,5 +1,14 @@
 $(document).ready(function(){
     createSupplierImageDrop()
+
+    var supplierSearchText = document.getElementById('supplier_search_text')
+
+    supplierSearchText.addEventListener("keyup", function (event){
+        if(event.code == 'Enter'){
+            supplierSearchClick()
+        }        
+    })
+
 })
 
 var MyDropzone
@@ -32,6 +41,14 @@ function createSupplierImageDrop(){
 		}
     )
 }
+/**
+ * 
+ * To search a supplier according to the search text 
+ */
+function supplierSearchClick() {
+    var supplierSearchText = document.getElementById('supplier_search_text').value
+    window.location.replace('/suppliers?search_text=' + supplierSearchText)
+}
 
 /**
  *  Add supplier click action.
@@ -39,7 +56,7 @@ function createSupplierImageDrop(){
  *  Shows the add supplier form.
  */
 function supplierAddClick() {
-    $('#supplier_add_icon').hide()
+    $('#add_icon_frame').hide()
     $('#supplier_add_section').show()
 }
 
@@ -97,7 +114,7 @@ function newSupplier(newSupplierButton) {
                                     var supplier = data.supplier
                                     frame.hide()
                                     $('#supplier_add_section').hide()
-                                    $('#supplier_add_icon').show()
+                                    $('#add_icon_frame').show()
                                     supplier_data_entry_form = $('#' + element_tag)
                                     supplier_data_entry_form.find('#supplier_code_entry').val('')
                                     supplier_data_entry_form.find('#supplier_email_entry').val('')
@@ -182,7 +199,7 @@ function newSupplier(newSupplierButton) {
  */
 function discardNewSupplier() {
     $('#supplier_add_section').hide()
-    $('#supplier_add_icon').show()
+    $('#add_icon_frame').show()
     supplier_data_entry_form = $('#supplier_data_entry_form')
     supplier_data_entry_form.find('#supplier_email_entry').val('')
     supplier_data_entry_form.find('#supplier_name_entry').val('')
@@ -223,12 +240,12 @@ function editClick(editButton) {
                         supplier_section.innerHTML = supplier_section.innerHTML.replace('supplier-image', 'supplier_image_' + supplier.id)
                     
                         supplier_data_entry_form = $(supplier_section).find('#supplier_data_entry_form')
-                        supplier_data_entry_form.find('#supplier_email_entry').val(supplier.email)
-                        supplier_data_entry_form.find('#supplier_name_entry').val(supplier.name)
-                        supplier_data_entry_form.find('#supplier_address_entry').val(supplier.address)
-                        supplier_data_entry_form.find('#supplier_phone_entry').val(supplier.phone)
-                        supplier_data_entry_form.find('#supplier_pickup_entry').val(supplier.pickup)
-                        supplier_data_entry_form.find('#supplier_image_to_upload').val(supplier.image_name)
+                        supplier_data_entry_form.find('#edit_supplier_email_entry').val(supplier.email)
+                        supplier_data_entry_form.find('#edit_supplier_name_entry').val(supplier.name)
+                        supplier_data_entry_form.find('#edit_supplier_address_entry').val(supplier.address)
+                        supplier_data_entry_form.find('#edit_supplier_phone_entry').val(supplier.phone)
+                        supplier_data_entry_form.find('#edit_supplier_pickup_entry').val(supplier.pickup)
+                        supplier_data_entry_form.find('#edit_supplier_image_to_upload').val(supplier.image_name)
         
                         $('#supplier_image_' + supplier.id).addClass('dropzone')
     
@@ -244,7 +261,7 @@ function editClick(editButton) {
                                         this.on('addedfile', function (file) {
                                             // body...
                                             var edit_div = this.element.parentNode
-                                            $(edit_div).find('#supplier_image_to_upload').val(file.name)
+                                            $(edit_div).find('#edit_supplier_image_to_upload').val(file.name)
                                             filesAccepted = this.getAcceptedFiles()
             
                                             if(this.hidePreview !== undefined){
@@ -260,7 +277,7 @@ function editClick(editButton) {
                                         })
                                         this.on('success', function(file, data){
                                             var edit_div = this.element.parentNode
-                                            $(edit_div).find('#supplier_image_to_upload').val(data.filename)
+                                            $(edit_div).find('#edit_supplier_image_to_upload').val(data.filename)
                                         })
                                     }
                                 }
@@ -403,12 +420,12 @@ function acceptChanges(acceptChangesButton) {
     var id = supplier_section_wrap.id
     supplier_section = $(supplier_section_wrap)
 
-    var email = supplier_section.find('#supplier_email_entry').val()
-    var name = supplier_section.find('#supplier_name_entry').val()
-    var address = supplier_section.find('#supplier_address_entry').val()
-    var phone = supplier_section.find('#supplier_phone_entry').val()
-    var pickup = supplier_section.find('#supplier_pickup_entry').val()
-    var image_path = supplier_section.find('#supplier_image_to_upload').val()
+    var email = supplier_section.find('#edit_supplier_email_entry').val()
+    var name = supplier_section.find('#edit_supplier_name_entry').val()
+    var address = supplier_section.find('#edit_supplier_address_entry').val()
+    var phone = supplier_section.find('#edit_supplier_phone_entry').val()
+    var pickup = supplier_section.find('#edit_supplier_pickup_entry').val()
+    var image_path = supplier_section.find('#edit_supplier_image_to_upload').val()
 
     $.post('/updatesupplier',
         {
@@ -435,6 +452,7 @@ function acceptChanges(acceptChangesButton) {
                                 message:"THE SUPPLIER WAS SUCCESSFULLY UPDATED!",
                                 error:false,
                                 param:data,
+                                alignTop:false,
                             }, function(frame, data){
                                 frame.hide()
                                 var supplier = data.supplier

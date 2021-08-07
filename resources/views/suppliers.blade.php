@@ -28,10 +28,26 @@
         @section('page_title', 'SUPPLIERS')
         @section('content')
         <!-- HTML TO SHOW THE SUPPLIERS ADD FORM --> 
-        <div id="add_section_div">
-            <div id="supplier_add_icon" class="supplier_add_icon">
-                <input type="button" class="supplier_add_input" value="+" onclick="supplierAddClick()">
+        <div id="add_section_div" class="add_section_div">
+
+            <!-- THIS IS THE ADD ICON -->
+            <div id="add_icon_frame" class="add_icon_frame">
+                <div class="all_products_search_frame">
+                    <input id="supplier_search_text" type="text" class="all_products_search_bar" placeholder="Enter your search here">
+                        <div class="search_product_icon">
+                            <img src="/images/MagnifierBk.png">
+                            <input type="button" class="all_products_search_button" onclick="supplierSearchClick()">
+                        </div>
+                    </div>
+                    <div class="supplier_add_icon">
+                        <input type="button" class="add_input" value="+" onclick="supplierAddClick()">
+                    </div>
+                </div>
             </div>
+
+            <!--div id="supplier_add_icon" class="supplier_add_icon">
+                <input type="button" class="supplier_add_input" value="+" onclick="supplierAddClick()">
+            </div-->
             <div id="action_result_message" class="action_result_message" hidden>action_result_message</div>
             <div id="supplier_add_section" style="display:none">
                 <div class="supplier_add_section">
@@ -56,8 +72,8 @@
                                 </select>
                                 <input id="supplier_image_to_upload" hidden>
                                 <div class="supplier_data_form_buttons">
-                                    <input type="button" value="Create Supplier" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick='newSupplier(this)'>
-                                    <input type="button" value="Discard Creation" data-wait="Please wait..." class="edition_button discard_button discard_button box_shadow w-button" onclick='discardNewSupplier()'>
+                                    <input type="button" value="Create" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick='newSupplier(this)'>
+                                    <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button discard_button box_shadow w-button" onclick='discardNewSupplier()'>
                                 </div>
                                 <div id="supplier_add_error" class="supplier_add_error" hidden>
                                 </div>
@@ -70,50 +86,52 @@
 
         <!-- HTML TO BE ADDED FOR THE EDIT ACTION -->
         <div id="supplier_add_section_html" hidden>
-            <div id="action_result_message" class="action_result_message" hidden>action_result_message</div>
-            <div class="supplier_section">
-                <form id="supplier-image" action="/supplierimgupload" method="post" enctype="multipart/form-data" class="supplier_pic_frame box_shadow">
-                    @csrf
-                </form>
-                <div class="supplier_data_entry">
-                    <div class="supplier_data_form_block w-form">
-                        <form id="supplier_data_entry_form" class="supplier_data_form">
-                            @csrf
-                            <div class="field_wrap">
-                                <div class="field_label">Email</div>
-                                <input id="supplier_email_entry" type="email" class="supplier_entry w-input" maxlength="256" name="email" data-name="Email" placeholder="Email" id="supplier_email" required="">
-                            </div>
-                            <div id="supplier_email_taken" class="supplier_email_taken" style="display:none;">This email has been taken!</div>
-                            <div class="field_wrap">
-                                <div class="field_label">Name</div>
-                                <input id="supplier_name_entry" type="text" class="supplier_entry w-input" maxlength="256" name="name" data-name="Name" placeholder="Name" id="supplier_name" required="">
-                            </div>
-                            <div class="field_wrap">
-                                <div class="field_label">Address</div>
-                                <input id="supplier_address_entry" type="text" class="supplier_entry w-input" maxlength="256" name="supplier_address" data-name="supplier_address" placeholder="Address" id="supplier_address">
-                            </div>
-                            <div class="field_wrap">
-                                <div class="field_label">Phone</div>
-                                <input id="supplier_phone_entry" type="tel" class="supplier_entry w-input" maxlength="256" name="supplier_phone" data-name="supplier_phone" placeholder="Phone" id="supplier_phone">
-                            </div>
-                            <div class="field_wrap">
-                                <div class="field_label">Shipping</div>
-                                <select id="supplier_pickup_entry" type="text" class="supplier_entry w-input" maxlength="256" name="supplier_pickup_delivery" data-name="supplier_pickup_delivery" placeholder="Pickup" id="supplier_pickup_delivery">
-                                    <option value="pickup" selected>Pickup</option>
-                                    <option value="delivery">Delivery</option>
-                                </select>
-                            </div>
-                            <input id="supplier_image_to_upload" hidden>
-                            <div class="supplier_data_form_buttons">
-                                <input type="button" value="Accept Changes" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick='acceptChanges(this)'>
-                                <input type="button" value="Discard Changes" data-wait="Please wait..." class="edition_button discard_button discard_button box_shadow w-button" onclick='discardChanges(this)'>
-                            </div>
-                            <div id="supplier_add_error" class="supplier_add_error" style="display:none">
-                                    Test Error
-                            </div>
-                        </form>
+            <div class="section_sub_wrap">
+                <div class="supplier_section">
+                    <form id="supplier-image" action="/supplierimgupload" method="post" enctype="multipart/form-data" class="supplier_pic_frame box_shadow">
+                        @csrf
+                    </form>
+                    <div class="supplier_data_entry">
+                        <div class="supplier_data_form_block w-form">
+                            <form id="supplier_data_entry_form" class="supplier_data_form">
+                                @csrf
+                                <div class="field_wrap">
+                                    <div class="field_label">Email</div>
+                                    <input id="edit_supplier_email_entry" type="email" class="supplier_entry w-input" maxlength="256" name="email" data-name="Email" placeholder="Email" id="supplier_email" required="">
+                                </div>
+                                <div id="supplier_email_taken" class="supplier_email_taken" style="display:none;">This email has been taken!</div>
+                                <div class="field_wrap">
+                                    <div class="field_label">Name</div>
+                                    <input id="edit_supplier_name_entry" type="text" class="supplier_entry w-input" maxlength="256" name="name" data-name="Name" placeholder="Name" id="supplier_name" required="">
+                                </div>
+                                <div class="field_wrap">
+                                    <div class="field_label">Address</div>
+                                    <input id="edit_supplier_address_entry" type="text" class="supplier_entry w-input" maxlength="256" name="supplier_address" data-name="supplier_address" placeholder="Address" id="supplier_address">
+                                </div>
+                                <div class="field_wrap">
+                                    <div class="field_label">Phone</div>
+                                    <input id="edit_supplier_phone_entry" type="tel" class="supplier_entry w-input" maxlength="256" name="supplier_phone" data-name="supplier_phone" placeholder="Phone" id="supplier_phone">
+                                </div>
+                                <div class="field_wrap">
+                                    <div class="field_label">Shipping</div>
+                                    <select id="edit_supplier_pickup_entry" type="text" class="supplier_entry w-input" maxlength="256" name="supplier_pickup_delivery" data-name="supplier_pickup_delivery" placeholder="Pickup" id="supplier_pickup_delivery">
+                                        <option value="pickup" selected>Pickup</option>
+                                        <option value="delivery">Delivery</option>
+                                    </select>
+                                </div>
+                                <input id="edit_supplier_image_to_upload" hidden>
+                                <div class="supplier_data_form_buttons">
+                                    <input type="button" value="Accept" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick='acceptChanges(this)'>
+                                    <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button discard_button box_shadow w-button" onclick='discardChanges(this)'>
+                                </div>
+                                <div id="supplier_add_error" class="supplier_add_error" style="display:none">
+                                        Test Error
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
+                <div id="action_result_message" class="action_result_message" hidden>action_result_message</div>
             </div>
         </div>
 
@@ -163,7 +181,7 @@
             </div>
             @endforeach
             @else
-            <div id="empty_list" class="empty_list">THERE ARE NOT SUPPLIERS REGISTERED YET!</div>
+            <div id="empty_list" class="empty_list">THERE ARE NOT SUPPLIERS TO SHOW!</div>
             @endif
         </div>
 
