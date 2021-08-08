@@ -414,7 +414,10 @@ function deleteClick(deleteButton) {
  * @param {string} acceptChangesButton 
  * *        acceptChangesButton:'HTML of the button that initiated this action'
  */
-function acceptChanges(acceptChangesButton) {
+function acceptChanges(acceptChangesButton, button) {
+    if(button !== undefined){
+        button.disabled = true
+    }
     
     var supplier_section_wrap = garcellParentNodeByClassName(acceptChangesButton, 'supplier_section_wrap')
     var id = supplier_section_wrap.id
@@ -526,6 +529,9 @@ function acceptChanges(acceptChangesButton) {
                     default:
                         break;
                 }
+                if(button !== undefined){
+                    button.disabled = false
+                }
             }
         }
     )
@@ -536,7 +542,10 @@ function acceptChanges(acceptChangesButton) {
  * @param {string} discardChangesButton 
  * *        discardChangesButton:'HTML of the button that initiated this action'
  */
-function discardChanges(discardChangesButton) {
+function discardChanges(discardChangesButton, button) {
+    if(button !== undefined){
+        button.disabled = true
+    }
     var supplier_section = garcellParentNodeByClassName(discardChangesButton, 'supplier_section_wrap')
     
     $.post(
@@ -610,6 +619,9 @@ function discardChanges(discardChangesButton) {
                 
                     default:
                         break;
+                }
+                if(button !== undefined){
+                    button.disabled = false
                 }
             }
         }
