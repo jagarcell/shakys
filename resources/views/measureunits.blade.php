@@ -56,7 +56,7 @@
                             <form class="product_form add_unit_frame">
                                 <input id="unit_description" type="text" class="code text_field box_shadow w-input" maxlength="255" placeholder="Unit Description" required="">
                                 <div class="add_buttons_frame">
-                                    <input type="button" value="Create Unit" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="createButtonClick()">
+                                    <input type="button" value="Create Unit" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="createButtonClick(this)">
                                     <input type="button" value="Discard Unit" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardButtonClick()">
                                 </div>
                                 <input class="image_to_upload" hidden>
@@ -85,10 +85,10 @@
                                 </div>
                                 <div class="data_entry_buttons">
                                     <div class="bottom_button">
-                                        <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$measureunit->id}}')">
+                                        <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$measureunit->id}}', this)">
                                     </div>
                                     <div class="bottom_button">
-                                        <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('{{$measureunit->id}}')">
+                                        <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('{{$measureunit->id}}', this)">
                                     </div>
                                 </div>
                             </div>
@@ -115,10 +115,10 @@
                             </div>
                             <div class="data_entry_buttons">
                                 <div>
-                                    <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('unit-id')">
+                                    <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('unit-id', this)">
                                 </div>
                                 <div class="bottom_button">
-                                    <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('unit-id')">
+                                    <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('unit-id', this)">
                                 </div>
                             </div>
                         </div>

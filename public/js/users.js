@@ -25,7 +25,10 @@ function userSearchClick() {
  * @param {string} userid
  **                userid:'The id of the user being edited'  
  */
-function edit(userid){
+function edit(userid, button){
+    if(button !== undefined){
+        button.disabled = true
+    }
 
     $.post('/userbyid', 
         {
@@ -94,6 +97,9 @@ function edit(userid){
                 }
     
             }
+            if(button !== undefined){
+                button.disabled = false
+            }
         }
     )
 }
@@ -103,7 +109,10 @@ function edit(userid){
  * @param {string} userid
  **                 userid:'The id of the user being deleted'
  */
-function deleteUser(userid){
+function deleteUser(userid, button){
+    if(button !== undefined){
+        button.disabled = true
+    }
     if(confirm('ARE YOU SURE THAT YOU WANT TO DELETE THIS USER')){
         $.post('/deleteuser', 
             {
@@ -192,6 +201,9 @@ function deleteUser(userid){
                             default:
                                 break;
                     }
+                }
+                if(button !== undefined){
+                    button.disabled = false
                 }
             }
         )

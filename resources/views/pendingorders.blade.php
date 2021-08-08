@@ -30,7 +30,7 @@
         <div class="pending_content" hidden>
             <!-- COUNTED PRODUCT ADD TO ORDER BUTTON -->
             <div id="add_to_order_button" class="add_to_order_button_frame" display:none;">
-                <input type="button" value="Order" class="add_to_order_button shadowRight" onclick="addToOrderClick('add_to_order_check', 'counted_')">
+                <input type="button" value="Order" class="add_to_order_button shadowRight" onclick="addToOrderClick('add_to_order_check', 'counted_', this)">
             </div>
 
             <!-- ALL PRODUCTS ADD TO ORDER BUTTON -->
@@ -42,7 +42,7 @@
                         <input type="button" class="all_products_search_button" onclick="allProductsSearchClick()">
                     </div>
                 </div>
-                <input type="button" value="Order" class="add_to_order_button shadowRight" onclick="addToOrderClick('all_products_add_to_order_check', 'all_')">
+                <input type="button" value="Order" class="add_to_order_button shadowRight" onclick="addToOrderClick('all_products_add_to_order_check', 'all_', this)">
             </div>
 
             <!-- ACTION TABS -->
@@ -387,7 +387,7 @@
                             </div>
 
                             <div class="submit_order_button_wrap">
-                                <input type="button" value="Submit order" class="submit_order_button" onclick="submitOrderButtonClick('approval_{{$order->id}}')">
+                                <input type="button" value="Submit" class="submit_order_button" onclick="submitOrderButtonClick('approval_{{$order->id}}', this)">
                             </div>
 
                             <div id="action_result_message" class="action_result_message" hidden></div>
@@ -495,10 +495,10 @@
                             <!-- ACTION BUTTONS SECTION -->
                             <div class="submitted_order_buttons_wrap">
                                 <div class="submitted_order_button_wrap">
-                                    <input type="button" value="Resend order" class="submitted_order_button" onclick="resendOrderButtonClick('submitted_{{$submittedOrder->id}}')">
+                                    <input type="button" value="Resend" class="submitted_order_button" onclick="resendOrderButtonClick('submitted_{{$submittedOrder->id}}')">
                                 </div>
                                 <div class="submitted_order_button_wrap">
-                                    <input type="button" value="Receive order" class="submitted_order_button" onclick="receiveOrderButtonClick('submitted_{{$submittedOrder->id}}')">
+                                    <input type="button" value="Receive" class="submitted_order_button" onclick="receiveOrderButtonClick('submitted_{{$submittedOrder->id}}', this)">
                                 </div>
                             </div>
                             <!-- ACTION RESULT MESSAGE FRAME -->

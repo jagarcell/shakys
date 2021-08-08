@@ -203,8 +203,8 @@
                         </div>
                         <div class="user_section horizontal user_buttons_wraper">
                             <div class="user_edit_section center" id="edit_buttons">
-                                <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('user_id')">
-                                <input type="button" id="delete_user" class="add_user_button delete_button box_shadow edit delete w-button" value="DELETE" onclick="deleteUser('user_id')">
+                                <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('user_id', this)">
+                                <input type="button" id="delete_user" class="add_user_button delete_button box_shadow edit delete w-button" value="DELETE" onclick="deleteUser('user_id', this)">
                                 <input type="button" id="new_user_password" class="add_user_button discard_button box_shadow edit password w-button" value="PASSWD" onclick="newPassword('user_id')">
                             </div>
                         </div>
@@ -249,8 +249,8 @@
                             </div>
                             <div class="user_section horizontal user_buttons_wraper">
                                 <div class="user_edit_section center" id="edit_buttons">
-                                    <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('{{$user->id}}')">
-                                    <input type="button" id="delete_user" class="add_user_button delete_button box_shadow edit delete w-button" value="DELETE" onclick="deleteUser('{{$user->id}}')">
+                                    <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('{{$user->id}}', this)">
+                                    <input type="button" id="delete_user" class="add_user_button delete_button box_shadow edit delete w-button" value="DELETE" onclick="deleteUser('{{$user->id}}', this)">
                                     <input type="button" id="new_user_password" class="add_user_button discard_button box_shadow edit password w-button" value="PASSWD" onclick="newPassword('{{$user->id}}')">
                                 </div>
                             </div>
@@ -297,8 +297,8 @@
                             </div>
                             <div class="user_section horizontal user_buttons_wraper">
                                 <div class="user_edit_section center" id="edit_buttons">
-                                    <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('user-id')">
-                                    <input type="button" id="delete_user" class="add_user_button delete_button box_shadow edit delete w-button" value="DELETE" onclick="deleteUser('user-id')">
+                                    <input type="button" id="edit_user" class="add_user_button edit_button box_shadow edit w-button" value="EDIT" onclick="edit('user-id', this)">
+                                    <input type="button" id="delete_user" class="add_user_button delete_button box_shadow edit delete w-button" value="DELETE" onclick="deleteUser('user-id', this)">
                                     <input type="button" id="new_user_password" class="add_user_button discard_button box_shadow edit password w-button" value="PASSWD" onclick="newPassword('user-id')">
                                 </div>
                             </div>

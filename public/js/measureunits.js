@@ -7,7 +7,10 @@ function addIconClick() {
     discardEditChanges(-1)
 }
 
-function createButtonClick() {
+function createButtonClick(button) {
+    if(button !== undefined){
+        button.disabled = true
+    }
     var unitDescription = document.getElementById('unit_description').value
  
     $.post('/createmeasureunit',
@@ -76,6 +79,9 @@ function createButtonClick() {
                         break;
                 }
             }
+            if(button !== undefined){
+                button.disabled = false
+            }
         }
     )
 }
@@ -86,7 +92,10 @@ function discardButtonClick() {
     document.getElementById('unit_description').value = ""
 }
 
-function editButtonClick(unitId) {
+function editButtonClick(unitId, button) {
+    if(button !== undefined){
+        button.disabled = true
+    }
     discardEditChanges(-1)
 
     $.get('/getmeasureunit',
@@ -124,12 +133,16 @@ function editButtonClick(unitId) {
                     break
             }
         }
-    }
-)
-
+        if(button !== undefined){
+            button.disabled = false
+        }
+    })
 }
 
-function deleteButtonClick(unitId) {
+function deleteButtonClick(unitId, button) {
+    if(button !== undefined){
+        button.disabled = true
+    }
     $.post('/removemeasureunit',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
@@ -191,6 +204,9 @@ function deleteButtonClick(unitId) {
                     default:
                         break;
                 }
+            }
+            if(button !== undefined){
+                button.disabled = false
             }
         }
     )
