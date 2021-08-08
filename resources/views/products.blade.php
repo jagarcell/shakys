@@ -89,7 +89,7 @@
                                     </div>
                                     <div class="field_wrap" style="display:flex;">
                                         <div class="add_buttons_frame">
-                                            <input type="button" value="Create" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="createButtonClick()">
+                                            <input type="button" value="Create" data-wait="Please wait..." class="edition_button accept_button  box_shadow w-button" onclick="createButtonClick()">
                                             <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardButtonClick()">
                                         </div>
                                     </div>
@@ -264,10 +264,10 @@
                                 </div>
                                 <div class="field_wrap">
                                     <div class="add_buttons_frame">
-                                        <input type="button" value="Accept" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="acceptEditChanges('product-id')">
-                                        <input type="button" value="Discard" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardEditChanges('product-id')">
+                                        <input type="button" value="Accept" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="acceptEditChanges('product-id')">
+                                        <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardEditChanges('product-id')">
                                     </div>
-                                </div>
+                                </div> 
                             </div>
                        </form>
                     </div>
@@ -313,8 +313,8 @@
                                     <input id="supplier_product_description" value="" type="text" class="text_field box_shadow w-input" disabled>
                                 </div>
                                 <div class="add_buttons_frame">
-                                    <input type="button" value="Accept" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="acceptSupplierProductChanges('product-id')">
-                                    <input type="button" value="Discard" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardSupplierProductChanges('product-id')">
+                                    <input type="button" value="Accept" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="acceptSupplierProductChanges('product-id')">
+                                    <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardSupplierProductChanges('product-id')">
                                 </div>
                             </div>
                         </form>
