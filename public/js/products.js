@@ -535,8 +535,6 @@ function deleteButtonClick(productId) {
  *  
  */
 function editButtonClick(productId) {
-    alert(productId)
-    return
     discardEditChanges(-1)
     $.get('/getproduct',
         {
@@ -682,8 +680,8 @@ function editButtonClick(productId) {
  *  
  */
 function discardEditChanges(productId) {
-    discardUnitChanges()
     if(productId == -1){
+        return
         var productEditions = $('#products_list_wrap').find('.product_edition')
         $.each(productEditions, function(index, productEdition){
             discardEditChanges(productEdition.id)
@@ -691,6 +689,7 @@ function discardEditChanges(productId) {
         })
         return
     }
+    discardUnitChanges()
 
     $.get('/getproduct',
         {
