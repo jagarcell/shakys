@@ -44,7 +44,7 @@
                     </div>
                 </div>
                 <div class="add_icon">
-                    <input type="button" class="add_input" value="+" onclick="addIconClick()">
+                    <input type="button" class="add_input" value="+" onclick="addIconClick(this)">
                 </div>
             </div>
 
@@ -77,7 +77,7 @@
                                             <input type="text" class="measure_unit text_field box_shadow w-input" placeholder="Default Measure Unit" disabled>
                                         </div>
                                         <div class="default_measure_unit_button_frame">
-                                            <input type="button" value="Units" class="edition_button accept_button box_shadow w-button default_measure_unit_button" onclick="measuresButtonClick(-1)">
+                                            <input type="button" value="Units" class="edition_button accept_button box_shadow w-button default_measure_unit_button" onclick="measuresButtonClick(-1, this)">
                                         </div>
                                     </div>
                                     
@@ -89,7 +89,7 @@
                                     </div>
                                     <div class="field_wrap" style="display:flex;">
                                         <div class="add_buttons_frame">
-                                            <input type="button" value="Create" data-wait="Please wait..." class="edition_button accept_button  box_shadow w-button" onclick="createButtonClick()">
+                                            <input type="button" value="Create" data-wait="Please wait..." class="edition_button accept_button  box_shadow w-button" onclick="createButtonClick(this)">
                                             <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardButtonClick()">
                                         </div>
                                     </div>
@@ -252,7 +252,7 @@
                                         <input type="text" class="measure_unit text_field box_shadow w-input" placeholder="Default Measure Unit" disabled>
                                     </div>
                                     <div class="default_measure_unit_button_frame">
-                                        <input type="button" value="Units" class="edition_button accept_button box_shadow w-button default_measure_unit_button" onclick="measuresButtonClick(-1)">
+                                        <input type="button" value="Units" class="edition_button accept_button box_shadow w-button default_measure_unit_button" onclick="measuresButtonClick(-1, this)">
                                     </div>
                                 </div>
                                 <!--input type="button" value="Measure Units" class="edition_button accept_button box_shadow w-button" onclick="measuresButtonClick(-1)"-->
@@ -347,7 +347,7 @@
                             <label for="unit_0" class="unit_link_checkbox_label"><input class="new_unit_input" placeholder="Enter a unit" style="display:none;"></label>
                             <div class="unit_add_icon">
                                 <a class="unit_add_link" onclick="addUnitClick()">Add</a>
-                                <a class="unit_create_link" style="display:none" onclick="createUnitClick()">+</a>
+                                <a class="unit_create_link" style="display:none" onclick="createUnitClick(this)">+</a>
                             </div>
                         </div>
                         <div class="unit_links">
