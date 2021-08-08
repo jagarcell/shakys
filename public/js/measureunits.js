@@ -217,7 +217,10 @@ function deleteButtonClick(unitId, button) {
  * @param {sting} unitId
  *  
  */
-function acceptEditChanges(unitId) {
+function acceptEditChanges(unitId, button) {
+   if(button !== undefined){
+       button.disabled = true
+   } 
    $.post('/updatemeasureunit',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
@@ -259,6 +262,9 @@ function acceptEditChanges(unitId) {
                         break
                 }
             }
+            if(button !== undefined){
+                button.disabled = false
+            }
         }
    )  
 }
@@ -268,13 +274,17 @@ function acceptEditChanges(unitId) {
  * @param {sting} unitId
  *  
  */
-function discardEditChanges(unitId) {
+function discardEditChanges(unitId, button) {
     if(unitId == -1){
         var measureUnitEditions = $('.measure_unit_edition')
         $.each(measureUnitEditions, function(index, measureUnitEdition){
             discardEditChanges(measureUnitEdition.id)
         })
         return
+    }
+
+    if(button !== undefined){
+        button.disabled = true
     }
 
     $.get('/getmeasureunit',
@@ -297,6 +307,9 @@ function discardEditChanges(unitId) {
                     default:
                         break
                 }
+            }
+            if(button !== undefined){
+                button.disabled = false
             }
         }
     )    

@@ -140,8 +140,8 @@
                                     <input type="text" class="code text_field box_shadow w-input unit_description_input" maxlength="50" name="Code" placeholder="Unit Description" required="" value="unit-description">
                                 </div>
                                 <div class="add_buttons_frame">
-                                    <input type="button" value="Accept Changes" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="acceptEditChanges('unit-id')">
-                                    <input type="button" value="Discard Changes" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardEditChanges('unit-id')">
+                                    <input type="button" value="Accept" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="acceptEditChanges('unit-id', this)">
+                                    <input type="button" value="Discard" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardEditChanges('unit-id', this)">
                                 </div>
                                 <input class="image_to_upload" hidden>
                             </form>

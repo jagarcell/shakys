@@ -338,6 +338,9 @@ function saveUser(element) {
  **         element:'The HTML element that initiated this action' 
  */
 function discard(element) {
+    if(element !== undefined){
+        element.disabled = true
+    }
     var edit_section = garcellParentNodeById(element, 'user_section')
     var userId = $(edit_section).find('#edited_user_id').val()
 
@@ -409,6 +412,10 @@ function discard(element) {
 
                         default:
                            break;
+                }
+
+                if(element !== undefined){
+                    element.disabled = false
                 }
             }
         }

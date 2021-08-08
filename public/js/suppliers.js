@@ -542,9 +542,10 @@ function acceptChanges(acceptChangesButton, button) {
  * @param {string} discardChangesButton 
  * *        discardChangesButton:'HTML of the button that initiated this action'
  */
-function discardChanges(discardChangesButton, button) {
-    if(button !== undefined){
-        button.disabled = true
+function discardChanges(discardChangesButton) {
+
+    if(discardChangesButton !== undefined){
+        discardChangesButton.disabled = true
     }
     var supplier_section = garcellParentNodeByClassName(discardChangesButton, 'supplier_section_wrap')
     
@@ -620,13 +621,12 @@ function discardChanges(discardChangesButton, button) {
                     default:
                         break;
                 }
-                if(button !== undefined){
-                    button.disabled = false
+                if(discardChangesButton !== undefined){
+                    discardChangesButton.disabled = false
                 }
             }
         }
     )
-
 }
 
 /**

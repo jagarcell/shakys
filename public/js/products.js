@@ -1,5 +1,3 @@
-const { upperFirst } = require("lodash")
-
 $(document).ready(function(){
     createProductImageDrop()
 
@@ -59,9 +57,8 @@ function addIconClick(button) {
     var productEditions = $('#products_list_wrap').find('.product_edition')
 
     $('#add_section_wrap').removeClass('add_icon_visible')
-    $.each(productEditions, function(index, productEdition){
-        discardEditChanges(productEdition.id)
-    })
+
+    discardEditChanges(-1)
 
     $.get('/getsuppliers', function(data, status){
         if(status == 'success'){
@@ -564,6 +561,7 @@ function editButtonClick(productId, button) {
         button.disabled = true
     }
     discardEditChanges(-1)
+
     $.get('/getproduct',
         {
             id:productId,
@@ -651,6 +649,7 @@ function editButtonClick(productId, button) {
                                             supplierSelect.add(option)
                                         })
                                     }
+                                    document.getElementById(element_tag).classList.add('editting')
                                 }
                             }
                         )
@@ -710,11 +709,10 @@ function editButtonClick(productId, button) {
  */
 function discardEditChanges(productId, button) {
     if(productId == -1){
-        return
-        var productEditions = $('#products_list_wrap').find('.product_edition')
+        var productEditions = document.getElementsByClassName('editting')
         $.each(productEditions, function(index, productEdition){
-            discardEditChanges(productEdition.id, null)
-            discardButtonClick()
+            discardEditChanges(productEdition.id)
+            productEdition.classList.remove('editting')
         })
         return
     }
@@ -731,6 +729,7 @@ function discardEditChanges(productId, button) {
             if(status == 'success'){
                 var element_tag = data.element_tag
                 var actionResultMessage = $(document.getElementById(element_tag)).find('#action_result_message')
+                console.log(actionResultMessage[0])
                 switch (data.status) {
                     case 'ok':
                         var product = data.product
@@ -747,6 +746,7 @@ function discardEditChanges(productId, button) {
 
                         section.innerHTML = sectionHtml
                         clearUnitsChange()
+                        document.getElementById(product.id).classList.remove('editting')
                        break;
 
                     case 'error':
