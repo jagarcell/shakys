@@ -1744,7 +1744,8 @@ body {
   font-size: xx-large;
   color: orange;
   position: absolute;
-  right: 13%;
+  top:10%;
+  right: 6%;
   height: 30px;
   width: 30px;
 }
@@ -2162,8 +2163,8 @@ body {
   top:64px;
   left: 0vw;
   background: white;  
-  width: 100vw;
-  min-height: 65px;
+  width: 99vw;
+  min-height: 10vh;
   z-index: 11;
   border-bottom: 1px solid black;
 }
@@ -2176,27 +2177,28 @@ body {
   top: 64px;
   border-bottom: 1px solid black;}
 
-  .add_icon {
-    height: 35px;
-    background-color: transparent;
-    color: #ef980e;
-    font-size: inherit;
-    position: absolute;
-    top: 20%;
-    width: 30px;
-  }
+.add_icon {
+  height: 35px;
+  background-color: transparent;
+  color: #ef980e;
+  font-size: inherit;
+  position: absolute;
+  top: 10%;
+  right: 6%;
+  width: 30px;
+}
 
-  .supplier_add_icon {
-    height: 35px;
-    background-color: transparent;
-    color: #ef980e;
-    font-size: xx-large;
-    position: absolute;
-    left: 90%;
-    top: 10%;
-    width: 30px;
-    padding: 0;
-  }
+.supplier_add_icon {
+  height: 35px;
+  background-color: transparent;
+  color: #ef980e;
+  font-size: xx-large;
+  position: absolute;
+  right: 6%;
+  top: 10%;
+  width: 30px;
+  padding: 0;
+}
     
 .add_section {
   display: -webkit-box;
@@ -2293,8 +2295,9 @@ body {
 }
 
 .add_frame_section{
-  width:50%;
-  height:100%
+  width: 50%;
+  height: 100%;
+  padding-right: 2%;
 }
 
 .add_unit_frame {
@@ -3432,6 +3435,9 @@ body {
 }
 
 @media screen and (max-width: 499px) {
+  .add_section_wrap{
+    min-height: 20vh;
+  }
 
   .add_icon_frame{
     height: 20vh;

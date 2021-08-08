@@ -535,6 +535,8 @@ function deleteButtonClick(productId) {
  *  
  */
 function editButtonClick(productId) {
+    alert(productId)
+    return
     discardEditChanges(-1)
     $.get('/getproduct',
         {
