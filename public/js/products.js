@@ -55,7 +55,7 @@ function addIconClick() {
 
     $('#add_section_wrap').removeClass('add_icon_visible')
     $.each(productEditions, function(index, productEdition){
-        discardEditChanges(productEdition.id)
+        discardEditChanges(productEdition.id, null)
     })
 
     $.get('/getsuppliers', function(data, status){
@@ -221,8 +221,9 @@ function createButtonClick() {
  * @param {string} productId
  *  
  */
-function suppliersButtonClick(productId) {
-    discardEditChanges(-1)
+function suppliersButtonClick(productId, button) {
+    button.disabled = true
+    discardEditChanges(-1, null)
     $.get('/getproduct',
         {
             id:productId,
@@ -282,6 +283,7 @@ function suppliersButtonClick(productId) {
                         break
                 }
             }
+            button.disabled = false
         }
     )
 }
@@ -460,7 +462,10 @@ function discardSupplierProductChanges(productId) {
  * @param {string} productId
  *  
  */
-function deleteButtonClick(productId) {
+function deleteButtonClick(productId, button) {
+    if(button !== null){
+        button.disabled = true
+    }
     discardEditChanges(-1)
     $.post('/deleteproduct',
         {
@@ -525,6 +530,9 @@ function deleteButtonClick(productId) {
                         break;
                 }
             }
+            if(button !== null){
+                button.disabled = false
+            }
         }
     )
 }
@@ -534,8 +542,9 @@ function deleteButtonClick(productId) {
  * @param {string} productId
  *  
  */
-function editButtonClick(productId) {
-    discardEditChanges(-1)
+function editButtonClick(productId, button) {
+    button.disabled = true
+    discardEditChanges(-1, null)
     $.get('/getproduct',
         {
             id:productId,
@@ -666,10 +675,9 @@ function editButtonClick(productId) {
                         break
                 }
             }
+            button.disabled = false                
         }
     )
-
-
 }
 
 /**
@@ -679,16 +687,17 @@ function editButtonClick(productId) {
  * @param {string} productid
  *  
  */
-function discardEditChanges(productId) {
+function discardEditChanges(productId, button) {
     if(productId == -1){
         return
         var productEditions = $('#products_list_wrap').find('.product_edition')
         $.each(productEditions, function(index, productEdition){
-            discardEditChanges(productEdition.id)
+            discardEditChanges(productEdition.id, null)
             discardButtonClick()
         })
         return
     }
+    button.disabled = true
     discardUnitChanges()
 
     $.get('/getproduct',
@@ -755,6 +764,7 @@ function discardEditChanges(productId) {
                     default:
                         break;
                 }
+                button.disabled = false
             }
         }
     )
@@ -768,11 +778,12 @@ function discardEditChanges(productId) {
  * @param {string} productId
  *  
  */
-function acceptEditChanges(productId){
+function acceptEditChanges(productId, button){
     if(!unitsSelected()){
         alert("YOU MUST SELECT AT LEAST ONE UNIT FOR THE PRODUCT!")
         return
     }
+    button.disabled = true
 
     var productForm = $(document.getElementById(productId)).find('.product_form')
     
@@ -874,6 +885,7 @@ function acceptEditChanges(productId){
                             break;
                     }
                 }
+                button.disabled = false
             }
         )
     }

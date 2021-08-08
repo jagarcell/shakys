@@ -145,13 +145,13 @@
                                 </div>
                                 <div class="data_entry_buttons field_wrap">
                                     <div class="bottom_button">
-                                        <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$product->id}}')">
+                                        <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$product->id}}', this)">
                                     </div>
                                     <div class="bottom_button">
-                                        <input type="button" class="supplier_product_button box_shadow w-button" value="Suppliers" onclick="suppliersButtonClick('{{$product->id}}')">
+                                        <input type="button" class="supplier_product_button box_shadow w-button" value="Suppliers" onclick="suppliersButtonClick('{{$product->id}}', this)">
                                     </div>
                                     <div class="bottom_button">
-                                        <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('{{$product->id}}')">
+                                        <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('{{$product->id}}', this)">
                                     </div>
                                 </div>
                             </div>
@@ -203,13 +203,13 @@
                             </div>
                             <div class="data_entry_buttons field_wrap">
                                 <div class="bottom_button">
-                                    <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('section_html')">
+                                    <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('section_html', this)">
                                 </div>
                                 <div class="bottom_button">
-                                    <input type="button" class="supplier_product_button box_shadow w-button" value="Suppliers" onclick="suppliersButtonClick('section_html')">
+                                    <input type="button" class="supplier_product_button box_shadow w-button" value="Suppliers" onclick="suppliersButtonClick('section_html', this)">
                                 </div>
                                 <div class="bottom_button">
-                                    <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('section_html')">
+                                    <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('section_html', this)">
                                 </div>
                             </div>
                         </div>
@@ -264,8 +264,8 @@
                                 </div>
                                 <div class="field_wrap">
                                     <div class="add_buttons_frame">
-                                        <input type="button" value="Accept" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="acceptEditChanges('product-id')">
-                                        <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardEditChanges('product-id')">
+                                        <input type="button" value="Accept" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="acceptEditChanges('product-id', this)">
+                                        <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardEditChanges('product-id', this)">
                                     </div>
                                 </div> 
                             </div>
