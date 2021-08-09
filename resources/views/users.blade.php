@@ -52,8 +52,8 @@
                     </div>
                 </div>
 
-                <div id="user_add_icon" class="user_add_icon">
-                    <input type="button" class="add_input" value="+" onclick="userAddClick(this)">
+                <div id="user_add_icon" class="user_add_icon" onclick="userAddClick(this)">
+                    <a>+</a>
                 </div>
             </div>
             <div id="user_add_form" class="user_form_block" hidden>

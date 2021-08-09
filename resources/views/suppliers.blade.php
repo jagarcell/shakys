@@ -39,8 +39,8 @@
                             <input type="button" class="all_products_search_button" onclick="supplierSearchClick()">
                         </div>
                     </div>
-                    <div class="supplier_add_icon">
-                        <input type="button" class="add_input" value="+" onclick="supplierAddClick()">
+                    <div class="supplier_add_icon" onclick="supplierAddClick()">
+                        <a>+</a>
                     </div>
                 </div>
             </div>

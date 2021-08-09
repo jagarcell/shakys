@@ -35,6 +35,7 @@ select{
   top: 64px;
   border-bottom: 1px solid black;
   background: white;
+  z-index: 12;
 }
 
 .search_product_icon{
@@ -762,7 +763,7 @@ select{
   position: sticky;
   top: 54px;
   width: 100%;
-  height: 10vh;
+  min-height: 70px;
   z-index: 1;
   color: white;
   background: white;
@@ -1723,7 +1724,7 @@ body {
 .add_icon_frame{
   position: relative;
   width: 100%;
-  height: 10vh;
+  min-height: 70px;
   text-align: end;
   padding: 10px;
   font-size: xx-large;
@@ -1741,18 +1742,17 @@ body {
 }
 
 .user_add_icon{
-  font-size: xx-large;
+  font-size: 60px;
   color: orange;
   position: absolute;
-  top:10%;
+  top: 20%;
   right: 6%;
   height: 30px;
   width: 30px;
 }
 
 .user_add_icon_frame{
-  height: 10vh;
-  min-height: 65px;
+  min-height: 70px;
   position: relative;
   width: 100%;
 }
@@ -2164,7 +2164,7 @@ body {
   left: 0vw;
   background: white;  
   width: 99vw;
-  min-height: 10vh;
+  min-height: 70px;
   z-index: 11;
   border-bottom: 1px solid black;
 }
@@ -2190,14 +2190,14 @@ body {
 }
 
 .supplier_add_icon {
-  height: 35px;
   background-color: transparent;
   color: #ef980e;
-  font-size: xx-large;
+  font-size: 60px;
   position: absolute;
   right: 6%;
-  top: 10%;
+  top: 20%;
   width: 30px;
+  height: 30px;
   padding: 0;
 }
     
@@ -2705,6 +2705,10 @@ body {
 
 @media screen and (max-width: 767px) {
   
+  .supplier_add_icon {
+    top: 5%;
+  }
+
   .add_section_div{
     top: 0;
   }
@@ -3437,23 +3441,23 @@ body {
 
 @media screen and (max-width: 499px) {
   .add_section_wrap{
-    min-height: 20vh;
+    min-height: 100px;
   }
 
   .add_icon_frame{
-    height: 20vh;
+    min-height: 100px;
   }
 
   .user_add_icon_frame {
-    height: 20vh;
+    min-height: 100px;
   }
 
   .user_add_icon{
-    top:10%;
+    top:5%;
   }
 
   .add_icon {
-    top: 10%;
+    top: 5%;
   }
   .all_products_search_frame{
     top:50%;
@@ -3469,7 +3473,7 @@ body {
   }
  
   .add_to_order_button_frame_mobile_height{
-    height: 20vh;
+    min-height: 100px;
    }
 
   .all_products_search_frame {
