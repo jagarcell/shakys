@@ -35,7 +35,7 @@ select{
   top: 64px;
   border-bottom: 1px solid black;
   background: white;
-  z-index: 12;
+  z-index: 11;
 }
 
 .search_product_icon{
@@ -2706,7 +2706,7 @@ body {
 @media screen and (max-width: 767px) {
   
   .supplier_add_icon {
-    top: 5%;
+    top: 10%;
   }
 
   .add_section_div{
@@ -3441,23 +3441,23 @@ body {
 
 @media screen and (max-width: 499px) {
   .add_section_wrap{
-    min-height: 100px;
+    min-height: 120px;
   }
 
   .add_icon_frame{
-    min-height: 100px;
+    min-height: 120px;
   }
 
   .user_add_icon_frame {
-    min-height: 100px;
+    min-height: 120px;
   }
 
   .user_add_icon{
-    top:5%;
+    top:10%;
   }
 
   .add_icon {
-    top: 5%;
+    top: 10%;
   }
   .all_products_search_frame{
     top:50%;
