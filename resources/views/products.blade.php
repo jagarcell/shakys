@@ -43,9 +43,12 @@
                         <input type="button" class="all_products_search_button" onclick="productSearchClick()">
                     </div>
                 </div>
-                <div class="add_icon">
-                    <input type="button" class="add_input" value="+" onclick="addIconClick(this)">
+                <div class="add_icon" onclick="addIconClick(this)">
+                    <a>+</a>
                 </div>
+                <!--div class="add_icon">
+                    <input type="button" class="add_input" value="+" onclick="addIconClick(this)">
+                </div-->
             </div>
 
             <!-- THIS IS THE SECTION THAT IS USED TO ENTER DATA TO BE CREATED -->
