@@ -296,7 +296,10 @@ function orderUnitSelectChange(uiSectionId) {
     supplierSelChange(uiSectionId)
 }
 
-function submitOrderButtonClick(order_id){
+function submitOrderButtonClick(order_id, button){
+    if(button !== undefined){
+        button.disabled = true
+    }
     var order = document.getElementById(order_id)
     var orderSupplierSelect = $(order).find('#order_supplier_select')[0]
     var orderTypeSelect = $(order).find('#order_type_select')[0]
@@ -398,11 +401,15 @@ function submitOrderButtonClick(order_id){
                         break
                 }
             }
+            button.disabled = false
         }
     )
 }
 
-function resendOrderButtonClick(orderId){
+function resendOrderButtonClick(orderId, button){
+    if(button !== undefined){
+        button.disabled = true
+    }
     var actionResultMessage = $('#action_result_message_' + orderId.replace('submitted_', ''))
     reportResult(
         {
@@ -478,11 +485,17 @@ function resendOrderButtonClick(orderId){
                         break;
                 }
             }
+            if(button !== undefined){
+                button.disabled = false
+            }
         }
     )
 }
 
-function receiveOrderButtonClick(orderId) {
+function receiveOrderButtonClick(orderId, button) {
+    if(button !== undefined){
+        button.disabled = true
+    }
     var actionResultMessage = $('#action_result_message_' + orderId.replace('submitted_', ''))
     var submittedOrdersTab = document.getElementById('submitted_orders_tab')
     var order = $(submittedOrdersTab).find("#" + orderId)
@@ -554,11 +567,17 @@ function receiveOrderButtonClick(orderId) {
                         break
                 }
             }
+            if(button !== undefined){
+                button.disabled = false
+            }
         }
     )
 }
 
 function addToOrderClick(addCheckClass, prefixToReplace) {
+    if(button !== undefined){
+        button.disabled = true
+    }
     var checkedToOrder = $('.' + addCheckClass + ':checkbox:checked')
     $.each(checkedToOrder, function(index, toOrder){
         var uiSection = garcellParentNodeByClassName(toOrder, 'ui_section')
@@ -623,6 +642,9 @@ function addToOrderClick(addCheckClass, prefixToReplace) {
                         default:
                             break;
                     }
+                }
+                if(button !== undefined){
+                    button.disabled = false
                 }
             }
         )

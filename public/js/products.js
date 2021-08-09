@@ -50,13 +50,15 @@ function productSearchClick() {
 /**
  * Shows the data entry form to add a product.
  */
-function addIconClick() {
+function addIconClick(button) {
+    if(button !== undefined){
+        button.disabled = true
+    }
     var productEditions = $('#products_list_wrap').find('.product_edition')
 
     $('#add_section_wrap').removeClass('add_icon_visible')
-    $.each(productEditions, function(index, productEdition){
-        discardEditChanges(productEdition.id)
-    })
+
+    discardEditChanges(-1)
 
     $.get('/getsuppliers', function(data, status){
         if(status == 'success'){
@@ -87,7 +89,9 @@ function addIconClick() {
                     break;
             }
         }
-
+        if(button !== undefined){
+            button.disabled = false
+        }
     })
 }
 
@@ -121,10 +125,13 @@ function discardButtonClick() {
 /**
  * Action to create a new product.
  */
-function createButtonClick() {
+function createButtonClick(button) {
     if(!unitsSelected()){
         alert("YOU MUST SELECT AT LEAST ONE UNIT FOR THE PRODUCT!")
         return
+    }
+    if(button !== undefined){
+        button.disabled = true
     }
     measuresDialogCreate(-1, false)
 
@@ -207,6 +214,9 @@ function createButtonClick() {
                             break;
                     }
                 }
+                if(button !== undefined){
+                    button.disabled = false
+                }
             }
         )
     }
@@ -221,7 +231,10 @@ function createButtonClick() {
  * @param {string} productId
  *  
  */
-function suppliersButtonClick(productId) {
+function suppliersButtonClick(productId, button) {
+    if(button !== undefined){
+        button.disabled = true
+    }
     discardEditChanges(-1)
     $.get('/getproduct',
         {
@@ -281,6 +294,9 @@ function suppliersButtonClick(productId) {
                     default:
                         break
                 }
+            }
+            if(button !== undefined){
+                button.disabled = false
             }
         }
     )
@@ -460,7 +476,10 @@ function discardSupplierProductChanges(productId) {
  * @param {string} productId
  *  
  */
-function deleteButtonClick(productId) {
+function deleteButtonClick(productId, button) {
+    if(button !== null){
+        button.disabled = true
+    }
     discardEditChanges(-1)
     $.post('/deleteproduct',
         {
@@ -525,6 +544,9 @@ function deleteButtonClick(productId) {
                         break;
                 }
             }
+            if(button !== null){
+                button.disabled = false
+            }
         }
     )
 }
@@ -534,8 +556,12 @@ function deleteButtonClick(productId) {
  * @param {string} productId
  *  
  */
-function editButtonClick(productId) {
+function editButtonClick(productId, button) {
+    if(button !== undefined){
+        button.disabled = true
+    }
     discardEditChanges(-1)
+
     $.get('/getproduct',
         {
             id:productId,
@@ -623,6 +649,7 @@ function editButtonClick(productId) {
                                             supplierSelect.add(option)
                                         })
                                     }
+                                    document.getElementById(element_tag).classList.add('editting')
                                 }
                             }
                         )
@@ -666,10 +693,11 @@ function editButtonClick(productId) {
                         break
                 }
             }
+            if(button !== undefined){
+                button.disabled = false                
+            }
         }
     )
-
-
 }
 
 /**
@@ -679,16 +707,19 @@ function editButtonClick(productId) {
  * @param {string} productid
  *  
  */
-function discardEditChanges(productId) {
-    discardUnitChanges()
+function discardEditChanges(productId, button) {
     if(productId == -1){
-        var productEditions = $('#products_list_wrap').find('.product_edition')
+        var productEditions = document.getElementsByClassName('editting')
         $.each(productEditions, function(index, productEdition){
             discardEditChanges(productEdition.id)
-            discardButtonClick()
+            productEdition.classList.remove('editting')
         })
         return
     }
+    if(button !== undefined){
+        button.disabled = true
+    }
+    discardUnitChanges()
 
     $.get('/getproduct',
         {
@@ -698,6 +729,7 @@ function discardEditChanges(productId) {
             if(status == 'success'){
                 var element_tag = data.element_tag
                 var actionResultMessage = $(document.getElementById(element_tag)).find('#action_result_message')
+                console.log(actionResultMessage[0])
                 switch (data.status) {
                     case 'ok':
                         var product = data.product
@@ -714,6 +746,7 @@ function discardEditChanges(productId) {
 
                         section.innerHTML = sectionHtml
                         clearUnitsChange()
+                        document.getElementById(product.id).classList.remove('editting')
                        break;
 
                     case 'error':
@@ -754,6 +787,9 @@ function discardEditChanges(productId) {
                     default:
                         break;
                 }
+                if(button !== undefined){
+                    button.disabled = false
+                }
             }
         }
     )
@@ -767,10 +803,13 @@ function discardEditChanges(productId) {
  * @param {string} productId
  *  
  */
-function acceptEditChanges(productId){
+function acceptEditChanges(productId, button){
     if(!unitsSelected()){
         alert("YOU MUST SELECT AT LEAST ONE UNIT FOR THE PRODUCT!")
         return
+    }
+    if(button !== undefined){
+        button.disabled = true
     }
 
     var productForm = $(document.getElementById(productId)).find('.product_form')
@@ -873,6 +912,9 @@ function acceptEditChanges(productId){
                             break;
                     }
                 }
+                if(button !== undefined){
+                    button.disabled = false
+                }
             }
         )
     }
@@ -914,8 +956,8 @@ function fromEditToShow(product, added) {
  * 
  * @param {String} productId 
  */
-function measuresButtonClick(productId) {
-    measuresDialogCreate(productId, true)
+function measuresButtonClick(productId, button) {
+    measuresDialogCreate(productId, true, button)
 }
 
 /**
@@ -924,13 +966,16 @@ function measuresButtonClick(productId) {
  *  
  *  
  */
-function measuresDialogCreate(productId, show = false) {
+function measuresDialogCreate(productId, show = false, button = undefined) {
     var unitLinkDialogFrame = document.getElementById('unit_link_dialog_frame')
 
     if(productId == -1 && $(unitLinkDialogFrame).find('.unit_link_dialog').length > 0){
         // Check if the dialog will be shown after cretion 
         if(show){
             unitLinkDialogFrame.style.display = 'block'
+        }
+        if(button !== undefined){
+            button.disabled = false
         }
         return
     }
@@ -993,6 +1038,9 @@ function measuresDialogCreate(productId, show = false) {
                 
                     default:
                         break
+                }
+                if(button !== undefined){
+                    button.disabled = false
                 }
             }
         }
@@ -1337,7 +1385,10 @@ function acceptUnitRemoval(unitId){
  * 
  */
 
-function createUnitClick() {
+function createUnitClick(button) {
+    if(button !== undefined){
+        button.disabled = true
+    }
     var newUnitInput = $('#unit_link_dialog_frame').find('.new_unit_input')
     var unitAddLink = $('#unit_link_dialog_frame').find('.unit_add_link')[0]
     var unitCreateLink = $('#unit_link_dialog_frame').find('.unit_create_link')[0]
@@ -1383,6 +1434,7 @@ function createUnitClick() {
                         break;
                 }
             }
+            button.disabled = false
         }
     )
 }

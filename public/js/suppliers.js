@@ -56,6 +56,7 @@ function supplierSearchClick() {
  *  Shows the add supplier form.
  */
 function supplierAddClick() {
+    discardEditionsInProgress()
     $('#add_icon_frame').hide()
     $('#supplier_add_section').show()
 }
@@ -216,8 +217,16 @@ function discardNewSupplier() {
  * *        editbutton:'HTML of the button that initiated this action'
  */
 function editClick(editButton) {
+    if(editButton !== undefined){
+        editButton.disabled = true
+    }
     var supplier_section_wrap = garcellParentNodeByClassName(editButton, 'supplier_section_wrap')
     var id = supplier_section_wrap.id
+
+    discardEditionsInProgress()
+    discardNewSupplier()
+
+    supplier_section_wrap.classList.add('editing')
 
     $.post(
         '/getsupplier',
@@ -326,6 +335,9 @@ function editClick(editButton) {
                         break;
                 }
             }
+            if(editButton !== undefined){
+                editButton.disabled = false
+            }
         }
     )
 }
@@ -414,7 +426,10 @@ function deleteClick(deleteButton) {
  * @param {string} acceptChangesButton 
  * *        acceptChangesButton:'HTML of the button that initiated this action'
  */
-function acceptChanges(acceptChangesButton) {
+function acceptChanges(acceptChangesButton, button) {
+    if(button !== undefined){
+        button.disabled = true
+    }
     
     var supplier_section_wrap = garcellParentNodeByClassName(acceptChangesButton, 'supplier_section_wrap')
     var id = supplier_section_wrap.id
@@ -526,6 +541,9 @@ function acceptChanges(acceptChangesButton) {
                     default:
                         break;
                 }
+                if(button !== undefined){
+                    button.disabled = false
+                }
             }
         }
     )
@@ -537,6 +555,10 @@ function acceptChanges(acceptChangesButton) {
  * *        discardChangesButton:'HTML of the button that initiated this action'
  */
 function discardChanges(discardChangesButton) {
+
+    if(discardChangesButton !== undefined){
+        discardChangesButton.disabled = true
+    }
     var supplier_section = garcellParentNodeByClassName(discardChangesButton, 'supplier_section_wrap')
     
     $.post(
@@ -611,10 +633,104 @@ function discardChanges(discardChangesButton) {
                     default:
                         break;
                 }
+                if(discardChangesButton !== undefined){
+                    discardChangesButton.disabled = false
+                }
             }
         }
     )
+}
 
+/**
+ * 
+ * @param {*} status 
+ * @returns 
+ */
+function discardEditionsInProgress() {
+    var editions = document.getElementsByClassName('editing')
+ 
+    $.each(editions, function(index, supplier_section){
+        supplier_section.classList.remove('editing')
+    
+        $.post(
+            'getsupplier', 
+            {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                id:supplier_section.id,
+                element_tag:supplier_section.id,
+            }, 
+            function(data, status){
+                if(status == 'success'){
+                    var element_tag = data.element_tag
+                    var supplier_section_wrap = $('#' + element_tag)
+                    var action_result_message = supplier_section_wrap.find('#action_result_message')
+                    switch (data.status) {
+                        case 'ok':
+                            var supplier = data.supplier
+                            var supplier_section = document.getElementById(element_tag)
+                            var supplier_edit_section = document.getElementById('supplier_edit_section')
+                            supplier_edit_section = $(supplier_edit_section).find('#supplier-id')[0]
+                            
+                            var innerHTML = supplier_edit_section.innerHTML
+            
+                            innerHTML = innerHTML.replace(/supplier-image-path/g, supplier.image_path)
+                            innerHTML = innerHTML.replace(/supplier-code/g, supplier.code)
+                            innerHTML = innerHTML.replace(/supplier-email/g, supplier.email)
+                            innerHTML = innerHTML.replace(/supplier-name/g, supplier.name)
+                            innerHTML = innerHTML.replace(/supplier-address/g, supplier.address)
+                            innerHTML = innerHTML.replace(/supplier-phone/g, supplier.phone)
+                            innerHTML = innerHTML.replace(/supplier-pickup/g, supplier.pickup)
+            
+                            supplier_section.innerHTML = innerHTML
+                                    
+                            break;
+    
+                        case 'notfound':
+                            var message = getStatusMessage('notfound')
+                            reportResult(
+                                {
+                                    frame:action_result_message,
+                                    message:message,
+                                    param:element_tag
+                                }, function(frame, element_tag){
+                                    var supplier_section_wrap = document.getElementById(element_tag)
+                                    supplier_section_wrap.outerHTML = ""
+                                }
+                            )
+                            break
+    
+                        case '419':
+                            var message = getStatusMessage('419')
+                            reportResult(
+                                {
+                                    frame:action_result_message,
+                                    message:message,
+                                }
+                            )
+                            break
+    
+                        case 'error':
+                            var message = getMessageFromErrorInfo(data.message)
+                            reportResult(
+                                {
+                                    frame:action_result_message,
+                                    message:message,
+                                }, function(frame, param){
+                                    frame.hide()
+                                }
+                            )
+                            break
+                    
+                        default:
+                            break;
+                    }
+                    if(discardChangesButton !== undefined){
+                        discardChangesButton.disabled = false
+                    }
+                }
+            }
+        )
+    })
 }
 
 /**

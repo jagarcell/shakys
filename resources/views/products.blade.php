@@ -43,9 +43,12 @@
                         <input type="button" class="all_products_search_button" onclick="productSearchClick()">
                     </div>
                 </div>
-                <div class="add_icon">
-                    <input type="button" class="add_input" value="+" onclick="addIconClick()">
+                <div class="add_icon" onclick="addIconClick(this)">
+                    <a>+</a>
                 </div>
+                <!--div class="add_icon">
+                    <input type="button" class="add_input" value="+" onclick="addIconClick(this)">
+                </div-->
             </div>
 
             <!-- THIS IS THE SECTION THAT IS USED TO ENTER DATA TO BE CREATED -->
@@ -77,7 +80,7 @@
                                             <input type="text" class="measure_unit text_field box_shadow w-input" placeholder="Default Measure Unit" disabled>
                                         </div>
                                         <div class="default_measure_unit_button_frame">
-                                            <input type="button" value="Units" class="edition_button accept_button box_shadow w-button default_measure_unit_button" onclick="measuresButtonClick(-1)">
+                                            <input type="button" value="Units" class="edition_button accept_button box_shadow w-button default_measure_unit_button" onclick="measuresButtonClick(-1, this)">
                                         </div>
                                     </div>
                                     
@@ -89,7 +92,7 @@
                                     </div>
                                     <div class="field_wrap" style="display:flex;">
                                         <div class="add_buttons_frame">
-                                            <input type="button" value="Create" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="createButtonClick()">
+                                            <input type="button" value="Create" data-wait="Please wait..." class="edition_button accept_button  box_shadow w-button" onclick="createButtonClick(this)">
                                             <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardButtonClick()">
                                         </div>
                                     </div>
@@ -145,13 +148,13 @@
                                 </div>
                                 <div class="data_entry_buttons field_wrap">
                                     <div class="bottom_button">
-                                        <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$product->id}}')">
+                                        <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$product->id}}', this)">
                                     </div>
                                     <div class="bottom_button">
-                                        <input type="button" class="supplier_product_button box_shadow w-button" value="Suppliers" onclick="suppliersButtonClick('{{$product->id}}')">
+                                        <input type="button" class="supplier_product_button box_shadow w-button" value="Suppliers" onclick="suppliersButtonClick('{{$product->id}}', this)">
                                     </div>
                                     <div class="bottom_button">
-                                        <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('{{$product->id}}')">
+                                        <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('{{$product->id}}', this)">
                                     </div>
                                 </div>
                             </div>
@@ -203,13 +206,13 @@
                             </div>
                             <div class="data_entry_buttons field_wrap">
                                 <div class="bottom_button">
-                                    <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('section_html')">
+                                    <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('section_html', this)">
                                 </div>
                                 <div class="bottom_button">
-                                    <input type="button" class="supplier_product_button box_shadow w-button" value="Suppliers" onclick="suppliersButtonClick('section_html')">
+                                    <input type="button" class="supplier_product_button box_shadow w-button" value="Suppliers" onclick="suppliersButtonClick('section_html', this)">
                                 </div>
                                 <div class="bottom_button">
-                                    <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('section_html')">
+                                    <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('section_html', this)">
                                 </div>
                             </div>
                         </div>
@@ -252,7 +255,7 @@
                                         <input type="text" class="measure_unit text_field box_shadow w-input" placeholder="Default Measure Unit" disabled>
                                     </div>
                                     <div class="default_measure_unit_button_frame">
-                                        <input type="button" value="Units" class="edition_button accept_button box_shadow w-button default_measure_unit_button" onclick="measuresButtonClick(-1)">
+                                        <input type="button" value="Units" class="edition_button accept_button box_shadow w-button default_measure_unit_button" onclick="measuresButtonClick(-1, this)">
                                     </div>
                                 </div>
                                 <!--input type="button" value="Measure Units" class="edition_button accept_button box_shadow w-button" onclick="measuresButtonClick(-1)"-->
@@ -264,10 +267,10 @@
                                 </div>
                                 <div class="field_wrap">
                                     <div class="add_buttons_frame">
-                                        <input type="button" value="Accept" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="acceptEditChanges('product-id')">
-                                        <input type="button" value="Discard" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardEditChanges('product-id')">
+                                        <input type="button" value="Accept" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="acceptEditChanges('product-id', this)">
+                                        <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardEditChanges('product-id', this)">
                                     </div>
-                                </div>
+                                </div> 
                             </div>
                        </form>
                     </div>
@@ -313,8 +316,8 @@
                                     <input id="supplier_product_description" value="" type="text" class="text_field box_shadow w-input" disabled>
                                 </div>
                                 <div class="add_buttons_frame">
-                                    <input type="button" value="Accept" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="acceptSupplierProductChanges('product-id')">
-                                    <input type="button" value="Discard" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardSupplierProductChanges('product-id')">
+                                    <input type="button" value="Accept" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="acceptSupplierProductChanges('product-id')">
+                                    <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardSupplierProductChanges('product-id')">
                                 </div>
                             </div>
                         </form>
@@ -347,7 +350,7 @@
                             <label for="unit_0" class="unit_link_checkbox_label"><input class="new_unit_input" placeholder="Enter a unit" style="display:none;"></label>
                             <div class="unit_add_icon">
                                 <a class="unit_add_link" onclick="addUnitClick()">Add</a>
-                                <a class="unit_create_link" style="display:none" onclick="createUnitClick()">+</a>
+                                <a class="unit_create_link" style="display:none" onclick="createUnitClick(this)">+</a>
                             </div>
                         </div>
                         <div class="unit_links">

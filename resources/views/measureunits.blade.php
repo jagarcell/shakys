@@ -28,13 +28,24 @@
         @section('content')
         <!-- THIS IS THE SECTION THAT HOLDS THE HTML FOR THE ADDING ICON AND THE ADDING ACTION FORM -->
         <div id="add_section_wrap" class="add_section_wrap">
+            <div class="all_products_search_frame">
+                <input id="supplier_search_text" type="text" class="all_products_search_bar" placeholder="Enter your search here">
+                    <div class="search_product_icon">
+                        <img src="/images/MagnifierBk.png">
+                        <input type="button" class="all_products_search_button" onclick="measureUnitSearchClick()">
+                    </div>
+                </div>
+                <div class="supplier_add_icon" onclick="addIconClick()">
+                    <a>+</a>
+                </div>
+            </div>
 
             <!-- THIS IS THE ADD ICON -->
-            <div id="add_icon_frame" class="add_icon_frame">
+            <!--div id="add_icon_frame" class="add_icon_frame">
                 <div class="add_icon">
                     <input type="button" class="add_input" value="+" onclick="addIconClick()">
                 </div>
-            </div>
+            </div-->
 
             <!-- THIS IS THE SECTION THAT IS USED TO ENTER DATA TO BE CREATED -->
             <!-- IT WILL BE SHOWN WHEN THE USER CLICKS ON THE ADD ICON -->
@@ -45,7 +56,7 @@
                             <form class="product_form add_unit_frame">
                                 <input id="unit_description" type="text" class="code text_field box_shadow w-input" maxlength="255" placeholder="Unit Description" required="">
                                 <div class="add_buttons_frame">
-                                    <input type="button" value="Create Unit" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="createButtonClick()">
+                                    <input type="button" value="Create Unit" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="createButtonClick(this)">
                                     <input type="button" value="Discard Unit" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardButtonClick()">
                                 </div>
                                 <input class="image_to_upload" hidden>
@@ -74,10 +85,10 @@
                                 </div>
                                 <div class="data_entry_buttons">
                                     <div class="bottom_button">
-                                        <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$measureunit->id}}')">
+                                        <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$measureunit->id}}', this)">
                                     </div>
                                     <div class="bottom_button">
-                                        <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('{{$measureunit->id}}')">
+                                        <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('{{$measureunit->id}}', this)">
                                     </div>
                                 </div>
                             </div>
@@ -104,10 +115,10 @@
                             </div>
                             <div class="data_entry_buttons">
                                 <div>
-                                    <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('unit-id')">
+                                    <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('unit-id', this)">
                                 </div>
                                 <div class="bottom_button">
-                                    <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('unit-id')">
+                                    <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('unit-id', this)">
                                 </div>
                             </div>
                         </div>
@@ -129,8 +140,8 @@
                                     <input type="text" class="code text_field box_shadow w-input unit_description_input" maxlength="50" name="Code" placeholder="Unit Description" required="" value="unit-description">
                                 </div>
                                 <div class="add_buttons_frame">
-                                    <input type="button" value="Accept Changes" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="acceptEditChanges('unit-id')">
-                                    <input type="button" value="Discard Changes" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardEditChanges('unit-id')">
+                                    <input type="button" value="Accept" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="acceptEditChanges('unit-id', this)">
+                                    <input type="button" value="Discard" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardEditChanges('unit-id', this)">
                                 </div>
                                 <input class="image_to_upload" hidden>
                             </form>
