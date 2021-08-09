@@ -93,7 +93,7 @@
                         </a>
                         @endforeach
                         @else
-                        <div class="empty_tab_text">THERE ARE NO PRODUCTS DUE TO COUNT</div>
+                        <div class="empty_tab_text">THERE ARE NO PRODUCTS DUE TO COUNT!</div>
                         @endif
 
                     </div>
@@ -184,7 +184,7 @@
                         </div>
                         @endforeach
                         @else
-                        <div class="empty_tab_text">THERE ARE NO COUNTED PRODUCTS</div>
+                        <div class="empty_tab_text">THERE ARE NO COUNTED PRODUCTS!</div>
                         @endif
                     </div>
 
@@ -272,7 +272,7 @@
                         </div>
                         @endforeach
                         @else
-                        <div class="empty_tab_text">THERE ARE NOT PRODUCTS AT ALL</div>
+                        <div class="empty_tab_text">THERE ARE NO PRODUCTS TO SHOW!</div>
                         @endif
                     </div>
 
@@ -394,7 +394,7 @@
                         </div>
                         @endforeach
                         @else
-                        <div class="empty_tab_text">THERE ARE NO ORDERS FOR APPROVAL</div>
+                        <div class="empty_tab_text">THERE ARE NO ORDERS FOR APPROVAL!</div>
                         @endif
                     </div>
 
@@ -507,7 +507,7 @@
                         @endforeach
                         @else
                         <!-- EMPTY ORDERS MESSAGE -->
-                        <div class="empty_tab_text">THERE ARE NO SUBMITTED ORDERS</div>
+                        <div class="empty_tab_text">THERE ARE NO SUBMITTED ORDERS!</div>
                         @endif
                     </div>
                 </div>

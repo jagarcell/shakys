@@ -96,7 +96,7 @@
             </div>
             @endforeach
             @else
-                <div id="empty_list" class="empty_list">THERE ARE NOT SUPPLIER'S PRODUCT LOCATIONS REGISTERED!</div>
+                <div id="empty_list" class="empty_list">THERE ARE NO SUPPLIER'S LOCATIONS REGISTERED!</div>
             @endif    
         </div>
 

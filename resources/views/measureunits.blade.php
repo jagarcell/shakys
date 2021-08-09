@@ -99,7 +99,7 @@
             </div>
             @endforeach
             @else
-            <div id="empty_list" class="empty_list">THERE ARE NOT PRODUCTS REGISTERED YET!</div>
+            <div id="empty_list" class="empty_list">THERE ARE NO UNITS TO SHOW!</div>
             @endif
         </div>
 
