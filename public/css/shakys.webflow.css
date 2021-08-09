@@ -2178,14 +2178,15 @@ body {
   border-bottom: 1px solid black;}
 
 .add_icon {
-  height: 35px;
   background-color: transparent;
   color: #ef980e;
-  font-size: inherit;
+  font-size: 60px;
   position: absolute;
-  top: 10%;
+  top: 20%;
   right: 6%;
-  width: 30px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
 }
 
 .supplier_add_icon {
