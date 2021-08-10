@@ -94,7 +94,7 @@
             @foreach($productstocount as $key => $producttocount)
             @if(round($key / 2) * 2 != $key)
             <!-- HERE A PRODUCT IS SHOWN WITH A BLACK BACKGROUND -->
-            <a onclick="productClick('{{$producttocount->id}}')">
+            <a onclick="productClick('{{$producttocount->id}}', this)">
                 <div id="{{$producttocount->id}}" class="ui_section bbg product shadowRight">
                     <div class="product_frame">
                         <div class="product_pic_frame">
@@ -108,7 +108,7 @@
             </a>
             @else    
             <!-- HERE A PRODUCT IS SHOWN WITH A RED BACKGROUND -->
-            <a onclick="productClick('{{$producttocount->id}}')">
+            <a onclick="productClick('{{$producttocount->id}}', this)">
                 <div id="{{$producttocount->id}}" class="ui_section rbg product shadowRight">
                     <div class="product_frame">
                         <div class="product_pic_frame">
@@ -126,7 +126,7 @@
 
         <div id="product" hidden>
             <!-- THIS IS THE HTML FOR A PRODUCT -->
-            <a onclick="productClick('product-id')">
+            <a onclick="productClick('product-id', this)">
                 <div id="product-id" class="ui_section product shadowRight">
                     <div class="product_frame">
                         <div class="product_pic_frame">
@@ -162,7 +162,7 @@
                         <option value="0">0</option>
                     </select>
                     <div class="request_button_frame">
-                        <input type="button" value="Request" class="order_button w-button" onclick="orderClick('product-id')">
+                        <input type="button" value="Request" class="order_button w-button" onclick="orderClick('product-id', this)">
                     </div>
                 </div>
 

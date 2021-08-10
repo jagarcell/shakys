@@ -165,7 +165,7 @@
             </div>
             @endforeach
             @else
-            <div id="empty_list" class="empty_list">THERE ARE NO PRODUCTS TO SHOW!</div>
+            <!--div id="empty_list" class="empty_list">THERE ARE NO PRODUCTS TO SHOW!</div -->
             @endif
         </div>
 

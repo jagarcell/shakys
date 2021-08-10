@@ -277,11 +277,11 @@
                                 <div class="user_section horizontal">
                                     <div class="user_edit_section">
                                         <div class="user_field_header">USERNAME</div>
-                                        <div class="user_field_content shadowRight">{{$user->username}}</div>
+                                        <div class="user_field_content shadowRight">user-username</div>
                                     </div>
                                     <div class="user_edit_section">
                                         <div class="user_field_header">NAME</div>
-                                        <div class="user_field_content shadowRight">{{$user->name}}</div>
+                                        <div class="user_field_content shadowRight">user-name</div>
                                     </div>
                                 </div>
                                 <div class="user_section horizontal">

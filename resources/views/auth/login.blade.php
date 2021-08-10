@@ -1,10 +1,11 @@
 <x-guest-layout>
+    <link href="/css/shakys.webflow.css" rel="stylesheet" type="text/css">
     <x-auth-card>
         <x-slot name="logo">
             <!--a href="/">
                 <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
             </a-->            
-            <a href="/" class="logo-frame"><img src="/images/Shakys.png" style="width: 128px;" loading="lazy" sizes="(max-width: 767px) 100vw, 53vw" srcset="/images/Shakys-p-500.png 500w, images/Shakys.png 512w" alt="" class="logo">
+            <a href="/" class="logo-frame"><img src="/images/logo.png" loading="lazy" sizes="(max-width: 767px) 100vw, 53vw" srcset="/images/logo.png 500w, images/logo.png 512w" alt="" class="logo">
             </a>
         </x-slot>
 

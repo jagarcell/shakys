@@ -23,6 +23,14 @@ select{
   font-family: inherit;
 }
 
+.search_bar_background{
+  width: 100%;
+  min-height: 60px;
+  top:64px;
+  position: absolute;
+  z-index: 1;
+}
+
 .section_sub_wrap{
   width:100%;
   height:100%;
@@ -1141,6 +1149,7 @@ select{
 .bodyClass{
   font-family: 'Sofia Pro 400';
   font-size: 14px;
+  scroll-behavior: auto;
 }
 
 .accept_button{
@@ -1686,10 +1695,11 @@ body {
 }
 
 .user_add_section{
-  border-bottom: 1px solid #000;
+  border-bottom: 15px solid #000;
   position: sticky;
   top: 64px;
   background: white;
+  padding: 15px;
 }
 
 .user_add_button {
@@ -3473,7 +3483,7 @@ body {
   }
  
   .add_to_order_button_frame_mobile_height{
-    min-height: 100px;
+    min-height: 140px;
    }
 
   .all_products_search_frame {

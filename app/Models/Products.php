@@ -24,6 +24,9 @@ class Products extends Model
     public function ListProducts($request)
     {
         # code...
+        if(!isset($request[['search_text']])){
+            return View('products', ['products' => [], 'measureunits' => []]);
+        }
         $SearchText = isset($request['search_text']) ? $request['search_text'] : "";
         try {
             //code...

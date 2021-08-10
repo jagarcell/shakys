@@ -29,7 +29,7 @@
         <!-- THIS IS THE SECTION THAT HOLDS THE HTML FOR THE ADDING ICON AND THE ADDING ACTION FORM -->
         <div id="add_section_wrap" class="add_section_wrap">
             <div class="all_products_search_frame">
-                <input id="supplier_search_text" type="text" class="all_products_search_bar" placeholder="Enter your search here">
+                <input id="measure_unit_search_text" type="text" class="all_products_search_bar" placeholder="Enter your search here">
                     <div class="search_product_icon">
                         <img src="/images/MagnifierBk.png">
                         <input type="button" class="all_products_search_button" onclick="measureUnitSearchClick()">
@@ -99,7 +99,7 @@
             </div>
             @endforeach
             @else
-            <div id="empty_list" class="empty_list">THERE ARE NO UNITS TO SHOW!</div>
+            <!-- div id="empty_list" class="empty_list">THERE ARE NO UNITS TO SHOW!</div -->
             @endif
         </div>
 

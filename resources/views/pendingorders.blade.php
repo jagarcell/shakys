@@ -73,7 +73,7 @@
                         @if(count($products) > 0)
                         @foreach($products as $key => $product)
                         <!-- HERE A PRODUCT IS SHOWN WITH A RED/BLACK BACKGROUND -->
-                        <a onclick="productClick('pending_{{$product->id}}')">
+                        <a onclick="productClick('pending_{{$product->id}}', this)">
                             <div id="pending_{{$product->id}}" class="ui_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
                                 <div class="po_to_count_section">
                                     <div class="po_pic_frame">
@@ -272,7 +272,7 @@
                         </div>
                         @endforeach
                         @else
-                        <div class="empty_tab_text">THERE ARE NO PRODUCTS TO SHOW!</div>
+                        <!-- div class="empty_tab_text">THERE ARE NO PRODUCTS TO SHOW!</div -->
                         @endif
                     </div>
 
@@ -534,7 +534,7 @@
                             <option value="0" style="text-align:right;text-align-last:right;">0</option>
                         </select>
                         <div class="request_button_frame">
-                            <input type="button" value="Request" class="order_button w-button" onclick="orderClick('product-id')">
+                            <input type="button" value="Request" class="order_button w-button" onclick="orderClick('product-id', this)">
                         </div>
                     </div>
                 </div>

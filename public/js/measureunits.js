@@ -1,4 +1,13 @@
 $(document).ready(function(){
+
+    var measureUnitSearchText = document.getElementById('measure_unit_search_text')
+
+    measureUnitSearchText.addEventListener("keyup", function (event){
+        if(event.code == 'Enter'){
+            measureUnitSearchClick()
+        }        
+    })
+
 })
 
 function addIconClick() {
@@ -422,4 +431,12 @@ function acceptUnitRemoval(unitId){
             break;
     }
     return statusMessage
+}
+
+/**
+ * 
+ */
+function measureUnitSearchClick() {
+    var measureUnitSearchText = document.getElementById('measure_unit_search_text').value
+    window.location = '/measureunits/?search_text=' + measureUnitSearchText
 }

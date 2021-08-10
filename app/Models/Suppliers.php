@@ -15,7 +15,10 @@ class Suppliers extends Model
         # code...
         try {
             //code...
-            $SearchText = isset($request['search_text']) ? $request['search_text'] : "";
+            if(!isset($request['search_text'])){
+                return view('suppliers', ['suppliers' => []]);
+            }
+            $SearchText = $request['search_text'];
             if(strlen($SearchText) == 0){
                 $Suppliers = $this->where('id', '>', -1)->orderBy('id', 'desc')->get();
 

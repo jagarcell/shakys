@@ -55,7 +55,11 @@ function closeOrder(){
     document.getElementById('order_top_id').style.display = 'none'
 }
 
-function productClick(productId){
+function productClick(productId, button){
+    if(button !== undefined){
+        button.disabled = true
+    }
+
     $.get('/getproduct',
         {
             id:productId,
@@ -92,11 +96,19 @@ function productClick(productId){
                         break;
                 }
             }
+            if(button !== undefined){
+                button.disabled = true
+            }
+        
         }
     )
 }
 
-function orderClick(productId){
+function orderClick(productId, button){
+    if(button !== undefined){
+        button.disabled = true
+    }
+
     var qtySelect = $('#order_top_id').find('#qty')[0]
     var qty = qtySelect.selectedIndex
     var measureUnitSelect = $('#order_top_id').find('#measure_unit')[0]
@@ -150,6 +162,10 @@ function orderClick(productId){
                         break
                 }
             }
+            if(button !== undefined){
+                button.disabled = true
+            }
+        
         })
     }
     else{

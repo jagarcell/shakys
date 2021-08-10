@@ -87,8 +87,8 @@
                                 <div class="location_data_field box_shadow">{{$location->name}}</div>
                             </div>
                             <div class="product_location_data_entry_buttons buttons_frame_height">
-                                <input type="button" class="edit_button w-button box_shadow" value="Edit" onclick="editButtonClick('{{$location->id}}')">
-                                <input type="button" class="delete_button w-button box_shadow" value="Delete" onclick="deleteButtonClick('{{$location->id}}')">
+                                <input type="button" class="edit_button w-button box_shadow" value="Edit" onclick="editButtonClick('{{$location->id}}', this)">
+                                <input type="button" class="delete_button w-button box_shadow" value="Delete" onclick="deleteButtonClick('{{$location->id}}', this)">
                             </div>
                         </div>
                     </div>
@@ -119,8 +119,8 @@
                                 <div class="location_data_field box_shadow">location-name</div>
                             </div>
                             <div class="product_location_data_entry_buttons">
-                                <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('location-id')">
-                                <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('location-id')">
+                                <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('location-id', this)">
+                                <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('location-id', this)">
                             </div>
                         </div>
                     </div>
@@ -150,8 +150,8 @@
                                     <input id="location_name" type="text" class="product_location_text_field box_shadow w-input" maxlength="256" name="name" data-name="Name" placeholder="Name" required="">
                                 </div>
                                 <div class="product_location_add_buttons_frame">
-                                    <input type="button" value="Accept Changes" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="acceptLocationChangesClick('location-id')">
-                                    <input type="button" value="Discard Changes" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardLocationChangesClick('location-id')">
+                                    <input type="button" value="Accept Changes" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="acceptLocationChangesClick('location-id', this)">
+                                    <input type="button" value="Discard Changes" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardLocationChangesClick('location-id', this)">
                                 </div>
                                 <input id="image_to_upload" name="image_path" hidden>
                             </form>
