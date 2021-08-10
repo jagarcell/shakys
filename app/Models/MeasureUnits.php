@@ -24,7 +24,34 @@ class MeasureUnits extends Model
     public function MeasureUnits($request)
     {
         try {
-            $MeasureUnits = $this->where('id', '>', -1)->get();
+            if(!isset($request['search_text'])){
+                return view('measureunits', ['measureunits' => []]);
+            }
+            $SearchText = $request['search_text'];
+            if(strlen($SearchText) == 0){
+                $MeasureUnits = $this->where('id', '>', -1)->get();
+            }
+            else{
+                $Keywords = explode(" ", $SearchText);
+
+                $query = " where ((unit_description like '%";
+                $first = true;
+                foreach ($Keywords as $key => $Keyword) {
+                    # code...
+                    if($first){
+                        $first = false;
+                        $query = $query . $Keyword . "%')";
+                    }
+                    else{
+                        $query = $query . "or (unit_description like '%" . $Keyword . "%')";
+                    }
+                }
+        
+                $query = $query . ")";
+                $basequery = "select * from measure_units";
+                $MeasureUnits = DB::select($basequery . $query);
+            }
+
             return view('measureunits', ['measureunits' => $MeasureUnits]);
         } catch (\Throwable $th) {
             //throw $th;

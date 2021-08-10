@@ -77,17 +77,20 @@ function openTab(tabId){
     $('.pending_content').show()
 }
 
-function tabClick(element) {
+function tabClick(tab) {
     // When a tab is clicked we redirect to pending orders panel 
     // with the appropiate Tab ID 
-    window.location.replace('/showpendingorderspanel?tab_id=' + element.id)
+    window.location.replace('/showpendingorderspanel?tab_id=' + tab.id)
 }
 
 function closeOrder(){
     document.getElementById('order_top_id').style.display = 'none'
 }
 
-function productClick(productId){
+function productClick(productId, button){
+    if(button !== undefined){
+        button.disabled = true
+    }
     $.get('/getproduct',
         {
             id:productId.replace('pending_', ''),
@@ -126,11 +129,17 @@ function productClick(productId){
                         break;
                 }
             }
+            if(button !== undefined){
+                button.disabled = false
+            }
         }
     )
 }
 
-function orderClick(productId){
+function orderClick(productId, button){
+    if(button !== undefined){
+        button.disabled = true
+    }
     var qty = $('#order_top_id').find('#qty').val()
     var measureUnitSelect = $('#order_top_id').find('#measure_unit')[0]
     var measureUnitId = measureUnitSelect.options[measureUnitSelect.selectedIndex].value
@@ -183,6 +192,9 @@ function orderClick(productId){
                     default:
                         break
                 }
+            }
+            if(button !== undefined){
+                button.disabled = false
             }
         })
     }
@@ -708,7 +720,7 @@ function orderSupplierSelectChange(supplierSelect, orderSectionId){
     )
 }
 
-function allProductsSearchClick () {
+function allProductsSearchClick() {
     var allProductsSearchText = document.getElementById('all_products_search_text').value
     // When a serach is clicked we redirect to pending orders panel 
     // with the Tab ID of all the products and the search text 

@@ -454,6 +454,10 @@ class PendingOrders extends Model
     public function AllTheProducts($request)
     {
         try {
+            if(!isset($request['search_text'])){
+                return ['status' => 'ok', 'products' => []];
+
+            }
             $SearchText = isset($request['search_text']) ? $request['search_text'] : "";
             if(strlen($SearchText) == 0){
                 $Products = DB::table('products')->where('id', '>', -1)->select('products.*')->get();

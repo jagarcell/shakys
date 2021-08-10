@@ -77,6 +77,9 @@ function discardLocationClick(discardLocationButton) {
  * 
  */
 function createLocationClick(createLocationButton) {
+    if(createLocationButton !== undefined){
+        createLocationButton.disabled = true
+    }
     var addForm = document.getElementById('add_form')
     if(addForm.checkValidity()){
         var name = $(addForm).find('#location_name').val()
@@ -165,6 +168,9 @@ function createLocationClick(createLocationButton) {
                     }
 
                 }
+                if(createLocationButton !== undefined){
+                    createLocationButton.disabled = false
+                }
             }
         )
     }
@@ -178,7 +184,11 @@ function createLocationClick(createLocationButton) {
  * @param {string} locationId
  *              'The location id that is also the products_locations_section_wrap id' 
  */
-function deleteButtonClick(locationId) {
+function deleteButtonClick(locationId, button) {
+    if(button !== undefined){
+        button.disabled = true
+    }
+
     $.post('/deleteinstorelocation',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
@@ -243,6 +253,9 @@ function deleteButtonClick(locationId) {
                         break;
                 }
             }
+            if(button !== undefined){
+                button.disabled = true
+            }
         }
     )
 }
@@ -255,7 +268,11 @@ function deleteButtonClick(locationId) {
  * This action will open an editor section for a location in place of the location data section
  */
 
-function editButtonClick(locationId) {
+function editButtonClick(locationId, button) {
+    if(button !== undefined){
+        button.disabled = true
+    }
+
    $.post('/getinstorelocation',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
@@ -353,6 +370,9 @@ function editButtonClick(locationId) {
                         break;
                 }
             }
+            if(button !== undefined){
+                button.disabled = true
+            }
         }
    )
 }
@@ -363,7 +383,11 @@ function editButtonClick(locationId) {
  *                 'id of the location and also of the location section
  *
  */
-function discardLocationChangesClick(locationId){
+function discardLocationChangesClick(locationId, button){
+    if(button !== undefined){
+        button.disabled = true
+    }
+
     $.post('/getinstorelocation',
         {
             _token:$('meta[name="csrf-token"').attr('content'),
@@ -426,6 +450,10 @@ function discardLocationChangesClick(locationId){
                         break;
                 }
             }
+            if(button !== undefined){
+                button.disabled = true
+            }
+        
         }
     )
 }
@@ -437,6 +465,10 @@ function discardLocationChangesClick(locationId){
  *   
  */
 function acceptLocationChangesClick(locationId) {
+    if(button !== undefined){
+        button.disabled = true
+    }
+
     var productLocationSectionWrap = document.getElementById(locationId)
     var addForm = $(productLocationSectionWrap).find('#add_form')
     var name = addForm.find('#location_name').val()
@@ -506,6 +538,9 @@ function acceptLocationChangesClick(locationId) {
                         default:
                             break;
                     }
+                }
+                if(button !== undefined){
+                    button.disabled = true
                 }
             }
         )

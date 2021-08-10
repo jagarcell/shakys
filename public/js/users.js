@@ -30,6 +30,8 @@ function edit(userid, button){
         button.disabled = true
     }
 
+    discardEditionsInProgress()
+
     $.post('/userbyid', 
         {
             _token: $('meta[name="csrf-token"]').attr('content'),
@@ -45,6 +47,7 @@ function edit(userid, button){
                 switch (data.status) {
                     case 'ok':
                         var user = data.user
+                        userData[0].classList.add('editing')
                         userData[0].innerHTML = editHTML
                         userData.find('#edited_user_id').val(user.id)
                         userData.find('#edited_name').val(user.name)
@@ -562,6 +565,7 @@ function discardPassword(element) {
  **         userAddIcon:'The HTML element that initiated this action'
  */
 function userAddClick(userAddIcon) {
+    discardEditionsInProgress()
     var user_add_section = $(garcellParentNodeByClassName(userAddIcon, 'user_add_section'))
     var user_add_icon = user_add_section.find('#user_add_icon')
     var user_add_form = user_add_section.find('#user_add_form')
@@ -593,6 +597,9 @@ function userAbortClick(userAbortButton) {
  **         userCreateButton:'The HTML element that initiated this action'
  */
 function userCreateClick(userCreateButton) {
+    if(userCreateButton !== undefined){
+        userCreateButton.disabled = true
+    }
     var user_form = $('#user_form')
 
     if((user_form[0]).checkValidity()){
@@ -614,89 +621,95 @@ function userCreateClick(userCreateButton) {
                 confirm_password:confirmPassword,
             },
             function(data, status){
-                var createMessage = $('#create_message')
-                switch (data.status) {
-                    case 'ok':
-                        var user = data.user
-                        reportResult(
-                            {
-                                frame:createMessage,
-                                message:"THE USER WAS SUCCESSFULLY CREATED!",
-                                error:false,
-                                param:user,
-                                alignTop:false,
-                            },
-                            function(frame, user){
-                                frame.hide()
-                                $('#user_add_form').hide()
-                                $('#add_user_username').val('')
-                                $('#add_user_email').val('')
-                                $('#add_user_name').val('')
-                                $('#add_user_password').val('')
-                                $('#add_confirm_user_password').val('')
-                                $('#user_add_icon').show()
-                                var addedUserHtml = document.getElementById('added_user_html')
-                                var innerHTML = addedUserHtml.innerHTML
-                                innerHTML = innerHTML.replace(/user-id/g, user.id)
-                                innerHTML = innerHTML.replace(/user-name/g, user.name)
-                                innerHTML = innerHTML.replace(/user-email/g, user.email)
-                                innerHTML = innerHTML.replace(/user-type/g, user.user_type)
-                                var usersList = document.getElementById('users_list')
-                                usersList.innerHTML = innerHTML + usersList.innerHTML
-                            }
-                        )
-                    break;
-
-                    case 'passwordmissmatch':
-                        var message = getStatusMessage('passwordmissmatch')
-                        reportResult(
-                            {
-                                frame:createMessage,
-                                message:message,
-                            },
-                            function(createMessage, param){
-                                createMessage.hide()
-                            }
-                        )
-                    break;
-                
-                    case 'emailtaken':
-                        var message = getStatusMessage('emailtaken')
-                        reportResult(
-                            {
-                                frame:createMessage,
-                                message:message,
-                            },
-                            function(createMessage, param){
-                                createMessage.hide()
-                            }
-                        )
-                    break;
-
-                    case 'error':
-                        reportResult(
-                            {
-                                frame:createMessage,
-                                message: data.message
-                            },
-                            function(createMessage, param){
-                                createMessage.hide()
-                            }
-                        )
-                    break;
-
-                    case '419':
-                        var message = getStatusMessage('419')
-                        reportResult(
-                            {
-                                frame:createMessage,
-                                message:message,
-                            }
-                        )
-                    break;
-
-                    default:
+                if(status == 'success'){
+                    var createMessage = $('#create_message')
+                    switch (data.status) {
+                        case 'ok':
+                            var user = data.user
+                            reportResult(
+                                {
+                                    frame:createMessage,
+                                    message:"THE USER WAS SUCCESSFULLY CREATED!",
+                                    error:false,
+                                    param:user,
+                                    alignTop:false,
+                                },
+                                function(frame, user){
+                                    frame.hide()
+                                    $('#user_add_form').hide()
+                                    $('#add_user_username').val('')
+                                    $('#add_user_email').val('')
+                                    $('#add_user_name').val('')
+                                    $('#add_user_password').val('')
+                                    $('#add_confirm_user_password').val('')
+                                    $('#user_add_icon').show()
+                                    var addedUserHtml = document.getElementById('added_user_html')
+                                    var innerHTML = addedUserHtml.innerHTML
+                                    innerHTML = innerHTML.replace(/user-username/g, user.username)
+                                    innerHTML = innerHTML.replace(/user-id/g, user.id)
+                                    innerHTML = innerHTML.replace(/user-name/g, user.name)
+                                    innerHTML = innerHTML.replace(/user-email/g, user.email)
+                                    innerHTML = innerHTML.replace(/user-type/g, user.user_type)
+                                    var usersList = document.getElementById('users_list')
+                                    usersList.innerHTML = innerHTML + usersList.innerHTML
+                                }
+                            )
                         break;
+    
+                        case 'passwordmissmatch':
+                            var message = getStatusMessage('passwordmissmatch')
+                            reportResult(
+                                {
+                                    frame:createMessage,
+                                    message:message,
+                                },
+                                function(createMessage, param){
+                                    createMessage.hide()
+                                }
+                            )
+                        break;
+                    
+                        case 'emailtaken':
+                            var message = getStatusMessage('emailtaken')
+                            reportResult(
+                                {
+                                    frame:createMessage,
+                                    message:message,
+                                },
+                                function(createMessage, param){
+                                    createMessage.hide()
+                                }
+                            )
+                        break;
+    
+                        case 'error':
+                            reportResult(
+                                {
+                                    frame:createMessage,
+                                    message: data.message
+                                },
+                                function(createMessage, param){
+                                    createMessage.hide()
+                                }
+                            )
+                        break;
+    
+                        case '419':
+                            var message = getStatusMessage('419')
+                            reportResult(
+                                {
+                                    frame:createMessage,
+                                    message:message,
+                                }
+                            )
+                        break;
+    
+                        default:
+                            break;
+                    }
+                }
+                if(userCreateButton !== undefined){
+                    userCreateButton.disabled = false
                 }
             }
         )
@@ -747,3 +760,94 @@ function userCreateClick(userCreateButton) {
     }
     return statusMessage
 }
+
+/**
+ * Action to abort editions in progress
+ */
+function discardEditionsInProgress() {
+    var editions = document.getElementsByClassName('editing')
+    $.each(editions, function(index, edition){
+        edition.classList.remove('editing')
+
+        var userId = edition.id
+
+        $.post('/userbyid',
+            {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                userid:userId,
+                element_tag:userId,
+            },
+            function(data, status){
+                if(status == 'success'){
+                    var user_data = $('#user_data')
+                    var user_section = $('#' + data.element_tag)
+                    var user_edit_message = user_section.find('#user_edit_message')
+
+                    switch (data.status) {
+                        case 'ok':
+                            var user = data.user
+            
+                            user_section[0].innerHTML = user_data[0].innerHTML
+                            user_section.find('#user_username')[0].innerHTML = user.username
+                            user_section.find('#user_name')[0].innerHTML = user.name
+                            user_section.find('#user_email')[0].innerHTML = user.email
+                            user_section.find('#user_type')[0].innerHTML = user.user_type
+                            user_section[0].innerHTML = user_section[0].innerHTML.replace(/user_id/g, user.id)
+                                
+                            break;
+                    
+                        case 'notfound':
+                            var message = getStatusMessage('notfound')
+                            reportResult(
+                                {
+                                    frame:user_edit_message,
+                                    message:message,
+                                    timeout:5000,
+                                    param:data.element_tag,
+                                    alignTop:false,
+                                }, function(frame, element_tag){
+                                    frame.hide()
+                                    var user_section = $('#' + element_tag)
+                                    user_section.hide()
+                                }
+                            )
+        
+                            break;
+
+                        case 'error':
+                            reportResult(
+                                {
+                                    frame:user_edit_message,
+                                    message:getMessageFromErrorInfo(data.message),
+                                    timeout:4000,
+                                }, function(frame, param){
+                                    frame.hide()
+                                }
+                            )
+
+                            break;
+
+                        case '419':
+                            var message = getStatusMessage('419')
+                            reportResult(
+                                {
+                                    frame:user_edit_message,
+                                    message:message
+                                }
+                            )
+                            break;
+
+                            default:
+                            break;
+                    }
+
+                    if(element !== undefined){
+                        element.disabled = false
+                    }
+                }
+            }
+        )
+
+    })
+}
+

@@ -18,7 +18,10 @@ class Users extends Model
     public function ListUsers($request)
     {
         # code...
-        $SearchText = isset($request['search_text']) ? $request['search_text'] : "";
+        if(!isset($request['search_text'])){
+            return View('users', ['users' => []]);
+        }
+        $SearchText = $request['search_text'];
         try {
             //code...
             if(strlen($SearchText) == 0){

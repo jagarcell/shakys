@@ -347,6 +347,9 @@ function editClick(editButton) {
  * Action to delete a supplier
  */
 function deleteClick(deleteButton) {
+    if(deleteButton !== undefined){
+        deleteButton.disabled = true
+    }
     var supplier_section_wrap = garcellParentNodeByClassName(deleteButton, 'supplier_section_wrap')
     var id = supplier_section_wrap.id
 
@@ -416,6 +419,9 @@ function deleteClick(deleteButton) {
                     default:
                         break
                 }
+            }
+            if(deleteButton !== undefined){
+                deleteButton.disabled = false
             }
         }
     )
