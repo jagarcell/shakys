@@ -24,6 +24,9 @@ function attachDropzone(id){
                         if(filesAccepted.length > 0){
                             this.removeFile(filesAccepted[0])
                         }
+                        file.previewElement.addEventListener("click", function() {
+                            this.parentNode.click()
+                        })                                            
                     })
                     this.on('success', function(file, data){
                         $('#image_to_upload').val(data.filename)
@@ -318,6 +321,9 @@ function editButtonClick(locationId, button) {
                                         if(filesAccepted.length > 0){
                                             this.removeFile(filesAccepted[0])
                                         }
+                                        file.previewElement.addEventListener("click", function() {
+                                            this.parentNode.click()
+                                        })                                            
                                     })
                                     this.on('success', function(file, data){
                                         var productLocationSectionWrap = document.getElementById(location.id)

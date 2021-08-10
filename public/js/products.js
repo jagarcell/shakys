@@ -37,7 +37,10 @@ function productSearchClick() {
 					if(filesAccepted.length > 0){
 						this.removeFile(filesAccepted[0])
 					}
-				})
+                    file.previewElement.addEventListener("click", function() {
+                        this.parentNode.click()
+                    })                                            
+                })
                 this.on('success', function(file, data){
                     $('#add_section_frame').find('.product_form').find('.image_to_upload').val(data.filename)
                 })
@@ -596,39 +599,42 @@ function editButtonClick(productId, button) {
                         $('#product_image_' + product.id).addClass('dropzone')
     
                         let mockFile = { name: product.image_name, size: product.image_size }
-    
-                            new Dropzone(
-                                "form#product_image_" + product.id, 
-                                { 
-                                    url: "/productimgupload", 
-                                    dictDefaultMessage : 'Drop An Image Or Click To Search One',
-                                    init : function dropzoneInit() {
-                                        // body...
-                                        this.on('addedfile', function (file) {
-                                            // body...
-                                            var edit_div = this.element.parentNode
-                                            $(edit_div).find('.image_to_upload').val(file.name)
-                                            filesAccepted = this.getAcceptedFiles()
-            
-                                            if(this.hidePreview !== undefined){
-                                                $(edit_div).find('.dz-preview')[0].style.display = 'none'
-                                            }
-                                            else{
-                                                this.hidePreview = 'hidePreview'
-                                            }
-        
-                                            if(filesAccepted.length > 0){
-                                                this.removeFile(filesAccepted[0])
-                                            }
-                                        })
-                                        this.on('success', function(file, data){
-                                            var section = this.element.parentNode.parentNode
 
-                                            $(section).find('.product_form').find('.image_to_upload').val(data.filename)
-                                        })
-                                    }
+                        new Dropzone(
+                            "form#product_image_" + product.id, 
+                            { 
+                                url: "/productimgupload", 
+                                dictDefaultMessage : 'Drop An Image Or Click To Search One',
+                                init : function dropzoneInit() {
+                                    // body...
+                                    this.on('addedfile', function (file) {
+                                        // body...
+                                        var edit_div = this.element.parentNode
+                                        $(edit_div).find('.image_to_upload').val(file.name)
+                                        filesAccepted = this.getAcceptedFiles()
+        
+                                        if(this.hidePreview !== undefined){
+                                            $(edit_div).find('.dz-preview')[0].style.display = 'none'
+                                        }
+                                        else{
+                                            this.hidePreview = 'hidePreview'
+                                        }
+    
+                                        if(filesAccepted.length > 0){
+                                            this.removeFile(filesAccepted[0])
+                                        }
+                                        file.previewElement.addEventListener("click", function() {
+                                            this.parentNode.click()
+                                        })                                            
+                                    })
+                                    this.on('success', function(file, data){
+                                        var section = this.element.parentNode.parentNode
+
+                                        $(section).find('.product_form').find('.image_to_upload').val(data.filename)
+                                    })
                                 }
-                            ).displayExistingFile(mockFile, product.image_path)
+                            }
+                        ).displayExistingFile(mockFile, product.image_path)
 
                         $.get('/getsuppliers',
                             {
@@ -729,7 +735,6 @@ function discardEditChanges(productId, button) {
             if(status == 'success'){
                 var element_tag = data.element_tag
                 var actionResultMessage = $(document.getElementById(element_tag)).find('#action_result_message')
-                console.log(actionResultMessage[0])
                 switch (data.status) {
                     case 'ok':
                         var product = data.product

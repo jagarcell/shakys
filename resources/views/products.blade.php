@@ -135,7 +135,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="section">
+                    <div class="section_right">
                         <div id="supplier_data_edit_frame" class="data_entry">
                             <div class="data_edit">
                                 <div class="field_wrap">
@@ -193,7 +193,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="section">
+                <div class="section_right">
                     <div id="supplier_data_edit_frame" class="data_entry">
                         <div class="data_edit">
                             <div class="field_wrap">

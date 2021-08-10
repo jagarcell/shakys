@@ -33,7 +33,10 @@ function createSupplierImageDrop(){
 					if(filesAccepted.length > 0){
 						this.removeFile(filesAccepted[0])
 					}
-				})
+                    file.previewElement.addEventListener("click", function() {
+                        this.parentNode.click()
+                    })                                            
+                })
                 this.on('success', function(file, data){
                     $('#supplier_data_entry_form_add').find('#supplier_image_to_upload').val(data.filename)
                 })
@@ -283,6 +286,9 @@ function editClick(editButton) {
                                             if(filesAccepted.length > 0){
                                                 this.removeFile(filesAccepted[0])
                                             }
+                                            file.previewElement.addEventListener("click", function() {
+                                                this.parentNode.click()
+                                            })                                            
                                         })
                                         this.on('success', function(file, data){
                                             var edit_div = this.element.parentNode
