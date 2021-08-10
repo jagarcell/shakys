@@ -36,7 +36,7 @@
         <div id="add_product_location_section" class="product_location_add_frame">
             <div id="action_result_message" class="action_result_message" hidden></div>
             <div id="add_icon_frame" class="add_icon_frame">
-                <input type="button" class="add_input" value="+" onclick="addLocationClick(this)">
+                <a class="add_input" onclick="addLocationClick(this)">+</a>
             </div>
             <div id="add_section_frame" class="product_location_section" hidden>
                 <form action="/instoreimgupload" id="product_location_add_pic" class="product_location_pic_frame" method="post" enctype="multipart/form-data">
@@ -47,8 +47,8 @@
                         <form id="add_form" class="add_location">
                             <input id="location_name" type="text" class="product_location_text_field box_shadow w-input" maxlength="256" name="name" data-name="Name" placeholder="Name" required="">
                             <div class="product_location_add_buttons_frame">
-                                <input type="button" value="Create Location" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="createLocationClick(this)">
-                                <input type="button" value="Discard Location" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardLocationClick(this)">
+                                <input type="button" value="Create" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="createLocationClick(this)">
+                                <input type="button" value="Discard" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardLocationClick(this)">
                             </div>
                             <input id="image_to_upload" name="image_path" hidden>
                         </form>
@@ -127,8 +127,8 @@
                                     <input id="location_name" type="text" class="product_location_text_field box_shadow w-input" maxlength="256" name="name" data-name="Name" placeholder="Name" required="">
                                 </div>
                                 <div class="product_location_add_buttons_frame">
-                                    <input type="button" value="Accept Changes" data-wait="Please wait..." class="edit_button box_shadow w-button" onclick="acceptLocationChangesClick('location-id', this)">
-                                    <input type="button" value="Discard Changes" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardLocationChangesClick('location-id', this)">
+                                    <input type="button" value="Accept" data-wait="Please wait..." class="edit_button box_shadow w-button" onclick="acceptLocationChangesClick('location-id', this)">
+                                    <input type="button" value="Discard" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardLocationChangesClick('location-id', this)">
                                 </div>
                                 <input id="image_to_upload" name="image_path" hidden>
                             </form>
