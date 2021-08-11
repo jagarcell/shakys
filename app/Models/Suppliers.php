@@ -221,6 +221,7 @@ class Suppliers extends Model
             if(count($Suppliers) == 0){
                 return['status' => 'notfound', 'id' => $Id, 'element_tag' => $ElementTag];
             }
+/*            
             $Suppliers = $this->where('email', $Email)->get();
 
             if(count($Suppliers) > 0){
@@ -228,7 +229,7 @@ class Suppliers extends Model
                     return['status' => 'emailtaken', 'id' => $Id, 'element_tag' => $ElementTag];
                 }
             }
-
+*/
             if(!\File::exists($ImagePath)){
                 $ImagePath = config('app')['nophoto'];
             }

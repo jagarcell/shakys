@@ -72,7 +72,11 @@ function supplierAddClick() {
  ** 'This action creates a new supplier'
  */
 function newSupplier(newSupplierButton) {
-    var add_section_div = garcellParentNodeById(newSupplierButton, 'add_section_div')
+    if(newSupplierButton !== undefined){
+        newSupplierButton.disabled = true
+    }
+
+    var add_section_div = document.getElementById('add_section_div')
     var supplier_data_entry_form = $(add_section_div).find('#supplier_data_entry_form_add')[0]
     var element_tag = supplier_data_entry_form.id
     var action_result_message = $(add_section_div).find('#action_result_message')
@@ -187,6 +191,9 @@ function newSupplier(newSupplierButton) {
                         default:
                             break;
                     }
+                }
+                if(newSupplierButton !== undefined){
+                    newSupplierButton.disabled = false
                 }
             }
         )
@@ -379,6 +386,7 @@ function deleteClick(deleteButton) {
                                 message:"THE SUPPLIER HAS BEEN SUCCESFULLY DELETED!",
                                 error:false,
                                 param:element_tag,
+                                alignTop:false,
                             }, function(frame, element_tag){
                                 var supplier_section_wrap = document.getElementById(element_tag)
                                 supplier_section_wrap.outerHTML = ""

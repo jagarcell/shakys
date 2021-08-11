@@ -29,25 +29,19 @@
         @section('content')
         <!-- HTML TO SHOW THE SUPPLIERS ADD FORM --> 
         <div id="add_section_div" class="add_section_div">
-
             <!-- THIS IS THE ADD ICON -->
             <div id="add_icon_frame" class="add_icon_frame">
                 <div class="all_products_search_frame">
                     <input id="supplier_search_text" type="text" class="all_products_search_bar" placeholder="Enter your search here">
-                        <div class="search_product_icon">
-                            <img src="/images/MagnifierBk.png">
-                            <input type="button" class="all_products_search_button" onclick="supplierSearchClick()">
-                        </div>
-                    </div>
-                    <div class="supplier_add_icon" onclick="supplierAddClick()">
-                        <a>+</a>
+                    <div class="search_product_icon">
+                        <img src="/images/MagnifierBk.png">
+                        <input type="button" class="all_products_search_button" onclick="supplierSearchClick()">
                     </div>
                 </div>
+                <div class="supplier_add_icon" onclick="supplierAddClick()">
+                    <a>+</a>
+                </div>
             </div>
-
-            <!--div id="supplier_add_icon" class="supplier_add_icon">
-                <input type="button" class="supplier_add_input" value="+" onclick="supplierAddClick()">
-            </div-->
             <div id="action_result_message" class="action_result_message" hidden>action_result_message</div>
             <div id="supplier_add_section" style="display:none">
                 <div class="supplier_add_section">
@@ -140,7 +134,6 @@
             @if(isset($suppliers) && count($suppliers) > 0)
             @foreach($suppliers as $key => $supplier)
             <div id="{{$supplier->id}}" class="supplier_section_wrap">
-                <div id="action_result_message" class="action_result_message" hidden>action_result_message</div>
                 <div class="supplier_section">
                     <div class="supplier_pic_frame box_shadow">
                         <img src="{{$supplier->image_path}}" loading="lazy" sizes="(max-width: 479px) 92vw, 256" srcset="{{$supplier->image_path}} 256w, {{$supplier->image_path}} 256w" alt="" class="supplier_pic">
@@ -178,6 +171,7 @@
                         </div>
                     </div>
                 </div>
+                <div id="action_result_message" class="action_result_message" hidden>action_result_message</div>
             </div>
             @endforeach
             @else
