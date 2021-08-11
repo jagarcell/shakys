@@ -28,7 +28,7 @@
         @section('content')
         <!-- THIS IS THE SECTION THAT HOLDS THE HTML FOR THE ADDING ICON AND THE ADDING ACTION FORM -->
         <div id="add_section_wrap" class="add_section_wrap">
-            <div class="all_products_search_frame">
+            <div id="all_products_search_frame" class="all_products_search_frame">
                 <input id="measure_unit_search_text" type="text" class="all_products_search_bar" placeholder="Enter your search here">
                     <div class="search_product_icon">
                         <img src="/images/MagnifierBk.png">
@@ -39,13 +39,6 @@
                     <a>+</a>
                 </div>
             </div>
-
-            <!-- THIS IS THE ADD ICON -->
-            <!--div id="add_icon_frame" class="add_icon_frame">
-                <div class="add_icon">
-                    <input type="button" class="add_input" value="+" onclick="addIconClick()">
-                </div>
-            </div-->
 
             <!-- THIS IS THE SECTION THAT IS USED TO ENTER DATA TO BE CREATED -->
             <!-- IT WILL BE SHOWN WHEN THE USER CLICKS ON THE ADD ICON -->
@@ -63,9 +56,9 @@
                             </form>
                         </div>
                     </div>
-                </div>
-                <!-- THIS IS WHERE ACTION RESULT MESSAGES WILL BE SHOWN -->
-                <div id="action_result_message" class="action_result_message" hidden>
+                    <!-- THIS IS WHERE ACTION RESULT MESSAGES WILL BE SHOWN -->
+                    <div id="action_result_message" class="action_result_message" hidden>
+                    </div>
                 </div>
             </div>
         </div>

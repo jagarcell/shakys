@@ -1,7 +1,5 @@
 function garcellParentNodeById(element, parentId) {
-    console.log(parentId)
     while (element !== 'undefined') {
-        console.log(element.id)
         if(element.id == parentId){
             return element
         }

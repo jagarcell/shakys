@@ -582,6 +582,7 @@ function userAbortClick(userAbortButton) {
     var user_add_icon = $('#user_add_icon')
     var user_add_form = $('#user_add_form')
 
+    user_add_form.find('#add_user_username').val('')
     user_add_form.find('#add_user_name').val('')
     user_add_form.find('#add_user_email').val('')
     user_add_form.find('#add_user_password').val('')
@@ -600,6 +601,7 @@ function userCreateClick(userCreateButton) {
     if(userCreateButton !== undefined){
         userCreateButton.disabled = true
     }
+
     var user_form = $('#user_form')
 
     if((user_form[0]).checkValidity()){
@@ -636,13 +638,9 @@ function userCreateClick(userCreateButton) {
                                 },
                                 function(frame, user){
                                     frame.hide()
-                                    $('#user_add_form').hide()
-                                    $('#add_user_username').val('')
-                                    $('#add_user_email').val('')
-                                    $('#add_user_name').val('')
-                                    $('#add_user_password').val('')
-                                    $('#add_confirm_user_password').val('')
-                                    $('#user_add_icon').show()
+
+                                    userAbortClick()
+
                                     var addedUserHtml = document.getElementById('added_user_html')
                                     var innerHTML = addedUserHtml.innerHTML
                                     innerHTML = innerHTML.replace(/user-username/g, user.username)
@@ -708,15 +706,16 @@ function userCreateClick(userCreateButton) {
                             break;
                     }
                 }
-                if(userCreateButton !== undefined){
-                    userCreateButton.disabled = false
-                }
             }
         )
     }
     else{
         (user_form[0]).reportValidity()
     }
+    if(userCreateButton !== undefined){
+        userCreateButton.disabled = false
+    }
+
 }
 
 /**

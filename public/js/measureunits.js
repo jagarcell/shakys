@@ -11,7 +11,7 @@ $(document).ready(function(){
 })
 
 function addIconClick() {
-    document.getElementById('add_icon_frame').style.display = 'none'
+    document.getElementById('add_section_wrap').style.display = 'none'
     document.getElementById('add_section_frame').style.display = 'block'
     discardEditChanges(-1)
 }
@@ -26,11 +26,13 @@ function createButtonClick(button) {
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
             unit_description:unitDescription,
-            element_tag:'add_section_wrap',
+            element_tag:'add_section_frame',
         }, function(data, status){
             if(status == 'success'){
                 var elementTag = data.element_tag
+                console.log(elementTag)
                 var actionResultMessage = $('#' + elementTag).find('#action_result_message')
+                console.log(actionResultMessage)
                 switch (data.status) {
                     case 'ok':
                         var measureUnit = data.measureunit
@@ -47,19 +49,15 @@ function createButtonClick(button) {
                                 var sectionHtml = document.getElementById('section_html').outerHTML
                                 var productsListWrap = document.getElementById('products_list_wrap')
 
-                                document.getElementById('add_section_frame').style.display = 'none'
-                                document.getElementById('add_icon_frame').style.display = 'flex'
-
                                 unitSectionHTML = sectionHtml
                                 unitSectionHTML = unitSectionHTML.replace(/section_html/g, measureUnit.id)
                                 unitSectionHTML = unitSectionHTML.replace(/unit-id/g, measureUnit.id)
                                 unitSectionHTML = unitSectionHTML.replace(/unit-description/g, measureUnit.unit_description)
                                 productsListWrap.innerHTML = unitSectionHTML + productsListWrap.innerHTML
 
-                                document.getElementById('unit_description').value = ""
-
                                 $(productsListWrap).find('#' + measureUnit.id)[0].classList.add("measure_unit_edition")
                                 $(productsListWrap).find('#' + measureUnit.id)[0].style.display = 'block'
+                                discardButtonClick()
                             }   
                         )                        
                         break
@@ -96,8 +94,8 @@ function createButtonClick(button) {
 }
 
 function discardButtonClick() {
+    document.getElementById('add_section_wrap').style.display = 'block'
     document.getElementById('add_section_frame').style.display = 'none'
-    document.getElementById('add_icon_frame').style.display = 'flex'
     document.getElementById('unit_description').value = ""
 }
 

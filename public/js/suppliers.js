@@ -200,6 +200,9 @@ function newSupplier(newSupplierButton) {
     }
     else{
         supplier_data_entry_form.reportValidity()
+        if(newSupplierButton !== undefined){
+            newSupplierButton.disabled = false
+        }
     } 
 }
 
@@ -211,7 +214,8 @@ function newSupplier(newSupplierButton) {
 function discardNewSupplier() {
     $('#supplier_add_section').hide()
     $('#add_icon_frame').show()
-    supplier_data_entry_form = $('#supplier_data_entry_form')
+    supplier_data_entry_form = $('#supplier_data_entry_form_add')
+    supplier_data_entry_form.find('#supplier_code_entry').val('')
     supplier_data_entry_form.find('#supplier_email_entry').val('')
     supplier_data_entry_form.find('#supplier_name_entry').val('')
     supplier_data_entry_form.find('#supplier_address_entry').val('')
