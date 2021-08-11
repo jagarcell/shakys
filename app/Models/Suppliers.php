@@ -33,30 +33,20 @@ class Suppliers extends Model
                     if($first){
                         $first = false;
                         $query = $query . $Keyword . "%')";
+                        $query = $query . " or (email like '%" . $Keyword . "%')";
+                        $query = $query . " or (address like '%" . $Keyword . "%')";
+                        $query = $query . " or (phone like '%" . $Keyword . "%')";
+                        $query = $query . " or (pickup like '%" . $Keyword . "%')";
+                        $query = $query . " or (code like '%" . $Keyword . "%')";
                     }
                     else{
                         $query = $query . " or (name like '%" . $Keyword . "%')";
+                        $query = $query . " or (email like '%" . $Keyword . "%')";
+                        $query = $query . " or (address like '%" . $Keyword . "%')";
+                        $query = $query . " or (phone like '%" . $Keyword . "%')";
+                        $query = $query . " or (pickup like '%" . $Keyword . "%')";
+                        $query = $query . " or (code like '%" . $Keyword . "%')";
                     }
-                }
-                foreach ($Keywords as $key => $Keyword) {
-                    # code...
-                    $query = $query . " or (email like '%" . $Keyword . "%')";
-                }
-                foreach ($Keywords as $key => $Keyword) {
-                    # code...
-                    $query = $query . " or (address like '%" . $Keyword . "%')";
-                }
-                foreach ($Keywords as $key => $Keyword) {
-                    # code...
-                    $query = $query . " or (phone like '%" . $Keyword . "%')";
-                }
-                foreach ($Keywords as $key => $Keyword) {
-                    # code...
-                    $query = $query . " or (pickup like '%" . $Keyword . "%')";
-                }
-                foreach ($Keywords as $key => $Keyword) {
-                    # code...
-                    $query = $query . " or (code like '%" . $Keyword . "%')";
                 }
 
                 $query = $query . ")";

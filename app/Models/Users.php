@@ -37,24 +37,18 @@ class Users extends Model
                     if($first){
                         $first = false;
                         $query = $query . $Keyword . "%')";
+                        $query = $query . "or (email like '%" . $Keyword . "%')";
+                        $query = $query . "or (user_type like '%" . $Keyword . "%')";
+                        $query = $query . "or (username like '%" . $Keyword . "%')";
                     }
                     else{
                         $query = $query . "or (name like '%" . $Keyword . "%')";
+                        $query = $query . "or (email like '%" . $Keyword . "%')";
+                        $query = $query . "or (user_type like '%" . $Keyword . "%')";
+                        $query = $query . "or (username like '%" . $Keyword . "%')";
                     }
                 }
-                foreach ($Keywords as $key => $Keyword) {
-                    # code...
-                    $query = $query . "or (email like '%" . $Keyword . "%')";
-                }
-                foreach ($Keywords as $key => $Keyword) {
-                    # code...
-                    $query = $query . "or (user_type like '%" . $Keyword . "%')";
-                }
-                foreach ($Keywords as $key => $Keyword) {
-                    # code...
-                    $query = $query . "or (username like '%" . $Keyword . "%')";
-                }
-        
+       
                 $query = $query . ")";
                 $basequery = "select * from users";
                 $users = DB::select($basequery . $query);

@@ -472,14 +472,13 @@ class PendingOrders extends Model
                     if($first){
                         $first = false;
                         $query = $query . $Keyword . "%')";
+                        $query = $query . "or (internal_code like '%" . $Keyword . "%')";
                     }
                     else{
                         $query = $query . "or (internal_description like '%" . $Keyword . "%')";
+                        $query = $query . "or (internal_code like '%" . $Keyword . "%')";
+
                     }
-                }
-                foreach ($Keywords as $key => $Keyword) {
-                    # code...
-                    $query = $query . "or (internal_code like '%" . $Keyword . "%')";
                 }
         
                 $query = $query . ")";
