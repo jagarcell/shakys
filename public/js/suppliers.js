@@ -748,9 +748,6 @@ function discardEditionsInProgress() {
                         default:
                             break;
                     }
-                    if(discardChangesButton !== undefined){
-                        discardChangesButton.disabled = false
-                    }
                 }
             }
         )

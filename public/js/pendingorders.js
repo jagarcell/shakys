@@ -474,7 +474,6 @@ function resendOrderButtonClick(orderId, button){
                                 alignTop:false,
                                 timeout:1,
                             }, function(frame, param){
-                                console.log(elementTag)
                                 frame[0].innerHTML += 
                                     "<div style='color:blue; text-decoration:underline;'><a href='/orderpreview?id=" + elementTag + "&previousURL=showpendingorderspanel?tab_id=tab_5'>View The Order</a></div>";
                             }

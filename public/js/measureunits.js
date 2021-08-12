@@ -30,9 +30,7 @@ function createButtonClick(button) {
         }, function(data, status){
             if(status == 'success'){
                 var elementTag = data.element_tag
-                console.log(elementTag)
                 var actionResultMessage = $('#' + elementTag).find('#action_result_message')
-                console.log(actionResultMessage)
                 switch (data.status) {
                     case 'ok':
                         var measureUnit = data.measureunit
@@ -242,7 +240,6 @@ function acceptEditChanges(unitId, button) {
                     case 'ok':
                         var measureUnit = data.measureunit
                         param = {elementTag:elementTag, measureUnit:measureUnit}
-                        console.log(data.measureunit.id)
                         reportResult(
                             {
                                 frame:actionResultMessage,
