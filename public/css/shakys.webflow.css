@@ -23,6 +23,10 @@ select{
   font-family: inherit;
 }
 
+.product_add_frame{
+  display: flex;
+}
+
 .product_edition{
   padding-bottom: 10px;
 }
@@ -2328,7 +2332,7 @@ body {
 }
 
 .add_frame {
-  display: flex;
+  display: block;
   height: 100%;
   width: 100%;
 }
