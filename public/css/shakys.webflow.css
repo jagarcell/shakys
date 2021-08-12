@@ -2275,6 +2275,7 @@ body {
 }
 
 .data_entry {
+  min-width: 375px;
   font-size: 14px;
   display: -webkit-box;
   display: -webkit-flex;
