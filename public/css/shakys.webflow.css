@@ -23,6 +23,9 @@ select{
   font-family: inherit;
 }
 
+.product_edition{
+  padding-bottom: 10px;
+}
 .product_location_add_frame{
   position: relative;
 }
@@ -1134,6 +1137,7 @@ select{
 .field_wrap{
   width: 100%;
   font-family: inherit;
+  padding-top: 10px;
 }
 
 .field_label{
@@ -2235,7 +2239,7 @@ body {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  width: 60vw;
+  width: 55vw;
 }
 
 .section_right {
@@ -2243,7 +2247,13 @@ body {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  width: 40vw;
+  width: 35vw;
+}
+
+.section_buttons{
+  text-align: center;
+  align-self: center;
+  width: 10vw;
 }
 
 .measure_unit_section{
@@ -2275,7 +2285,6 @@ body {
 }
 
 .data_entry {
-  min-width: 375px;
   font-size: 14px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -2396,6 +2405,9 @@ body {
   justify-content: center;
   border-radius: 5px;
   background-color: #8d8d8d;
+  max-height: 25px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .data_entry_buttons {
@@ -2403,7 +2415,7 @@ body {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
-  display: flex;
+  display: block;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
   -webkit-flex-direction: row;
@@ -2417,6 +2429,10 @@ body {
   -ms-flex-align: center;
   align-items: center;
   width: 100%;
+}
+
+.data_entry_buttons_separator{
+  height: 40px;
 }
 
 .add_button {
@@ -2598,7 +2614,7 @@ body {
   }
 
   .bottom_button{
-    margin-top: 20px;
+    width: 35%;
   }
 
   .order_data{  
@@ -2733,7 +2749,17 @@ body {
 }
 
 @media screen and (max-width: 767px) {
-  
+  .data_entry_buttons_separator{
+    height: 0px;
+  }
+
+  .section_buttons{
+    width: 100vw;
+  }
+  .data_entry_buttons{
+    display: flex;
+  }
+
   .supplier_add_icon {
     top: 10%;
   }

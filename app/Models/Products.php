@@ -83,6 +83,10 @@ class Products extends Model
                 })->select('measure_units.*')->get();
 
                 $Product->measure_units = $ProductMeasureUnits;
+                
+                if($Product->plan_type == -1){
+                    $Product->plan_type = "NONE";
+                }
             }
 
             $MeasureUnits = (new MeasureUnits())->where('id', '>', -1)->get();

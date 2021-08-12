@@ -104,9 +104,6 @@
                 </div>
             </div>
         </div>
-        <!--div style="border-top:solid 1px; width:100%;">
-
-        </div-->
 
         <!-- THIS IS THE LIST OF PRODUCTS IN THE DATABASE RECEIVED FROM THE SERVER -->
         <div id="products_list_wrap">
@@ -146,17 +143,25 @@
                                     <div class="field_label">Default Supplier</div>
                                     <div class="default_supplier data_field box_shadow">{{$product->default_supplier_name}}</div>
                                 </div>
-                                <div class="data_entry_buttons field_wrap">
-                                    <div class="bottom_button">
-                                        <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$product->id}}', this)">
-                                    </div>
-                                    <div class="bottom_button">
-                                        <input type="button" class="supplier_product_button box_shadow w-button" value="Suppliers" onclick="suppliersButtonClick('{{$product->id}}', this)">
-                                    </div>
-                                    <div class="bottom_button">
-                                        <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('{{$product->id}}', this)">
-                                    </div>
+                                <div class="field_wrap">
+                                    <div class="field_label">Planification Type</div>
+                                    <div class="default_supplier data_field box_shadow">{{$product->plan_type}}</div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section_buttons">
+                        <div class="data_entry_buttons field_wrap">
+                            <div class="bottom_button">
+                                <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$product->id}}', this)">
+                            </div>
+                            <div class="data_entry_buttons_separator"></div>
+                            <div class="bottom_button">
+                                <input type="button" class="supplier_product_button box_shadow w-button" value="Suppliers" onclick="suppliersButtonClick('{{$product->id}}', this)">
+                            </div>
+                            <div class="data_entry_buttons_separator"></div>
+                            <div class="bottom_button">
+                                <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('{{$product->id}}', this)">
                             </div>
                         </div>
                     </div>
