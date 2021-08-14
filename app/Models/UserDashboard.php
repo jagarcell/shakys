@@ -74,7 +74,7 @@ class UserDashboard extends Model
                 $LocationId = $request['locationid'];
             }
             else{
-                $ProductsToCount = (new Products())->where('counted', false)->where('next_count_date', '<=', $Date)->get();
+                $ProductsToCount = (new Products())->ProductsToCount($Date);
             }
             return ['status' => 'ok', 'productstocount' => $ProductsToCount];
         } catch (\Throwable $th) {

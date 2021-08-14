@@ -83,6 +83,10 @@ class Products extends Model
                 })->select('measure_units.*')->get();
 
                 $Product->measure_units = $ProductMeasureUnits;
+                
+                if($Product->plan_type == -1){
+                    $Product->plan_type = "NONE";
+                }
             }
 
             $MeasureUnits = (new MeasureUnits())->where('id', '>', -1)->get();
@@ -102,6 +106,7 @@ class Products extends Model
      *                   'days_to_count'
      *                   'measure_unit'
      *                   'default_supplier_id'
+     *                   'plan_type'
      *                   'default_supplier_name'
      *                   'supplier_code'
      *                   'supplier_product_description'
@@ -117,9 +122,11 @@ class Products extends Model
     {
         $Code = $request['internal_code'];
         $Description = $request['internal_description'];
-        $DaysToCount = $request['days_to_count'];
+        $DaysToCount = $request['days_to_count'] !== null ? $request['days_to_count'] : 0;
         $DefaultMeasureUnitId = $request['default_measure_unit_id'];
+        $PlanType = $request['plan_type'] !== null ? $request['plan_type'] : 0;
         $DefaultSupplierId = $request['default_supplier_id'];
+
         $ImageToUpload = $request['image_to_upload'];
         $ElementTag = $request['element_tag'];
         $Config = config('app');
@@ -135,6 +142,7 @@ class Products extends Model
             $this->internal_description = $Description;
             $this->days_to_count = $DaysToCount;
             $this->default_measure_unit_id = $DefaultMeasureUnitId;
+            $this->plan_type = $PlanType;
             $this->default_supplier_id = $DefaultSupplierId;
             $ImagePath = $ImageToUpload == null ? $Config['nophoto']: $Config['products_images_path'] . $ImageToUpload;
             if(!\File::exists($ImagePath)){
@@ -168,6 +176,7 @@ class Products extends Model
                 'days_to_count' => $this->days_to_count,
                 'measure_unit' => $UnitDescription,
                 'default_supplier_id' => $this->default_supplier_id,
+                'plan_type' => $this->plan_type,
                 'image_path' => $this->image_path,
                 'default_supplier_name' => $DefaultSupplierName
             ];
@@ -312,9 +321,10 @@ class Products extends Model
         $Id = $request['id'];
         $InternalCode = $request['internal_code'];
         $InternalDescription = $request['internal_description'];
-        $DaysToCount = $request['days_to_count'];
+        $DaysToCount = $request['days_to_count'] !== null ? $request['days_to_count'] : 0;
         $DefaultMeasureUnitId = $request['default_measure_unit_id'];
         $DefaultSupplierId = $request['default_supplier_id'];
+        $PlanType = $request['plan_type'];
         $ImagePath = $request['image_path'];
         $ElementTag = $request['element_tag'];
         $Config = config('app');
@@ -357,6 +367,7 @@ class Products extends Model
                     'days_to_count' => $DaysToCount,
                     'default_measure_unit_id' => $DefaultMeasureUnitId,
                     'default_supplier_id' => $DefaultSupplierId,
+                    'plan_type' => $PlanType,
                     'image_path' => $ImagePath,
                     'next_count_date' => $NextCountDate,
                 ]
@@ -383,6 +394,7 @@ class Products extends Model
                     'days_to_count' => $DaysToCount,
                     'measure_unit' => $UnitDescription,
                     'default_supplier_id' => $DefaultSupplierId,
+                    'plan_type' => $PlanType,
                     'image_path' => $ImagePath,
                     'default_supplier_name' => $DefaultSupplierName,
                 ];
@@ -603,5 +615,19 @@ class Products extends Model
             $Message = $th->errorInfo[count($th->errorInfo) - 1];
         }
         return $Message;
+    }
+
+    /**
+     * 
+     * @param DateTime Date
+     * 
+     * @return Object Products
+     * 
+     * 
+     */
+    public function ProductsToCount($DateToCount)
+    {
+        # code...
+        return $this->where('plan_type', 1)->where('counted', false)->where('next_count_date', '<=', $DateToCount)->get();
     }
 }

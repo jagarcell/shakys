@@ -63,40 +63,48 @@
                     <div class="data_entry">
                         <div class="add_form_frame w-form">
                             <form class="product_form add_frame">
-                                <div class="add_frame_section">
-                                    <div class="field_wrap">
-                                        <input type="text" class="code text_field box_shadow w-input" maxlength="50" placeholder="Product Code">
+                                <div class="product_add_frame">
+                                    <div class="add_frame_section">
+                                        <div class="field_wrap">
+                                            <input type="text" class="code text_field box_shadow w-input" maxlength="50" placeholder="Product Code">
+                                        </div>
+                                        <div class="field_wrap">
+                                            <input type="text" class="description text_field box_shadow w-input" maxlength="150" placeholder="Product Description" required="">
+                                        </div>
+                                        <div class="field_wrap">
+                                            <input type="number" class="days_to_count text_field box_shadow w-input" min="0" placeholder="Days To Count" required="">
+                                        </div>
                                     </div>
-                                    <div class="field_wrap">
-                                        <input type="text" class="description text_field box_shadow w-input" maxlength="150" placeholder="Product Description" required="">
-                                    </div>
-                                    <div class="field_wrap">
-                                        <input type="number" class="days_to_count text_field box_shadow w-input" min="0" placeholder="Days To Count" required="">
+                                    <div class="add_frame_section">
+                                        <div class="field_wrap" style="display:flex;">
+                                            <div class="measure_unit_input">
+                                                <input type="text" class="measure_unit text_field box_shadow w-input" placeholder="Default Measure Unit" disabled>
+                                            </div>
+                                            <div class="default_measure_unit_button_frame">
+                                                <input type="button" value="Units" class="edition_button accept_button box_shadow w-button default_measure_unit_button" onclick="measuresButtonClick(-1, this)">
+                                            </div>
+                                        </div>
+                                        <div class="field_wrap">
+                                            <select class="default_supplier text_field box_shadow w-input">
+                                                <option value="-1" selected="" placeholder="Default Supplier (Optional)">Default Supplier (Optional)</option>
+                                            </select>
+                                        </div>
+                                        <div class="field_wrap">
+                                            <select class="plan_type_select text_field box_shadow w-input" onchange="planTypeChanged('add_section_frame')" title="TYPE 1 = PRODUCT MUST BE COUNTED&#013TYPE 2 = PRODUCT WON'T BE COUNTED">
+                                                <option value="-1" selected="" disabled>Select a plan type ...</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="add_frame_section">
-                                    <div class="field_wrap" style="display:flex;">
-                                        <div class="measure_unit_input">
-                                            <input type="text" class="measure_unit text_field box_shadow w-input" placeholder="Default Measure Unit" disabled>
-                                        </div>
-                                        <div class="default_measure_unit_button_frame">
-                                            <input type="button" value="Units" class="edition_button accept_button box_shadow w-button default_measure_unit_button" onclick="measuresButtonClick(-1, this)">
-                                        </div>
-                                    </div>
-                                    
-                                    <!--input type="button" value="Measure Units" class="edition_button accept_button box_shadow w-button" onclick="measuresButtonClick(-1)"-->
-                                    <div class="field_wrap">
-                                        <select class="default_supplier text_field box_shadow w-input">
-                                            <option value="-1" selected="" placeholder="Default Supplier (Optional)">Default Supplier (Optional)</option>
-                                        </select>
-                                    </div>
-                                    <div class="field_wrap" style="display:flex;">
-                                        <div class="add_buttons_frame">
-                                            <input type="button" value="Create" data-wait="Please wait..." class="edition_button accept_button  box_shadow w-button" onclick="createButtonClick(this)">
-                                            <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardButtonClick()">
-                                        </div>
+                                <div class="field_wrap" style="display:flex;">
+                                    <div class="add_buttons_frame">
+                                        <input type="button" value="Create" data-wait="Please wait..." class="edition_button accept_button  box_shadow w-button" onclick="createButtonClick(this)">
+                                        <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardButtonClick()">
                                     </div>
                                 </div>
+
                                 <input class="image_to_upload" hidden>
                             </form>
                         </div>
@@ -104,9 +112,6 @@
                 </div>
             </div>
         </div>
-        <!--div style="border-top:solid 1px; width:100%;">
-
-        </div-->
 
         <!-- THIS IS THE LIST OF PRODUCTS IN THE DATABASE RECEIVED FROM THE SERVER -->
         <div id="products_list_wrap">
@@ -146,22 +151,30 @@
                                     <div class="field_label">Default Supplier</div>
                                     <div class="default_supplier data_field box_shadow">{{$product->default_supplier_name}}</div>
                                 </div>
-                                <div class="data_entry_buttons field_wrap">
-                                    <div class="bottom_button">
-                                        <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$product->id}}', this)">
-                                    </div>
-                                    <div class="bottom_button">
-                                        <input type="button" class="supplier_product_button box_shadow w-button" value="Suppliers" onclick="suppliersButtonClick('{{$product->id}}', this)">
-                                    </div>
-                                    <div class="bottom_button">
-                                        <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('{{$product->id}}', this)">
-                                    </div>
+                                <div class="field_wrap">
+                                    <div class="field_label">Planification Type</div>
+                                    <div class="default_supplier data_field box_shadow">{{$product->plan_type}}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div id="action_result_message" class="action_result_message" hidden></div>
+                    <div class="section_buttons">
+                        <div class="data_entry_buttons field_wrap">
+                            <div class="bottom_button">
+                                <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$product->id}}', this)">
+                            </div>
+                            <div class="data_entry_buttons_separator"></div>
+                            <div class="bottom_button">
+                                <input type="button" class="supplier_product_button box_shadow w-button" value="Suppliers" onclick="suppliersButtonClick('{{$product->id}}', this)">
+                            </div>
+                            <div class="data_entry_buttons_separator"></div>
+                            <div class="bottom_button">
+                                <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('{{$product->id}}', this)">
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div id="action_result_message" class="action_result_message" hidden></div>
             </div>
             @endforeach
             @else
@@ -204,20 +217,29 @@
                                 <div class="field_label">Default Supplier</div>
                                 <div class="default_supplier data_field box_shadow">default-supplier-name</div>
                             </div>
-                            <div class="data_entry_buttons field_wrap">
-                                <div class="bottom_button">
-                                    <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('section_html', this)">
-                                </div>
-                                <div class="bottom_button">
-                                    <input type="button" class="supplier_product_button box_shadow w-button" value="Suppliers" onclick="suppliersButtonClick('section_html', this)">
-                                </div>
-                                <div class="bottom_button">
-                                    <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('section_html', this)">
-                                </div>
+                            <div class="field_wrap">
+                                <div class="field_label">Planification Type</div>
+                                <div class="default_supplier data_field box_shadow">plan-type</div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="section_buttons">
+                    <div class="data_entry_buttons field_wrap">
+                        <div class="bottom_button">
+                            <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('section_html', this)">
+                        </div>
+                        <div class="data_entry_buttons_separator"></div>
+                        <div class="bottom_button">
+                            <input type="button" class="supplier_product_button box_shadow w-button" value="Suppliers" onclick="suppliersButtonClick('section_html', this)">
+                        </div>
+                        <div class="data_entry_buttons_separator"></div>
+                        <div class="bottom_button">
+                            <input type="button" class="delete_button box_shadow w-button" value="Delete" onclick="deleteButtonClick('section_html', this)">
+                        </div>
+                    </div>
+                </div>
+
                 <div id="action_result_message" class="action_result_message" hidden></div>
             </div>
         </div>
@@ -233,45 +255,54 @@
                 <div class="data_entry">
                     <div class="add_form_frame w-form">
                         <form class="product_form add_frame">
-                            <div class="add_frame_section">
-                                <div class="field_wrap">
-                                    <div class="field_label">Product Code</div>
-                                    <input type="text" class="code text_field box_shadow w-input" maxlength="50" placeholder="Product Code">
+                            <div class="product_add_frame">
+                                <div class="add_frame_section">
+                                    <div class="field_wrap">
+                                        <div class="field_label">Product Code</div>
+                                        <input type="text" class="code text_field box_shadow w-input" maxlength="50" placeholder="Product Code">
+                                    </div>
+                                    <div class="field_wrap">
+                                        <div class="field_label">Description</div>
+                                        <input type="text" class="description text_field box_shadow w-input" maxlength="150" placeholder="Product Description" required="">
+                                    </div>
+                                    <div class="field_wrap">
+                                        <div class="field_label">Days To Count</div>
+                                        <input type="number" class="days_to_count text_field box_shadow w-input" min="0" placeholder="Days To Count" required="">
+                                    </div>
+                                    <input class="image_to_upload" hidden>
                                 </div>
-                                <div class="field_wrap">
-                                    <div class="field_label">Description</div>
-                                    <input type="text" class="description text_field box_shadow w-input" maxlength="150" placeholder="Product Description" required="">
+                                <div class="add_frame_section">
+                                    <div class="field_wrap" style="display:flex;">
+                                        <div class="measure_unit_input">
+                                            <div class="field_label">Default Measure Unit</div>
+                                            <input type="text" class="measure_unit text_field box_shadow w-input" placeholder="Default Measure Unit" disabled>
+                                        </div>
+                                        <div class="default_measure_unit_button_frame">
+                                            <input type="button" value="Units" class="edition_button accept_button box_shadow w-button default_measure_unit_button" onclick="measuresButtonClick(-1, this)">
+                                        </div>
+                                    </div>
+                                     <div class="field_wrap">
+                                        <div class="field_label">Default Supplier</div>
+                                        <select class="default_supplier text_field box_shadow w-input">
+                                            <option value="-1" selected="" placeholder="Default Supplier (Optional)">Default Supplier (Optional)</option>
+                                        </select>
+                                    </div>
+                                    <div class="field_wrap">
+                                        <div class="field_label">Planification Type</div>
+                                        <select class="plan_type_select text_field box_shadow w-input" onchange="planTypeChanged('product-id')" title="TYPE 1 = PRODUCT MUST BE COUNTED&#013TYPE 2 = PRODUCT WON'T BE COUNTED">
+                                            <option value="-1" selected="" disabled>Select a plan type ...</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="field_wrap">
-                                    <div class="field_label">Days To Count</div>
-                                    <input type="number" class="days_to_count text_field box_shadow w-input" min="0" placeholder="Days To Count" required="">
-                                </div>
-                                <input class="image_to_upload" hidden>
                             </div>
-                            <div class="add_frame_section">
-                                <div class="field_wrap" style="display:flex;">
-                                    <div class="measure_unit_input">
-                                        <div class="field_label">Default Measure Unit</div>
-                                        <input type="text" class="measure_unit text_field box_shadow w-input" placeholder="Default Measure Unit" disabled>
-                                    </div>
-                                    <div class="default_measure_unit_button_frame">
-                                        <input type="button" value="Units" class="edition_button accept_button box_shadow w-button default_measure_unit_button" onclick="measuresButtonClick(-1, this)">
-                                    </div>
+                            <div class="field_wrap">
+                                <div class="add_buttons_frame">
+                                    <input type="button" value="Accept" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="acceptEditChanges('product-id', this)">
+                                    <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardEditChanges('product-id', this)">
                                 </div>
-                                <!--input type="button" value="Measure Units" class="edition_button accept_button box_shadow w-button" onclick="measuresButtonClick(-1)"-->
-                                <div class="field_wrap">
-                                    <div class="field_label">Default Supplier</div>
-                                    <select class="default_supplier text_field box_shadow w-input">
-                                        <option value="-1" selected="" placeholder="Default Supplier (Optional)">Default Supplier (Optional)</option>
-                                    </select>
-                                </div>
-                                <div class="field_wrap">
-                                    <div class="add_buttons_frame">
-                                        <input type="button" value="Accept" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="acceptEditChanges('product-id', this)">
-                                        <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardEditChanges('product-id', this)">
-                                    </div>
-                                </div> 
-                            </div>
+                            </div> 
                        </form>
                     </div>
                 </div>
@@ -289,35 +320,37 @@
                 <div class="data_entry">
                     <div class="add_form_frame w-form">
                         <form class="product_form add_frame">
-                            <div class="add_frame_section">
-                                <div class="field_wrap">
-                                    <div class="field_label">Product Code</div>
-                                    <input value="product-code" type="text" class="code text_field box_shadow w-input" disabled>
-                                </div>    
-                                <div class="field_wrap">
-                                    <div class="field_label">Description</div>
-                                    <input value="product-description" type="text" class="description text_field box_shadow w-input" disabled>
+                            <div class="product_add_frame">
+                                <div class="add_frame_section">
+                                    <div class="field_wrap">
+                                        <div class="field_label">Product Code</div>
+                                        <input value="product-code" type="text" class="code text_field box_shadow w-input" disabled>
+                                    </div>    
+                                    <div class="field_wrap">
+                                        <div class="field_label">Description</div>
+                                        <input value="product-description" type="text" class="description text_field box_shadow w-input" disabled>
+                                    </div>
+                                    <div class="field_wrap">
+                                        <div class="field_label">Supplier</div>
+                                        <select id="supplier_product_select" class="text_field box_shadow w-input" onchange="supplierProductSelectChange(this, 'product-id')">
+                                            <option value="-1" selected disabled style="font-style:italic;">Select a supplier ...</option>
+                                        </select>
+                                    </div>
+                                    <input class="image_to_upload" hidden>
                                 </div>
-                                <div class="field_wrap">
-                                    <div class="field_label">Supplier</div>
-                                    <select id="supplier_product_select" class="text_field box_shadow w-input" onchange="supplierProductSelectChange(this, 'product-id')">
-                                        <option value="-1" selected disabled style="font-style:italic;">Select a supplier ...</option>
-                                    </select>
-                                </div>
-                                <input class="image_to_upload" hidden>
-                            </div>
-                            <div class="add_frame_section">
-                                <div class="field_wrap">
-                                    <div class="field_label">Supplier's Product Code</div>
-                                    <input id="supplier_product_code" value="" type="text" class="text_field box_shadow w-input" disabled>
-                                </div>    
-                                <div class="field_wrap">
-                                    <div class="field_label">Supplier's Product Description</div>
-                                    <input id="supplier_product_description" value="" type="text" class="text_field box_shadow w-input" disabled>
-                                </div>
-                                <div class="add_buttons_frame">
-                                    <input type="button" value="Accept" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="acceptSupplierProductChanges('product-id')">
-                                    <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardSupplierProductChanges('product-id')">
+                                <div class="add_frame_section">
+                                    <div class="field_wrap">
+                                        <div class="field_label">Supplier's Product Code</div>
+                                        <input id="supplier_product_code" value="" type="text" class="text_field box_shadow w-input" disabled>
+                                    </div>    
+                                    <div class="field_wrap">
+                                        <div class="field_label">Supplier's Product Description</div>
+                                        <input id="supplier_product_description" value="" type="text" class="text_field box_shadow w-input" disabled>
+                                    </div>
+                                    <div class="add_buttons_frame">
+                                        <input type="button" value="Accept" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="acceptSupplierProductChanges('product-id', this)">
+                                        <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardSupplierProductChanges('product-id')">
+                                    </div>
                                 </div>
                             </div>
                         </form>
