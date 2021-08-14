@@ -10,6 +10,15 @@ $(document).ready(function(){
 //    $('.hide-this').hide()
     document.getElementById('navbarSupportedContent').style.zIndex = 1
     document.getElementById('navbarSupportedContent').style.position = 'sticky'
+    
+    var searchText = document.getElementById('search_text')
+
+    searchText.addEventListener("keyup", function (event){
+        if(event.code == 'Enter'){
+            searchClick()
+        }        
+    })
+
 })
 
 var timeoutInMiliseconds = 10000;

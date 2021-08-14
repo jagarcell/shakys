@@ -33,10 +33,16 @@
             <div class="search_wrap">
                 <div class="search_block w-form">
                     <div id="email-form" name="email-form" data-name="Email Form" class="search_form">
-                        <input id="search_text" type="text" class="search_bar w-input" maxlength="256" name="name" data-name="Name" placeholder="Enter Your Search">
-                        <a style="height:35px;" onclick="searchClick()">
+                        <div class="all_products_search_frame">
+                            <input id="search_text" type="text" class="search_bar w-input" maxlength="256" name="name" data-name="Name" placeholder="Enter Your Search">
+                            <div class="search_product_icon">
+                                <img src="/images/MagnifierBk.png">
+                                <input type="button" class="all_products_search_button" onclick="searchClick()">
+                            </div>
+                        </div>
+                        <!--a style="height:35px;" onclick="searchClick()">
                             <input type="button" value="Search" data-wait="Please wait..." class="search_button w-button shadowRight">
-                        </a>
+                        </a-->
                     </div>
                 </div>
             </div>
