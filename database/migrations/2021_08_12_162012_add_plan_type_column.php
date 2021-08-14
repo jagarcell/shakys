@@ -15,7 +15,7 @@ class AddPlanTypeColumn extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             //
-            $table->integer('plan_type')->default(-1);
+            $table->integer('plan_type')->default(1);
         });
     }
 

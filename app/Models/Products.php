@@ -616,4 +616,18 @@ class Products extends Model
         }
         return $Message;
     }
+
+    /**
+     * 
+     * @param DateTime Date
+     * 
+     * @return Object Products
+     * 
+     * 
+     */
+    public function ProductsToCount($DateToCount)
+    {
+        # code...
+        return $this->where('plan_type', 1)->where('counted', false)->where('next_count_date', '<=', $DateToCount)->get();
+    }
 }

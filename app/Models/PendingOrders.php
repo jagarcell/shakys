@@ -29,7 +29,7 @@ class PendingOrders extends Model
         }
 
         $Today = new \DateTime();
-        $Products = (new Products())->where('counted', false)->where('next_count_date', '<=', $Today)->get();
+        $Products = (new Products())->ProductsToCount($Today);
         foreach($Products as $Key => $Product){
             $Product->due_date = 
                 substr($Product->next_count_date, 5, 2) .'-' . 
