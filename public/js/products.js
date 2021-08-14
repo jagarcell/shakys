@@ -140,6 +140,8 @@ function createButtonClick(button) {
 
     var productForm = $('#add_section_frame').find('.product_form')[0]
     var defaultMeasureSelect = $('#unit_link_dialog_frame').find('.default_measure_select')[0]
+    var planTypeSelect = $(productForm).find('.plan_type_select')[0]
+    var planType = planTypeSelect.options[planTypeSelect.selectedIndex].value
     var defaultMeasureUnitId = -1
 
     if(defaultMeasureSelect !== undefined){
@@ -154,6 +156,7 @@ function createButtonClick(button) {
                 internal_description:$('#add_section_frame').find('.description').val(),
                 days_to_count:$('#add_section_frame').find('.days_to_count').val(),
                 default_measure_unit_id:defaultMeasureUnitId,
+                plan_type:planType,
                 default_supplier_id:$(productForm).find('.default_supplier')[0].selectedOptions[0].value,
                 image_to_upload:$('#add_section_frame').find('.image_to_upload').val(),
             }, function(data, status){
@@ -310,7 +313,11 @@ function suppliersButtonClick(productId, button) {
  * @param {string} productId 
  * 
  */
-function acceptSupplierProductChanges(productId){
+function acceptSupplierProductChanges(productId, button){
+    if(button !== undefined){
+        button.disabled = true
+    }
+
     var productHtml = document.getElementById(productId)
     var supplierSelect = $(productHtml).find('#supplier_product_select')[0]
     var supplierId = supplierSelect.options[supplierSelect.selectedIndex].value
@@ -341,6 +348,7 @@ function acceptSupplierProductChanges(productId){
                         productHtml.innerHTML = productHtml.innerHTML.replace(/days-to-count/g, product.days_to_count)
                         productHtml.innerHTML = productHtml.innerHTML.replace(/measure-unit/g, product.measure_unit)
                         productHtml.innerHTML = productHtml.innerHTML.replace(/default-supplier-name/g, product.default_supplier_name)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/plan-type/g, product.plan_type)
                         productHtml.innerHTML = productHtml.innerHTML.replace(/section_html/g, product.id)
                         
                         break
@@ -381,6 +389,9 @@ function acceptSupplierProductChanges(productId){
                     default:
                         break
                 }
+            }
+            if(button !== undefined){
+                button.disabled = false
             }
         }
     )
@@ -462,6 +473,7 @@ function discardSupplierProductChanges(productId) {
                         productHtml.innerHTML = productHtml.innerHTML.replace(/days-to-count/g, product.days_to_count)
                         productHtml.innerHTML = productHtml.innerHTML.replace(/measure-unit/g, product.measure_unit)
                         productHtml.innerHTML = productHtml.innerHTML.replace(/default-supplier-name/g, product.default_supplier_name)
+                        productHtml.innerHTML = productHtml.innerHTML.replace(/plan-type/g, product.plan_type)
                         productHtml.innerHTML = productHtml.innerHTML.replace(/section_html/g, product.id)
                         
                         break
@@ -564,6 +576,7 @@ function editButtonClick(productId, button) {
         button.disabled = true
     }
     discardEditChanges(-1)
+    discardButtonClick()
 
     $.get('/getproduct',
         {
@@ -590,10 +603,19 @@ function editButtonClick(productId, button) {
 
                         productForm.find('.code').val(product.internal_code)
                         productForm.find('.description').val(product.internal_description)
-                        productForm.find('.days_to_count').val(product.days_to_count)
+                        if(product.plan_type == 2){
+                            productForm.find('.days_to_count')[0].disabled = true
+                            productForm.find('.days_to_count').val('')
+                        }
+                        else{
+                            productForm.find('.days_to_count').disabled = false
+                            productForm.find('.days_to_count').val(product.days_to_count)
+                        }
+                        productForm.find('.days_to_count').attr('oldValue', product.days_to_count)
                         productForm.find('.measure_unit').val(product.measure_unit)
                         productForm.find('.measure_unit')[0].setAttribute("default_measure_unit_id", product.default_measure_unit_id)
                         productForm.find('.default_supplier').val(product.default_supplier_name)
+                        productForm.find('.plan_type_select').val(product.plan_type)
                         productForm.find('.image_to_upload').val(product.image_path)
 
                         $('#product_image_' + product.id).addClass('dropzone')
@@ -747,6 +769,7 @@ function discardEditChanges(productId, button) {
                         sectionHtml = sectionHtml.replace(/days-to-count/g, product.days_to_count)
                         sectionHtml = sectionHtml.replace(/measure-unit/g, product.measure_unit)
                         sectionHtml = sectionHtml.replace(/default-supplier-name/g, product.default_supplier_name)
+                        sectionHtml = sectionHtml.replace(/plan-type/g, product.plan_type)
                         sectionHtml = sectionHtml.replace(/section_html/g, product.id)
 
                         section.innerHTML = sectionHtml
@@ -826,6 +849,8 @@ function acceptEditChanges(productId, button){
         var defaultMeasureSelect = $('#unit_link_dialog_frame').find('.default_measure_select')[0]
         var defaultMeasureUnitId = ''
         var defaultSupplierId = productForm.find('.default_supplier').val()
+        var planTypeSelect = productForm.find('.plan_type_select')[0]
+        var planType = planTypeSelect.options[planTypeSelect.selectedIndex].value
         var imagePath = productForm.find('.image_to_upload').val()
 
         if(defaultMeasureSelect === undefined){
@@ -843,6 +868,7 @@ function acceptEditChanges(productId, button){
                 days_to_count:daysToCount,
                 default_measure_unit_id:defaultMeasureUnitId,
                 default_supplier_id:defaultSupplierId,
+                plan_type:planType,
                 image_path:imagePath,
                 element_tag:productId,
             }, function(data, status){
@@ -861,6 +887,7 @@ function acceptEditChanges(productId, button){
                             sectionHtml = sectionHtml.replace(/measure-unit/g, product.measure_unit)
                             sectionHtml = sectionHtml.replace(/default-supplier-name/g, product.default_supplier_name)
                             sectionHtml = sectionHtml.replace(/section_html/g, product.id)
+                            sectionHtml = sectionHtml.replace(/plan-type/g, product.plan_type)
                             sectionHtml = sectionHtml.replace(/image-path/g, product.image_path)
                             
                             section.innerHTML = sectionHtml
@@ -874,7 +901,8 @@ function acceptEditChanges(productId, button){
                                 {
                                     frame:actionResultMessage,
                                     message:message,
-                                    param:element_tag,                                    
+                                    param:element_tag,   
+                                    alignTop:false,                                 
                                 }, function(frame, element_tag){
                                     var section = document.getElementById(element_tag)
                                     section.outerHTML = ""
@@ -888,6 +916,7 @@ function acceptEditChanges(productId, button){
                                 {
                                     frame:actionResultMessage,
                                     message:message,
+                                    alignTop:false,
                                 }, function(frame, param){
                                     frame.hide()
                                 }
@@ -900,6 +929,7 @@ function acceptEditChanges(productId, button){
                                 {
                                     frame:actionResultMessage,
                                     message:message,
+                                    alignTop:false,
                                 }
                             )
                             break
@@ -908,6 +938,7 @@ function acceptEditChanges(productId, button){
                                 {
                                     frame:actionResultMessage,
                                     message:"THIS PRODUCT CODE IS ALREADY TAKEN",
+                                    alignTop:false,
                                 }, function(frame, param){
                                     frame.hide()
                                 }
@@ -925,6 +956,9 @@ function acceptEditChanges(productId, button){
     }
     else{
         productForm[0].reportValidity()
+        if(button !== undefined){
+            button.disabled = false
+        }
     }
 }
 
@@ -943,6 +977,7 @@ function fromEditToShow(product, added) {
     sectionHtml = sectionHtml.replace(/days-to-count/g, product.days_to_count)
     sectionHtml = sectionHtml.replace(/measure-unit/g, product.measure_unit)
     sectionHtml = sectionHtml.replace(/default-supplier-name/g, product.default_supplier_name)
+    sectionHtml = sectionHtml.replace(/plan-type/g, product.plan_type)
 
     if(added){
         var productsListWrapHtml = document.getElementById('products_list_wrap').innerHTML
@@ -1476,4 +1511,25 @@ function createUnitClick(button) {
             break;
     }
     return statusMessage
+}
+
+/**
+ * 
+ * @param {*} sectionId
+ *  
+ */
+function planTypeChanged(sectionId) {
+    var section = document.getElementById(sectionId)
+    var daysToCount =  $(section).find('.days_to_count')[0]
+
+    planTypeSelect = $(section).find('.plan_type_select')[0]
+    if(planTypeSelect.options[planTypeSelect.selectedIndex].value == 2){
+        daysToCount.disabled = true
+        daysToCount.setAttribute('oldValue', daysToCount.value)
+        daysToCount.value = ''
+    }
+    else{
+        daysToCount.disabled = false
+        daysToCount.value = daysToCount.getAttribute('oldValue') !== undefined ? daysToCount.getAttribute('oldValue') : 0
+    }
 }

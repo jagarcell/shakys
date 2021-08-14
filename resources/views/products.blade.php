@@ -90,7 +90,7 @@
                                             </select>
                                         </div>
                                         <div class="field_wrap">
-                                            <select class="plan_type_select text_field box_shadow w-input" title="TYPE 1 = PRODUCT MUST BE COUNTED&#013TYPE 2 = PRODUCT WON'T BE COUNTED">
+                                            <select class="plan_type_select text_field box_shadow w-input" onchange="planTypeChanged('add_section_frame')" title="TYPE 1 = PRODUCT MUST BE COUNTED&#013TYPE 2 = PRODUCT WON'T BE COUNTED">
                                                 <option value="-1" selected="" disabled>Select a plan type ...</option>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
@@ -173,8 +173,8 @@
                             </div>
                         </div>
                     </div>
-                    <div id="action_result_message" class="action_result_message" hidden></div>
                 </div>
+                <div id="action_result_message" class="action_result_message" hidden></div>
             </div>
             @endforeach
             @else
@@ -219,7 +219,7 @@
                             </div>
                             <div class="field_wrap">
                                 <div class="field_label">Planification Type</div>
-                                <div class="default_supplier data_field box_shadow">{{$product->plan_type}}</div>
+                                <div class="default_supplier data_field box_shadow">plan-type</div>
                             </div>
                         </div>
                     </div>
@@ -289,7 +289,7 @@
                                     </div>
                                     <div class="field_wrap">
                                         <div class="field_label">Planification Type</div>
-                                        <select class="plan_type_select text_field box_shadow w-input" title="TYPE 1 = PRODUCT MUST BE COUNTED&#013TYPE 2 = PRODUCT WON'T BE COUNTED">
+                                        <select class="plan_type_select text_field box_shadow w-input" onchange="planTypeChanged('product-id')" title="TYPE 1 = PRODUCT MUST BE COUNTED&#013TYPE 2 = PRODUCT WON'T BE COUNTED">
                                             <option value="-1" selected="" disabled>Select a plan type ...</option>
                                             <option value="1">1</option>
                                             <option value="2">2</option>
@@ -320,35 +320,37 @@
                 <div class="data_entry">
                     <div class="add_form_frame w-form">
                         <form class="product_form add_frame">
-                            <div class="add_frame_section">
-                                <div class="field_wrap">
-                                    <div class="field_label">Product Code</div>
-                                    <input value="product-code" type="text" class="code text_field box_shadow w-input" disabled>
-                                </div>    
-                                <div class="field_wrap">
-                                    <div class="field_label">Description</div>
-                                    <input value="product-description" type="text" class="description text_field box_shadow w-input" disabled>
+                            <div class="product_add_frame">
+                                <div class="add_frame_section">
+                                    <div class="field_wrap">
+                                        <div class="field_label">Product Code</div>
+                                        <input value="product-code" type="text" class="code text_field box_shadow w-input" disabled>
+                                    </div>    
+                                    <div class="field_wrap">
+                                        <div class="field_label">Description</div>
+                                        <input value="product-description" type="text" class="description text_field box_shadow w-input" disabled>
+                                    </div>
+                                    <div class="field_wrap">
+                                        <div class="field_label">Supplier</div>
+                                        <select id="supplier_product_select" class="text_field box_shadow w-input" onchange="supplierProductSelectChange(this, 'product-id')">
+                                            <option value="-1" selected disabled style="font-style:italic;">Select a supplier ...</option>
+                                        </select>
+                                    </div>
+                                    <input class="image_to_upload" hidden>
                                 </div>
-                                <div class="field_wrap">
-                                    <div class="field_label">Supplier</div>
-                                    <select id="supplier_product_select" class="text_field box_shadow w-input" onchange="supplierProductSelectChange(this, 'product-id')">
-                                        <option value="-1" selected disabled style="font-style:italic;">Select a supplier ...</option>
-                                    </select>
-                                </div>
-                                <input class="image_to_upload" hidden>
-                            </div>
-                            <div class="add_frame_section">
-                                <div class="field_wrap">
-                                    <div class="field_label">Supplier's Product Code</div>
-                                    <input id="supplier_product_code" value="" type="text" class="text_field box_shadow w-input" disabled>
-                                </div>    
-                                <div class="field_wrap">
-                                    <div class="field_label">Supplier's Product Description</div>
-                                    <input id="supplier_product_description" value="" type="text" class="text_field box_shadow w-input" disabled>
-                                </div>
-                                <div class="add_buttons_frame">
-                                    <input type="button" value="Accept" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="acceptSupplierProductChanges('product-id')">
-                                    <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardSupplierProductChanges('product-id')">
+                                <div class="add_frame_section">
+                                    <div class="field_wrap">
+                                        <div class="field_label">Supplier's Product Code</div>
+                                        <input id="supplier_product_code" value="" type="text" class="text_field box_shadow w-input" disabled>
+                                    </div>    
+                                    <div class="field_wrap">
+                                        <div class="field_label">Supplier's Product Description</div>
+                                        <input id="supplier_product_description" value="" type="text" class="text_field box_shadow w-input" disabled>
+                                    </div>
+                                    <div class="add_buttons_frame">
+                                        <input type="button" value="Accept" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="acceptSupplierProductChanges('product-id', this)">
+                                        <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardSupplierProductChanges('product-id')">
+                                    </div>
                                 </div>
                             </div>
                         </form>
