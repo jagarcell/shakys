@@ -23,6 +23,51 @@ select{
   font-family: inherit;
 }
 
+.preview_product_link{
+  width: 30vw;
+}
+
+.preview_qty_request{
+  margin-top: 10px;
+}
+
+.product_preview_group{
+  display: flex;
+  justify-content: space-around;
+}
+
+.product_preview_frame{
+  background-color: black;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.counted_products_preview{
+  padding-top: 65px;
+}
+
+.preview_row{
+  display: flex;
+  width: 100vw;
+  place-content: center;
+  color: white;
+}
+ 
+
+.product_count_preview{
+  text-align: center;
+  padding: 15px;
+}
+
+.preview_counts_link{
+  position: fixed;
+  top: 2%;
+  right: 10%;
+  z-index: 2;
+  text-decoration: underline;
+  font-style: italic;
+}
+
 .product_add_frame{
   display: flex;
 }
@@ -928,7 +973,7 @@ select{
 }
 
 .product_pic {
-  width: 128px;
+  width: 64px;
   border-radius: 10px;
 }
 
@@ -942,7 +987,11 @@ select{
   font-size: inherit;
   line-height: 1.5em;
   text-align: -webkit-center;
-  bottom: 0;  
+  bottom: 0;
+  overflow-wrap: anywhere;
+  place-content: center;
+  overflow: hidden;
+  max-height: 25px;
 }
 
 .product_description {
@@ -983,7 +1032,6 @@ select{
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  width: 25%;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
@@ -1123,8 +1171,8 @@ select{
 }
 
 .ui_section {
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   margin-top: 20px;
   width: 90%;
   margin-left: 5%;
@@ -1163,6 +1211,7 @@ select{
   font-family: 'Sofia Pro 400';
   font-size: 14px;
   scroll-behavior: auto;
+  position: relative;
 }
 
 .accept_button{
@@ -2060,7 +2109,8 @@ body {
   text-align: end;
   top: 0px;
   right: 0px;
-  height: 40px;
+  height: 60px;
+  background-color: white;
 }
 
 .save_session_expired{
@@ -2549,6 +2599,11 @@ body {
 }
 
 @media screen and (max-width: 991px) {
+    
+  .preview_row{
+    display: block;
+   }
+
   .order_unit{
     flex-direction: column-reverse;
     display: flex;  
@@ -2755,6 +2810,7 @@ body {
 }
 
 @media screen and (max-width: 767px) {
+
   .data_entry_buttons_separator{
     height: 0px;
   }
@@ -3510,6 +3566,9 @@ body {
 }
 
 @media screen and (max-width: 499px) {
+  .product_preview_group {
+    display: block;
+  }
   .add_section_wrap{
     min-height: 120px;
   }

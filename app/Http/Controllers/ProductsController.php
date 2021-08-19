@@ -90,4 +90,16 @@ class ProductsController extends Controller
         # code...
         return (new Products())->SetProductUnits($request);
     }
+
+    public function GetCountedProducts(Request $request)
+    {
+        # code...
+        return ((new Products())->GetCountedProducts($request));
+    }
+
+    public function GetProductRequests(Request $request)
+    {
+        # code...
+        return (new Products())->GetProductRequests($request);
+    }
 }

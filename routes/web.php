@@ -147,6 +147,10 @@ Route::post('/createuser', 'UsersController@CreateUser');
 
   Route::post('/setproductunits', 'ProductsController@SetProductUnits');
 
+  Route::get('/getcountedproducts', 'ProductsController@GetCountedProducts');
+
+  Route::get('/getproductrequests', 'ProductsController@GetProductRequests');
+
 /****************************************
  *                                      *
  *             PICKUP USER              *

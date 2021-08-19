@@ -451,6 +451,7 @@ class Products extends Model
                 // Othewise it is asigned to the product itself
                 $this->where('id', $Id)->update(['counted' => true, 'qty_to_order' => $QtyToOrder]);
             }
+            $Product->qty_to_order = $QtyToOrder;
             return ['status' => 'ok', 'product' => $Product, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             //throw $th;
@@ -629,5 +630,70 @@ class Products extends Model
     {
         # code...
         return $this->where('plan_type', 1)->where('counted', false)->where('next_count_date', '<=', $DateToCount)->get();
+    }
+
+    /**
+     * 
+     * This action returns All the products counted
+     * that haven't beenn ordered yet
+     * 
+     */
+    public function GetCountedProducts($request)
+    {
+        # code...
+        try {
+            //code...
+            $Products = DB::table('products')->join('product_units_pivots', function($join){
+                $join->on('products.id', '=', 'product_units_pivots.product_id')
+                ->join('measure_units', 'measure_units.id', '=', 'product_units_pivots.measure_unit_id')
+                ->where('products.counted', '=', true)
+                ->where('product_units_pivots.qty_to_order', '>', 0);
+            })->select('products.*', 
+                        'product_units_pivots.qty_to_order as qty_to_order', 
+                        'measure_units.unit_description', 
+                        'measure_units.id as measure_unit_id')->orderBy('products.id')->get();
+            
+            return ['status' => 'ok', 'products' => $Products];
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message];
+        }
+    }
+
+    /**
+     * 
+     * 
+     * This action retreives a product's requests by measure units
+     * 
+     * @param String ['product_id', 'measure_unit_id']
+     * 
+     * @return Object products
+     */
+    public function GetProductRequests($request)
+    {
+        # code...
+        $ProductId = $request['product_id'];
+        $MeasureUnitId = $request['measure_unit_id'];
+        try {
+            //code...
+            $Products = DB::table('products')->join('product_units_pivots', function($join) use ($ProductId, $MeasureUnitId){
+                $join->on('products.id', '=', 'product_units_pivots.product_id')
+                ->join('measure_units', 'measure_units.id', '=', 'product_units_pivots.measure_unit_id')
+                ->where('products.id', '=', $ProductId)
+                ->where('product_units_pivots.measure_unit_id', '=', $MeasureUnitId)
+                ->where('products.counted', '=', true)
+                ->where('product_units_pivots.qty_to_order', '>', 0);
+            })->select('products.*', 
+                        'product_units_pivots.qty_to_order as qty_to_order', 
+                        'measure_units.unit_description', 
+                        'measure_units.id as measure_unit_id')->get();
+
+            return ['status' => 'ok', 'product' => $Products[0]];
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message];
+        }
     }
 }
