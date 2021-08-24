@@ -23,6 +23,81 @@ select{
   font-family: inherit;
 }
 
+.counted_preview_title{
+  place-self: center;
+  font-size: x-large;
+  height: 1.5em;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.counted_products_preview_title{
+  position: fixed;
+  top: 5px;
+  height: 45px;
+  place-content: center;
+  width: 70vw;
+  display: flex;
+  z-index: 1;
+  background-color: grey;
+  margin-left: 15vw;
+  padding: 5px;
+}
+
+.product_couple{
+  display: flex;
+  place-content: center;
+}
+
+.product_to_count_link{
+  width: 45%;
+}
+
+.preview_product_link{
+  width: 30vw;
+}
+
+.preview_qty_request{
+  margin-top: 10px;
+}
+
+.product_preview_group{
+  display: flex;
+  justify-content: space-around;
+}
+
+.product_preview_frame{
+  background-color: black;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.counted_products_preview{
+  padding-top: 65px;
+}
+
+.preview_row{
+  display: flex;
+  width: 100vw;
+  place-content: center;
+  color: white;
+}
+ 
+
+.product_count_preview{
+  text-align: center;
+  padding: 15px;
+}
+
+.preview_counts_link{
+  position: fixed;
+  top: 2%;
+  right: 10%;
+  z-index: 2;
+  text-decoration: underline;
+  font-style: italic;
+}
+
 .product_add_frame{
   display: flex;
 }
@@ -928,7 +1003,7 @@ select{
 }
 
 .product_pic {
-  width: 128px;
+  width: 64px;
   border-radius: 10px;
 }
 
@@ -942,7 +1017,11 @@ select{
   font-size: inherit;
   line-height: 1.5em;
   text-align: -webkit-center;
-  bottom: 0;  
+  bottom: 0;
+  overflow-wrap: anywhere;
+  place-content: center;
+  overflow: hidden;
+  height: 3em;
 }
 
 .product_description {
@@ -976,6 +1055,7 @@ select{
   background-color: transparent;
   padding-left: 15px;
   padding-right: 15px;
+  height: 100%;
 }
 
 .product_pic_frame {
@@ -983,7 +1063,6 @@ select{
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  width: 25%;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
@@ -1123,8 +1202,8 @@ select{
 }
 
 .ui_section {
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   margin-top: 20px;
   width: 90%;
   margin-left: 5%;
@@ -1163,6 +1242,7 @@ select{
   font-family: 'Sofia Pro 400';
   font-size: 14px;
   scroll-behavior: auto;
+  position: relative;
 }
 
 .accept_button{
@@ -2060,7 +2140,8 @@ body {
   text-align: end;
   top: 0px;
   right: 0px;
-  height: 40px;
+  height: 60px;
+  background-color: white;
 }
 
 .save_session_expired{
@@ -2526,7 +2607,7 @@ body {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  min-height: 20vh;
+  height: 10vh;
   color: white;
   font-family: inherit;
   font-size: inherit;
@@ -2543,12 +2624,20 @@ body {
 }
 
 .po_due_date {
-  width: 15%;
+  width: 30%;
   text-align: -webkit-center;
   padding-top: 3%;
 }
 
 @media screen and (max-width: 991px) {
+  .counted_preview_title{
+    font-size: large;
+  }
+    
+  .preview_row{
+    display: block;
+   }
+
   .order_unit{
     flex-direction: column-reverse;
     display: flex;  
@@ -2579,7 +2668,7 @@ body {
 
   .po_description {
     width: 100%;
-    margin-top: 40px;
+    height: 30%;
   }
 
   .ui_section {
@@ -2588,6 +2677,7 @@ body {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
+    height: fit-content;
   }
 
   .po_to_count_section {
@@ -2596,6 +2686,7 @@ body {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
+    height: 30vh;
   }
 
   .order_data_field_wrap{
@@ -2755,6 +2846,14 @@ body {
 }
 
 @media screen and (max-width: 767px) {
+  .counted_preview_title{
+    font-size: medium;
+  }
+
+  .product_couple{
+    display: block;
+  }
+
   .data_entry_buttons_separator{
     height: 0px;
   }
@@ -3510,6 +3609,17 @@ body {
 }
 
 @media screen and (max-width: 499px) {
+  .counted_preview_title{
+    font-size: 15px;
+  }
+
+  .counted_products_preview_title{
+    margin-left: 5vw;
+  }
+
+  .product_preview_group {
+    display: block;
+  }
   .add_section_wrap{
     min-height: 120px;
   }
