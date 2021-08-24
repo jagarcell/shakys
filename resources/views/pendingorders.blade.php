@@ -78,15 +78,21 @@
                             <a class="product_to_count_link" onclick="productClick('pending_{{$product->id}}', this)">
                                 <div id="pending_{{$product->id}}" class="ui_section product rbg shadowRight">
                                     <div class="po_to_count_section">
-                                        <div class="po_pic_frame">
-                                            <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
+                                        <div class="pic_date_frame">
+                                            <div class="po_pic_frame">
+                                                <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
+                                            </div>
+                                            <div class="po_due_date_left">
+                                                <div>Due on</div>
+                                                <div>{{$product->due_date}}</div>
+                                            </div>
                                         </div>
                                         <div class="po_description">
                                             <div class="product_description_text">
                                                 <text class="counted_product_description">{{$product->internal_description}}</text>
                                             </div>
                                         </div>
-                                        <div class="po_due_date">
+                                        <div class="po_due_date_right">
                                             <div>Due on</div>
                                             <div>{{$product->due_date}}</div>
                                         </div>
@@ -100,15 +106,21 @@
                             <a class="product_to_count_link" onclick="productClick('pending_{{$product->id}}', this)">
                                 <div id="pending_{{$product->id}}" class="ui_section product rbg shadowRight">
                                     <div class="po_to_count_section">
-                                        <div class="po_pic_frame">
-                                            <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
+                                        <div class="pic_date_frame">
+                                            <div class="po_pic_frame">
+                                                <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
+                                            </div>
+                                            <div class="po_due_date_left">
+                                                <div>Due on</div>
+                                                <div>{{$product->due_date}}</div>
+                                            </div>
                                         </div>
                                         <div class="po_description">
                                             <div class="product_description_text">
                                                 <text class="counted_product_description">{{$product->internal_description}}</text>
                                             </div>
                                         </div>
-                                        <div class="po_due_date">
+                                        <div class="po_due_date_right">
                                             <div>Due on</div>
                                             <div>{{$product->due_date}}</div>
                                         </div>
