@@ -452,6 +452,7 @@ class Products extends Model
                 $this->where('id', $Id)->update(['counted' => true, 'qty_to_order' => $QtyToOrder]);
             }
             $Product->qty_to_order = $QtyToOrder;
+            $Product->measure_unit_id = $MeasureUnitId;
             return ['status' => 'ok', 'product' => $Product, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             //throw $th;

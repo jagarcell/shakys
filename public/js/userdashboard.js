@@ -182,8 +182,8 @@ function orderClick(productId, button){
                             markAsCounted.outerHTML = ""
                         }
                         var products = $('.product')
-                        var previewProductLink = document.getElementById('preview_product_link_' + product.id)
-                        var previewQtyRequest = document.getElementById('preview_qty_request_' + product.id)
+                        var previewProductLink = document.getElementById('preview_product_link_' + product.id + "_" + product.measure_unit_id)
+                        var previewQtyRequest = document.getElementById('preview_qty_request_' + product.id + "_" + product.measure_unit_id)
 
                         if(previewProductLink === null){
                             $.each(products, function(index, product){
@@ -193,7 +193,7 @@ function orderClick(productId, button){
                                     product.classList.add('rbg')
                                 }
                                 else{
-                                    product.classList.add('bbg')
+                                    product.classList.add('rbg')
                                 }
                             })
                         }
@@ -271,7 +271,10 @@ function searchClick() {
 /**
  * This is the action to show the counts preview
  */
-function userCountPreview() {
+function userCountPreview(link) {
+    if(link !== undefined && link !== null){
+        link.hidden = true
+    }
     $.get('/getcountedproducts',
         function(data, status){
             if(status == 'success'){
@@ -323,6 +326,9 @@ function userCountPreview() {
                         break
                 }
             }
+            if(link !== undefined && link !== null){
+                link.hidden = false
+            }
         }
     );
 }
@@ -356,6 +362,7 @@ function userCountPreview() {
                         $(orderTopId).find('#product_order_image')[0].src = product.image_path
                         orderTopId.innerHTML = orderTopId.innerHTML.replace(/internal-description/g, product.internal_description)
                         orderTopId.innerHTML = orderTopId.innerHTML.replace(/product-id/g, product.id)
+                        orderTopId.innerHTML = orderTopId.innerHTML.replace(/measure-unit-id/g, product.measure_unit_id)
                         $(orderTopId).show()
 
                         var qtySelect = $(orderTopId).find('#qty')

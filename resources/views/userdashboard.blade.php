@@ -29,135 +29,141 @@
 
         <!-- THIS IS THE PRODUCTS VIEW -->
         <div id="products_view">
-            <!-- THIS IS THE LINK TO THE COUNTS PREVIEW PAGE -->
-            <a class="preview_counts_link" onclick="userCountPreview()">Preview counts</a>
-
             @if(Auth::user() !== null && Auth::user()->user_type == 'user')
-            <!-- THIS SECTION IS THE SEARCH BAR SECTION -->
-            <div id="search_bar" class="search_bar_wrap">
-                <div class="search_wrap">
-                    <div class="search_block w-form">
-                        <div id="email-form" name="email-form" data-name="Email Form" class="search_form">
-                            <div class="all_products_search_frame">
-                                <input id="search_text" type="text" class="search_bar w-input" maxlength="256" name="name" data-name="Name" placeholder="Enter Your Search">
-                                <div class="search_product_icon">
-                                    <img src="/images/MagnifierBk.png">
-                                    <input type="button" class="all_products_search_button" onclick="searchClick()">
+                <!-- THIS IS THE LINK TO THE COUNTS PREVIEW PAGE -->
+                <a class="preview_counts_link" onclick="userCountPreview(this)">Counts preview</a>
+                <!-- THIS SECTION IS THE SEARCH BAR SECTION -->
+                <div id="search_bar" class="search_bar_wrap">
+                    <div class="search_wrap">
+                        <div class="search_block w-form">
+                            <div id="email-form" name="email-form" data-name="Email Form" class="search_form">
+                                <div class="all_products_search_frame">
+                                    <input id="search_text" type="text" class="search_bar w-input" maxlength="256" name="name" data-name="Name" placeholder="Enter Your Search">
+                                    <div class="search_product_icon">
+                                        <img src="/images/MagnifierBk.png">
+                                        <input type="button" class="all_products_search_button" onclick="searchClick()">
+                                    </div>
                                 </div>
+                                <!--a style="height:35px;" onclick="searchClick()">
+                                    <input type="button" value="Search" data-wait="Please wait..." class="search_button w-button shadowRight">
+                                </a-->
                             </div>
-                            <!--a style="height:35px;" onclick="searchClick()">
-                                <input type="button" value="Search" data-wait="Please wait..." class="search_button w-button shadowRight">
-                            </a-->
                         </div>
                     </div>
                 </div>
-            </div>
-
-            @if(count($productstocount) > 0)
-            @for($i = 0; $i < count($locations); $i += 2)
-            @if(!isset($locations[$i]->odd))    
-            <!-- THIS SECTION WILL BE USED TO SHOW A PAIR OF LOCATIONS -->
-            <div class="ui_section" hidden>
-                <div class="search_locations">
-                    <div class="search_location_frame">
-                        <div class="location_picture_frame left">
-                            <a onclick="locationClick('{{$locations[$i]->id}}')">
-                                <img src="{{$locations[$i]->image_path}}" loading="lazy" alt="" class="location_image shadowRight">
-                                <div class="location_name">
-                                    <label class="location_name_text shadowRight">{{$locations[$i]->name}}</label>
+                @if(count($productstocount) > 0)
+                    @for($i = 0; $i < count($locations); $i += 2)
+                        @if(!isset($locations[$i]->odd))    
+                            <!-- THIS SECTION WILL BE USED TO SHOW A PAIR OF LOCATIONS -->
+                            <div class="ui_section" hidden>
+                                <div class="search_locations">
+                                    <div class="search_location_frame">
+                                        <div class="location_picture_frame left">
+                                            <a onclick="locationClick('{{$locations[$i]->id}}')">
+                                                <img src="{{$locations[$i]->image_path}}" loading="lazy" alt="" class="location_image shadowRight">
+                                                <div class="location_name">
+                                                    <label class="location_name_text shadowRight">{{$locations[$i]->name}}</label>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="search_location_frame">
+                                        <div class="location_picture_frame right">
+                                            <a onclick="locationClick('{{$locations[$i + 1]->id}}')">
+                                                <img src="{{$locations[$i + 1]->image_path}}" loading="lazy" alt="" class="location_image shadowRight">
+                                                <div class="location_name">
+                                                    <label class="location_name_text shadowRight">{{$locations[$i + 1]->name}}</label>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="search_location_frame">
-                        <div class="location_picture_frame right">
-                            <a onclick="locationClick('{{$locations[$i + 1]->id}}')">
-                                <img src="{{$locations[$i + 1]->image_path}}" loading="lazy" alt="" class="location_image shadowRight">
-                                <div class="location_name">
-                                    <label class="location_name_text shadowRight">{{$locations[$i + 1]->name}}</label>
+                            </div>
+                        @else
+                            <!-- THIS SECTION WILL BE USED TO SHOW A SINGLE CENTERED LOCATION -->
+                            <div class="ui_section" hidden>
+                                <div class="search_locations">
+                                    <div class="search_location_frame">
+                                        <div class="location_picture_frame">
+                                            <a onclick="locationClick('{{$locations[$i]->id}}')">
+                                                <img src="{{$locations[$i]->image_path}}" loading="lazy" alt="" class="location_image shadowRight">
+                                                <div class="location_name">
+                                                    <label class="location_name_text shadowRight">{{$locations[$i]->name}}</label>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @else
-            <!-- THIS SECTION WILL BE USED TO SHOW A SINGLE CENTERED LOCATION -->
-            <div class="ui_section" hidden>
-                <div class="search_locations">
-                    <div class="search_location_frame">
-                        <div class="location_picture_frame">
-                            <a onclick="locationClick('{{$locations[$i]->id}}')">
-                                <img src="{{$locations[$i]->image_path}}" loading="lazy" alt="" class="location_image shadowRight">
-                                <div class="location_name">
-                                    <label class="location_name_text shadowRight">{{$locations[$i]->name}}</label>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endif    
-            @endfor
-            @endif
-
-            <div id="products_list_wrap" style="padding-bottom:60px;">
-                @foreach($productstocount as $key => $producttocount)
-                @if(round($key / 2) * 2 != $key)
-                <!-- HERE A PRODUCT IS SHOWN WITH A BLACK BACKGROUND -->
-                <a onclick="productClick('{{$producttocount->id}}', this)">
-                    <div id="{{$producttocount->id}}" class="ui_section bbg product shadowRight">
-                        <div class="product_frame">
-                            <div class="product_pic_frame">
-                                <img src="{{$producttocount->image_path}}" loading="lazy" alt="" class="product_pic">
                             </div>
-                            <div class="product_description">
-                                <div class="product_description_text">{{$producttocount->internal_description}}</div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                @else    
-                <!-- HERE A PRODUCT IS SHOWN WITH A RED BACKGROUND -->
-                <a onclick="productClick('{{$producttocount->id}}', this)">
-                    <div id="{{$producttocount->id}}" class="ui_section rbg product shadowRight">
-                        <div class="product_frame">
-                            <div class="product_pic_frame">
-                                <img src="{{$producttocount->image_path}}" loading="lazy" alt="" class="product_pic">
-                            </div>
-                            <div class="product_description">
-                                <div class="product_description_text">{{$producttocount->internal_description}}</div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
+                        @endif    
+                    @endfor
                 @endif
-                @endforeach
-            </div>
 
-            <div id="product" hidden>
-                <!-- THIS IS THE HTML FOR A PRODUCT -->
-                <a onclick="productClick('product-id', this)">
-                    <div id="product-id" class="ui_section product shadowRight">
-                        <div class="product_frame">
-                            <div class="product_pic_frame">
-                                <img src="image-path" loading="lazy" alt="" class="product_pic">
+                <div id="products_list_wrap" style="padding-bottom:60px;">
+                    @foreach($productstocount as $key => $producttocount)
+                        @if(round($key / 2) * 2 == $key)
+                            <div class="product_couple">
+                            <!-- HERE A PRODUCT IS SHOWN WITH A BLACK BACKGROUND -->
+                            <a class="product_to_count_link" onclick="productClick('{{$producttocount->id}}', this)">
+                                <div id="{{$producttocount->id}}" class="ui_section rbg product shadowRight">
+                                    <div class="product_frame">
+                                        <div class="product_pic_frame">
+                                            <img src="{{$producttocount->image_path}}" loading="lazy" alt="" class="product_pic">
+                                        </div>
+                                        <div class="product_description">
+                                            <div class="product_description_text">{{$producttocount->internal_description}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            @if($key == count($productstocount) - 1)
+                            </div>                            
+                            @endif
+                        @else    
+                            <!-- HERE A PRODUCT IS SHOWN WITH A RED BACKGROUND -->
+                            <a class="product_to_count_link" onclick="productClick('{{$producttocount->id}}', this)">
+                                <div id="{{$producttocount->id}}" class="ui_section rbg product shadowRight">
+                                    <div class="product_frame">
+                                        <div class="product_pic_frame">
+                                            <img src="{{$producttocount->image_path}}" loading="lazy" alt="" class="product_pic">
+                                        </div>
+                                        <div class="product_description">
+                                            <div class="product_description_text">{{$producttocount->internal_description}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
                             </div>
-                            <div class="product_description">
-                                <div class="product_description_text">internal-description</div>
+                        @endif
+                    @endforeach
+                </div>
+
+                <div id="product" hidden>
+                    <!-- THIS IS THE HTML FOR A PRODUCT -->
+                    <a onclick="productClick('product-id', this)">
+                        <div id="product-id" class="ui_section product shadowRight">
+                            <div class="product_frame">
+                                <div class="product_pic_frame">
+                                    <img src="image-path" loading="lazy" alt="" class="product_pic">
+                                </div>
+                                <div class="product_description">
+                                    <div class="product_description_text">internal-description</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
             @else
-            <div style="text-align:center; color: red; font-size: 36px;">NOT AN AUTHORIZED USER</div>
+                <div style="text-align:center; color: red; font-size: 36px;">NOT AN AUTHORIZED USER</div>
             @endif
         </div>
 
         <!-- THIS IS THE COUNTED PRODUCTS PREVIEW AND WIL BE POPULATED -->
         <!-- FROM JS WHEN THE USER CLICKS ON Preview counts -->
         <div id="counted_products_preview" class="counted_products_preview" hidden>
+            <div class="counted_products_preview_title shadowRight">
+                <label class="counted_preview_title">COUNTED PRODUCTS PREVIEW</label>
+            </div>
         </div>
 
         <!-- THIS IS THE HTML TO SHOW THE ORDER DIALOG -->
@@ -206,7 +212,7 @@
 
             <!-- HTML FOR THE PRODUCT PREVIEW GROUP MEMBER-->
             <div id="product_preview_group_html">
-                <a id="preview_product_link_product-id" class="preview_product_link" onclick="previewProductClick('product-id', 'measure-unit-id', this)">
+                <a id="preview_product_link_product-id_measure-unit-id" class="preview_product_link" onclick="previewProductClick('product-id', 'measure-unit-id', this)">
                     <div class="product_count_preview">
                         <div class="product_preview_frame">
                             <div class="product_pic_frame">
@@ -215,7 +221,7 @@
                             <div>
                                 <div class="product_description_text">internal-description</div>
                             </div>
-                            <div id="preview_qty_request_product-id" class="preview_qty_request">qty-to-order</div>
+                            <div id="preview_qty_request_product-id_measure-unit-id" class="preview_qty_request">qty-to-order</div>
                             <div>
                                 <div class="product_description_text">unit-description</div>
                             </div>

@@ -23,6 +23,36 @@ select{
   font-family: inherit;
 }
 
+.counted_preview_title{
+  place-self: center;
+  font-size: x-large;
+  height: 1.5em;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.counted_products_preview_title{
+  position: fixed;
+  top: 5px;
+  height: 45px;
+  place-content: center;
+  width: 70vw;
+  display: flex;
+  z-index: 1;
+  background-color: grey;
+  margin-left: 15vw;
+  padding: 5px;
+}
+
+.product_couple{
+  display: flex;
+  place-content: center;
+}
+
+.product_to_count_link{
+  width: 45%;
+}
+
 .preview_product_link{
   width: 30vw;
 }
@@ -991,7 +1021,7 @@ select{
   overflow-wrap: anywhere;
   place-content: center;
   overflow: hidden;
-  max-height: 25px;
+  height: 3em;
 }
 
 .product_description {
@@ -1025,6 +1055,7 @@ select{
   background-color: transparent;
   padding-left: 15px;
   padding-right: 15px;
+  height: 100%;
 }
 
 .product_pic_frame {
@@ -2576,7 +2607,7 @@ body {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  min-height: 20vh;
+  height: 10vh;
   color: white;
   font-family: inherit;
   font-size: inherit;
@@ -2593,12 +2624,15 @@ body {
 }
 
 .po_due_date {
-  width: 15%;
+  width: 30%;
   text-align: -webkit-center;
   padding-top: 3%;
 }
 
 @media screen and (max-width: 991px) {
+  .counted_preview_title{
+    font-size: large;
+  }
     
   .preview_row{
     display: block;
@@ -2634,7 +2668,7 @@ body {
 
   .po_description {
     width: 100%;
-    margin-top: 40px;
+    height: 30%;
   }
 
   .ui_section {
@@ -2643,6 +2677,7 @@ body {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
+    height: fit-content;
   }
 
   .po_to_count_section {
@@ -2651,6 +2686,7 @@ body {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
+    height: 30vh;
   }
 
   .order_data_field_wrap{
@@ -2810,6 +2846,13 @@ body {
 }
 
 @media screen and (max-width: 767px) {
+  .counted_preview_title{
+    font-size: medium;
+  }
+
+  .product_couple{
+    display: block;
+  }
 
   .data_entry_buttons_separator{
     height: 0px;
@@ -3566,6 +3609,14 @@ body {
 }
 
 @media screen and (max-width: 499px) {
+  .counted_preview_title{
+    font-size: 15px;
+  }
+
+  .counted_products_preview_title{
+    margin-left: 5vw;
+  }
+
   .product_preview_group {
     display: block;
   }

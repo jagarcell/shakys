@@ -72,25 +72,51 @@
                     <div data-w-tab="Tab 1" class="w-tab-pane w--tab-active">
                         @if(count($products) > 0)
                         @foreach($products as $key => $product)
+                        @if(round($key / 2) * 2 == $key)
                         <!-- HERE A PRODUCT IS SHOWN WITH A RED/BLACK BACKGROUND -->
-                        <a onclick="productClick('pending_{{$product->id}}', this)">
-                            <div id="pending_{{$product->id}}" class="ui_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
-                                <div class="po_to_count_section">
-                                    <div class="po_pic_frame">
-                                        <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
-                                    </div>
-                                    <div class="po_description">
-                                        <div class="product_description_text">
-                                            <text class="counted_product_description">{{$product->internal_description}}</text>
+                        <div class="product_couple">
+                            <a class="product_to_count_link" onclick="productClick('pending_{{$product->id}}', this)">
+                                <div id="pending_{{$product->id}}" class="ui_section product rbg shadowRight">
+                                    <div class="po_to_count_section">
+                                        <div class="po_pic_frame">
+                                            <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
+                                        </div>
+                                        <div class="po_description">
+                                            <div class="product_description_text">
+                                                <text class="counted_product_description">{{$product->internal_description}}</text>
+                                            </div>
+                                        </div>
+                                        <div class="po_due_date">
+                                            <div>Due on</div>
+                                            <div>{{$product->due_date}}</div>
                                         </div>
                                     </div>
-                                    <div class="po_due_date">
-                                        <div>Due on</div>
-                                        <div>{{$product->due_date}}</div>
+                                </div>
+                            </a>
+                        @if($key == count($products) - 1)
+                        </div>
+                        @endif
+                        @else
+                            <a class="product_to_count_link" onclick="productClick('pending_{{$product->id}}', this)">
+                                <div id="pending_{{$product->id}}" class="ui_section product rbg shadowRight">
+                                    <div class="po_to_count_section">
+                                        <div class="po_pic_frame">
+                                            <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
+                                        </div>
+                                        <div class="po_description">
+                                            <div class="product_description_text">
+                                                <text class="counted_product_description">{{$product->internal_description}}</text>
+                                            </div>
+                                        </div>
+                                        <div class="po_due_date">
+                                            <div>Due on</div>
+                                            <div>{{$product->due_date}}</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
+                        @endif
                         @endforeach
                         @else
                         <div class="empty_tab_text">THERE ARE NO PRODUCTS DUE TO COUNT!</div>
