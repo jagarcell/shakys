@@ -1215,6 +1215,7 @@ select{
   padding-bottom: 10px;
   margin-top: 20px;
   margin-left: 5%;
+  margin-right: 5%;
   border-radius: 10px;
   display: flex;
   place-content: center;
