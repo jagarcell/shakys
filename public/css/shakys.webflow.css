@@ -1079,6 +1079,7 @@ select{
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
+  place-content: center;
 }
 
 .search_locations {
