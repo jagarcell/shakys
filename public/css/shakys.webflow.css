@@ -52,6 +52,7 @@ select{
 .product_couple{
   display: flex;
   place-content: center;
+  height: fit-content;
 }
 
 .product_to_count_link{
@@ -1208,12 +1209,12 @@ select{
 
 .ui_section {
   padding-top: 10px;
-  padding-bottom: 10px;
   margin-top: 20px;
   margin-left: 5%;
   border-radius: 10px;
   display: flex;
   place-content: center;
+  height: 90%;
 }
 
 .ui_section.bbg {
