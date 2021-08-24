@@ -2695,7 +2695,6 @@ body {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
-    height: fit-content;
   }
 
   .po_to_count_section {
