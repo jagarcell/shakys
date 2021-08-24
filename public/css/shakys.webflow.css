@@ -23,6 +23,11 @@ select{
   font-family: inherit;
 }
 
+.pic_date_frame{
+  display: flex;
+  place-content: center;
+}
+
 .counted_preview_title{
   place-self: center;
   font-size: x-large;
@@ -1205,9 +1210,10 @@ select{
   padding-top: 10px;
   padding-bottom: 10px;
   margin-top: 20px;
-  width: 90%;
   margin-left: 5%;
   border-radius: 10px;
+  display: flex;
+  place-content: center;
 }
 
 .ui_section.bbg {
@@ -2607,26 +2613,30 @@ body {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  height: 10vh;
+  height: fit-content;
   color: white;
   font-family: inherit;
   font-size: inherit;
 }
 
 .po_pic_frame {
-  width: 25%;
   text-align: -webkit-center;
 }
 
 .po_description {
-  width: 60%;
+  width: 25vw;
   position: relative;
 }
 
-.po_due_date {
+.po_due_date_right {
   width: 30%;
   text-align: -webkit-center;
-  padding-top: 3%;
+}
+
+.po_due_date_left{
+  width: 90%;
+  text-align: -webkit-center;
+  display: none;
 }
 
 @media screen and (max-width: 991px) {
@@ -2643,9 +2653,15 @@ body {
     display: flex;  
   }
 
-  .po_due_date {
-    width: 100%;
+  .po_due_date_right {
+    display: none;
   }
+
+  .po_due_date_left {
+    display: block;
+  }
+
+  
 
   .app-menu-option{
     font-size: 12px;
@@ -2686,7 +2702,6 @@ body {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
-    height: 30vh;
   }
 
   .order_data_field_wrap{
@@ -2846,6 +2861,15 @@ body {
 }
 
 @media screen and (max-width: 767px) {
+  .ui_section{
+    margin-right: 5%;
+  }
+
+  .product_description_text{
+    height: fit-content;
+    max-height: 3em;
+  }
+
   .counted_preview_title{
     font-size: medium;
   }
@@ -3600,11 +3624,6 @@ body {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
-  }
-
-  .po_due_date {
-    margin-top: 10px;
-    margin-bottom: 40px;  
   }
 }
 
