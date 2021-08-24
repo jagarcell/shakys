@@ -1463,6 +1463,7 @@ body {
   -webkit-justify-content: space-around;
   -ms-flex-pack: distribute;
   justify-content: space-around;
+  z-index: 1;
 }
 
 .logo {
