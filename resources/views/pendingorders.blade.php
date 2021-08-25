@@ -141,12 +141,12 @@
                         @if(count($countedproducts) > 0)
                         @foreach($countedproducts as $key => $countedProduct)
                         <!-- HERE A PRODUCT IS SHOWN WITH A RED/BLACK BACKGROUND -->
-                        <div id="counted_{{$countedProduct->id}}" productId="{{$countedProduct->id}}" class="ui_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
+                        <div id="counted_{{$countedProduct->id}}" productId="{{$countedProduct->id}}" class="request_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
                             <div class="po_to_count_section">
-                                <div class="po_pic_frame">
+                                <div class="request_po_pic_frame">
                                     <img src="{{$countedProduct->image_path}}" loading="lazy" alt="" class="product_pic">
                                 </div>
-                                <div class="po_description">
+                                <div class="request_po_description">
                                     <div class="product_description_text">
                                         <text class="counted_product_description">{{$countedProduct->internal_description}}</text>
                                     </div>
@@ -231,9 +231,9 @@
                         @if(count($allproducts) > 0)
                         @foreach($allproducts as $key => $allProduct)
                         <!-- HERE A PRODUCT IS SHOWN WITH A RED/BLACK BACKGROUND -->
-                        <div id="all_{{$allProduct->id}}" productId="{{$allProduct->id}}" class="ui_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
+                        <div id="all_{{$allProduct->id}}" productId="{{$allProduct->id}}" class="request_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
                             <div class="po_to_count_section">
-                                <div class="po_pic_frame">
+                                <div class="request_po_pic_frame">
                                     <img src="{{$allProduct->image_path}}" loading="lazy" alt="" class="product_pic">
                                 </div>
                                 <div class="po_description">

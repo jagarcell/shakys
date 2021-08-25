@@ -23,6 +23,10 @@ input, select {
   width: auto;
 }
 
+.logo-frame{
+  z-index: 1;
+}
+
 .w-icon-slider-right:before {
   content: "\e600";
 }

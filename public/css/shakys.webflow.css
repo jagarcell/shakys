@@ -23,6 +23,10 @@ select{
   font-family: inherit;
 }
 
+.logo-frame{
+  z-index: 1;
+}
+
 .pic_date_frame{
   display: flex;
   place-content: center;
@@ -99,7 +103,7 @@ select{
 .preview_counts_link{
   position: fixed;
   top: 2%;
-  right: 10%;
+  right: 45%;
   z-index: 2;
   text-decoration: underline;
   font-style: italic;
@@ -886,9 +890,8 @@ select{
   display: flex;
   text-align: center;
   font-size: inherit;
-  width: 96%;
-  margin-left: 4%;
-  margin-top: 50px;
+  width: 100%;
+  margin-top: 15px;
 }
 
 .order_data_field{
@@ -1222,13 +1225,34 @@ select{
   height: 90%;
 }
 
+.request_section {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 20px;
+  margin-left: 5%;
+  margin-right: 5%;
+  border-radius: 10px;
+  display: block;
+  place-content: center;
+  height: 90%;
+}
+
 .ui_section.bbg {
+  background-color: #000;
+}
+
+.request_section.bbg {
   background-color: #000;
 }
 
 .ui_section.rbg {
   background-color: #e90e0e;
 }
+
+.request_section.rbg {
+  background-color: #e90e0e;
+}
+
 
 .field_wrap{
   width: 100%;
@@ -1420,7 +1444,7 @@ body {
   top: 60px;
   left: 3%;
   width: 200px;
-  height: 245px;
+  height: fit-content;
   z-index: 12;
   background-color:dimgray;
   border-radius: 5px;
@@ -1446,7 +1470,6 @@ body {
 
 .app-menu-option{
   width: 12.5%;
-  min-height: 63px;
   text-align: center;
   text-shadow: none !important;
   font-size: 14px;
@@ -1463,7 +1486,6 @@ body {
   -webkit-justify-content: space-around;
   -ms-flex-pack: distribute;
   justify-content: space-around;
-  z-index: 1;
 }
 
 .logo {
@@ -2154,7 +2176,7 @@ body {
   top: 0px;
   right: 0px;
   height: 60px;
-  background-color: white;
+  background:transparent;
 }
 
 .save_session_expired{
@@ -2624,14 +2646,25 @@ body {
   color: white;
   font-family: inherit;
   font-size: inherit;
+  width: 95%;
 }
 
 .po_pic_frame {
   text-align: -webkit-center;
 }
 
+.request_po_pic_frame {
+  text-align: -webkit-center;
+  width: 30%;
+}
+
 .po_description {
   width: 25vw;
+  position: relative;
+}
+
+.request_po_description {
+  width: 70%;
   position: relative;
 }
 
@@ -2673,7 +2706,7 @@ body {
   .app-menu-option{
     font-size: 12px;
     width: 100%;
-    height: 12.5%;
+    height: 2.5em;
   }
 
   .counted_product_description{
@@ -2689,12 +2722,29 @@ body {
     width: 100%;
   }
 
+  .request_po_pic_frame {
+    width: 100%;
+  }
+
   .po_description {
     width: 100%;
     height: 30%;
   }
 
+  .request_po_description {
+    width: 100%;
+    height: 30%;
+  }
+
   .ui_section {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+
+  .request_section {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
@@ -2867,7 +2917,15 @@ body {
 }
 
 @media screen and (max-width: 767px) {
+  .add_to_order_button_frame{
+    top: 0;
+  }
+
   .ui_section{
+    margin-right: 5%;
+  }
+
+  .request_section{
     margin-right: 5%;
   }
 
@@ -3241,6 +3299,8 @@ body {
   .order_frame {
     width: 70vw;
     margin-left: 15vw;
+    height: 70vh;
+    min-height: 450px;    
   }
 
   .picture {
@@ -3729,6 +3789,10 @@ body {
   }
 
   .ui_section {
+    min-height: auto;
+  }
+
+  .request_section {
     min-height: auto;
   }
 
