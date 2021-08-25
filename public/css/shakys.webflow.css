@@ -900,12 +900,15 @@ select{
 }
 
 .search_bar_wrap{
-  position:sticky; 
-  top:0px; 
-  background-color:white; 
-  padding-top:10px;
-  padding-bottom:20px;
-  min-height: 64px;
+  position: sticky;
+  top: 60px;
+  left: 0;
+  background-color: white;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  min-height: 60px;
+  width: 100%;
+  z-index: 1;
 }
 
 .order_button{
@@ -2176,7 +2179,7 @@ body {
   top: 0px;
   right: 0px;
   height: 60px;
-  background:transparent;
+  background:white;
 }
 
 .save_session_expired{
