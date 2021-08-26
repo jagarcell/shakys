@@ -280,10 +280,10 @@ function indexOfValue(select, value) {
 function orderPickupSelectChange(orderPickupGuySelect) {
     orderPickupGuySelect.style = ""
     if(orderPickupGuySelect.options[orderPickupGuySelect.options.selectedIndex].value == 'pickup'){
-        $(garcellParentNodeByClassName(orderPickupGuySelect, 'ui_section')).find('#order_pickup_guy_select')[0].removeAttribute("disabled")
+        $(garcellParentNodeByClassName(orderPickupGuySelect, 'request_section')).find('#order_pickup_guy_select')[0].removeAttribute("disabled")
     }
     else{
-        $(garcellParentNodeByClassName(orderPickupGuySelect, 'ui_section')).find('#order_pickup_guy_select')[0].setAttribute("disabled", "")
+        $(garcellParentNodeByClassName(orderPickupGuySelect, 'request_section')).find('#order_pickup_guy_select')[0].setAttribute("disabled", "")
     }
 }
 
@@ -585,13 +585,14 @@ function receiveOrderButtonClick(orderId, button) {
     )
 }
 
-function addToOrderClick(addCheckClass, prefixToReplace) {
+function addToOrderClick(addCheckClass, prefixToReplace, button) {
     if(button !== undefined){
         button.disabled = true
     }
     var checkedToOrder = $('.' + addCheckClass + ':checkbox:checked')
+    console.log(checkedToOrder)
     $.each(checkedToOrder, function(index, toOrder){
-        var uiSection = garcellParentNodeByClassName(toOrder, 'ui_section')
+        var uiSection = garcellParentNodeByClassName(toOrder, 'request_section')
         var supplierSel = $(uiSection).find('#product_supplier_select')[0]
         var productId = uiSection.id.replace(prefixToReplace, '')
         var supplierId = supplierSel.options[supplierSel.selectedIndex].getAttribute("value")
@@ -634,6 +635,7 @@ function addToOrderClick(addCheckClass, prefixToReplace) {
             }, function(data, status){
                 if(status == 'success'){
                     var elementTag = data.element_tag
+                    console.log(data)
                     switch (data.status) {
                         case 'ok':
                             var uiSection = document.getElementById(elementTag)

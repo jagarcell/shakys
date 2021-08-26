@@ -76,7 +76,7 @@
                         <!-- HERE A PRODUCT IS SHOWN WITH A RED/BLACK BACKGROUND -->
                         <div class="product_couple">
                             <a class="product_to_count_link" onclick="productClick('pending_{{$product->id}}', this)">
-                                <div id="pending_{{$product->id}}" class="ui_section product rbg shadowRight">
+                                <div id="pending_{{$product->id}}" class="ui_section section_class product rbg shadowRight">
                                     <div class="po_to_count_section">
                                         <div class="pic_date_frame">
                                             <div class="po_pic_frame">
@@ -104,7 +104,7 @@
                         @endif
                         @else
                             <a class="product_to_count_link" onclick="productClick('pending_{{$product->id}}', this)">
-                                <div id="pending_{{$product->id}}" class="ui_section product rbg shadowRight">
+                                <div id="pending_{{$product->id}}" class="ui_section section_class product rbg shadowRight">
                                     <div class="po_to_count_section">
                                         <div class="pic_date_frame">
                                             <div class="po_pic_frame">
