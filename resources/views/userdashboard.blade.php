@@ -205,8 +205,6 @@
                 <div class="preview_row">.
                     <div class="product_preview_group 0 1 2">
                     </div>
-                    <div class="product_preview_group 3 4 5">
-                    </div>
                 </div>
             </div>
 
@@ -216,13 +214,11 @@
                     <div class="product_count_preview">
                         <div class="product_preview_frame">
                             <div class="product_pic_frame">
-                                <img src1="image-path" loading="lazy" alt="" class="product_pic">
+                                <img src1="image-path" loading="lazy" alt="" class="product_pic" onload="prodImgLoaded(this)">
                             </div>
-                            <div>
+                            <div class="preview_product_data">
                                 <div class="product_description_text">internal-description</div>
-                            </div>
-                            <div id="preview_qty_request_product-id_measure-unit-id" class="preview_qty_request">qty-to-order</div>
-                            <div>
+                                <div id="preview_qty_request_product-id_measure-unit-id" class="preview_qty_request">qty-to-order</div>
                                 <div class="product_description_text">unit-description</div>
                             </div>
                         </div>

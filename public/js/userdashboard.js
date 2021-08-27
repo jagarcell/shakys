@@ -268,6 +268,8 @@ function searchClick() {
     )
 }
 
+var imagesCount
+
 /**
  * This is the action to show the counts preview
  */
@@ -275,6 +277,7 @@ function userCountPreview(link) {
     if(link !== undefined && link !== null){
         link.hidden = true
     }
+
     $.get('/getcountedproducts',
         function(data, status){
             if(status == 'success'){
@@ -318,6 +321,13 @@ function userCountPreview(link) {
                         // Show counted products preview
                         countedProductsPreview.style.display = 'block'
                         startTimer()
+
+                        // Adjust the product layouts to fit the tallest one
+                        var countedProductsPreview = $('#counted_products_preview')
+                        var productPics = $(countedProductsPreview).find('.product_pic')
+
+                        // Sets the ount for the loaded images
+                        imagesCount = productPics.length
                                             
                     break
                     case 'error':
@@ -331,6 +341,64 @@ function userCountPreview(link) {
             }
         }
     );
+}
+
+function prodImgLoaded(image) {
+    // When an image is loaded ...
+    if(image === undefined || image ===null){
+        return
+    }
+    // ..  we check if it has a valid height 
+    var height = $(image).height()
+    if(height > 0){
+        // If the height is valid we count down the loaded images
+        imagesCount--
+    }
+    // If there are still images pending to load ...
+    if(imagesCount > 0){
+        // ... continue
+        return
+    }
+
+    $.each($('.preview_row'), function(index, previewRow){
+        // When all the images are loaded we
+        // compute the heighest section of each row
+        $.each($(previewRow).find('.product_preview_frame'), function(index, productPreviewFrame){
+            var productPicFrame = $(productPreviewFrame).find('.product_pic_frame')
+            var previewProductData = $(productPreviewFrame).find('.preview_product_data')
+            var height = productPicFrame.height() + previewProductData.height()
+
+            if(previewRow.getAttribute('height') === undefined || height > previewRow.getAttribute('height')){
+                previewRow.setAttribute('height', height)
+            }
+        })
+
+        // Now we apply the abosulte position to the elements with the lowest height
+        // in order to mke them appear aligned with the highest one
+        $.each($(previewRow).find('.product_preview_frame'), function(index, productPreviewFrame){
+            var productPicFrame = $(productPreviewFrame).find('.product_pic_frame')
+            var previewProductData = $(productPreviewFrame).find('.preview_product_data')
+            // The height to acomodate the aligned elements
+            var height = productPicFrame.height() + previewProductData.height()
+
+            // The offset to place the product image
+            var picOffset = ($(productPreviewFrame).height() - previewProductData.height()) / 2 -
+                            productPicFrame.height() / 2 + 10
+
+            // If this is not the element with the largest height ...                
+            if(height < previewRow.getAttribute('height')){
+                // ... Then offset the descriptions and image
+
+                // Description to bottom
+                previewProductData[0].classList.add('dynamic_product_alignment')
+                previewProductData[0].style.bottom = '10px'
+
+                // Image vertically centered
+                productPicFrame[0].classList.add('dynamic_product_alignment')
+                productPicFrame[0].style.top = picOffset + 'px'    
+            }
+        })
+    })
 }
 
 /**
