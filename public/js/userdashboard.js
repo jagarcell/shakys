@@ -457,3 +457,80 @@ function prodImgLoaded(image) {
         }
     )
 }
+
+/**
+ * 
+ * @param {*} productId 
+ * @param {*} button
+ *  
+ */
+function discardOrderClick(productId, button) {
+    if(button !== undefined){
+        button.disabled = true
+    }
+
+    var measureUnitSelect = $('#order_top_id').find('#measure_unit')[0]
+    var measureUnitId = measureUnitSelect.options[measureUnitSelect.selectedIndex].value
+    
+    if(measureUnitId == -1){
+        alert("YOU MUST SELECT A UNIT!")
+        return
+    }
+
+    $.post('/markasdiscarded',
+    {
+        _token:$('meta[name="csrf-token"]').attr('content'),
+        id:productId,
+        measure_unit_id:measureUnitId,
+        element_tag:productId,
+    }, function(data, status){
+        if(status == 'success'){
+            switch (data.status) {
+                case 'ok':
+                    var product = data.product
+                    var markAsCounted = document.getElementById(product.id)
+                    if(markAsCounted !== undefined && markAsCounted !== null){
+                        markAsCounted.outerHTML = ""
+                    }
+                    var products = $('.product')
+                    var previewProductLink = document.getElementById('preview_product_link_' + product.id + "_" + product.measure_unit_id)
+                    var previewQtyRequest = document.getElementById('preview_qty_request_' + product.id + "_" + product.measure_unit_id)
+
+                    if(previewProductLink === null){
+                        $.each(products, function(index, product){
+                            product.classList.remove("bbg")
+                            product.classList.remove("rbg")
+                            if(Math.floor(index / 2) * 2 == index){
+                                product.classList.add('rbg')
+                            }
+                            else{
+                                product.classList.add('rbg')
+                            }
+                        })
+                    }
+                    else{
+                        previewQtyRequest.innerHTML = product.qty_to_order
+                        $(previewProductLink).find('.product_preview_frame')[0].style.backgroundColor = 'red'
+                    }
+                    closeOrder()
+                    break
+                case 'error':
+
+                    break
+                case '419':
+                    break
+
+                case 'notfound':
+
+                    break
+
+                default:
+                    break
+            }
+        }
+        if(button !== undefined){
+            button.disabled = true
+        }
+    
+    })
+}

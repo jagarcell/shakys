@@ -61,14 +61,14 @@ function openTab(tabId){
         }
     })
 
-    if(tab.getAttribute('data-w-tab') == "Tab 2"){
+    if(tab.getAttribute('data-w-tab') == "Tab 3"){
         $('#add_to_order_button').show()
     }
     else{
         $('#add_to_order_button').hide()
     }
 
-    if(tab.getAttribute('data-w-tab') == "Tab 3"){
+    if(tab.getAttribute('data-w-tab') == "Tab 4"){
         $('#all_products_add_to_order_button').show()
     }
     else{
@@ -85,6 +85,10 @@ function tabClick(tab) {
 
 function closeOrder(){
     document.getElementById('order_top_id').style.display = 'none'
+}
+
+function closeDiscarded(){
+    document.getElementById('discarded_top_id').style.display = 'none'
 }
 
 function productClick(productId, button){
@@ -118,6 +122,58 @@ function productClick(productId, button){
                         })                        
 
                         $(orderTopId).find('#product_order_image')[0].src = product.image_path
+                        orderTopId.innerHTML = orderTopId.innerHTML.replace(/internal-description/g, product.internal_description)
+                        orderTopId.innerHTML = orderTopId.innerHTML.replace(/product-id/g, product.id)
+
+                        $(orderTopId).show()
+                        $(orderTopId).find('#qty').focus()
+                        break;
+                
+                    default:
+                        break;
+                }
+            }
+            if(button !== undefined){
+                button.disabled = false
+            }
+        }
+    )
+}
+
+function discardedProductClick(productId, button){
+    if(button !== undefined){
+        button.disabled = true
+    }
+    $.get('/getproduct',
+        {
+            id:productId.replace('discarded_', ''),
+            element_tag:productId,
+        }, function(data, status){
+            if(status == 'success'){
+                var element_tag = data.element_tag
+                switch (data.status) {
+                    case 'ok':
+                        var product = data.product
+                        var orderTopMostHTML = document.getElementById('discarded_top_most').innerHTML
+                        var orderTopId = document.getElementById('discarded_top_id')
+                        orderTopId.innerHTML = orderTopMostHTML
+                        var measureUnitSelect = $(orderTopId).find('#discarded_measure_unit')[0]
+
+                        // Let's prepare the measure units select
+                        $.each(product.measure_units, function(index, measureUnit){
+                            var option = document.createElement("option")
+                            option.value = measureUnit.id
+                            option.text = measureUnit.unit_description
+                            if(product.default_measure_unit_id == measureUnit.id){
+                                option.setAttribute("selected", true)
+                            }
+                            measureUnitSelect.options.add(option)
+                        })
+
+                        var discardedDaysToCount = $(orderTopId).find('#discarded_days_to_count')[0]
+                        discardedDaysToCount.options[product.days_to_count].setAttribute("selected", true)
+
+                        $(orderTopId).find('#discarded_product_image')[0].src = product.image_path
                         orderTopId.innerHTML = orderTopId.innerHTML.replace(/internal-description/g, product.internal_description)
                         orderTopId.innerHTML = orderTopId.innerHTML.replace(/product-id/g, product.id)
 
@@ -201,6 +257,176 @@ function orderClick(productId, button){
     else{
         closeOrder()
     }
+}
+
+/**
+ * 
+ * @param {*} productId 
+ * @param {*} button
+ *  
+ */
+ function discardOrderClick(productId, button) {
+    if(button !== undefined){
+        button.disabled = true
+    }
+
+    var measureUnitSelect = $('#order_top_id').find('#measure_unit')[0]
+    var measureUnitId = measureUnitSelect.options[measureUnitSelect.selectedIndex].value
+    
+    if(measureUnitId == -1){
+        alert("YOU MUST SELECT A UNIT!")
+        return
+    }
+
+    $.post('/markasdiscarded',
+    {
+        _token:$('meta[name="csrf-token"]').attr('content'),
+        id:productId,
+        measure_unit_id:measureUnitId,
+        element_tag:productId,
+    }, function(data, status){
+        if(status == 'success'){
+            switch (data.status) {
+                case 'ok':
+                    var product = data.product
+                    var markAsCounted = document.getElementById('pending_' + product.id)
+                    if(markAsCounted !== undefined && markAsCounted !== null){
+                        markAsCounted.outerHTML = ""
+                    }
+                    var products = $('.product')
+                    closeOrder()
+                    break
+                case 'error':
+
+                    break
+                case '419':
+                    break
+
+                case 'notfound':
+
+                    break
+
+                default:
+                    break
+            }
+        }
+        if(button !== undefined){
+            button.disabled = true
+        }
+    
+    })
+}
+
+function requestAndRescheduleClick(productId, button){
+    if(button !== undefined){
+        button.disabled = true
+    }
+    var qty = $('#discarded_top_id').find('#discarded_qty').val()
+    var measureUnitSelect = $('#discarded_top_id').find('#discarded_measure_unit')[0]
+    var measureUnitId = measureUnitSelect.options[measureUnitSelect.selectedIndex].value
+    var daysToCountSelect =  $('#discarded_top_id').find('#discarded_days_to_count')[0]
+    var daysToCount = daysToCountSelect.options[daysToCountSelect.selectedIndex].value
+
+    if(measureUnitId == -1){
+        alert("YOU MUST SELECT A UNIT!")
+        return
+    }
+
+    if(qty > 0)
+    {
+        $.post('/markascounted',
+        {
+            _token:$('meta[name="csrf-token"]').attr('content'),
+            id:productId,
+            qty_to_order:qty,
+            measure_unit_id:measureUnitId,
+            days_to_count:daysToCount,
+            element_tag:productId,
+        }, function(data, status){
+            if(status == 'success'){
+                switch (data.status) {
+                    case 'ok':
+                        var product = data.product
+                        var markAsCounted = document.getElementById('discarded_' + product.id)
+
+                        markAsCounted.outerHTML = ""
+                        var products = $('.discarded_product')
+                        if(products.length == 0){
+                            window.location.replace('/showpendingorderspanel?tab_id=tab_2')
+                        }
+                        closeDiscarded()
+                        break
+                    case 'error':
+
+                        break
+                    case '419':
+                        break
+
+                    case 'notfound':
+
+                        break
+
+                    default:
+                        break
+                }
+            }
+            if(button !== undefined){
+                button.disabled = false
+            }
+        })
+    }
+    else{
+        closeDiscarded()
+    }    
+}
+
+function rescheduleClick(productId, button){
+    if(button !== undefined){
+        button.disabled = true
+    }
+    var measureUnitSelect = $('#discarded_top_id').find('#discarded_measure_unit')[0]
+    var measureUnitId = measureUnitSelect.options[measureUnitSelect.selectedIndex].value
+    var daysToCountSelect =  $('#discarded_top_id').find('#discarded_days_to_count')[0]
+    var daysToCount = daysToCountSelect.options[daysToCountSelect.selectedIndex].value
+
+    $.post('/reschedulecount',
+    {
+        _token:$('meta[name="csrf-token"]').attr('content'),
+        id:productId,
+        days_to_count:daysToCount,
+        element_tag:productId,
+    }, function(data, status){
+        if(status == 'success'){
+            switch (data.status) {
+                case 'ok':
+                    var product = data.product
+                    var markAsCounted = document.getElementById('discarded_' + product.id)
+
+                    markAsCounted.outerHTML = ""
+                    var products = $('.discarded_product')
+                    if(products.length == 0){
+                        window.location.replace('/showpendingorderspanel?tab_id=tab_2')
+                    }
+                    closeDiscarded()
+                    break
+                case 'error':
+
+                    break
+                case '419':
+                    break
+
+                case 'notfound':
+
+                    break
+
+                default:
+                    break
+            }
+        }
+        if(button !== undefined){
+            button.disabled = false
+        }
+    })
 }
 
 function supplierSelChange(uiSectionId) {
@@ -725,5 +951,5 @@ function allProductsSearchClick() {
     var allProductsSearchText = document.getElementById('all_products_search_text').value
     // When a serach is clicked we redirect to pending orders panel 
     // with the Tab ID of all the products and the search text 
-    window.location.replace('/showpendingorderspanel?tab_id=tab_3&search_text=' + allProductsSearchText)
+    window.location.replace('/showpendingorderspanel?tab_id=tab_4&search_text=' + allProductsSearchText)
 }

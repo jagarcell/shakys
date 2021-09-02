@@ -68,6 +68,19 @@ class ProductsController extends Controller
         # code...
         return (new Products())->MarkAsCounted($request);
     }
+
+    public function MarkAsDiscarded(Request $request)
+    {
+        # code...
+        return (new Products())->MarkAsDiscarded($request);
+    }
+
+    public function RescheduleCount(Request $request)
+    {
+        # code...
+        return (new Products())->RescheduleCount($request);
+    }
+
     public function UpdateProduct(Request $request)
     {
         # code...

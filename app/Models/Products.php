@@ -408,7 +408,7 @@ class Products extends Model
 
     /**
      * 
-     * @param Request id qty_to_order measure_unit_id element_tag   
+     * @param Request ['id', 'qty_to_order', 'measure_unit_id', 'element_tag']   
      * @param Object 
      * 
      * @return [status => 'ok']
@@ -428,6 +428,88 @@ class Products extends Model
             $Id = $request['id'];
             $QtyToOrder = $request['qty_to_order'];
             $MeasureUnitId = $request['measure_unit_id'];
+            $DaysToCount = isset($request['days_to_count']) ? $request['days_to_count'] : -1;
+            $ElementTag = $request['element_tag'];
+
+            $Products = $this->where('id', $Id)->get();
+            if(count($Products) == 0){
+                return ['status' => 'notfound', 'element_tag' => $ElementTag];
+            }
+
+            $Product = $Products[0];
+            $Product->counted = true;
+            if($DaysToCount == -1){
+                $DaysToCount = $Product->days_to_count;
+                $NextCountDate = new \DateTime($Product->next_count_date);
+            }
+            else{
+                $Today = new \DateTime();
+                $NextCountDate = date_modify($Today, "+" . $DaysToCount . " day");
+            }
+
+            $UpdatedProductUnitsPivots = (new ProductUnitsPivots())
+                ->where('product_id', $Product->id)
+                ->where('measure_unit_id', $MeasureUnitId)
+                ->update(['qty_to_order' => $QtyToOrder]);
+
+            // If there is a link to the measure unit 
+            if($UpdatedProductUnitsPivots > 0){
+                // The qty to order is asigned to that measure unit
+                $this->where('id', $Id)
+                ->update(
+                    [
+                        'counted' => true, 
+                        'qty_to_order' => 0, 
+                        'days_to_count' => $DaysToCount, 
+                        'next_count_date' => $NextCountDate,
+                        'discarded' => false,
+                    ]
+                );
+            }
+            else{
+                // Othewise it is asigned to the product itself
+                $this->where('id', $Id)
+                ->update(
+                    [
+                        'counted' => true, 
+                        'qty_to_order' => $QtyToOrder, 
+                        'days_to_count' => $DaysToCount, 
+                        'next_count_date' => $NextCountDate,
+                        'discarded' => false,
+                    ]
+                );
+            }
+            $Product->qty_to_order = $QtyToOrder;
+            $Product->measure_unit_id = $MeasureUnitId;
+            $Product->days_to_count = $DaysToCount;
+            $Product->next_count_date = $NextCountDate;
+            return ['status' => 'ok', 'product' => $Product, 'element_tag' => $ElementTag];
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
+        }
+    }
+
+    /**
+     * 
+     * @param Request ['id', 'measure_unit_id', 'element_tag]
+     * 
+     * @return ['status' => 'ok', 'error', 'notfound', '419']
+     * @return Object product
+     * @return Object element_tag
+     * 
+     *     
+     *
+     */
+    public function MarkAsDiscarded($request)
+    {
+        # code...
+        try {
+            //code...
+            $Id = $request['id'];
+            $QtyToOrder = 0;
+            $MeasureUnitId = $request['measure_unit_id'];
             $ElementTag = $request['element_tag'];
 
             $Products = $this->where('id', $Id)->get();
@@ -438,6 +520,11 @@ class Products extends Model
             $Product = $Products[0];
             $Product->counted = true;
 
+            $DaysToCount = $Product->days_to_count;
+
+            $NextCountDate = new \DateTime();
+            $NextCountDate = date_modify($NextCountDate, "+" . $DaysToCount . " day");
+
             $UpdatedProductUnitsPivots = (new ProductUnitsPivots())
                 ->where('product_id', $Product->id)
                 ->where('measure_unit_id', $MeasureUnitId)->update(['qty_to_order' => $QtyToOrder]);
@@ -445,14 +532,58 @@ class Products extends Model
             // If there is a link to the measure unit 
             if($UpdatedProductUnitsPivots > 0){
                 // The qty to order is asigned to that measure unit
-                $this->where('id', $Id)->update(['counted' => true, 'qty_to_order' => 0]);
+                $this->where('id', $Id)->update(['discarded' => true, 'next_count_date' => $NextCountDate, 'qty_to_order' => 0]);
             }
             else{
                 // Othewise it is asigned to the product itself
-                $this->where('id', $Id)->update(['counted' => true, 'qty_to_order' => $QtyToOrder]);
+                $this->where('id', $Id)->update(['discarded' => true, 'next_count_date' => $NextCountDate, 'qty_to_order' => $QtyToOrder]);
             }
             $Product->qty_to_order = $QtyToOrder;
             $Product->measure_unit_id = $MeasureUnitId;
+            return ['status' => 'ok', 'product' => $Product, 'element_tag' => $ElementTag];
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
+        }
+    }
+
+    /**
+     * @param Request ['id', 'days_to_count', 'element_tag]
+     * 
+     * @return ['status' => 'notfound', => 'error', => '419', 'element_tag']
+     * @return ['status' => 'ok', 'element_tag']
+     * 
+     */
+    public function RescheduleCount($request)
+    {
+        # code...
+        try {
+            //code...
+            $Id = $request['id'];
+            $DaysToCount = $request['days_to_count'];
+            $ElementTag = $request['element_tag'];
+
+            $Products = $this->where('id', $Id)->get();
+            if(count($Products) == 0){
+                return ['status' => 'notfound', 'element_tag' => $ElementTag];
+            }
+            $Product = $Products[0];
+            $Today = new \DateTime();
+            $NextCountDate = date_modify($Today, "+" . $DaysToCount . " day");
+            $UpdatedProducts = $this->where('id', $Id)
+            ->update(
+                [
+                    'days_to_count' => $DaysToCount, 
+                    'next_count_date' => $NextCountDate,
+                    'discarded' => false,
+                ]
+            );
+        
+            if($UpdatedProducts > 0){
+                $Product->next_count_date = $NextCountDate;
+                $Product->days_to_count = $DaysToCount;
+            }
             return ['status' => 'ok', 'product' => $Product, 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {
             //throw $th;
@@ -631,6 +762,21 @@ class Products extends Model
     {
         # code...
         return $this->where('plan_type', 1)->where('counted', false)->where('next_count_date', '<=', $DateToCount)->get();
+    }
+
+
+    /**
+     * 
+     * @param DateTime Date
+     * 
+     * @return Object Products
+     * 
+     * 
+     */
+    public function DiscardedProducts($DateToCount)
+    {
+        # code...
+        return $this->where('discarded', true)->where('next_count_date', '>', $DateToCount)->get();
     }
 
     /**

@@ -185,8 +185,18 @@
                     <select id="qty" class="order_qty w-input">
                         <option value="0">0</option>
                     </select>
-                    <div class="request_button_frame">
-                        <input type="button" value="Request" class="order_button w-button" onclick="orderClick('product-id', this)">
+                    <div class="product_request_buttons">
+                        <div class="request_button_frame">
+                            <input type="button" value="Request" class="order_button w-button" onclick="orderClick('product-id', this)">
+                        </div>
+                        <div class="request_button_frame">
+                            <input type="button" value="Not Now" class="order_button w-button" onclick="discardOrderClick('product-id', this)">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="request_button_frame">
+                            <input type="button" value="Cancel" class="order_button w-button" onclick="closeOrder('product-id', this)">
+                        </div>
                     </div>
                 </div>
 
