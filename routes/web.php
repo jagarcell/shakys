@@ -155,6 +155,8 @@ Route::post('/createuser', 'UsersController@CreateUser');
 
   Route::get('/getproductrequests', 'ProductsController@GetProductRequests');
 
+  Route::get('/resetcounts', 'ProductsController@ResetCounts')->middleware('checkifcanregister');
+
 /****************************************
  *                                      *
  *             PICKUP USER              *

@@ -843,4 +843,24 @@ class Products extends Model
             return ['status' => 'error', 'message' => $Message];
         }
     }
+
+    public function ResetCounts($request)
+    {
+        # code...
+        try {
+            //code...
+            $Products = $this->where('id', '>', -1)->get();
+            foreach($Products as $Key => $Product){
+                $Today = new \DateTime();
+                $NextCountDate = date_modify($Today, "+" . $Product->days_to_count . "day");
+                $this->where('id', $Product->id)->update(['next_count_date' => $NextCountDate]);
+            }
+            return ['OK'];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return view('debug', ['message' => $Message]);
+        }
+    }
 }

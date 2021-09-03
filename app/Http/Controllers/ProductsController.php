@@ -115,4 +115,10 @@ class ProductsController extends Controller
         # code...
         return (new Products())->GetProductRequests($request);
     }
+
+    public function ResetCounts(Request $request)
+    {
+        # code...
+        return (new Products())->ResetCounts($request);
+    }
 }
