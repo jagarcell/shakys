@@ -66,6 +66,36 @@ class PendingOrders extends Model
                 break;
         }
 
+
+        $Result = $this->DiscardedProducts($request);
+        switch ($Result['status']) {
+            case 'ok':
+                # code...
+                $DiscardedProducts = $Result['discardedproducts'];
+                foreach($DiscardedProducts as $Key => $DiscardedProduct){
+                    $DiscardedProduct->due_date = 
+                        substr($DiscardedProduct->next_count_date, 5, 2) .'-' . 
+                        substr($DiscardedProduct->next_count_date, 8, 2) . '-' . 
+                        substr($DiscardedProduct->next_count_date, 0, 4);
+                    $Suppliers = (new Suppliers())->where('id', $DiscardedProduct->default_supplier_id)->get();
+                    $DiscardedProduct->last_pickup_id = count($Suppliers) > 0 ? $Suppliers[0]->last_pickup_id : -1;
+                    $DiscardedProduct->pickup = count($Suppliers) > 0 ? $Suppliers[0]->pickup : -1;
+                }
+                break;
+            case 'error':
+                $Product = new \stdClass;
+                $Product->id = -1;
+                $Product->internal_description = $Result['message'];
+                $Product->image_path = config('app')['nophoto'];
+                $DiscardedProducts = [];
+                array_push($DiscardedProducts, $Product);
+                return view('debug', ['message' => 'ERROR COUNTED PRODUCTS']);
+                break;
+            default:
+                # code...
+                break;
+        }
+
         $Result = $this->PickupUsers($request);
         switch ($Result['status']) {
             case 'ok':
@@ -148,12 +178,13 @@ class PendingOrders extends Model
             [
                 'tabid' => $TabId,
                 'products' => $Products, 
+                'discardedproducts' =>$DiscardedProducts,
                 'countedproducts' => $CountedProducts,
-                'pickupusers' => $PickupUsers,
-                'suppliers' => $Suppliers,
+                'allproducts' => $AllProducts,
                 'orders' => $Orders,
                 'submittedorders' => $SubmittedOrders,
-                'allproducts' => $AllProducts,
+                'suppliers' => $Suppliers,
+                'pickupusers' => $PickupUsers,
             ]);
     }
 
@@ -209,6 +240,67 @@ class PendingOrders extends Model
             return ['status' => 'error', 'message' => $Message];
         }
     }
+
+    /**
+     * 
+     * This function shows the products that have been discarded to count
+     * and that should be considered to be ordered to the supplier or rescheduled
+     * 
+     * @return Object products
+     */
+    public function DiscardedProducts($request)
+    {
+        # code...
+        try {
+            //code...
+/*           
+            $DiscardedProducts = DB::table('products')
+                ->join('product_units_pivots', 'products.id', '=', 'product_units_pivots.product_id')
+                ->join('measure_units', function($join){
+                    $Today = new \DateTime();
+                    $join->on('product_units_pivots.measure_unit_id', '=', 'measure_units.id')
+                    ->where('products.discarded', '=', 1)
+                    ->where('products.next_count_date', '>', $Today);
+                })->select(
+                    'products.*', 'product_units_pivots.qty_to_order', 
+                    'product_units_pivots.id as product_units_pivot_id',
+                    'measure_units.id as measure_unit_id')->get();
+*/
+            $Today = new \DateTime();
+            $DiscardedProducts = (new Products())
+            ->where('discarded', '=', 1)
+            ->where('next_count_date', '>', $Today)
+            ->get();
+            foreach($DiscardedProducts as $Key => $DiscardedProduct){
+                $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                    ->where('supplier_id', $DiscardedProduct->default_supplier_id)
+                    ->where('product_units_pivot_id', $DiscardedProduct->product_units_pivot_id)->get();
+
+                if(count($SuppliersProductsPivots) > 0){
+                    $SuppliersProductsPivot = $SuppliersProductsPivots[0];
+                    $DiscardedProduct->supplier_price = $SuppliersProductsPivot->supplier_price;
+                }
+                else{
+                    $DiscardedProduct->supplier_price = 0;
+                }
+                $ProductId = $DiscardedProduct->id;
+
+                $ProductUnits = DB::table('product_units_pivots')
+                ->join('measure_units', function($join) use ($ProductId){
+                    $join->on('measure_units.id', '=', 'product_units_pivots.measure_unit_id')
+                    ->where('product_units_pivots.product_id', '=', $ProductId);
+                })->select('measure_units.*')->get();
+
+                $DiscardedProduct->measure_units = $ProductUnits;
+            }
+            return ['status' => 'ok', 'discardedproducts' => $DiscardedProducts];
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message];
+        }
+    }
+
 
     /**
      * 

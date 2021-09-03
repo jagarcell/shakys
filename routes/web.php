@@ -141,6 +141,10 @@ Route::post('/createuser', 'UsersController@CreateUser');
   
   Route::post('/markascounted', 'ProductsController@MarkAsCounted');
   
+  Route::post('/markasdiscarded', 'ProductsController@MarkAsDiscarded');
+
+  Route::post('reschedulecount', 'ProductsController@RescheduleCount');
+  
   Route::get('/getsupplierprice','ProductsController@GetSupplierPrice');
 
   Route::get('/getproductunits', 'ProductsController@GetProductUnits');

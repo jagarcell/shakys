@@ -53,15 +53,18 @@
                         <div>Due To Count</div>
                     </a>
                     <a id="tab_2" data-w-tab="Tab 2" class="w-inline-block w-tab-link" onclick="tabClick(this)">
-                        <div>Requests</div>
+                        <div>Discarded</div>
                     </a>
                     <a id="tab_3" data-w-tab="Tab 3" class="w-inline-block w-tab-link" onclick="tabClick(this)">
-                        <div>All The Products</div>
+                        <div>Requests</div>
                     </a>
                     <a id="tab_4" data-w-tab="Tab 4" class="w-inline-block w-tab-link" onclick="tabClick(this)">
-                        <div>Orders For Approval</div>
+                        <div>All The Products</div>
                     </a>
                     <a id="tab_5" data-w-tab="Tab 5" class="w-inline-block w-tab-link" onclick="tabClick(this)">
+                        <div>Orders For Approval</div>
+                    </a>
+                    <a id="tab_6" data-w-tab="Tab 6" class="w-inline-block w-tab-link" onclick="tabClick(this)">
                         <div>Submitted Orders</div>
                     </a>
                 </div>
@@ -136,12 +139,82 @@
 
                     </div>
 
+                    <!-- DISCARDED PRODUCTS -->
+                    <div data-w-tab="Tab 2" class="w-tab-pane w--tab-active">
+                        @if(count($discardedproducts) > 0)
+                        <div id="discarded_products">
+                            @foreach($discardedproducts as $key => $product)
+                            @if(round($key / 2) * 2 == $key)
+                            <!-- HERE A PRODUCT IS SHOWN WITH A RED/BLACK BACKGROUND -->
+                            <div class="product_couple">
+                                <a class="product_to_count_link" onclick="discardedProductClick('discarded_{{$product->id}}', this)">
+                                    <div id="discarded_{{$product->id}}" class="ui_section section_class discarded_product bbg shadowRight">
+                                        <div class="po_to_count_section">
+                                            <div class="pic_date_frame">
+                                                <div class="po_pic_frame">
+                                                    <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
+                                                </div>
+                                                <div class="po_due_date_left">
+                                                    <div>Due on</div>
+                                                    <div>{{$product->due_date}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="po_description">
+                                                <div class="product_description_text">
+                                                    <text class="counted_product_description">{{$product->internal_description}}</text>
+                                                </div>
+                                            </div>
+                                            <div class="po_due_date_right">
+                                                <div>Due on</div>
+                                                <div>{{$product->due_date}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            @if($key == count($discardedproducts) - 1)
+                            </div>
+                            @endif
+                            @else
+                                <a class="product_to_count_link" onclick="discardedProductClick('discarded_{{$product->id}}', this)">
+                                    <div id="discarded_{{$product->id}}" class="ui_section section_class discarded_product bbg shadowRight">
+                                        <div class="po_to_count_section">
+                                            <div class="pic_date_frame">
+                                                <div class="po_pic_frame">
+                                                    <img src="{{$product->image_path}}" loading="lazy" alt="" class="product_pic">
+                                                </div>
+                                                <div class="po_due_date_left">
+                                                    <div>Due on</div>
+                                                    <div>{{$product->due_date}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="po_description">
+                                                <div class="product_description_text">
+                                                    <text class="counted_product_description">{{$product->internal_description}}</text>
+                                                </div>
+                                            </div>
+                                            <div class="po_due_date_right">
+                                                <div>Due on</div>
+                                                <div>{{$product->due_date}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            @endif
+                            @endforeach
+                            </div>
+                        @else
+                        <div id="discarded_empty_tab" class="empty_tab_text">THERE ARE NO DISCARDED PRODUCTS!</div>
+                        @endif
+
+                    </div>
+
                     <!-- COUNTED PRODUCTS (REQUESTS) -->
-                    <div data-w-tab="Tab 2" class="w-tab-pane">
+                    <div data-w-tab="Tab 3" class="w-tab-pane">
                         @if(count($countedproducts) > 0)
                         @foreach($countedproducts as $key => $countedProduct)
                         <!-- HERE A PRODUCT IS SHOWN WITH A RED/BLACK BACKGROUND -->
-                        <div id="counted_{{$countedProduct->id}}" productId="{{$countedProduct->id}}" class="request_section product {{round($key / 2) * 2 != $key ? 'bbg':'rbg'}} shadowRight">
+                        <div id="counted_{{$countedProduct->id}}" productId="{{$countedProduct->id}}" class="request_section product {{round($key / 2) * 2 != $key ? 'rbg':'rbg'}} shadowRight">
                             <div class="po_to_count_section">
                                 <div class="request_po_pic_frame">
                                     <img src="{{$countedProduct->image_path}}" loading="lazy" alt="" class="product_pic">
@@ -227,7 +300,7 @@
                     </div>
 
                     <!-- ALL THE PRODUCTS -->
-                    <div data-w-tab="Tab 3" class="w-tab-pane">
+                    <div data-w-tab="Tab 4" class="w-tab-pane">
                         @if(count($allproducts) > 0)
                         @foreach($allproducts as $key => $allProduct)
                         <!-- HERE A PRODUCT IS SHOWN WITH A RED/BLACK BACKGROUND -->
@@ -315,7 +388,7 @@
                     </div>
 
                     <!-- ORDERS FOR APPROVAL TAB -->
-                    <div data-w-tab="Tab 4" class="w-tab-pane">
+                    <div data-w-tab="Tab 5" class="w-tab-pane">
                         @if(count($orders) > 0)
                         @foreach($orders as $key => $order)
                         <div id="approval_{{$order->id}}" class="order_section shadowRight">
@@ -437,7 +510,7 @@
                     </div>
 
                     <!-- SUBMITTED ORDERS TAB -->
-                    <div id="submitted_orders_tab" data-w-tab="Tab 5" class="w-tab-pane">
+                    <div id="submitted_orders_tab" data-w-tab="Tab 6" class="w-tab-pane">
                         @if(count($submittedorders) > 0)
                         @foreach($submittedorders as $key => $submittedOrder)
                         <div id="submitted_{{$submittedOrder->id}}" class="order_section shadowRight">
@@ -573,6 +646,10 @@
                         </select>
                         <div class="request_button_frame">
                             <input type="button" value="Request" class="order_button w-button" onclick="orderClick('product-id', this)">
+                            <input type="button" value="Not Now" class="order_button w-button" onclick="discardOrderClick('product-id', this)">
+                        </div>
+                        <div class="request_button_frame">
+                            <input type="button" value="Cancel" class="order_button w-button" onclick="closeOrder()">
                         </div>
                     </div>
                 </div>
@@ -580,6 +657,52 @@
 
             <div id="order_top_id" class="order_top_most" hidden>
             </div>
+
+
+            <!-- POP UP DIALOG FOR THE DISCARDED PRODUCT -->
+            <div id="discarded_top_most" class="order_top_most" hidden>
+                <div id="popup_discarded_product" class="discarded_order_frame">
+                    <div class="order_close_bar">
+                        <a onclick="closeDiscarded()">X</a>
+                    </div>
+                    <img id="discarded_product_image" src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" width="64" alt="" class="order_image">
+                    <div id="discarded_product" class="order_product">internal-description</div>
+                    <div class="form-block-2">
+                        <label for="name">Units</label>
+                        <!-- input id="qty" type="number" class="order_qty w-input" placeholder="" value="0" min="0"-->
+                        <select id="discarded_measure_unit" class="discarded_order_qty w-input">
+                            <option value="-1" disabled>Select A Measure Unit ...</option>
+                        </select>
+                    </div>
+                    <div class="form-block-2">
+                        <label for="name">Qty</label>
+                        <select id="discarded_qty" class="discarded_order_qty order_qty_select order_qty_tag">
+                            <option value="0" style="text-align:right;text-align-last:right;">0</option>
+                        </select>
+                        <label for="name">Days To Count</label>
+                        <select id="discarded_days_to_count" class="discarded_order_qty order_qty_select order_qty_tag">
+                            <option value="0" style="text-align:right;text-align-last:right;">0</option>
+                        </select>
+                        <div class="reschedule_buttons">
+                            <div class="request_button_frame">
+                                <input type="button" value="Request" class="discarded_order_button w-button" onclick="requestAndRescheduleClick('product-id', this)">
+                            </div>
+                            <div class="request_button_frame">
+                                <input type="button" value="Schedule" class="discarded_order_button w-button" onclick="rescheduleClick('product-id', this)">
+                            </div>
+                        </div>
+                        <div class="reschedule_buttons">
+                            <div class="request_button_frame">
+                                <input type="button" value="Cancel" class="discarded_order_button w-button" onclick="closeDiscarded()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="discarded_top_id" class="order_top_most" hidden>
+            </div>
+
         </div>
 
         <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
