@@ -3342,6 +3342,7 @@ body {
   .pickup_orders{
     width: 80%;
     margin-left: 10%;
+    padding-top: 50px;
   }
   
   .pickup_order_header{
