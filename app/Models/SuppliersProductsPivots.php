@@ -132,7 +132,9 @@ class SuppliersProductsPivots extends Model
 
         try {
             //code...
-            $SuppliersProductsPivots = (new SuppProdPivots())->where('product_id', $ProductId)->where('supplier_id', $SupplierId)->get();
+            $SuppliersProductsPivots = (new SuppProdPivots())
+            ->where('product_id', $ProductId)
+            ->where('supplier_id', $SupplierId)->get();
             if(count($SuppliersProductsPivots) > 0){
                 $SuppliersProductsPivot = $SuppliersProductsPivots[0];
                 return ['status' => 'ok', 'suppliersproductspivot' => $SuppliersProductsPivot, 'element_tag' => $ElementTag];

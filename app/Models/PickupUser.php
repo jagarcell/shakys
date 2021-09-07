@@ -13,7 +13,7 @@ use App\Models\Suppliers;
 use App\Models\OrderLines;
 use App\Models\Products;
 use App\Models\MeasureUnits;
-use App\Models\SuppliersProductsPivots;
+use App\Models\SuppProdPivots;
 use App\Models\ProductUnitsPivots;
 
 class PickupUser extends Model
@@ -53,8 +53,8 @@ class PickupUser extends Model
 
                         if(count($ProductUnitsPivots) > 0){
                             $ProductUnitsPivot = $ProductUnitsPivots[0];
-                            $SuppliersProductsPivots = (new SuppliersProductsPivots())
-                            ->where('product_units_pivot_id', $ProductUnitsPivot->id)
+                            $SuppliersProductsPivots = (new SuppProdPivots())
+                            ->where('product_id', $OrderLine->product_id)
                             ->where('supplier_id', $Order->supplier_id)->get();
 
                             if(count($SuppliersProductsPivots) > 0){

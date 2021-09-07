@@ -76,7 +76,7 @@
                                     <div class="field_label">Unit Description</div>
                                     <div class="description data_field box_shadow">{{$measureunit->unit_description}}</div>
                                 </div>
-                                <div class="data_entry_buttons">
+                                <div class="measure_units_entry_buttons">
                                     <div class="bottom_button">
                                         <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$measureunit->id}}', this)">
                                     </div>
@@ -106,7 +106,7 @@
                                 <div class="field_label">Unit Description</div>
                                 <div class="description data_field box_shadow">unit-description</div>
                             </div>
-                            <div class="data_entry_buttons">
+                            <div class="measure_units_entry_buttons">
                                 <div>
                                     <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('unit-id', this)">
                                 </div>
