@@ -96,7 +96,7 @@ class PickupUser extends Model
         } catch (\Throwable $th) {
             //throw $th;
             $Message = (new ErrorInfo())->GetErrorInfo($th);
-            return view('debug', ['message' => $Message[0]]);
+            return view('debug', ['message' => $Message]);
         }
     }
 
