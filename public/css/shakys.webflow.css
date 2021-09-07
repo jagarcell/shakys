@@ -240,7 +240,8 @@ select{
   color: red;
   text-align: center;
   font-size: 42px;
-  line-height: 1.5em;  
+  line-height: 1.5em;
+  padding-top: 15%;
 }
 
 .product_unit{
@@ -2756,11 +2757,7 @@ body {
 }
 
 @media screen and (max-width: 991px) {
-    
-  .no_pickup_orders{
-    font-size: 14px;
-  }
-
+  
   .counted_preview_title{
     font-size: large;
   }
@@ -2998,10 +2995,6 @@ body {
 }
 
 @media screen and (max-width: 767px) {
-    
-  .no_pickup_orders{
-    font-size: 14px;
-  }
 
   .dynamic_product_alignment{
     position: relative;
