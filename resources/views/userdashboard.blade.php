@@ -138,10 +138,11 @@
                     @endforeach
                 </div>
 
+                <!-- THIS IS THE HTML FOR A PRODUCT WILL BE-->
+                <!-- USED FROM JS WHEN A SEARCH IS PERFORMED -->
                 <div id="product" hidden>
-                    <!-- THIS IS THE HTML FOR A PRODUCT -->
-                    <a onclick="productClick('product-id', this)">
-                        <div id="product-id" class="ui_section product shadowRight">
+                    <a class="product_to_count_link" onclick="productClick('product-id', this)">
+                        <div id="product-id" class="ui_section product bbg shadowRight">
                             <div class="product_frame">
                                 <div class="product_pic_frame">
                                     <img src="image-path" loading="lazy" alt="" class="product_pic">

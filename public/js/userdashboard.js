@@ -242,19 +242,22 @@ function searchClick() {
                     case 'ok':
                         var products = data.products
                         var productsListWrap = document.getElementById('products_list_wrap')
+                        var productCouple = document.createElement("div")
                         productsListWrap.innerHTML = ""
                         $.each(products, function(index, product){
+                            if(Math.floor(index / 2) * 2 == index){
+                                productCouple = document.createElement("div")
+                                productCouple.classList.add('product_couple')
+                            }
+
                             productHtml = document.getElementById('product').innerHTML
                             productHtml = productHtml.replace(/product-id/g, product.id)
                             productHtml = productHtml.replace(/image-path/g, product.image_path)
                             productHtml = productHtml.replace(/internal-description/g, product.internal_description)
-                            productsListWrap.innerHTML = productsListWrap.innerHTML + productHtml
-                            var prod = document.getElementById(product.id)
-                            if(Math.floor(index / 2) * 2 == index){
-                                prod.classList.add('rbg')
-                            }
-                            else{
-                                prod.classList.add('bbg')
+                            productCouple.innerHTML += productHtml
+
+                            if(index == products.length - 1 || Math.floor(index / 2) * 2 != index){
+                                productsListWrap.innerHTML = productsListWrap.innerHTML + productCouple.outerHTML
                             }
                         })
                         productsListWrap.scrollIntoView(true)
