@@ -49,7 +49,7 @@ class PickupUser extends Model
                     foreach($OrderLines as $Key => $OrderLine){
                         $ProductUnitsPivots = (new ProductUnitsPivots())
                             ->where('product_id', $OrderLine->product_id)
-                            ->where('product_units_pivot_id', $OrderLine->product_units_pivots_id)->get();
+                            ->where('measure_unit_id', $OrderLine->measure_unit_id)->get();
 
                         if(count($ProductUnitsPivots) > 0){
                             $ProductUnitsPivot = $ProductUnitsPivots[0];
