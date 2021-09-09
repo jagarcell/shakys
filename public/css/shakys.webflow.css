@@ -23,6 +23,28 @@ select{
   font-family: inherit;
 }
 
+.pickup_check_button{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.order_detail_line_1{
+  width: 50%;
+  display: flex;
+}
+
+.order_detail_line_2{
+  width: 25%;
+  display: flex;
+}
+
+.order_detail_line_3{
+  width: 25%;
+  display: flex;
+  position: relative;
+}
+
 .reschedule_buttons{
   display: flex;
 }
@@ -648,26 +670,26 @@ select{
 }
 
 .order_detail_code{
-  width: 10%;
+  width: 30%;
   text-align: left;
   padding-left: 20px;
 }
 
 .order_detail_description{
-  width:40%;
+  width: 70%;
   text-align: left;
   padding-left: 20px;
   padding-right: 20px;
 }
 
 .order_detail_qty{
-  width:10%;
+  width: 50%;
   text-align: right;
   padding-right: 20px;
 }
 
 .order_detail_unit{
-  width:20%;
+  width: 50%;
   text-align: right;
   padding-right: 20px;
 }
@@ -3020,6 +3042,18 @@ body {
 
 @media screen and (max-width: 767px) {
 
+  .order_detail_line_1{
+    display: block;
+  }
+  
+  .order_detail_line_2{
+    display: block;
+  }
+  
+  .order_detail_line_3{
+    display: block;
+  }
+  
   .dynamic_product_alignment{
     position: relative;
     top: 0px !important;
@@ -3317,27 +3351,15 @@ body {
   .order_detail_unit{
     width: 100%;
     text-align: left;
-    padding-left: 20px;
   }
   
   .order_detail_qty{
     width: 100%;
     text-align: left;
-    padding-left: 20px;
   }
   
-  .hide_order_line_button{
-    width: 40%;
-    margin-left: 30%;
-  }
-
   .order_details_body{
     width: 100%;
-  }
-  
-  .order_detail_line{
-    display: block;
-    margin-top: 40px;
   }
   
   .pickup_orders{
