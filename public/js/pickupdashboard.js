@@ -53,9 +53,21 @@ function pickupOrderClick(pickupOrderHeader) {
     }
 }
 
-function hideOrderLineClick(orderLineId) {
+function hideOrderLineClick(orderLineId, orderId) {
     var orderLine = document.getElementById(orderLineId)
-    orderLine.style.display = 'none'
+    $(orderLine).find('.pickup_check_button')[0].style.display = 'none'
+    $(orderLine).find('.pickup_uncheck_button')[0].style.display = 'block'
+    var orderLineHtml = orderLine.outerHTML
+    var orderLines = $('#' + orderId).find('.order_lines')[0]
+    orderLine.outerHTML = ""
+    orderLines.innerHTML += orderLineHtml
+}
+
+function showOrderLineClick(orderLineId, orderId) {
+    var orderLine = document.getElementById(orderLineId)
+    $(orderLine).find('.pickup_uncheck_button')[0].style.display = 'none'
+    $(orderLine).find('.pickup_check_button')[0].style.display = 'block'
+    
 }
 
 function showAllOrderLinesClick(orderId) {

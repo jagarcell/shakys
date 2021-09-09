@@ -66,40 +66,47 @@
                                 <a style="text-decoration-line: underline;" onclick="showAllOrderLinesClick('{{$order->id}}')">Show All</></a>
                             </div>
 
-                            @foreach($order->lines as $key => $line)
-                            <div id="{{$order->id}}_{{$line->id}}" lineid="{{$line->id}}" class="order_detail_line">
-                                <div class="order_detail_line_1">
-                                    <div class="order_detail_code">
-                                        <div class="individual_label">Code</div>
-                                        <div class="order_detail_line_field">{{$line->product_code}}</div>
+                            <div class="order_lines">
+                                @foreach($order->lines as $key => $line)
+                                <div id="{{$order->id}}_{{$line->id}}" lineid="{{$line->id}}" class="order_detail_line">
+                                    <div class="order_detail_line_1">
+                                        <div class="order_detail_code">
+                                            <div class="individual_label">Code</div>
+                                            <div class="order_detail_line_field">{{$line->product_code}}</div>
+                                        </div>
+                                        <div class="order_detail_description">
+                                            <div class="individual_label">Description</div>
+                                            <div class="order_detail_line_field">{{$line->product_description}}</div>
+                                        </div>
                                     </div>
-                                    <div class="order_detail_description">
-                                        <div class="individual_label">Description</div>
-                                        <div class="order_detail_line_field">{{$line->product_description}}</div>
+                                    <div class="order_detail_line_2">
+                                        <div class="order_detail_unit">
+                                            <div class="individual_label">Unit</div>
+                                            <div class="order_detail_line_field">{{$line->unit_description}}</div>
+                                        </div>
+                                        <div class="order_detail_qty">
+                                            <div class="individual_label">Ordered</div>
+                                            <div class="order_detail_line_field">{{$line->qty}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="order_detail_line_3">    
+                                        <div class="order_detail_qty">
+                                            <div class="individual_label">Available</div>
+                                            <select id="available_{{$order->id}}_{{$line->id}}" class="order_detail_line_field order_detail_qty_purchased" qty="{{$line->qty}}"></select>
+                                        </div>
+                                        <div class="order_detail_qty pickup_check_button">
+                                            <div class="individual_label"></div>
+                                            <a class="hide_order_line_button" onclick="hideOrderLineClick('{{$order->id}}_{{$line->id}}', '{{$order->id}}')">Check</a>
+                                        </div>
+                                        <div class="order_detail_qty pickup_uncheck_button" style="display:none;">
+                                            <div class="individual_label"></div>
+                                            <a class="show_order_line_button" onclick="showOrderLineClick('{{$order->id}}_{{$line->id}}', '{{$order->id}}')">Unheck</a>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="order_detail_line_2">
-                                    <div class="order_detail_unit">
-                                        <div class="individual_label">Unit</div>
-                                        <div class="order_detail_line_field">{{$line->unit_description}}</div>
-                                    </div>
-                                    <div class="order_detail_qty">
-                                        <div class="individual_label">Ordered</div>
-                                        <div class="order_detail_line_field">{{$line->qty}}</div>
-                                    </div>
-                                </div>
-                                <div class="order_detail_line_3">    
-                                    <div class="order_detail_qty">
-                                        <div class="individual_label">Available</div>
-                                        <select id="available_{{$order->id}}_{{$line->id}}" class="order_detail_line_field order_detail_qty_purchased" qty="{{$line->qty}}"></select>
-                                    </div>
-                                    <div class="order_detail_qty pickup_check_button">
-                                        <div class="individual_label"></div>
-                                        <a class="hide_order_line_button" onclick="hideOrderLineClick('{{$order->id}}_{{$line->id}}')">Check</a>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
-                            @endforeach
+
                             <div class="all_done"><a style="text-decoration:underline;" onclick="allDone('{{$order->id}}')">Complete The Order!</a></div>
                         </div>
                     </div>
