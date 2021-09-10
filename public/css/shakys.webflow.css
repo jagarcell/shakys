@@ -23,6 +23,10 @@ select{
   font-family: inherit;
 }
 
+.pickup_line_header{
+  text-align: left !important;
+}
+
 .pickup_check_button{
   position: absolute;
   bottom: 0;
@@ -659,6 +663,7 @@ select{
   padding-right: 10px;
   border-radius: 5px;
   padding-top: 5px;
+  overflow: hidden;
 }
 
 .individual_label{

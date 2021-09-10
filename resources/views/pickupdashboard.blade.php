@@ -42,23 +42,31 @@
                 <div class="order_details_wrap" style="display:none;">
                     <div class="order_details">
                         <div class="order_details_labels shadowRight">
-                            <div class="order_detail_code">
-                                Code
+                            <div class="order_detail_line_1">
+
+                                <div class="order_detail_code">
+                                    Code
+                                </div>
+                                <div class="order_detail_description">
+                                    Description
+                                </div>
                             </div>
-                            <div class="order_detail_description">
-                                Description
+                            <div class="order_detail_line_2">
+
+                                <div class="order_detail_unit pickup_line_header">
+                                    Unit
+                                </div>
+                                <div class="order_detail_qty pickup_line_header">
+                                    Ordered
+                                </div>
                             </div>
-                            <div class="order_detail_unit">
-                                Unit
-                            </div>
-                            <div class="order_detail_qty">
-                                Ordered
-                            </div>
-                            <div class="order_detail_qty">
-                                Available
-                            </div>
-                            <div class="order_detail_qty show_all_desktop">
-                                <a style="text-decoration-line: underline;" onclick="showAllOrderLinesClick('{{$order->id}}')">Show All</></a>
+                            <div class="order_detail_line_3">    
+                                <div class="order_detail_qty pickup_line_header">
+                                    Available
+                                </div>
+                                <div class="order_detail_qty show_all_desktop">
+                                    <!--a style="text-decoration-line: underline;" onclick="showAllOrderLinesClick('{{$order->id}}')">Show All</></a-->
+                                </div>
                             </div>
                         </div>
                         <div class="order_details_body shadowRight">
