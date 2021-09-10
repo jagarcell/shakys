@@ -44,7 +44,7 @@ class PickupUser extends Model
                         return view('debug', ['message' => 'Somenthing went Wrong Searching The Supplier']);
                     }
                     
-                    $OrderLines = (new OrderLines())->where('order_id', $Order->id)->get();
+                    $OrderLines = (new OrderLines())->where('order_id', $Order->id)->orderBy('checked', 'desc')->get();
                     
                     foreach($OrderLines as $Key => $OrderLine){
                         $ProductUnitsPivots = (new ProductUnitsPivots())
@@ -135,5 +135,21 @@ class PickupUser extends Model
             $Message = (new ErrorInfo())->GetErrorInfo($th);
             return ['status' => 'error', 'message' => $Message];
         }
-    }    
+    }
+
+    public function CheckOrderLine($request)
+    {
+        # code...
+        try {
+            //code...
+            $Id = $request["id"];
+            $Check = $request["check"];
+            (new OrderLines())->where('id', $Id)->update(['check' => $Check]);
+            return ['status' => 'ok'];
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = (new ErrorInfo())->GetErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message];
+        }
+    }
 }

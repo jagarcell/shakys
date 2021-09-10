@@ -94,11 +94,11 @@
                                             <div class="individual_label">Available</div>
                                             <select id="available_{{$order->id}}_{{$line->id}}" class="order_detail_line_field order_detail_qty_purchased" qty="{{$line->qty}}"></select>
                                         </div>
-                                        <div class="order_detail_qty pickup_check_button">
+                                        <div class="order_detail_qty pickup_check_button" {{$order->checked ? "style=display:none;":"style=display:block;"}}>
                                             <div class="individual_label"></div>
                                             <a class="hide_order_line_button" onclick="hideOrderLineClick('{{$order->id}}_{{$line->id}}', '{{$order->id}}')">Check</a>
                                         </div>
-                                        <div class="order_detail_qty pickup_uncheck_button" style="display:none;">
+                                        <div class="order_detail_qty pickup_uncheck_button"  {{$order->checked ? "style=display:block;":"style=display:none;"}}>
                                             <div class="individual_label"></div>
                                             <a class="show_order_line_button" onclick="showOrderLineClick('{{$order->id}}_{{$line->id}}', '{{$order->id}}')">Unheck</a>
                                         </div>

@@ -54,23 +54,58 @@ function pickupOrderClick(pickupOrderHeader) {
 }
 
 function hideOrderLineClick(orderLineId, orderId) {
-    var orderLine = document.getElementById(orderLineId)
-    $(orderLine).find('.pickup_check_button')[0].style.display = 'none'
-    $(orderLine).find('.pickup_uncheck_button')[0].style.display = 'block'
-    var orderLineHtml = orderLine.outerHTML
-    var orderLines = $('#' + orderId).find('.order_lines')[0]
-    orderLine.outerHTML = ""
-    orderLines.innerHTML += orderLineHtml
+    $.post('checkorderline', 
+        {
+            _token:$('meta[name="csrf-token"]').attr('content'),
+            id:orderId,
+            checked:true,
+        },
+        function(data, status){
+            if(status == 'success'){
+                switch(data.status){
+                    case 'ok':
+                        var orderLine = document.getElementById(orderLineId)
+                        $(orderLine).find('.pickup_check_button')[0].style.display = 'none'
+                        $(orderLine).find('.pickup_uncheck_button')[0].style.display = 'block'
+                        var orderLineHtml = orderLine.outerHTML
+                        var orderLines = $('#' + orderId).find('.order_lines')[0]
+                        orderLine.outerHTML = ""
+                        orderLines.innerHTML += orderLineHtml
+                        break
+                    case 'error':
+                        break
+                }
+            }
+        }
+    );
 }
 
 function showOrderLineClick(orderLineId, orderId) {
-    var orderLine = document.getElementById(orderLineId)
-    $(orderLine).find('.pickup_uncheck_button')[0].style.display = 'none'
-    $(orderLine).find('.pickup_check_button')[0].style.display = 'block'
-    var orderLineHtml = orderLine.outerHTML
-    var orderLines = $('#' + orderId).find('.order_lines')[0]
-    orderLine.outerHTML = ""
-    orderLines.innerHTML = orderLineHtml + orderLines.innerHTML
+    $.post('checkorderline', 
+        {
+            _token:$('meta[name="csrf-token"]').attr('content'),
+            id:orderId,
+            checked:false,
+        },
+        function(data, status){
+            if(status == 'success'){
+                switch(data.status){
+                    case 'ok':
+                        var orderLine = document.getElementById(orderLineId)
+                        $(orderLine).find('.pickup_uncheck_button')[0].style.display = 'none'
+                        $(orderLine).find('.pickup_check_button')[0].style.display = 'block'
+                        var orderLineHtml = orderLine.outerHTML
+                        var orderLines = $('#' + orderId).find('.order_lines')[0]
+                        orderLine.outerHTML = ""
+                        orderLines.innerHTML = orderLineHtml + orderLines.innerHTML
+                        break
+                    case 'error':
+                        break
+                }
+            }
+        }
+    );
+
     
 }
 

@@ -19,4 +19,10 @@ class PickupUserController extends Controller
     {
         return (new PickupUser())->CompleteOrder($request);
     }
+
+    public function CheckOrderLine(Request $request)
+    {
+        # code...
+        return (new PickupUser())->CheckOrderLine($request);
+    }
 }
