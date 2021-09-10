@@ -49,7 +49,7 @@ class CheckUsersState
             try {
                 //code...
                 if((new Users())->HasUsers()){
-                    return redirect('/home');
+                    return redirect('/');
                 }
                 else{
                     return redirect('/register');
