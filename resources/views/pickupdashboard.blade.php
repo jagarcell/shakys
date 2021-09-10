@@ -62,9 +62,9 @@
                             </div>
                         </div>
                         <div class="order_details_body shadowRight">
-                            <div class="order_detail_qty show_all_mobile">
+                            <!--div class="order_detail_qty show_all_mobile">
                                 <a style="text-decoration-line: underline;" onclick="showAllOrderLinesClick('{{$order->id}}')">Show All</></a>
-                            </div>
+                            </div-->
 
                             <div class="order_lines">
                                 @foreach($order->lines as $key => $line)
