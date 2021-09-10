@@ -53,12 +53,12 @@ function pickupOrderClick(pickupOrderHeader) {
     }
 }
 
-function hideOrderLineClick(orderLineId, orderId) {
+function hideOrderLineClick(orderLineId, orderId, lineId) {
     $.post('checkorderline', 
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
-            id:orderId,
-            checked:true,
+            id:lineId,
+            checked:1,
         },
         function(data, status){
             if(status == 'success'){
@@ -80,12 +80,12 @@ function hideOrderLineClick(orderLineId, orderId) {
     );
 }
 
-function showOrderLineClick(orderLineId, orderId) {
+function showOrderLineClick(orderLineId, orderId, lineId) {
     $.post('checkorderline', 
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
-            id:orderId,
-            checked:false,
+            id:lineId,
+            checked:0,
         },
         function(data, status){
             if(status == 'success'){
