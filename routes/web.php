@@ -167,6 +167,9 @@ Route::post('/createuser', 'UsersController@CreateUser');
 
  Route::post('/completeorder', 'PickupUserController@CompleteOrder');
 
+ Route::post('/checkorderline', 'PickupUserController@CheckOrderLine');
+
+ 
  /***************************************
   *                                     * 
   *          PENDING ORDERS             *

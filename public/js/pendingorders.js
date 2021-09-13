@@ -816,7 +816,6 @@ function addToOrderClick(addCheckClass, prefixToReplace, button) {
         button.disabled = true
     }
     var checkedToOrder = $('.' + addCheckClass + ':checkbox:checked')
-    console.log(checkedToOrder)
     $.each(checkedToOrder, function(index, toOrder){
         var uiSection = garcellParentNodeByClassName(toOrder, 'request_section')
         var supplierSel = $(uiSection).find('#product_supplier_select')[0]
@@ -837,6 +836,9 @@ function addToOrderClick(addCheckClass, prefixToReplace, button) {
             supplierSel.style.color = 'red'
             supplierSel.style.backgroundColor = 'cadetblue'
             supplierSel.style.fontStyle = 'italic'
+            if(button !== undefined){
+                button.disabled = false
+            }
             return
         }
 
@@ -844,6 +846,9 @@ function addToOrderClick(addCheckClass, prefixToReplace, button) {
             orderPickupGuySelect.style.color = 'red'
             orderPickupGuySelect.style.backgroundColor = 'cadetblue'
             orderPickupGuySelect.style.fontStyle = 'italic'
+            if(button !== undefined){
+                button.disabled = false
+            }
             return
         }
 
@@ -861,7 +866,6 @@ function addToOrderClick(addCheckClass, prefixToReplace, button) {
             }, function(data, status){
                 if(status == 'success'){
                     var elementTag = data.element_tag
-                    console.log(data)
                     switch (data.status) {
                         case 'ok':
                             var uiSection = document.getElementById(elementTag)
@@ -882,7 +886,7 @@ function addToOrderClick(addCheckClass, prefixToReplace, button) {
                             break;
                     }
                 }
-                if(button !== undefined){
+                if(index == checkedToOrder.length - 1 && button !== undefined){
                     button.disabled = false
                 }
             }

@@ -53,9 +53,76 @@ function pickupOrderClick(pickupOrderHeader) {
     }
 }
 
-function hideOrderLineClick(orderLineId) {
-    var orderLine = document.getElementById(orderLineId)
-    orderLine.style.display = 'none'
+function hideOrderLineClick(orderLineId, orderId, lineId) {
+    $.post('checkorderline', 
+        {
+            _token:$('meta[name="csrf-token"]').attr('content'),
+            id:lineId,
+            checked:1,
+        },
+        function(data, status){
+            if(status == 'success'){
+                var actionResultMessage = $('#action_result_message')
+                switch(data.status){
+                    case 'ok':
+                        var orderLine = document.getElementById(orderLineId)
+                        $(orderLine).find('.pickup_check_button')[0].style.display = 'none'
+                        $(orderLine).find('.pickup_uncheck_button')[0].style.display = 'block'
+                        var orderLineHtml = orderLine.outerHTML
+                        var orderLines = $('#' + orderId).find('.order_lines')[0]
+                        orderLine.outerHTML = ""
+                        orderLines.innerHTML += orderLineHtml
+                        break
+                    case '419':
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:"SESSION EXPIRED, PLEASE REFRESH YOUR BROWSER!",
+                            }
+                        )
+                        break    
+                }
+            }
+        }
+    );
+}
+
+function showOrderLineClick(orderLineId, orderId, lineId) {
+    $.post('checkorderline', 
+        {
+            _token:$('meta[name="csrf-token"]').attr('content'),
+            id:lineId,
+            checked:0,
+        },
+        function(data, status){
+            if(status == 'success'){
+                var actionResultMessage = $('#action_result_message')
+ 
+                switch(data.status){
+                    case 'ok':
+                        var orderLine = document.getElementById(orderLineId)
+                        $(orderLine).find('.pickup_uncheck_button')[0].style.display = 'none'
+                        $(orderLine).find('.pickup_check_button')[0].style.display = 'block'
+                        var orderLineHtml = orderLine.outerHTML
+                        var orderLines = $('#' + orderId).find('.order_lines')[0]
+                        orderLine.outerHTML = ""
+                        orderLines.innerHTML = orderLineHtml + orderLines.innerHTML
+                        break
+                    case '419':
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:"SESSION EXPIRED, PLEASE REFRESH YOUR BROWSER!",
+                            }
+                        )
+
+                        break
+                }
+            }
+        }
+    );
+
+    
 }
 
 function showAllOrderLinesClick(orderId) {
@@ -84,6 +151,7 @@ function allDone(orderId) {
             element_tag:orderId,
         }, function(data, status){
             if(status == 'success'){
+                var actionResultMessage = $('#action_result_message')
                 var elementTag = data.element_tag
                 switch (data.status) {
                     case 'ok':
@@ -99,7 +167,15 @@ function allDone(orderId) {
                             $('.no_pickup_orders').show()
                         }
                         break
-                
+                        
+                    case '419':
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:"SESSION EXPIRED, PLEASE REFRESH YOUR BROWSER!",
+                            }
+                        )
+                        break    
                     default:
                         break
                 }
