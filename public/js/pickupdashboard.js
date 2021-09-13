@@ -62,6 +62,7 @@ function hideOrderLineClick(orderLineId, orderId, lineId) {
         },
         function(data, status){
             if(status == 'success'){
+                var actionResultMessage = $('#action_result_message')
                 switch(data.status){
                     case 'ok':
                         var orderLine = document.getElementById(orderLineId)
@@ -72,8 +73,14 @@ function hideOrderLineClick(orderLineId, orderId, lineId) {
                         orderLine.outerHTML = ""
                         orderLines.innerHTML += orderLineHtml
                         break
-                    case 'error':
-                        break
+                    case '419':
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:"SESSION EXPIRED, PLEASE REFRESH YOUR BROWSER!",
+                            }
+                        )
+                        break    
                 }
             }
         }
@@ -89,6 +96,8 @@ function showOrderLineClick(orderLineId, orderId, lineId) {
         },
         function(data, status){
             if(status == 'success'){
+                var actionResultMessage = $('#action_result_message')
+ 
                 switch(data.status){
                     case 'ok':
                         var orderLine = document.getElementById(orderLineId)
@@ -99,7 +108,14 @@ function showOrderLineClick(orderLineId, orderId, lineId) {
                         orderLine.outerHTML = ""
                         orderLines.innerHTML = orderLineHtml + orderLines.innerHTML
                         break
-                    case 'error':
+                    case '419':
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:"SESSION EXPIRED, PLEASE REFRESH YOUR BROWSER!",
+                            }
+                        )
+
                         break
                 }
             }
@@ -135,6 +151,7 @@ function allDone(orderId) {
             element_tag:orderId,
         }, function(data, status){
             if(status == 'success'){
+                var actionResultMessage = $('#action_result_message')
                 var elementTag = data.element_tag
                 switch (data.status) {
                     case 'ok':
@@ -150,7 +167,15 @@ function allDone(orderId) {
                             $('.no_pickup_orders').show()
                         }
                         break
-                
+                        
+                    case '419':
+                        reportResult(
+                            {
+                                frame:actionResultMessage,
+                                message:"SESSION EXPIRED, PLEASE REFRESH YOUR BROWSER!",
+                            }
+                        )
+                        break    
                     default:
                         break
                 }
