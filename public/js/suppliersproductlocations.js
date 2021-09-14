@@ -47,8 +47,13 @@ function addLocationClick(addLocationButton) {
     var addIconFrame = document.getElementById('add_icon_frame')
     var addSectionFrame = document.getElementById('add_section_frame')
 
+    $.each($('.editting'), function(index, editting){
+        discardLocationChangesClick(editting.id)
+    })
+
+
     addIconFrame.style.display = 'none'
-    addSectionFrame.style.display = 'flex'    
+    addSectionFrame.removeAttribute("hidden")    
 }
 
 /**
@@ -69,7 +74,7 @@ function discardLocationClick(discardLocationButton) {
 
     // Change the views
     addIconFrame.style.display = 'flex'
-    addSectionFrame.style.display = 'none'    
+    addSectionFrame.setAttribute("hidden", true)    
 }
 
 /**
@@ -280,6 +285,13 @@ function editButtonClick(locationId, button) {
         button.disabled = true
     }
 
+    $.each($('.editting'), function(index, editting){
+        discardLocationChangesClick(editting.id)
+    })
+
+    discardLocationClick()
+
+    document.getElementById(locationId).classList.add('editting')
    $.post('/getsupplierlocation',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
@@ -412,6 +424,7 @@ function discardLocationChangesClick(locationId, button){
         button.disabled = true
     }
 
+    
     $.post('/getsupplierlocation',
         {
             _token:$('meta[name="csrf-token"').attr('content'),
@@ -479,6 +492,7 @@ function discardLocationChangesClick(locationId, button){
             if(button !== undefined){
                 button.disabled = true
             }
+            document.getElementById(data.element_tag).classList.remove('editting')
         }
     )
 }
