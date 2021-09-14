@@ -166,6 +166,7 @@ select{
 .product_edition{
   padding-bottom: 10px;
 }
+
 .product_location_add_frame{
   position: relative;
 }
@@ -3065,7 +3066,7 @@ body {
 }
 
 @media screen and (max-width: 767px) {
-
+  
   .order_detail_line_1{
     display: block;
   }
@@ -3866,11 +3867,11 @@ body {
   .add_section_wrap{
     min-height: 120px;
   }
-
+/*
   .add_icon_frame{
     min-height: 120px;
   }
-
+*/
   .user_add_icon_frame {
     min-height: 120px;
   }

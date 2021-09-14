@@ -42,9 +42,11 @@
                 <a class="add_input" onclick="addLocationClick(this)">+</a>
             </div>
             <div id="add_section_frame" class="product_location_section" hidden>
-                <form action="/instoreimgupload" id="product_location_add_pic" class="product_location_pic_frame box_shadow" method="post" enctype="multipart/form-data">
-                    @csrf
-                </form>
+                <div class="product_edit_location_pic_wrap">
+                    <form action="/instoreimgupload" id="product_location_add_pic" class="product_edit_location_pic_wrap box_shadow" method="post" enctype="multipart/form-data">
+                        @csrf
+                    </form>
+                </div>
                 <div class="product_location_data_entry">
                     <div class="add_location_form_frame w-form">
                         <form id="add_form" class="add_location">
@@ -54,7 +56,35 @@
                                 <option value="{{$supplier->id}}">{{$supplier->name}}</option>
                                 @endforeach
                             </select>
-                            <input id="location_name" type="text" class="product_location_text_field box_shadow w-input" maxlength="256" name="name" data-name="Name" placeholder="Name" required="">
+                            <select id="location_name" type="text" class="product_location_text_field box_shadow w-input" maxlength="256" name="name" data-name="Name" placeholder="Name" required="">
+                                <option value="-1" disabled selected>Select the Location Stop ...</option>
+                                <option value="Stop - A">Stop - A</option>
+                                <option value="Stop - B">Stop - B</option>
+                                <option value="Stop - C">Stop - C</option>
+                                <option value="Stop - D">Stop - D</option>
+                                <option value="Stop - E">Stop - E</option>
+                                <option value="Stop - F">Stop - F</option>
+                                <option value="Stop - G">Stop - G</option>
+                                <option value="Stop - H">Stop - H</option>
+                                <option value="Stop - I">Stop - I</option>
+                                <option value="Stop - J">Stop - J</option>
+                                <option value="Stop - K">Stop - K</option>
+                                <option value="Stop - L">Stop - L</option>
+                                <option value="Stop - M">Stop - M</option>
+                                <option value="Stop - N">Stop - N</option>
+                                <option value="Stop - O">Stop - O</option>
+                                <option value="Stop - P">Stop - P</option>
+                                <option value="Stop - Q">Stop - Q</option>
+                                <option value="Stop - R">Stop - R</option>
+                                <option value="Stop - S">Stop - S</option>
+                                <option value="Stop - T">Stop - T</option>
+                                <option value="Stop - U">Stop - U</option>
+                                <option value="Stop - V">Stop - V</option>
+                                <option value="Stop - W">Stop - W</option>
+                                <option value="Stop - X">Stop - X</option>
+                                <option value="Stop - Y">Stop - Y</option>
+                                <option value="Stop - Z">Stop - Z</option>
+                            </select>
                             <div class="product_location_add_buttons_frame">
                                 <input type="button" value="Create" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="createLocationClick(this)">
                                 <input type="button" value="Discard" data-wait="Please wait..." class="discard_button box_shadow w-button" onclick="discardLocationClick(this)">
@@ -73,7 +103,7 @@
             <div id="{{$location->id}}" class="product_location_section_wrap">
                 <div id="action_result_message" class="action_result_message" hidden></div>
                 <div class="product_location_section">
-                    <div class="product_location_pic_frame box_shadow">
+                    <div class="product_location_pic_frame">
                         <img src="{{$location->image_path}}" loading="lazy" sizes="(max-width: 128px) 92vw, 128px" srcset="{{$location->image_path}} 128w, {{$location->image_path}} 128w" alt="" class="prodcut_location_pic box_shadow">
                     </div>
                     <div id="supplier_data_edit_frame" class="product_location_data_entry">
@@ -83,7 +113,7 @@
                                 <div class="location_data_field box_shadow">{{$location->supplier_name}}</div>
                             </div>
                             <div class="field_wrap">
-                                <div class="field_label">Location Name</div>
+                                <div class="field_label">Location Stop</div>
                                 <div class="location_data_field box_shadow">{{$location->name}}</div>
                             </div>
                             <div class="product_location_data_entry_buttons buttons_frame_height">
@@ -106,8 +136,8 @@
             <div id="location-id" class="product_location_section_wrap">
                 <div id="action_result_message" class="action_result_message" hidden></div>
                     <div class="product_location_section">
-                        <div class="product_location_pic_frame box_shadow">
-                            <img src="location-image-path" loading="lazy" sizes="(max-width: 479px) 92vw, 256px" srcset="location-image-path 500w, location-image-path 512w" alt="" class="prodcut_location_pic"></div>
+                        <div class="product_location_pic_frame">
+                            <img src="location-image-path" loading="lazy" sizes="(max-width: 479px) 92vw, 256px" srcset="location-image-path 500w, location-image-path 512w" alt="" class="prodcut_location_pic box_shadow"></div>
                         <div id="supplier_data_edit_frame" class="product_location_data_entry">
                         <div class="product_location_data_edit">
                             <div class="field_wrap">
@@ -115,7 +145,7 @@
                                 <div class="location_data_field box_shadow">location-supplier-name</div>
                             </div>
                             <div class="field_wrap">
-                                <div class="field_label">Location Name</div>
+                                <div class="field_label">Location Stop</div>
                                 <div class="location_data_field box_shadow">location-name</div>
                             </div>
                             <div class="product_location_data_entry_buttons">
@@ -133,9 +163,11 @@
             <div id="location-id" class="product_location_section_wrap">
                 <div id="action_result_message" class="action_result_message" align-top="true" hidden></div>
                 <div id="add_section_frame" class="product_location_section">
-                    <form action="/instoreimgupload" id="product_location_add_pic_location-id" class="product_location_pic_frame box_shadow" method="post" enctype="multipart/form-data">
-                        @csrf
-                    </form>
+                    <div class="product_edit_location_pic_wrap">
+                        <form action="/instoreimgupload" id="product_location_add_pic_location-id" class="product_edit_location_pic_frame box_shadow" method="post" enctype="multipart/form-data">
+                            @csrf
+                        </form>
+                    </div>
                     <div class="product_location_data_entry">
                         <div class="add_location_form_frame w-form">
                             <form id="add_form" class="add_location">
@@ -146,8 +178,36 @@
                                     </select>
                                 </div>
                                 <div class="field_wrap">
-                                    <div class="field_label">Location Name</div>
-                                    <input id="location_name" type="text" class="product_location_text_field box_shadow w-input" maxlength="256" name="name" data-name="Name" placeholder="Name" required="">
+                                    <div class="field_label">Location Stop</div>
+                                    <select id="location_name" type="text" class="product_location_text_field box_shadow w-input" maxlength="256" name="name" data-name="Name" placeholder="Name" required="">
+                                        <option value="-1" disabled selected>Select the Location Stop ...</option>
+                                        <option value="Stop - A">Stop - A</option>
+                                        <option value="Stop - B">Stop - B</option>
+                                        <option value="Stop - C">Stop - C</option>
+                                        <option value="Stop - D">Stop - D</option>
+                                        <option value="Stop - E">Stop - E</option>
+                                        <option value="Stop - F">Stop - F</option>
+                                        <option value="Stop - G">Stop - G</option>
+                                        <option value="Stop - H">Stop - H</option>
+                                        <option value="Stop - I">Stop - I</option>
+                                        <option value="Stop - J">Stop - J</option>
+                                        <option value="Stop - K">Stop - K</option>
+                                        <option value="Stop - L">Stop - L</option>
+                                        <option value="Stop - M">Stop - M</option>
+                                        <option value="Stop - N">Stop - N</option>
+                                        <option value="Stop - O">Stop - O</option>
+                                        <option value="Stop - P">Stop - P</option>
+                                        <option value="Stop - Q">Stop - Q</option>
+                                        <option value="Stop - R">Stop - R</option>
+                                        <option value="Stop - S">Stop - S</option>
+                                        <option value="Stop - T">Stop - T</option>
+                                        <option value="Stop - U">Stop - U</option>
+                                        <option value="Stop - V">Stop - V</option>
+                                        <option value="Stop - W">Stop - W</option>
+                                        <option value="Stop - X">Stop - X</option>
+                                        <option value="Stop - Y">Stop - Y</option>
+                                        <option value="Stop - Z">Stop - Z</option>
+                                    </select>    
                                 </div>
                                 <div class="product_location_add_buttons_frame">
                                     <input type="button" value="Accept" data-wait="Please wait..." class="accept_button box_shadow w-button" onclick="acceptLocationChangesClick('location-id', this)">
