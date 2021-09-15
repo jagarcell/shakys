@@ -159,7 +159,7 @@
                         </div>
                     </div>
                     <div class="section_buttons">
-                        <div class="data_entry_buttons field_wrap">
+                        <div class="data_entry_buttons">
                             <div class="bottom_button">
                                 <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('{{$product->id}}', this)">
                             </div>
@@ -225,7 +225,7 @@
                     </div>
                 </div>
                 <div class="section_buttons">
-                    <div class="data_entry_buttons field_wrap">
+                    <div class="data_entry_buttons">
                         <div class="bottom_button">
                             <input type="button" class="edit_button box_shadow w-button" value="Edit" onclick="editButtonClick('section_html', this)">
                         </div>
@@ -342,18 +342,52 @@
                                     <div class="field_wrap">
                                         <div class="field_label">Supplier's Product Code</div>
                                         <input id="supplier_product_code" value="" type="text" class="text_field box_shadow w-input" disabled>
-                                    </div>    
+                                    </div>
                                     <div class="field_wrap">
                                         <div class="field_label">Supplier's Product Description</div>
                                         <input id="supplier_product_description" value="" type="text" class="text_field box_shadow w-input" disabled>
                                     </div>
-                                    <div class="add_buttons_frame">
-                                        <input type="button" value="Accept" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="acceptSupplierProductChanges('product-id', this)">
-                                        <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardSupplierProductChanges('product-id')">
+                                    <div class="field_wrap">
+                                        <div class="field_label">Supplier's Product Location Stop</div>
+                                        <select id="supplier_product_location_stop" value="" type="text" class="text_field box_shadow w-input" disabled>
+                                            <option value="-1" disabled selected>Select the Location Stop ...</option>
+                                            <option value="1">Stop - A</option>
+                                            <option value="2">Stop - B</option>
+                                            <option value="3">Stop - C</option>
+                                            <option value="4">Stop - D</option>
+                                            <option value="5">Stop - E</option>
+                                            <option value="6">Stop - F</option>
+                                            <option value="7">Stop - G</option>
+                                            <option value="8">Stop - H</option>
+                                            <option value="9">Stop - I</option>
+                                            <option value="10">Stop - J</option>
+                                            <option value="11">Stop - K</option>
+                                            <option value="12">Stop - L</option>
+                                            <option value="13">Stop - M</option>
+                                            <option value="14">Stop - N</option>
+                                            <option value="15">Stop - O</option>
+                                            <option value="16">Stop - P</option>
+                                            <option value="17">Stop - Q</option>
+                                            <option value="18">Stop - R</option>
+                                            <option value="19">Stop - S</option>
+                                            <option value="20">Stop - T</option>
+                                            <option value="21">Stop - U</option>
+                                            <option value="22">Stop - V</option>
+                                            <option value="23">Stop - W</option>
+                                            <option value="24">Stop - X</option>
+                                            <option value="25">Stop - Y</option>
+                                            <option value="26">Stop - Z</option>
+                                        </select>
+                                            
                                     </div>
                                 </div>
                             </div>
                         </form>
+                        <div class="add_buttons_frame">
+                            <input type="button" value="Accept" data-wait="Please wait..." class="edition_button accept_button box_shadow w-button" onclick="acceptSupplierProductChanges('product-id', this)">
+                            <input type="button" value="Discard" data-wait="Please wait..." class="edition_button discard_button box_shadow w-button" onclick="discardSupplierProductChanges('product-id')">
+                        </div>
+
                     </div>
                     <div id="action_result_message" class="action_result_message" hidden></div>
                 </div>

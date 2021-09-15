@@ -2502,7 +2502,7 @@ body {
 .section_buttons{
   text-align: center;
   align-self: center;
-  width: 10vw;
+  width: 20vw;
 }
 
 .measure_unit_section{
@@ -2618,7 +2618,6 @@ body {
   display: flex;
   justify-content: space-around;
   font-size: 12px;
-  margin-top: 50px;
 }
 
 .section_html {
@@ -2931,7 +2930,8 @@ body {
   }
 
   .bottom_button{
-    width: 35%;
+    display: block;
+    align-self: center;
   }
 
   .order_data{  
@@ -3116,14 +3116,20 @@ body {
 
   .data_entry_buttons_separator{
     height: 0px;
+    width: 25%;
   }
 
   .section_buttons{
-    width: 100vw;
+    width: 100%;
+    height: 20vh;
+    display: flex;
+    justify-content: center;
   }
 
   .data_entry_buttons{
     display: flex;
+    width: 85%;
+    justify-content: center;
   }
 
   .supplier_add_icon {
@@ -3856,6 +3862,12 @@ body {
 }
 
 @media screen and (max-width: 499px) {
+  
+  .data_entry_buttons_separator{
+    height: 20px;
+    width: 0px;
+  }
+
   .counted_preview_title{
     font-size: 15px;
   }
@@ -3909,8 +3921,7 @@ body {
 
   .data_entry_buttons {
     display: block;
-    text-align-last: center;
-    text-align: -webkit-center;
+    place-self: center;
   }
 
   .user_search_button {
