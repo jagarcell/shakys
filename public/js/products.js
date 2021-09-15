@@ -323,6 +323,8 @@ function acceptSupplierProductChanges(productId, button){
     var supplierId = supplierSelect.options[supplierSelect.selectedIndex].value
     var supplierCode = $(productHtml).find('#supplier_product_code').val()
     var supplierDescription = $(productHtml).find('#supplier_product_description').val()
+    var supplierProductLocationStop = $(productHtml).find('#supplier_product_location_stop')
+
     $.post('/createsuppliersproductspivot',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
@@ -330,6 +332,7 @@ function acceptSupplierProductChanges(productId, button){
             product_id:productId,
             supplier_code:supplierCode,
             supplier_description:supplierDescription,
+            location_stop:supplierProductLocationStop[0].options[supplierProductLocationStop[0].selectedIndex].value,
             element_tag:productId,
         }, function(data, status){
             if(status == 'success'){
@@ -421,22 +424,29 @@ function supplierProductSelectChange(supplierProductSelect, productId) {
                         var suppliersProductsPivot = data.suppliersproductspivot
                         var supplierProductCode = $(productHtml).find('#supplier_product_code')
                         var supplierProductDescription = $(productHtml).find('#supplier_product_description')
+                        var supplierProductLocationStop = $(productHtml).find('#supplier_product_location_stop')
 
                         supplierProductCode.val(suppliersProductsPivot.supplier_code)
                         supplierProductDescription.val(suppliersProductsPivot.supplier_description)
+                        if(suppliersProductsPivot.location_stop !== -1){
+                            supplierProductLocationStop[0].options[suppliersProductsPivot.location_stop].setAttribute('selected', true)
+                        }
+
                         supplierProductCode.removeAttr('disabled')
                         supplierProductDescription.removeAttr('disabled')
-                        
+                        supplierProductLocationStop.removeAttr('disabled')
                         break
 
                     case 'notfound':
                         var supplierProductCode = $(productHtml).find('#supplier_product_code')
                         var supplierProductDescription = $(productHtml).find('#supplier_product_description')
+                        var supplierProductLocationStop = $(productHtml).find('#supplier_product_location_stop')
 
                         supplierProductCode.val("")
                         supplierProductDescription.val("")
                         supplierProductCode.removeAttr('disabled')
                         supplierProductDescription.removeAttr('disabled')
+                        supplierProductLocationStop.removeAttr('disabled')
                         break
 
                     default:

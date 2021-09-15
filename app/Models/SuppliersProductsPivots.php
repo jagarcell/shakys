@@ -37,6 +37,7 @@ class SuppliersProductsPivots extends Model
         $SupplierId = $request['supplier_id'];
         $SupplierCode = $request['supplier_code'];
         $SupplierDescription = $request['supplier_description'];
+        $LocationStop = $request['location_stop'];
         $ElementTag = $request['element_tag'];
 
         try {
@@ -48,7 +49,12 @@ class SuppliersProductsPivots extends Model
             if(count($SupplierProductPivots) > 0){
                 $Id = $SupplierProductPivots[0]->id;
                 // Update action
-                (new SuppProdPivots())->where('id', $Id)->update(['supplier_code' => $SupplierCode, 'supplier_description' => $SupplierDescription]);
+                (new SuppProdPivots())->where('id', $Id)
+                ->update([
+                    'supplier_code' => $SupplierCode, 
+                    'supplier_description' => $SupplierDescription,
+                    'location_stop' => $LocationStop,
+                ]);
             }
             else{
                 // Create action
@@ -57,6 +63,7 @@ class SuppliersProductsPivots extends Model
                 $SuppProdPivots->supplier_id = $SupplierId;
                 $SuppProdPivots->supplier_code = $SupplierCode;
                 $SuppProdPivots->supplier_description = $SupplierDescription;
+                $SuppProdPivots->location_stop = $LocationStop;
                 $SuppProdPivots->save();
                 $Id = $SuppProdPivots->id;
             }
@@ -103,6 +110,7 @@ class SuppliersProductsPivots extends Model
                 'product_id' => $ProductId,
                 'supplier_code' => $SupplierCode,
                 'supplier_description' => $SupplierDescription,
+                'location_stop' => $LocationStop,
             ];
             
             return ['status' => 'ok', 'supplierproductpivot' => $SupplierProductPivot, 'product' => $Product, 'element_tag' => $ElementTag];
