@@ -42,7 +42,7 @@
                 <div class="order_details_wrap" style="display:none;">
                     <div class="order_details">
                         <div class="order_details_labels shadowRight">
-                            <div class="order_detail_line_1">
+                            <div class="order_detail_line_section order_detail_line_1">
 
                                 <div class="order_detail_code">
                                     Code
@@ -51,7 +51,7 @@
                                     Description
                                 </div>
                             </div>
-                            <div class="order_detail_line_2">
+                            <div class="order_detail_line_section order_detail_line_2">
 
                                 <div class="order_detail_unit pickup_line_header">
                                     Unit
@@ -60,7 +60,7 @@
                                     Ordered
                                 </div>
                             </div>
-                            <div class="order_detail_line_3">    
+                            <div class="order_detail_line_section order_detail_line_3">    
                                 <div class="order_detail_qty pickup_line_header">
                                     Available
                                 </div>
@@ -68,60 +68,113 @@
                                     <!--a style="text-decoration-line: underline;" onclick="showAllOrderLinesClick('{{$order->id}}')">Show All</></a-->
                                 </div>
                             </div>
+                            <div class="order_detail_line_section order_detail_line_4">    
+                                <div class="order_detail_qty pickup_line_header">
+                                    Stop
+                                </div>
+                                <div class="order_detail_qty show_all_desktop">
+                                    <!--a style="text-decoration-line: underline;" onclick="showAllOrderLinesClick('{{$order->id}}')">Show All</></a-->
+                                </div>
+                            </div>
                         </div>
-                        <div class="order_details_body shadowRight">
-                            <!--div class="order_detail_qty show_all_mobile">
-                                <a style="text-decoration-line: underline;" onclick="showAllOrderLinesClick('{{$order->id}}')">Show All</></a>
-                            </div-->
 
+                        <div class="order_details_body shadowRight">
                             <div class="order_lines">
                                 @foreach($order->lines as $key => $line)
                                 <div id="{{$order->id}}_{{$line->id}}" lineid="{{$line->id}}" class="order_detail_line">
-                                    <div class="order_detail_line_1">
-                                        <div class="order_detail_code">
-                                            <div class="individual_label">Code</div>
-                                            <div class="order_detail_line_field">{{$line->product_code}}</div>
+                                    <div class="order_detail_line_section_wraper">
+                                        <div class="order_detail_line_section order_detail_line_1">
+                                            <div class="order_detail_code">
+                                                <div class="individual_label">Code</div>
+                                                <div class="order_detail_line_field">{{$line->product_code}}</div>
+                                            </div>
+                                            <div class="order_detail_description">
+                                                <div class="individual_label">Description</div>
+                                                <div class="order_detail_line_field">{{$line->product_description}}</div>
+                                            </div>
                                         </div>
-                                        <div class="order_detail_description">
-                                            <div class="individual_label">Description</div>
-                                            <div class="order_detail_line_field">{{$line->product_description}}</div>
+                                        <div class="order_detail_line_section order_detail_line_2">
+                                            <div class="order_detail_qty">
+                                                <div class="individual_label">Unit</div>
+                                                <div class="order_detail_line_field">{{$line->unit_description}}</div>
+                                            </div>
+                                            <div class="order_detail_qty">
+                                                <div class="individual_label">Stop</div>
+                                                <select id="stop_{{$order->id}}_{{$line->id}}" location_stop="{{$line->location_stop}}" class="order_detail_line_field location_stop_select">
+                                                    <option value="-1" disabled selected>Select the Location Stop ...</option>
+                                                    <option value="1">Stop - A</option>
+                                                    <option value="2">Stop - B</option>
+                                                    <option value="3">Stop - C</option>
+                                                    <option value="4">Stop - D</option>
+                                                    <option value="5">Stop - E</option>
+                                                    <option value="6">Stop - F</option>
+                                                    <option value="7">Stop - G</option>
+                                                    <option value="8">Stop - H</option>
+                                                    <option value="9">Stop - I</option>
+                                                    <option value="10">Stop - J</option>
+                                                    <option value="11">Stop - K</option>
+                                                    <option value="12">Stop - L</option>
+                                                    <option value="13">Stop - M</option>
+                                                    <option value="14">Stop - N</option>
+                                                    <option value="15">Stop - O</option>
+                                                    <option value="16">Stop - P</option>
+                                                    <option value="17">Stop - Q</option>
+                                                    <option value="18">Stop - R</option>
+                                                    <option value="19">Stop - S</option>
+                                                    <option value="20">Stop - T</option>
+                                                    <option value="21">Stop - U</option>
+                                                    <option value="22">Stop - V</option>
+                                                    <option value="23">Stop - W</option>
+                                                    <option value="24">Stop - X</option>
+                                                    <option value="25">Stop - Y</option>
+                                                    <option value="26">Stop - Z</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="order_detail_line_2">
-                                        <div class="order_detail_unit">
-                                            <div class="individual_label">Unit</div>
-                                            <div class="order_detail_line_field">{{$line->unit_description}}</div>
+                                    <div class="order_detail_line_section_wraper">
+                                        <div class="order_detail_line_section order_detail_line_3">
+                                            <div class="order_detail_qty">
+                                                <div class="individual_label">Ordered</div>
+                                                <div class="order_detail_line_field">{{$line->qty}}</div>
+                                            </div>
+                                            <div class="ordered_available_separator">
+                                            </div>
+                                            <div class="order_detail_qty">
+                                                <div class="individual_label">Available</div>
+                                                <select id="available_{{$order->id}}_{{$line->id}}" class="order_detail_line_field order_detail_qty_purchased" qty="{{$line->qty}}">
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="order_detail_qty">
-                                            <div class="individual_label">Ordered</div>
-                                            <div class="order_detail_line_field">{{$line->qty}}</div>
-                                        </div>
-                                    </div>
-                                    <div class="order_detail_line_3">    
-                                        <div class="order_detail_qty">
-                                            <div class="individual_label">Available</div>
-                                            <select id="available_{{$order->id}}_{{$line->id}}" class="order_detail_line_field order_detail_qty_purchased" qty="{{$line->qty}}"></select>
-                                        </div>
-                                        <div class="order_detail_qty pickup_check_button" {{$line->checked ? "style=display:none;":"style=display:block;"}}>
-                                            <div class="individual_label"></div>
-                                            <a class="hide_order_line_button" onclick="hideOrderLineClick('{{$order->id}}_{{$line->id}}', '{{$order->id}}', '{{$line->id}}')">Check</a>
-                                        </div>
-                                        <div class="order_detail_qty pickup_uncheck_button"  {{$line->checked ? "style=display:block;":"style=display:none;"}}>
-                                            <div class="individual_label"></div>
-                                            <a class="show_order_line_button" onclick="showOrderLineClick('{{$order->id}}_{{$line->id}}', '{{$order->id}}', '{{$line->id}}')">Unheck</a>
+                                        <div class="order_detail_line_section order_detail_line_4">
+                                            <div class="order_detail_qty pickup_check_button" {{$line->checked ? "style=display:none;":"style=display:block;"}}>
+                                                <div class="individual_label">
+
+                                                </div>
+                                                <a class="hide_order_line_button" onclick="hideOrderLineClick('{{$order->id}}_{{$line->id}}', '{{$order->id}}', '{{$line->id}}')">Check</a>
+                                            </div>
+                                            <div class="order_detail_qty pickup_uncheck_button"  {{$line->checked ? "style=display:block;":"style=display:none;"}}>
+                                                <div class="individual_label">
+
+                                                </div>
+                                                <a class="show_order_line_button" onclick="showOrderLineClick('{{$order->id}}_{{$line->id}}', '{{$order->id}}', '{{$line->id}}')">Unheck</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 @endforeach
                             </div>
 
-                            <div class="all_done"><a style="text-decoration:underline;" onclick="allDone('{{$order->id}}')">Complete The Order!</a></div>
+                            <div class="all_done">
+                                <a style="text-decoration:underline;" onclick="allDone('{{$order->id}}')">Complete The Order!</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             @endforeach
         </div>
+        <!-- HTML FOR NO ORDERS MESSAGE -->
         <div class="no_pickup_orders" {{count($orders) > 0 ? 'hidden':''}}>
                 THERE ARE NO PENDING ORDERS
         </div>

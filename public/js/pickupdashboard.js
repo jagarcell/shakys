@@ -8,6 +8,16 @@ $(document).ready(function(){
         select.innerHTML += selectHtml
         select.options[select.getAttribute("qty")].setAttribute("selected", "")
     })
+
+    var locationStopSelects = document.getElementsByClassName('location_stop_select')
+
+    $.each(locationStopSelects, function(index, locationStopSelect){
+        var locationStop = locationStopSelect.getAttribute('location_stop')
+
+        if(locationStop != '-1'){
+            locationStopSelect.options[locationStop].setAttribute('selected', true)
+        }
+    })
 })
 
 /**
@@ -140,7 +150,14 @@ function allDone(orderId) {
     var orderLines = order.find('.order_detail_line')
     $.each(orderLines, function(index, orderLine){
         var available_select = order.find("#available_" + orderLine.id)[0]
-        lines.push({id:orderLine.getAttribute("lineid"), available_qty:available_select.selectedIndex})
+        var stop = order.find('#stop_' + orderLine.id)[0]
+        lines.push(
+            {
+                id:orderLine.getAttribute("lineid"), 
+                available_qty:available_select.selectedIndex,
+                location_stop:stop.selectedIndex,
+            }
+        )
     })
 
     $.post('/completeorder',

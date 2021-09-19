@@ -14,6 +14,7 @@ use App\Models\Users;
 use App\Mail\OrderEmail;
 use App\Models\SuppliersProductsPivots;
 use App\Models\ProductUnitsPivots;
+use App\Models\SuppProdPivots;
 use PDF;
 
 class Orders extends Model
@@ -124,6 +125,20 @@ class Orders extends Model
                 ->where('measure_unit_id', $OriginalUnitId)->update(['qty_to_order' => 0]);
 
             (new Suppliers())->where('id', $SupplierId)->update(['pickup' => $Pickup, 'last_pickup_id' => $PickupGuyId]);
+
+            $SuppProdPivots = (new SuppProdPivots())
+                ->where('product_id', $ProductId)
+                ->where('supplier_id', $SupplierId)->get();
+               
+            if(count($SuppProdPivots) == 0){
+                $SuppProdPivots = (new SuppProdPivots());
+                $SuppProdPivots->supplier_id = $SupplierId;
+                $SuppProdPivots->product_id = $ProductId;
+                $SuppProdPivots->supplier_code = "";
+                $SuppProdPivots->supplier_description = "";
+                $SuppProdPivots->location_stop= -1;
+                $SuppProdPivots->save();
+            }    
 
             return ['status' => 'ok', 'element_tag' => $ElementTag];
         } catch (\Throwable $th) {

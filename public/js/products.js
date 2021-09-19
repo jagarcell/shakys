@@ -270,6 +270,8 @@ function suppliersButtonClick(productId, button) {
                             option.text = supplier.name
                             suppliersSelect.options.add(option)
                         })
+                        document.getElementById(elementTag).classList.add('editting')
+
                         break
                 
                     case 'error':
@@ -428,8 +430,13 @@ function supplierProductSelectChange(supplierProductSelect, productId) {
 
                         supplierProductCode.val(suppliersProductsPivot.supplier_code)
                         supplierProductDescription.val(suppliersProductsPivot.supplier_description)
+
+                        supplierProductLocationStop[0].options[supplierProductLocationStop[0].selectedIndex].removeAttribute('selected')
                         if(suppliersProductsPivot.location_stop !== -1){
                             supplierProductLocationStop[0].options[suppliersProductsPivot.location_stop].setAttribute('selected', true)
+                        }
+                        else{
+                            supplierProductLocationStop[0].options[0].setAttribute('selected', true)
                         }
 
                         supplierProductCode.removeAttr('disabled')
@@ -447,6 +454,10 @@ function supplierProductSelectChange(supplierProductSelect, productId) {
                         supplierProductCode.removeAttr('disabled')
                         supplierProductDescription.removeAttr('disabled')
                         supplierProductLocationStop.removeAttr('disabled')
+
+                        supplierProductLocationStop[0].options[supplierProductLocationStop[0].selectedIndex].removeAttribute('selected')
+                        supplierProductLocationStop[0].options[0].setAttribute('selected', true)
+
                         break
 
                     default:
@@ -1542,4 +1553,12 @@ function planTypeChanged(sectionId) {
         daysToCount.disabled = false
         daysToCount.value = daysToCount.getAttribute('oldValue') !== undefined ? daysToCount.getAttribute('oldValue') : 0
     }
+}
+
+/**
+ * 
+ * Discard all 
+ */
+function discardAllSupplierEditions(){
+
 }
