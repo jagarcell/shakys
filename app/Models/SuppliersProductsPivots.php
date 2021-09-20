@@ -40,6 +40,11 @@ class SuppliersProductsPivots extends Model
         $LocationStop = $request['location_stop'];
         $ElementTag = $request['element_tag'];
 
+        if($SupplierCode === null || $SupplierDescription === null){
+            $SupplierCode = "";
+            $SupplierDescription = "";
+        }
+
         try {
             //code...
             if($SupplierId == -1){
