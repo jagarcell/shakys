@@ -47,12 +47,12 @@
                 <div class="app-menu-option">
                     <a href="/suppliers">Suppliers</a>
                 </div>    
-                <div class="app-menu-option">
+                <!--div class="app-menu-option">
                     <a href="/productslocations">In-Store Product Locations</a>
                 </div>    
                 <div class="app-menu-option">
                     <a href="/suppliersproductlocation">Product Locations At Suppliers</a>
-                </div>    
+                </div -->    
             </div>
         </div>
         <a class="app-mobile-menu" onclick="appMobileMenu()" {{(Auth::user() !== null && Auth::user()->user_type == 'admin') ? '':'hidden'}}>
@@ -78,12 +78,12 @@
                 <div class="app-menu-option">
                     <a href="/suppliers">Suppliers</a>
                 </div>    
-                <div class="app-menu-option">
+                <!--div class="app-menu-option">
                     <a href="/productslocations">In-Store Product Locations</a>
                 </div>    
                 <div class="app-menu-option">
                     <a href="/suppliersproductlocation">Product Locations At Suppliers</a>
-                </div>    
+                </div -->    
             </div>
         </div>
 

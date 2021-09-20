@@ -43,18 +43,18 @@ class Products extends Model
                     if($first){
                         $first = false;
                         $query = $query . $Keyword . "%')";
-                        $query = $query . "or (internal_code like '%" . $Keyword . "%')";
-                        $query = $query . "or (days_to_count like '%" . $Keyword . "%')";
                     }
                     else{
                         $query = $query . "or (internal_description like '%" . $Keyword . "%')";
-                        $query = $query . "or (internal_code like '%" . $Keyword . "%')";
-                        $query = $query . "or (days_to_count like '%" . $Keyword . "%')";
                     }
-                }
+                    $query = $query . "or (internal_code like '%" . $Keyword . "%')";
+                    $query = $query . "or (days_to_count like '%" . $Keyword . "%')";
+                    $query = $query . "or (supplier_code like '%" . $Keyword . "%')";
+                    $query = $query . "or (supplier_description like '%" . $Keyword . "%')";
+                 }
         
                 $query = $query . ")";
-                $basequery = "select * from products";
+                $basequery = "select products.*, supp_prod_pivots.supplier_code, supp_prod_pivots.supplier_description from products inner join supp_prod_pivots on products.id = supp_prod_pivots.product_id";
                 $Products = DB::select($basequery . $query);
             }
             for($i = 0; $i < count($Products); $i++){
