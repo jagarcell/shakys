@@ -83,7 +83,6 @@ class PickupUser extends Model
                         }
 
                         if(count($ProductUnitsPivots) > 0){
-                            $ProductUnitsPivot = $ProductUnitsPivots[0];
                             $SuppliersProductsPivots = (new SuppProdPivots())
                             ->where('product_id', $OrderLine->product_id)
                             ->where('supplier_id', $Order->supplier_id)->get();
@@ -91,13 +90,13 @@ class PickupUser extends Model
                             if(count($SuppliersProductsPivots) > 0){
                                 $SuppliersProductsPivot = $SuppliersProductsPivots[0];
                                 if(strlen($SuppliersProductsPivot->supplier_code) == 0){
-                                    $OrderLine->product_code = $Product->internal_code;    
+                                    $OrderLine->product_code = $InternalCode;    
                                 }
                                 else{
                                     $OrderLine->product_code = $SuppliersProductsPivot->supplier_code;
                                 }
                                 if(strlen($SuppliersProductsPivot->supplier_description) == 0){
-                                    $OrderLine->product_description = $Product->internal_description;
+                                    $OrderLine->product_description = $InternalDescription;
                                 }
                                 else{
                                     $OrderLine->product_description = $SuppliersProductsPivot->supplier_description;
@@ -142,88 +141,6 @@ class PickupUser extends Model
         }
     }
 
-    
-    public function ShowDashboard1($request)
-    {
-        # code...
-        try {
-            //code...
-            $PickupUser = Auth::User();
-            if($PickupUser !== null){
-                $Orders = (new Orders())
-                    ->where('pickup', 'pickup')
-                    ->where('pickup_guy_id', $PickupUser->id)
-                    ->where('submitted', true)
-                    ->where('received', false)
-                    ->where('completed', false)->get();
-                foreach($Orders as $Key => $Order){
-                    $Suppliers = (new Suppliers())->where('id', $Order->supplier_id)->get();
-                    if(count($Suppliers) > 0){
-                        $Supplier = $Suppliers[0];
-                        $Order->supplier_name = $Supplier->name;
-                        $Order->supplier_address = $Supplier->address;
-                    }
-                    else{
-                        return view('debug', ['message' => 'Somenthing went Wrong Searching The Supplier']);
-                    }
-                    
-                    $OrderLines = (new OrderLines())->where('order_id', $Order->id)->orderBy('checked')->get();
-                    
-                    foreach($OrderLines as $Key => $OrderLine){
-                        $ProductUnitsPivots = (new ProductUnitsPivots())
-                            ->where('product_id', $OrderLine->product_id)
-                            ->where('measure_unit_id', $OrderLine->measure_unit_id)->get();
-
-                        if(count($ProductUnitsPivots) > 0){
-                            $ProductUnitsPivot = $ProductUnitsPivots[0];
-                            $SuppliersProductsPivots = (new SuppProdPivots())
-                            ->where('product_id', $OrderLine->product_id)
-                            ->where('supplier_id', $Order->supplier_id)->get();
-
-                            if(count($SuppliersProductsPivots) > 0){
-                                $SuppliersProductsPivot = $SuppliersProductsPivots[0];
-                                $OrderLine->product_code = $SuppliersProductsPivot->supplier_code;
-                                $OrderLine->product_description = $SuppliersProductsPivot->supplier_description;
-                                $OrderLine->location_stop = $SuppliersProductsPivot->location_stop;
-                            }
-                            else{
-                                $Products = (new Products())->where('id', $OrderLine->product_id)->get();
-                                if(count($Products) > 0){
-                                    $Product = $Products[0];
-                                    $OrderLine->product_code = "";
-                                    $OrderLine->product_description = $Product->internal_description;
-                                    $OrderLine->location_stop = 0;
-                                }
-                                else{
-                                    $OrderLine->product_code = "ERROR";
-                                    $OrderLine->product_description = "THIS PRODUCT WAS NOT FOUND";
-                                }
-                            }
-
-                        }
-
-                        $MeasureUnits = (new MeasureUnits())->where('id', $OrderLine->measure_unit_id)->get();
-                        if(count($MeasureUnits) > 0){
-                            $MeasureUnit = $MeasureUnits[0];
-                            $OrderLine->unit_description = $MeasureUnit->unit_description;
-                        }
-                        else{
-                            $OrderLine->unit_description = "";
-                        }
-                    }
-                    $Order->lines = $OrderLines;
-                }
-                return view('/pickupdashboard', ['orders' => $Orders]);
-            }
-            else{
-                return redirect('/login');
-            }
-        } catch (\Throwable $th) {
-            //throw $th;
-            $Message = (new ErrorInfo())->GetErrorInfo($th);
-            return view('debug', ['message' => $Message]);
-        }
-    }
 
     /**
      * 
