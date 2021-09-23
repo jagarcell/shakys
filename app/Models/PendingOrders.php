@@ -630,7 +630,7 @@ class PendingOrders extends Model
                 foreach($ProductUnitsPivots as $Key => $ProductUnitsPivot){
                     $SuppliersProductsPivots = (new SuppliersProductsPivots())
                         ->where('supplier_id', $SupplierId)
-                        ->where('product_units_pivot_id', $ProductUnitPivot->id)->get();
+                        ->where('product_units_pivot_id', $ProductUnitsPivot->id)->get();
                     if(count($SuppliersProductsPivots) > 0){
                         $SuppliersProductsPivot = $SuppliersProductsPivots[0];
                         $ProductsPrices[$SuppliersProductsPivot->id] = $SuppliersProductsPivot->supplier_price;

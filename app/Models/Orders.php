@@ -105,6 +105,7 @@ class Orders extends Model
             }
             else{
                 // Let's create a new order
+
                 $this->supplier_id = $SupplierId;
                 $this->date = new \DateTime();
                 $this->pickup = $Pickup;
