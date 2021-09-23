@@ -144,7 +144,10 @@ function showAllOrderLinesClick(orderId) {
     })
 }
 
-function allDone(orderId) {
+function allDone(orderId, allDoneLink) {
+    if(allDoneLink !== undefined){
+        allDoneLink.disabled = true
+    }
     var lines = []
     var order = $('#' + orderId)
     var orderLines = order.find('.order_detail_line')
@@ -179,7 +182,9 @@ function allDone(orderId) {
                     
                         // Remove this order from the list
                         // Will only come up again after a refresh 
-                        order.outerHTML = ""
+                        if(order !== null){
+                            order.outerHTML = ""
+                        }
                         if($('.pickup_order').length == 0){
                             $('.no_pickup_orders').show()
                         }
@@ -196,6 +201,9 @@ function allDone(orderId) {
                     default:
                         break
                 }
+            }
+            if(allDoneLink !== undefined){
+                allDoneLink.disabled = false
             }
         }
     )

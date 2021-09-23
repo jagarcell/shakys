@@ -14,6 +14,10 @@ use App\Models\Users;
 |
 */
 
+Route::get('/unavailables', function(){
+    return view('unavailablesemail');
+});
+
 /**
  * Home page (admin dashboard or user dashboar)
  */
@@ -48,6 +52,8 @@ require __DIR__.'/auth.php';
 Route::get('/vue', function(){
     return view('vue');
 });
+
+Route::get('/sqltest', 'SqltestController@SqlTest');
 
 /*********************************
  *           USERS               *

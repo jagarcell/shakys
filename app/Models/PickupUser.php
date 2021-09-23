@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 use App\Errors\ErrorInfo;
 use App\Models\Orders;
@@ -15,6 +16,8 @@ use App\Models\Products;
 use App\Models\MeasureUnits;
 use App\Models\SuppProdPivots;
 use App\Models\ProductUnitsPivots;
+use App\Models\Users;
+use App\Mail\UnavailablesEmail;
 
 class PickupUser extends Model
 {
@@ -80,7 +83,6 @@ class PickupUser extends Model
                         }
 
                         if(count($ProductUnitsPivots) > 0){
-                            $ProductUnitsPivot = $ProductUnitsPivots[0];
                             $SuppliersProductsPivots = (new SuppProdPivots())
                             ->where('product_id', $OrderLine->product_id)
                             ->where('supplier_id', $Order->supplier_id)->get();
@@ -88,13 +90,13 @@ class PickupUser extends Model
                             if(count($SuppliersProductsPivots) > 0){
                                 $SuppliersProductsPivot = $SuppliersProductsPivots[0];
                                 if(strlen($SuppliersProductsPivot->supplier_code) == 0){
-                                    $OrderLine->product_code = $Product->internal_code;    
+                                    $OrderLine->product_code = $InternalCode;    
                                 }
                                 else{
                                     $OrderLine->product_code = $SuppliersProductsPivot->supplier_code;
                                 }
                                 if(strlen($SuppliersProductsPivot->supplier_description) == 0){
-                                    $OrderLine->product_description = $Product->internal_description;
+                                    $OrderLine->product_description = $InternalDescription;
                                 }
                                 else{
                                     $OrderLine->product_description = $SuppliersProductsPivot->supplier_description;
@@ -139,88 +141,6 @@ class PickupUser extends Model
         }
     }
 
-    
-    public function ShowDashboard1($request)
-    {
-        # code...
-        try {
-            //code...
-            $PickupUser = Auth::User();
-            if($PickupUser !== null){
-                $Orders = (new Orders())
-                    ->where('pickup', 'pickup')
-                    ->where('pickup_guy_id', $PickupUser->id)
-                    ->where('submitted', true)
-                    ->where('received', false)
-                    ->where('completed', false)->get();
-                foreach($Orders as $Key => $Order){
-                    $Suppliers = (new Suppliers())->where('id', $Order->supplier_id)->get();
-                    if(count($Suppliers) > 0){
-                        $Supplier = $Suppliers[0];
-                        $Order->supplier_name = $Supplier->name;
-                        $Order->supplier_address = $Supplier->address;
-                    }
-                    else{
-                        return view('debug', ['message' => 'Somenthing went Wrong Searching The Supplier']);
-                    }
-                    
-                    $OrderLines = (new OrderLines())->where('order_id', $Order->id)->orderBy('checked')->get();
-                    
-                    foreach($OrderLines as $Key => $OrderLine){
-                        $ProductUnitsPivots = (new ProductUnitsPivots())
-                            ->where('product_id', $OrderLine->product_id)
-                            ->where('measure_unit_id', $OrderLine->measure_unit_id)->get();
-
-                        if(count($ProductUnitsPivots) > 0){
-                            $ProductUnitsPivot = $ProductUnitsPivots[0];
-                            $SuppliersProductsPivots = (new SuppProdPivots())
-                            ->where('product_id', $OrderLine->product_id)
-                            ->where('supplier_id', $Order->supplier_id)->get();
-
-                            if(count($SuppliersProductsPivots) > 0){
-                                $SuppliersProductsPivot = $SuppliersProductsPivots[0];
-                                $OrderLine->product_code = $SuppliersProductsPivot->supplier_code;
-                                $OrderLine->product_description = $SuppliersProductsPivot->supplier_description;
-                                $OrderLine->location_stop = $SuppliersProductsPivot->location_stop;
-                            }
-                            else{
-                                $Products = (new Products())->where('id', $OrderLine->product_id)->get();
-                                if(count($Products) > 0){
-                                    $Product = $Products[0];
-                                    $OrderLine->product_code = "";
-                                    $OrderLine->product_description = $Product->internal_description;
-                                    $OrderLine->location_stop = 0;
-                                }
-                                else{
-                                    $OrderLine->product_code = "ERROR";
-                                    $OrderLine->product_description = "THIS PRODUCT WAS NOT FOUND";
-                                }
-                            }
-
-                        }
-
-                        $MeasureUnits = (new MeasureUnits())->where('id', $OrderLine->measure_unit_id)->get();
-                        if(count($MeasureUnits) > 0){
-                            $MeasureUnit = $MeasureUnits[0];
-                            $OrderLine->unit_description = $MeasureUnit->unit_description;
-                        }
-                        else{
-                            $OrderLine->unit_description = "";
-                        }
-                    }
-                    $Order->lines = $OrderLines;
-                }
-                return view('/pickupdashboard', ['orders' => $Orders]);
-            }
-            else{
-                return redirect('/login');
-            }
-        } catch (\Throwable $th) {
-            //throw $th;
-            $Message = (new ErrorInfo())->GetErrorInfo($th);
-            return view('debug', ['message' => $Message]);
-        }
-    }
 
     /**
      * 
@@ -248,13 +168,12 @@ class PickupUser extends Model
                 /* THE QUANTITY THAT WAS AVAILABLE */
                 /* AND THE LOCATION STOP SELECTED BY THE PICKUP GUY */
                 
-                
-                // ORDER COMPLETED
+                // SET ORDER AS COMPLETED
                 DB::beginTransaction();
                 DB::table('orders')->where('id', $OrderId)->update(['completed' => true]);
 
                 foreach($OrderLines as $key => $OrderLine){
-                    // AVAILABLE QUANTITY
+                    // SET AVAILABLE QUANTITY
                     DB::table('order_lines')->where('id', $OrderLine['id'])
                         ->update(['available_qty' => $OrderLine['available_qty']]);
 
@@ -262,14 +181,16 @@ class PickupUser extends Model
                     
                     if(count($Lines) > 0){
                         $ProductId = $Lines[0]->product_id;
-                        // LOCATION STOP
+                        // SET LOCATION STOP
                         DB::table('supp_prod_pivots')
                             ->where('supplier_id', $SupplierId)
                             ->where('product_id', $ProductId)->update(['location_stop' => $OrderLine['location_stop']]);
                     }
                 }
                 DB::commit();
-                return ['status' => 'ok', 'element_tag' => $ElementTag];
+
+                $sendResult = $this->sendUnavailablesEmail($Order->id);
+                return ['status' => 'ok', 'unavailables' => $sendResult['Unavailables'], 'mailsent' => $sendResult['MailSent'], 'mailfail' => $sendResult['MailFail'], 'element_tag' => $ElementTag];
             }
             else{
                 return ['status' => 'notfound', 'element_tag' => $ElementTag];
@@ -280,6 +201,63 @@ class PickupUser extends Model
             $Message = (new ErrorInfo())->GetErrorInfo($th);
             return ['status' => 'error', 'message' => $Message];
         }
+    }
+
+    public function sendUnavailablesEmail($orderId)
+    {
+        # code...
+        
+        $Unavailables = DB::select(
+            "SELECT orders.*, suppliers.name 
+            AS supplier_name, users.name 
+            AS pickup_guy_name 
+            FROM orders 
+            INNER JOIN suppliers 
+            ON orders.supplier_id = suppliers.id 
+            INNER JOIN users 
+            ON orders.pickup_guy_id = users.id 
+            WHERE orders.id = $orderId");
+
+        $UnavailableLines = DB::select(
+            "SELECT order_lines.*, products.internal_description 
+            FROM order_lines 
+            INNER JOIN products on products.id = order_lines.product_id 
+            WHERE order_lines.order_id = "
+            . $Unavailables[0]->id
+            . " 
+            AND (order_lines.available_qty < order_lines.qty)"
+            
+        );
+
+        $Unavailables[0]->lines = $UnavailableLines;
+
+        $MailSent = [];
+        $MailFail = [];
+
+        if(count($UnavailableLines) > 0){
+
+            $UnavailablesEmail = new UnavailablesEmail($Unavailables);
+
+            $Subject = "Products not found!";
+            $AdminUsers = (new Users())->where('user_type', 'admin')->get();
+            foreach($AdminUsers as $key => $AdminUser){
+                try {
+                    //code...
+                    if($AdminUser->email !== null && strlen($AdminUser->email) > 0){
+                        Mail::to($AdminUser->email)->send(($UnavailablesEmail)->subject($Subject));
+                        array_push($MailSent, $AdminUser->email);
+                    }
+                } catch (\Throwable $th) {
+                    //throw $th;
+                    $Message = (new ErrorInfo())->GetErrorInfo($th);
+                    array_push($MailFail, [$AdminUser->email => $Message]);
+                }
+            }
+        }
+        else{
+            $Unavailables = [];
+        }
+        return ['Unavailables' => $Unavailables, 'MailSent' => $MailSent, 'MailFail' => $MailFail];
     }
 
     public function CheckOrderLine($request)

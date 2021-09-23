@@ -166,7 +166,7 @@
                             </div>
 
                             <div class="all_done">
-                                <a style="text-decoration:underline;" onclick="allDone('{{$order->id}}')">Complete The Order!</a>
+                                <a style="text-decoration:underline;" onclick="allDone('{{$order->id}}', this)">Complete The Order!</a>
                             </div>
                         </div>
                     </div>
