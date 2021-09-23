@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 use App\Errors\ErrorInfo;
 use App\Models\Orders;
@@ -15,6 +16,8 @@ use App\Models\Products;
 use App\Models\MeasureUnits;
 use App\Models\SuppProdPivots;
 use App\Models\ProductUnitsPivots;
+use App\Models\Users;
+use App\Mail\UnavailablesEmail;
 
 class PickupUser extends Model
 {
@@ -248,13 +251,12 @@ class PickupUser extends Model
                 /* THE QUANTITY THAT WAS AVAILABLE */
                 /* AND THE LOCATION STOP SELECTED BY THE PICKUP GUY */
                 
-                
-                // ORDER COMPLETED
+                // SET ORDER AS COMPLETED
                 DB::beginTransaction();
                 DB::table('orders')->where('id', $OrderId)->update(['completed' => true]);
 
                 foreach($OrderLines as $key => $OrderLine){
-                    // AVAILABLE QUANTITY
+                    // SET AVAILABLE QUANTITY
                     DB::table('order_lines')->where('id', $OrderLine['id'])
                         ->update(['available_qty' => $OrderLine['available_qty']]);
 
@@ -262,14 +264,16 @@ class PickupUser extends Model
                     
                     if(count($Lines) > 0){
                         $ProductId = $Lines[0]->product_id;
-                        // LOCATION STOP
+                        // SET LOCATION STOP
                         DB::table('supp_prod_pivots')
                             ->where('supplier_id', $SupplierId)
                             ->where('product_id', $ProductId)->update(['location_stop' => $OrderLine['location_stop']]);
                     }
                 }
                 DB::commit();
-                return ['status' => 'ok', 'element_tag' => $ElementTag];
+
+                $sendResult = $this->sendUnavailablesEmail($Order->id);
+                return ['status' => 'ok', 'unavailables' => $sendResult['Unavailables'], 'mailsent' => $sendResult['MailSent'], 'mailfail' => $sendResult['MailFail'], 'element_tag' => $ElementTag];
             }
             else{
                 return ['status' => 'notfound', 'element_tag' => $ElementTag];
@@ -280,6 +284,63 @@ class PickupUser extends Model
             $Message = (new ErrorInfo())->GetErrorInfo($th);
             return ['status' => 'error', 'message' => $Message];
         }
+    }
+
+    public function sendUnavailablesEmail($orderId)
+    {
+        # code...
+        
+        $Unavailables = DB::select(
+            "SELECT orders.*, suppliers.name 
+            AS supplier_name, users.name 
+            AS pickup_guy_name 
+            FROM orders 
+            INNER JOIN suppliers 
+            ON orders.supplier_id = suppliers.id 
+            INNER JOIN users 
+            ON orders.pickup_guy_id = users.id 
+            WHERE orders.id = $orderId");
+
+        $UnavailableLines = DB::select(
+            "SELECT order_lines.*, products.internal_description 
+            FROM order_lines 
+            INNER JOIN products on products.id = order_lines.product_id 
+            WHERE order_lines.order_id = "
+            . $Unavailables[0]->id
+            . " 
+            AND (order_lines.available_qty < order_lines.qty)"
+            
+        );
+
+        $Unavailables[0]->lines = $UnavailableLines;
+
+        $MailSent = [];
+        $MailFail = [];
+
+        if(count($UnavailableLines) > 0){
+
+            $UnavailablesEmail = new UnavailablesEmail($Unavailables);
+
+            $Subject = "Products not found!";
+            $AdminUsers = (new Users())->where('user_type', 'admin')->get();
+            foreach($AdminUsers as $key => $AdminUser){
+                try {
+                    //code...
+                    if($AdminUser->email !== null && strlen($AdminUser->email) > 0){
+                        Mail::to($AdminUser->email)->send(($UnavailablesEmail)->subject($Subject));
+                        array_push($MailSent, $AdminUser->email);
+                    }
+                } catch (\Throwable $th) {
+                    //throw $th;
+                    $Message = (new ErrorInfo())->GetErrorInfo($th);
+                    array_push($MailFail, [$AdminUser->email => $Message]);
+                }
+            }
+        }
+        else{
+            $Unavailables = [];
+        }
+        return ['Unavailables' => $Unavailables, 'MailSent' => $MailSent, 'MailFail' => $MailFail];
     }
 
     public function CheckOrderLine($request)

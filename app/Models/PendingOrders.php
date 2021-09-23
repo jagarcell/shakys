@@ -253,19 +253,6 @@ class PendingOrders extends Model
         # code...
         try {
             //code...
-/*           
-            $DiscardedProducts = DB::table('products')
-                ->join('product_units_pivots', 'products.id', '=', 'product_units_pivots.product_id')
-                ->join('measure_units', function($join){
-                    $Today = new \DateTime();
-                    $join->on('product_units_pivots.measure_unit_id', '=', 'measure_units.id')
-                    ->where('products.discarded', '=', 1)
-                    ->where('products.next_count_date', '>', $Today);
-                })->select(
-                    'products.*', 'product_units_pivots.qty_to_order', 
-                    'product_units_pivots.id as product_units_pivot_id',
-                    'measure_units.id as measure_unit_id')->get();
-*/
             $Today = new \DateTime();
             $DiscardedProducts = (new Products())
             ->where('discarded', '=', 1)
