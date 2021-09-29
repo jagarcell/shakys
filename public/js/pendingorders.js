@@ -74,6 +74,13 @@ function openTab(tabId){
     else{
         $('#all_products_add_to_order_button').hide()
     }
+
+    if(tab.getAttribute('data-w-tab') == "Tab 7"){
+        document.getElementById('not_found_add_to_order_button').style.display = 'block'
+    }
+    else{
+        document.getElementById('not_found_add_to_order_button').style.display = 'none'
+    }
     $('.pending_content').show()
 }
 
@@ -815,6 +822,7 @@ function addToOrderClick(addCheckClass, prefixToReplace, button) {
     if(button !== undefined){
         button.disabled = true
     }
+    var productsToOrder = []
     var checkedToOrder = $('.' + addCheckClass + ':checkbox:checked')
     $.each(checkedToOrder, function(index, toOrder){
         var uiSection = garcellParentNodeByClassName(toOrder, 'request_section')
@@ -852,9 +860,8 @@ function addToOrderClick(addCheckClass, prefixToReplace, button) {
             return
         }
 
-        $.post('/addtoorder',
+        productsToOrder.push(
             {
-                _token: $('meta[name="csrf-token"]').attr('content'),
                 supplier_id:supplierId,
                 pickup:pickup,
                 qty:qty,
@@ -863,35 +870,50 @@ function addToOrderClick(addCheckClass, prefixToReplace, button) {
                 pickup_guy_id:orderPickupGuy,
                 product_id:productId,
                 element_tag:uiSection.id,
-            }, function(data, status){
-                if(status == 'success'){
-                    var elementTag = data.element_tag
-                    switch (data.status) {
-                        case 'ok':
-                            var uiSection = document.getElementById(elementTag)
-                            uiSection.outerHTML = ""
-                            var uiSections = document.getElementsByClassName('ui_section')
-                            $.each(uiSections, function(index, uiSection){
-                                uiSection.classList.remove('bbg')
-                                uiSection.classList.remove('rbg')
-                                if(Math.round(index / 2) * 2 == index){
-                                    uiSection.classList.add('rbg')
-                                }
-                                else{
-                                    uiSection.classList.add('bbg')
-                                }
-                            })
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                if(index == checkedToOrder.length - 1 && button !== undefined){
-                    button.disabled = false
-                }
             }
         )
     })
+
+    document.getElementById('wait_dialog').style.display = 'block'
+
+    $.post('/addtoorder',
+    {
+        _token: $('meta[name="csrf-token"]').attr('content'),
+        productsToOrder:productsToOrder,
+    }, function(data, status){
+            if(status == 'success'){
+                var elementTags = data.element_tags
+                switch (data.status) {
+                    case 'ok':
+                        $.each(elementTags, function(index, elementTag){
+                            var uiSection = document.getElementById(elementTag)
+                            uiSection.outerHTML = ""
+                        })
+
+                        var uiSections = document.getElementsByClassName('ui_section')
+                        $.each(uiSections, function(index, uiSection){
+                            uiSection.classList.remove('bbg')
+                            uiSection.classList.remove('rbg')
+                            if(Math.round(index / 2) * 2 == index){
+                                uiSection.classList.add('rbg')
+                            }
+                            else{
+                                uiSection.classList.add('bbg')
+                            }
+                        })
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            document.getElementById('wait_dialog').style.display = 'none'
+
+            if(button !== undefined){
+                button.disabled = false
+            }
+        }
+    )
 }
 
 function orderSupplierSelectChange(supplierSelect, orderSectionId){

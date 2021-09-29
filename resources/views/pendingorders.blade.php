@@ -45,6 +45,11 @@
                 <input type="button" value="Order" class="add_to_order_button shadowRight" onclick="addToOrderClick('all_products_add_to_order_check', 'all_', this)">
             </div>
 
+            <!-- NOT FOUND PRODUCTS ADD TO ORDER BUTTON -->
+            <div id="not_found_add_to_order_button" class="add_to_order_button_frame"  style="display:none;">
+                <input type="button" value="Order" class="add_to_order_button shadowRight" onclick="addToOrderClick('add_to_order_check', 'not_found_', this)">
+            </div>
+
             <!-- ACTION TABS -->
             <div data-duration-in="300" data-duration-out="100" class="w-tabs">
                 <!-- TABS MENU -->
@@ -57,6 +62,9 @@
                     </a>
                     <a id="tab_3" data-w-tab="Tab 3" class="w-inline-block w-tab-link" onclick="tabClick(this)">
                         <div>Requests</div>
+                    </a>
+                    <a id="tab_7" data-w-tab="Tab 7" class="w-inline-block w-tab-link" onclick="tabClick(this)">
+                        <div>Not Found</div>
                     </a>
                     <a id="tab_4" data-w-tab="Tab 4" class="w-inline-block w-tab-link" onclick="tabClick(this)">
                         <div>All The Products</div>
@@ -296,6 +304,104 @@
                         @endforeach
                         @else
                         <div class="empty_tab_text">THERE ARE NO COUNTED PRODUCTS!</div>
+                        @endif
+                    </div>
+
+                    <!-- NOT FOUND PRODUCTS (REQUESTS) -->
+                    <div data-w-tab="Tab 7" class="w-tab-pane">
+                        @if(count($notfoundproducts) > 0)
+                        @foreach($notfoundproducts as $key => $notfoundProduct)
+                        <!-- HERE A PRODUCT IS SHOWN WITH A RED/BLACK BACKGROUND -->
+                        <div id="not_found_{{$notfoundProduct->id}}" productId="{{$notfoundProduct->id}}" class="request_section product {{round($key / 2) * 2 != $key ? 'rbg':'rbg'}} shadowRight">
+                            <div class="po_to_count_section">
+                                <div class="request_po_pic_frame">
+                                    <img src="{{$notfoundProduct->image_path}}" loading="lazy" alt="" class="product_pic">
+                                </div>
+                                <div class="request_po_description">
+                                    <div class="product_description_text">
+                                        <text class="counted_product_description">{{$notfoundProduct->internal_description}}</text>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="order_data" class="order_data">
+                                <div class="order_data_field_wrap">
+                                    <div class="order_data_field">
+                                        <label id="supplier_select_label" class="order_data_field_label">Supplier</label>
+                                        <select id="product_supplier_select" productId="{{$notfoundProduct->id}}" class="order_data_field_select" onchange="supplierSelChange('counted_{{$notfoundProduct->id}}')">
+                                            <option value="-1" selected disabled>Select a supplier</option>
+                                            @foreach($suppliers as $key => $supplier)
+                                            <option value="{{$supplier->id}}" pickup="{{$supplier->pickup}}" last_pickup_guy="{{$supplier->last_pickup_id}}" {{$supplier->id == $notfoundProduct->default_supplier_id ? 'selected':''}}>{{$supplier->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div id="order_pickup_guy_wrap" class="order_data_field ordered_available_wrap">
+                                        <div class="order_data_field_label ordered_available_top">
+                                            <div class="ordered">Ordered =</div><div class="ordered_quantity">{{$notfoundProduct->qty}}</div>
+                                        </div>
+                                        <div class="order_data_field_label ordered_available_bottom">
+                                            <div class="ordered">Available =</div><div class="ordered_quantity">{{$notfoundProduct->available_qty}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="order_data_field_wrap">
+                                    <div id="pickup" class="order_data_field">
+                                        <label id="pickup_user_label" class="order_data_field_label">Type</label>
+                                        <select id="order_pickup_select" class="order_data_field_select" onchange="orderPickupSelectChange(this)">
+                                            <option value="pickup" {{$notfoundProduct->pickup == 'pickup' ? 'selected':''}}>Pickup</option>
+                                            <option value="delivery" {{$notfoundProduct->pickup == 'delivery' ? 'selected':''}}>Delivery</option>
+                                        </select>
+                                    </div>
+                                    <div id="order_pickup_guy_wrap" class="order_data_field">
+                                        <label id="counted_pickup_user_select" class="order_data_field_label">Pickup Guy</label>
+                                        <select id="order_pickup_guy_select" class="order_data_field_select" onchange="orderPickupGuySelectChange(this)" {{$notfoundProduct->pickup == 'delivery' ? 'disabled':''}}>
+                                            <option value="-1" selected disabled>Select one</option>
+                                            @foreach($pickupusers as $key => $pickupuser)
+                                            <option value="{{$pickupuser->id}}" {{$pickupuser->id == $notfoundProduct->last_pickup_id ? 'selected':''}}>
+                                                {{$pickupuser->name}}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="order_data_field_wrap">
+                                    <div class="order_data_field">
+                                        <label class="order_data_field_label">Price</label>
+                                        <input value="{{$notfoundProduct->supplier_price}}" class="order_price_field" disabled>
+                                    </div>
+                                    <div class="order_data_field">
+                                        <label class="order_data_field_label">Request</label>
+                                        <select id="order_qty_sel" class="order_qty_select order_data_field_select" qty_to_order={{$notfoundProduct->qty_to_order}}>
+                                            <option value="0">0</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <div class="order_data_field_wrap order_unit">
+                                    <div class="order_data_field add_to_order_label_wrap">
+                                        <label class="order_data_field_label add_to_order_label">Add to order</label>
+                                        <input type="checkbox" id="order_check" class="add_to_order_check">
+                                    </div>
+                                    <div class="order_data_field">
+                                        <label class="order_data_field_label">Unit</label>
+                                        <select class="order_data_field_select order_unit_sel" original_unit_id="{{$notfoundProduct->measure_unit_id}}" onchange="orderUnitSelectChange('counted_{{$notfoundProduct->id}}')">
+                                            <option value="-1" disable>Select A Unit ...</option>
+                                            @foreach($notfoundProduct->measure_units as $key => $measureUnit)
+                                            <option value="{{$measureUnit->id}}" {{$measureUnit->id == $notfoundProduct->measure_unit_id ? 'selected': ''}}>
+                                                {{$measureUnit->unit_description}}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                        @else
+                        <div class="empty_tab_text">THERE ARE NO PRODUCTS TO REORDER!</div>
                         @endif
                     </div>
 
@@ -621,6 +727,7 @@
                         <div class="empty_tab_text">THERE ARE NO SUBMITTED ORDERS!</div>
                         @endif
                     </div>
+
                 </div>
             </div>
 
@@ -657,7 +764,6 @@
 
             <div id="order_top_id" class="order_top_most" hidden>
             </div>
-
 
             <!-- POP UP DIALOG FOR THE DISCARDED PRODUCT -->
             <div id="discarded_top_most" class="order_top_most" hidden>
@@ -703,6 +809,13 @@
             <div id="discarded_top_id" class="order_top_most" hidden>
             </div>
 
+        </div>
+
+        <!-- DIALOG FOR THE ORDER REGISTER PROCESS -->
+        <div id="wait_dialog" class="full_overlay" style="display:none;">
+            <div class="pickup_order_complete">
+                <label class="pickup_complete">COMPLETING THE PICKUP<br>PLEASE WAIT ...</label>
+            </div>
         </div>
 
         <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>

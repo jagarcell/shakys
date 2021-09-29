@@ -79,6 +79,7 @@ function hideOrderLineClick(orderLineId, orderId, lineId) {
                         $(orderLine).find('.pickup_check_button')[0].style.display = 'none'
                         $(orderLine).find('.pickup_uncheck_button')[0].style.display = 'block'
                         var orderLineHtml = orderLine.outerHTML
+
                         var orderLines = $('#' + orderId).find('.order_lines')[0]
                         orderLine.outerHTML = ""
                         orderLines.innerHTML += orderLineHtml
@@ -163,6 +164,8 @@ function allDone(orderId, allDoneLink) {
         )
     })
 
+    document.getElementById('wait_dialog').style.display = 'block'
+
     $.post('/completeorder',
         {
             _token:$('meta[name="csrf-token"]').attr('content'),
@@ -202,9 +205,19 @@ function allDone(orderId, allDoneLink) {
                         break
                 }
             }
+            
+            document.getElementById('wait_dialog').style.display = 'none'
+
             if(allDoneLink !== undefined){
                 allDoneLink.disabled = false
             }
         }
     )
+}
+
+function availableChange(availableSelect) {
+    var availableQty = availableSelect.value
+    availableSelect.options[availableSelect.getAttribute('qty')].removeAttribute('selected')
+    availableSelect.options[availableQty].setAttribute('selected', "")
+    availableSelect.setAttribute('qty', availableQty)
 }

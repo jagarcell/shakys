@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\OrderLines;
 use App\Models\Products;
@@ -34,118 +35,131 @@ class Orders extends Model
     public function AddToOrder($request)
     {
         try {
-            $SupplierId = $request['supplier_id'];
-            $ProductId = $request['product_id'];
-            $Qty = $request['qty'];
-            $OriginalUnitId = $request['original_unit_id'];
-            $MeasureUnitId = $request['measure_unit_id'];
-            $Pickup = $request['pickup'];
-            $PickupGuyId = $request['pickup_guy_id'];
-            $ElementTag = $request['element_tag'];
+            $productsToOrder = $request['productsToOrder'];
+            $elementTags = [];
+            foreach($productsToOrder as $key => $productToOrder){
+                $SupplierId = $productToOrder['supplier_id'];
+                $ProductId = $productToOrder['product_id'];
+                $Qty = $productToOrder['qty'];
+                $OriginalUnitId = $productToOrder['original_unit_id'];
+                $MeasureUnitId = $productToOrder['measure_unit_id'];
+                $Pickup = $productToOrder['pickup'];
+                $PickupGuyId = $productToOrder['pickup_guy_id'];
+                $ElementTag = $productToOrder['element_tag'];
 
-            $Suppliers = (new Suppliers())->where('id', $SupplierId)->get();
-            // Check if the supplier exists
-            if(count($Suppliers) == 0){
-                return ['status' => 'notfound', 'message' => 'Supplier Not Found', 'element_tag' => $ElementTag];
-            }
-            $Supplier = $Suppliers[0];
-
-            $Products = (new Products())->where('id', $ProductId)->get();
-            // Check if the product exists
-            if(count($Products) == 0){
-                return ['status' => 'notfound', 'message' => 'Product Not Found', 'element_tag' => $ElementTag];
-            }
-            $Product = $Products[0];
-
-            // Check if the supplier is for pickup or delivery    
-            if($Pickup == 'pickup'){
-                $PickupUsers = (new Users())->where('user_type', 'pickup')->where('id', $PickupGuyId)->get();
-                // Check if a valid pickup user was specified
-                if(count($PickupUsers) == 0){
-                    return ['status' => 'notfound', 'message' => 'Invalid pickup user specified', 'element_tag' => $ElementTag];
+                $Suppliers = (new Suppliers())->where('id', $SupplierId)->get();
+                // Check if the supplier exists
+                if(count($Suppliers) == 0){
+                    return ['status' => 'notfound', 'message' => 'Supplier Not Found', 'element_tag' => $ElementTag];
                 }
-                $PickupUser = $PickupUsers[0];
-                $PickupGuyId = $PickupUser->id;
-            }
-            else{
-                $PickupGuyId = -1;
-            }
+                $Supplier = $Suppliers[0];
 
-            // Search for a matching order in progress
-            $Orders = $this->where('supplier_id', $SupplierId)
-                            ->where('pickup', $Pickup)
-                            ->where('pickup_guy_id', $PickupGuyId)
-                            ->where('submitted', false)->get();
-
-            // Check if there is an ongoing order for this supplier,
-            // it means, an order that hasn't been submitted
-            if(count($Orders) > 0){
-                // Ongoing order
-                $Order = $Orders[0];
-                $Products = (new OrderLines())
-                    ->where('order_id', $Order->id)
-                    ->where('product_id', $ProductId)
-                    ->where('measure_unit_id', $MeasureUnitId)->get();
-                // Check if the product is already in the ongoing order
-                if(count($Products) > 0){
-                    // Lets add quantity to this products
-                    $Product = $Products[0];
-                    $Qty += $Product->qty;
-                    (new OrderLines())->where('id', $Product->id)->where('order_id', $Order->id)->update(['qty' => $Qty]);
+                $Products = (new Products())->where('id', $ProductId)->get();
+                // Check if the product exists
+                if(count($Products) == 0){
+                    return ['status' => 'notfound', 'message' => 'Product Not Found', 'element_tag' => $ElementTag];
                 }
-                else{
-                    // We add the new product to the order lines
-                    $OrderLines = (new OrderLines());
-                    $OrderLines->order_id = $Order->id;
-                    $OrderLines->product_id = $ProductId;
-                    $OrderLines->qty = $Qty;
-                    $OrderLines->measure_unit_id = $MeasureUnitId;
-                    $OrderLines->save();
+                $Product = $Products[0];
+
+                if($Qty > 0){
+                    // Check if the supplier is for pickup or delivery    
+                    if($Pickup == 'pickup'){
+                        $PickupUsers = (new Users())->where('user_type', 'pickup')->where('id', $PickupGuyId)->get();
+                        // Check if a valid pickup user was specified
+                        if(count($PickupUsers) == 0){
+                            return ['status' => 'notfound', 'message' => 'Invalid pickup user specified', 'element_tag' => $ElementTag];
+                        }
+                        $PickupUser = $PickupUsers[0];
+                        $PickupGuyId = $PickupUser->id;
+                    }
+                    else{
+                        $PickupGuyId = -1;
+                    }
+
+                    // Search for a matching order in progress
+                    $Orders = $this->where('supplier_id', $SupplierId)
+                                    ->where('pickup', $Pickup)
+                                    ->where('pickup_guy_id', $PickupGuyId)
+                                    ->where('submitted', false)->get();
+
+                    // Check if there is an ongoing order for this supplier,
+                    // it means, an order that hasn't been submitted
+                    if(count($Orders) > 0){
+                        // Ongoing order
+                        $Order = $Orders[0];
+                        $Products = (new OrderLines())
+                            ->where('order_id', $Order->id)
+                            ->where('product_id', $ProductId)
+                            ->where('measure_unit_id', $MeasureUnitId)->get();
+                        // Check if the product is already in the ongoing order
+                        if(count($Products) > 0){
+                            // Lets add quantity to this products
+                            $Product = $Products[0];
+                            $Qty += $Product->qty;
+                            (new OrderLines())->where('id', $Product->id)->where('order_id', $Order->id)->update(['qty' => $Qty]);
+                        }
+                        else{
+                            // We add the new product to the order lines
+                            $OrderLines = (new OrderLines());
+                            $OrderLines->order_id = $Order->id;
+                            $OrderLines->product_id = $ProductId;
+                            $OrderLines->qty = $Qty;
+                            $OrderLines->measure_unit_id = $MeasureUnitId;
+                            $OrderLines->save();
+                        }
+                    }
+                    else{
+                        // Let's create a new order
+
+                        $this->supplier_id = $SupplierId;
+                        $this->date = new \DateTime();
+                        $this->pickup = $Pickup;
+                        $this->pickup_guy_id = $PickupGuyId;
+                        $this->save();
+
+                        $OrderLines = (new OrderLines());
+                        $OrderLines->order_id = $this->id;
+                        $OrderLines->product_id = $ProductId;
+                        $OrderLines->qty = $Qty;
+                        $OrderLines->measure_unit_id = $MeasureUnitId;
+                        $OrderLines->save();
+                    }
+
+                    $SuppProdPivots = (new SuppProdPivots())
+                        ->where('product_id', $ProductId)
+                        ->where('supplier_id', $SupplierId)->get();
+                    
+                    if(count($SuppProdPivots) == 0){
+                        $SuppProdPivots = (new SuppProdPivots());
+                        $SuppProdPivots->supplier_id = $SupplierId;
+                        $SuppProdPivots->product_id = $ProductId;
+                        $SuppProdPivots->supplier_code = "";
+                        $SuppProdPivots->supplier_description = "";
+                        $SuppProdPivots->location_stop= -1;
+                        $SuppProdPivots->save();
+                    }
+
+                    (new Products())->where('id', $ProductId)->update(['default_supplier_id' => $Supplier->id]);
+
                 }
+
+                (new Products())->where('id', $ProductId)->update(['qty_to_order' => 0]);
+
+                (new ProductUnitsPivots())->where('product_id', $ProductId)
+                    ->where('measure_unit_id', $OriginalUnitId)->update(['qty_to_order' => 0]);
+
+                (new Suppliers())->where('id', $SupplierId)->update(['pickup' => $Pickup, 'last_pickup_id' => $PickupGuyId]);
+
+                (new OrderLines())->where('product_id', $ProductId)
+                    ->where('measure_unit_id', $MeasureUnitId)
+                    ->where('not_found', 1)->update(['not_found' => 0]);
+                array_push($elementTags, $ElementTag);                
             }
-            else{
-                // Let's create a new order
-
-                $this->supplier_id = $SupplierId;
-                $this->date = new \DateTime();
-                $this->pickup = $Pickup;
-                $this->pickup_guy_id = $PickupGuyId;
-                $this->save();
-
-                $OrderLines = (new OrderLines());
-                $OrderLines->order_id = $this->id;
-                $OrderLines->product_id = $ProductId;
-                $OrderLines->qty = $Qty;
-                $OrderLines->measure_unit_id = $MeasureUnitId;
-                $OrderLines->save();
-            }
-
-            (new Products())->where('id', $ProductId)->update(['default_supplier_id' => $Supplier->id, 'qty_to_order' => 0]);
-
-            (new ProductUnitsPivots())->where('product_id', $ProductId)
-                ->where('measure_unit_id', $OriginalUnitId)->update(['qty_to_order' => 0]);
-
-            (new Suppliers())->where('id', $SupplierId)->update(['pickup' => $Pickup, 'last_pickup_id' => $PickupGuyId]);
-
-            $SuppProdPivots = (new SuppProdPivots())
-                ->where('product_id', $ProductId)
-                ->where('supplier_id', $SupplierId)->get();
-               
-            if(count($SuppProdPivots) == 0){
-                $SuppProdPivots = (new SuppProdPivots());
-                $SuppProdPivots->supplier_id = $SupplierId;
-                $SuppProdPivots->product_id = $ProductId;
-                $SuppProdPivots->supplier_code = "";
-                $SuppProdPivots->supplier_description = "";
-                $SuppProdPivots->location_stop= -1;
-                $SuppProdPivots->save();
-            }    
-
-            return ['status' => 'ok', 'element_tag' => $ElementTag];
+            return ['status' => 'ok', 'element_tags' => $elementTags];
         } catch (\Throwable $th) {
             //throw $th;
             $Message = $this->ErrorInfo($th);
-            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
+            return ['status' => 'error', 'message' => $Message];
         }
     }
 
@@ -319,7 +333,11 @@ class Orders extends Model
         try {
             //code...
             if(strlen($Order->email) > 0){
-                Mail::to($Order->email)->send((new OrderEmail($Order))->subject($Subject));
+                $Order->homePage = env('APP_URL');
+                $User = Auth::user();
+                $Order->user_name = $User->name;
+                Mail::to($Order->email)
+                    ->send((new OrderEmail($Order))->subject($Subject));
             }
             else{
                 return ['status' => 'noemail', 'element_tag' => $ElementTag];
