@@ -34,6 +34,6 @@ class OrderEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('orderemail');
+        return $this->from(env('MAIL_FROM_ADDRESS'), $this->order->user_name)->view('orderemail');
     }
 }

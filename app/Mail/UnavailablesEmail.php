@@ -31,6 +31,6 @@ class UnavailablesEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('unavailablesemail');
+        return $this->from(env('MAIL_FROM_ADDRESS'), $this->Unavailables[0]->user_name)->view('unavailablesemail');
     }
 }

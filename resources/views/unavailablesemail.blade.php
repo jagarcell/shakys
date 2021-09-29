@@ -43,6 +43,11 @@
                 text-align: right;
             }
 
+            .not_found_link_label{
+                margin-top: 20px;
+                margin-bottom: 10px;
+            }
+
             @media screen and (max-width:767px) {
              
                 .bodyClass{
@@ -70,5 +75,7 @@
             <div class="qtySegment">{{$Line->qty - $Line->available_qty}}</div>
         </div>
         @endforeach
+        <div class="not_found_link_label">Click the link below to visit Not Founds Webpage (Only for Administrators)</div
+        <div>{{$Unavailables[0]->homePage}}/showpendingorderspanel?tab_id=tab_7</div>
     </body>
 </html>

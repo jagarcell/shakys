@@ -177,7 +177,9 @@ class PickupUser extends Model
                     DB::table('order_lines')->where('id', $OrderLine['id'])
                         ->update(['available_qty' => $OrderLine['available_qty']]);
 
-                    $Lines = (new OrderLines())->where('id', $OrderLine['id'])->get();
+                    $LinesSet = (new OrderLines())->where('id', $OrderLine['id']);
+
+                    $Lines = $LinesSet->get();
                     
                     if(count($Lines) > 0){
                         $ProductId = $Lines[0]->product_id;
@@ -185,8 +187,12 @@ class PickupUser extends Model
                         DB::table('supp_prod_pivots')
                             ->where('supplier_id', $SupplierId)
                             ->where('product_id', $ProductId)->update(['location_stop' => $OrderLine['location_stop']]);
+                        if($Lines[0]->available_qty < $Lines[0]->qty){
+                            $LinesSet->update(['not_found' => 1]);
+                        }    
                     }
                 }
+
                 DB::commit();
 
                 $sendResult = $this->sendUnavailablesEmail($Order->id);
@@ -230,6 +236,8 @@ class PickupUser extends Model
         );
 
         $Unavailables[0]->lines = $UnavailableLines;
+        $Unavailables[0]->homePage = env('APP_URL');
+        $Unavailables[0]->user_name = Auth::user()->name;
 
         $MailSent = [];
         $MailFail = [];

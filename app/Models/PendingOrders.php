@@ -174,6 +174,36 @@ class PendingOrders extends Model
             # code...
                 break;
         }
+
+        $Result = $this->NotFoundProducts($request);
+        switch ($Result['status']) {
+            case 'ok':
+                # code...
+                $notFoundProducts = $Result['notfoundproducts'];
+                foreach($notFoundProducts as $Key => $notFoundProduct){
+                    $notFoundProduct->due_date = 
+                        substr($notFoundProduct->next_count_date, 5, 2) .'-' . 
+                        substr($notFoundProduct->next_count_date, 8, 2) . '-' . 
+                        substr($notFoundProduct->next_count_date, 0, 4);
+                    $Suppliers = (new Suppliers())->where('id', $notFoundProduct->default_supplier_id)->get();
+                    $notFoundProduct->last_pickup_id = count($Suppliers) > 0 ? $Suppliers[0]->last_pickup_id : -1;
+                    $notFoundProduct->pickup = count($Suppliers) > 0 ? $Suppliers[0]->pickup : -1;
+                }
+                break;
+            case 'error':
+                $Product = new \stdClass;
+                $Product->id = -1;
+                $Product->internal_description = $Result['message'];
+                $Product->image_path = config('app')['nophoto'];
+                $notFoundProducts = [];
+                array_push($notFoundProducts, $Product);
+                return view('debug', ['message' => $Result['message']]);
+                break;
+            default:
+                # code...
+                break;
+        }
+
         return view('pendingorders', 
             [
                 'tabid' => $TabId,
@@ -185,6 +215,7 @@ class PendingOrders extends Model
                 'submittedorders' => $SubmittedOrders,
                 'suppliers' => $Suppliers,
                 'pickupusers' => $PickupUsers,
+                'notfoundproducts' => $notFoundProducts,
             ]);
     }
 
@@ -607,6 +638,95 @@ class PendingOrders extends Model
             return ['status' => 'error', 'message' => $Message];
         }
     }
+
+    
+    /**
+     * 
+     * This function shows the products that weren't found at the supplier
+     * and that should be considered to be ordered from another supplier
+     * 
+     * @return Object products
+     * 
+     */
+    public function NotFoundProducts($request)
+    {
+        # code...
+        try {
+
+            $notFoundProducts = DB::select(
+                "SELECT order_lines.*,
+                        orders.completed, orders.supplier_id, products.*,
+                        product_units_pivots.id as product_units_pivot_id
+                FROM order_lines
+                INNER JOIN orders
+                ON order_lines.order_id = orders.id
+                INNER JOIN products
+                ON order_lines.product_id = products.id
+                INNER JOIN product_units_pivots 
+                ON order_lines.product_id = product_units_pivots.product_id
+                AND order_lines.measure_unit_id = product_units_pivots.measure_unit_id
+                WHERE orders.completed=:completed
+                AND order_lines.not_found=:not_found
+                ORDER BY products.id, order_lines.measure_unit_id
+                ", ['completed' => 1, 'not_found' => 1]
+            );
+    
+            // SET THE INITIAL CONDIITON FOR PRODUCT-MEASURE UNIT
+            $productId = -1;
+            $measureUnitId = -1;
+            // INITIALIZE THE RESULT ARRAY
+            $notFoundProductsArray = [];
+            foreach($notFoundProducts as $Key => $notFoundProduct){
+                // IF THERE IS A CHANGE ON ANY OF THE PRODUCTS
+                // CONDITION THEN WE CREATE A NEW RESULTING ROW
+                if($notFoundProduct->product_id != $productId || $notFoundProduct->measure_unit_id != $measureUnitId){
+                    // SET THE NEW CONDITION FOR PRODUCT-MEASURE UNIT
+                    $productId = $notFoundProduct->product_id;
+                    $measureUnitId = $notFoundProduct->measure_unit_id;
+
+                    // SET THE INITIAL NOT FOUND VALUE FOR THIS PRODUCT
+                    $notFoundProduct->qty_to_order = $notFoundProduct->qty - $notFoundProduct->available_qty;
+
+                    // SET THE SUPPLIERS LINKED TO THIS PRODUCT
+                    $SuppliersProductsPivots = (new SuppliersProductsPivots())
+                        ->where('supplier_id', $notFoundProduct->default_supplier_id)
+                        ->where('product_units_pivot_id', $notFoundProduct->product_units_pivot_id)->get();
+
+                    if(count($SuppliersProductsPivots) > 0){
+                        $SuppliersProductsPivot = $SuppliersProductsPivots[0];
+                        $notFoundProduct->supplier_price = $SuppliersProductsPivot->supplier_price;
+                    }
+                    else{
+                        $notFoundProduct->supplier_price = 0;
+                    }
+
+                    // SET THE MEASURE UNITS LINKED TO THIS PRODUCT
+                    $ProductUnits = DB::table('product_units_pivots')
+                    ->join('measure_units', function($join) use ($productId){
+                        $join->on('measure_units.id', '=', 'product_units_pivots.measure_unit_id')
+                        ->where('product_units_pivots.product_id', '=', $productId);
+                    })->select('measure_units.*')->get();
+
+                    $notFoundProduct->measure_units = $ProductUnits;
+
+                    // RECORD THIS NEW RESULT RAW
+                    array_push($notFoundProductsArray, $notFoundProduct);
+                }
+                else{
+                    // IF THIS PRODUCT-MEASURE UNIT COMBINATION WERE ALREADY
+                    // IN RECORD WE ADD NOT FOUND BALANCE TO THE EXISTING ONE
+                    $notFoundProductsArray[count($notFoundProductsArray) - 1]->qty_to_order 
+                        += $notFoundProduct->qty - $notFoundProduct->available_qty;
+                }
+            }
+            return ['status' => 'ok', 'notfoundproducts' => $notFoundProductsArray];
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message];
+        }
+    }
+
 
     /**
      * 
