@@ -328,10 +328,10 @@
                                 <div class="order_data_field_wrap">
                                     <div class="order_data_field">
                                         <label id="supplier_select_label" class="order_data_field_label">Supplier</label>
-                                        <select id="product_supplier_select" productId="{{$notfoundProduct->id}}" class="order_data_field_select" onchange="supplierSelChange('counted_{{$notfoundProduct->id}}')">
+                                        <select id="product_supplier_select" productId="{{$notfoundProduct->id}}" class="order_data_field_select" onchange="supplierSelChange('not_found_{{$notfoundProduct->id}}')">
                                             <option value="-1" selected disabled>Select a supplier</option>
                                             @foreach($suppliers as $key => $supplier)
-                                            <option value="{{$supplier->id}}" pickup="{{$supplier->pickup}}" last_pickup_guy="{{$supplier->last_pickup_id}}" {{$supplier->id == $notfoundProduct->default_supplier_id ? 'selected':''}}>{{$supplier->name}}</option>
+                                            <option value="{{$supplier->id}}" pickup="{{$supplier->pickup}}" last_pickup_guy="{{$supplier->last_pickup_id}}" {{$supplier->id == $notfoundProduct->supplier_id ? 'selected':''}}>{{$supplier->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
