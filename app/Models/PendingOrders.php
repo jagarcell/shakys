@@ -185,9 +185,9 @@ class PendingOrders extends Model
                         substr($notFoundProduct->next_count_date, 5, 2) .'-' . 
                         substr($notFoundProduct->next_count_date, 8, 2) . '-' . 
                         substr($notFoundProduct->next_count_date, 0, 4);
-                    $Suppliers = (new Suppliers())->where('id', $notFoundProduct->default_supplier_id)->get();
-                    $notFoundProduct->last_pickup_id = count($Suppliers) > 0 ? $Suppliers[0]->last_pickup_id : -1;
-                    $notFoundProduct->pickup = count($Suppliers) > 0 ? $Suppliers[0]->pickup : -1;
+                    $suppliersForNotFound = (new Suppliers())->where('id', $notFoundProduct->default_supplier_id)->get();
+                    $notFoundProduct->last_pickup_id = count($suppliersForNotFound) > 0 ? $suppliersForNotFound[0]->last_pickup_id : -1;
+                    $notFoundProduct->pickup = count($suppliersForNotFound) > 0 ? $suppliersForNotFound[0]->pickup : -1;
                 }
                 break;
             case 'error':
@@ -717,6 +717,13 @@ class PendingOrders extends Model
                     // IN RECORD WE ADD NOT FOUND BALANCE TO THE EXISTING ONE
                     $notFoundProductsArray[count($notFoundProductsArray) - 1]->qty_to_order 
                         += $notFoundProduct->qty - $notFoundProduct->available_qty;
+
+                    $notFoundProductsArray[count($notFoundProductsArray) - 1]->qty 
+                        += $notFoundProduct->qty;
+    
+                    $notFoundProductsArray[count($notFoundProductsArray) - 1]->available_ 
+                        += $notFoundProduct->available_qty;
+
                 }
             }
             return ['status' => 'ok', 'notfoundproducts' => $notFoundProductsArray];
