@@ -733,30 +733,32 @@
 
             <!-- POP UP DIALOG FOR THE PRODUCT REQUESTS -->
             <div id="order_top_most" class="order_top_most" hidden>
-                <div id="popup_product" class="order_frame">
+                <div id="popup_product" class="discarded_order_frame">
                     <div class="order_close_bar">
                         <a onclick="closeOrder()">X</a>
                     </div>
                     <img id="product_order_image" src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" width="64" alt="" class="order_image">
                     <div id="order_product" class="order_product">internal-description</div>
-                    <div class="form-block-2">
+                    <div class="request_dialog_section">
                         <label for="name">Units</label>
                         <!-- input id="qty" type="number" class="order_qty w-input" placeholder="" value="0" min="0"-->
-                        <select id="measure_unit" class="order_qty w-input">
+                        <select id="measure_unit" class="discarded_order_qty w-input">
                             <option value="-1" disabled>Select A Measure Unit ...</option>
                         </select>
                     </div>
-                    <div class="form-block-2">
+                    <div class="request_dialog_section">
                         <label for="name">Qty</label>
-                        <select id="qty" class="order_qty order_qty_select order_qty_tag">
-                            <option value="0" style="text-align:right;text-align-last:right;">0</option>
-                        </select>
-                        <div class="request_button_frame">
-                            <input type="button" value="Request" class="order_button w-button" onclick="orderClick('product-id', this)">
-                            <input type="button" value="Not Now" class="order_button w-button" onclick="discardOrderClick('product-id', this)">
+                        <div class="field_and_button_wrap">
+                            <select id="qty" class="discarded_order_qty order_qty_select order_qty_tag">
+                                <option value="0" style="text-align:right;text-align-last:right;">0</option>
+                            </select>
+                            <div class="request_button_frame justify_right">
+                                <input type="button" value="Request" class="discarded_order_button w-button" onclick="orderClick('product-id', this)" TITLE="REQUEST TO ORDER THE SELECTED QUANTITY (QTY)">
+                            </div>
                         </div>
-                        <div class="request_button_frame">
-                            <input type="button" value="Cancel" class="order_button w-button" onclick="closeOrder()">
+                        <div class="request_button_frame bottom_buttons_frame">
+                            <input type="button" value="Not Now" class="discarded_order_button w-button" onclick="discardOrderClick('product-id', this)" title="DISCARD THIS PRODUCT FROM COUNTING">
+                            <input type="button" value="Cancel" class="discarded_order_button w-button" onclick="closeOrder()" title="CANCEL ANY ACTION">
                         </div>
                     </div>
                 </div>
@@ -773,34 +775,35 @@
                     </div>
                     <img id="discarded_product_image" src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" width="64" alt="" class="order_image">
                     <div id="discarded_product" class="order_product">internal-description</div>
-                    <div class="form-block-2">
+                    <div class="request_dialog_section">
                         <label for="name">Units</label>
                         <!-- input id="qty" type="number" class="order_qty w-input" placeholder="" value="0" min="0"-->
                         <select id="discarded_measure_unit" class="discarded_order_qty w-input">
                             <option value="-1" disabled>Select A Measure Unit ...</option>
                         </select>
                     </div>
-                    <div class="form-block-2">
+                    <div class="request_dialog_section">
                         <label for="name">Qty</label>
-                        <select id="discarded_qty" class="discarded_order_qty order_qty_select order_qty_tag">
-                            <option value="0" style="text-align:right;text-align-last:right;">0</option>
-                        </select>
-                        <label for="name">Days To Count</label>
-                        <select id="discarded_days_to_count" class="discarded_order_qty order_qty_select order_qty_tag">
-                            <option value="0" style="text-align:right;text-align-last:right;">0</option>
-                        </select>
-                        <div class="reschedule_buttons">
-                            <div class="request_button_frame">
-                                <input type="button" value="Request" class="discarded_order_button w-button" onclick="requestAndRescheduleClick('product-id', this)">
-                            </div>
-                            <div class="request_button_frame">
-                                <input type="button" value="Schedule" class="discarded_order_button w-button" onclick="rescheduleClick('product-id', this)">
+                        <div class="field_and_button_wrap">
+                            <select id="discarded_qty" class="discarded_order_qty order_qty_select order_qty_tag">
+                                <option value="0" style="text-align:right;text-align-last:right;">0</option>
+                            </select>
+                            <div class="request_button_frame justify_right">
+                                <input type="button" value="Request" class="discarded_order_button w-button" onclick="requestAndRescheduleClick('product-id', this)" title="REQUEST TO ORDER THE SELECTED QUANTITY (QTY)">
                             </div>
                         </div>
-                        <div class="reschedule_buttons">
-                            <div class="request_button_frame">
-                                <input type="button" value="Cancel" class="discarded_order_button w-button" onclick="closeDiscarded()">
+
+                        <label for="name">Days To Count</label>
+                        <div class="field_and_button_wrap">
+                            <select id="discarded_days_to_count" class="discarded_order_qty order_qty_select order_qty_tag">
+                                <option value="0" style="text-align:right;text-align-last:right;">0</option>
+                            </select>
+                            <div class="request_button_frame justify_right">
+                                <input type="button" value="Schedule" class="discarded_order_button w-button" onclick="rescheduleClick('product-id', this)" title="SCHEDULE FOR COUNT AFTER SELECTED DAYS">
                             </div>
+                        </div>
+                        <div class="request_cancel_button_frame bottom_buttons_frame">
+                            <input type="button" value="Cancel" class="discarded_order_button w-button" onclick="closeDiscarded()" title="CANCEL ANY ACTION">
                         </div>
                     </div>
                 </div>
@@ -818,8 +821,15 @@
             </div>
         </div>
 
+        <!-- DIALOG FOR MISSING FIELDS MESSAGE -->
+        <div id="missing_fields_dialog" class="full_overlay" style="display:none;">
+            <div class="missing_fields_error">
+                <label class="pickup_complete">MISSING INPUTS<br>PLEASE CHECK</label>
+            </div>
+        </div>
+
         <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=604d41d40c813292693d08e7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-        <script src="/js/garcellLib.js" type="text/javascript"></script>
+        <script src="/js/garcellLib.js" type="text/javascript"></script>L
         <script src="/js/pendingorders.js" type="text/javascript"></script>
         <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
         @endsection    

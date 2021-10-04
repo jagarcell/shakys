@@ -617,6 +617,10 @@ class Orders extends Model
                             ->update(['counted' => false]);
                         }
 
+                        if($Order->pickup != 'pickup' && $OrderLine->available_qty < $OrderLine->qty){
+                            (new OrderLines())->where('id', $OrderLine->id)->update(['not_found' => 1]);
+                        }
+
                         // Fecth the product units pivot
                         $ProductUnitsPivots = (new ProductUnitsPivots())
                             ->where('product_id', $OrderLine->product_id)
@@ -646,7 +650,7 @@ class Orders extends Model
              }
 
              // Update the order's header
-             DB::table('orders')->where('id', $Orders[0]->id)->update(['received' => true]);
+             DB::table('orders')->where('id', $Orders[0]->id)->update(['received' => true, 'completed' => true]);
              DB::commit();
              // If all went right return an OK status
              return ['status' => 'ok', 'element_tag' => $ElementTag];

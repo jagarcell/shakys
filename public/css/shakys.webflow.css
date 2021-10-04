@@ -23,6 +23,23 @@ select{
   font-family: inherit;
 }
 
+.justify_right{
+  justify-content: right !important;
+}
+
+.bottom_buttons_frame{
+  padding-top: 20px;
+  min-height: 60px;
+}
+
+.field_and_button_wrap{
+  display: flex;
+}
+
+.request_dialog_section{
+  width: 80%;
+}
+
 .full_overlay{
   position: absolute;
   top: 0;
@@ -40,6 +57,18 @@ select{
   width: 40%;
   height: 30vh;
   background: blue;
+  opacity: 85%;
+  border-radius: 15px;
+}
+
+.missing_fields_error{
+  position: fixed;
+  left: 30%;
+  right: 25%;
+  top: 35vh;
+  width: 40%;
+  height: 30vh;
+  background:black;
   opacity: 85%;
   border-radius: 15px;
 }
@@ -83,6 +112,7 @@ select{
 .ordered{
   position: absolute;
   right: 15%;
+  min-width: fit-content;
 }
 
 .ordered_quantity{
@@ -154,6 +184,13 @@ select{
 
 .reschedule_buttons{
   display: flex;
+}
+
+.request_cancel_button_frame{
+  display: flex;
+  place-content: center;
+  height: 60px;
+  align-items: center;
 }
 
 .product_request_buttons{
@@ -383,7 +420,7 @@ select{
   width: 100%;
   text-align: center;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
 }
 
 .section_wrap {
@@ -1092,7 +1129,7 @@ select{
 .discarded_order_button{
   background-color: #3898ec;
   width: 100px !important;
-  margin-top: 10px;
+  height: 75% !important;
 }
 
 .order_qty{
@@ -1108,7 +1145,7 @@ select{
 }
 
 .discarded_order_qty{
-  width: 240px;
+  width: 100%;
   text-align: end;
   display: block;
   padding-right: 30px;
@@ -1178,6 +1215,7 @@ select{
   border-radius: 10px;
   margin-left: 32vw;
   margin-top: 15vh;
+  padding-top: 30px;
   position: relative;
   overflow: hidden;
 }
@@ -1207,6 +1245,7 @@ select{
   border-radius: 10px;
   margin-left: 32vw;
   margin-top: 15vh;
+  padding-top: 35px;
   position: relative;
   overflow: hidden;
 }
@@ -2930,6 +2969,30 @@ body {
 
 @media screen and (max-width: 991px) {
   
+  .ordered{
+    right: 40%;
+  }
+
+  .ordered_quantity{
+    right: 25%;
+  }
+
+  .ordered_available_bottom{
+    top: 0;
+    left: auto;
+    height: 100%;
+    width: 50%;
+  }
+
+  .ordered_available_top{
+    height: 100%;
+    width: 50%;
+  }
+
+  .ordered_available_wrap{
+    height: 15px;
+  }
+
   .counted_preview_title{
     font-size: large;
   }
@@ -3013,8 +3076,8 @@ body {
   .order_data_field_wrap{
       padding-left: 10px;
       padding-right: 10px;
-      width: 60%;
-      margin-left: 20%;
+      width: 90%;
+      margin-left: 5%;
       text-align: left;
   }
 
@@ -3168,6 +3231,24 @@ body {
 }
 
 @media screen and (max-width: 767px) {
+  /*
+  .request_button_frame{
+    width: 40%;
+  }
+*/
+  .discarded_order_button {
+    width: 75px !important;
+  }
+
+  .discarded_order_frame{
+    font-size: 12px;
+    width: 70vw;
+    margin-left: 15vw;
+  }
+
+  .request_section {
+    font-size: 12px;
+  }
 
   .order_detail_line_section_wraper{
     width: 100%;
@@ -3977,8 +4058,23 @@ body {
   }
 }
 
-@media screen and (max-width: 499px) {
+
+@media screen and (max-width: 575px) {
   
+  .pickup_complete{
+    line-height: 3em;
+  }
+}
+
+@media screen and (max-width: 499px) {
+  .request_button_frame{
+    width: 100%;
+  }
+
+  .pickup_complete{
+    line-height: 2em;
+  }
+
   .data_entry_buttons_separator{
     height: 20px;
     width: 0px;
@@ -4078,6 +4174,7 @@ body {
 
   .request_section {
     min-height: auto;
+    font-size: 8px;
   }
 
   .data_field {
