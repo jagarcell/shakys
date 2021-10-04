@@ -186,8 +186,8 @@ class PendingOrders extends Model
                         substr($notFoundProduct->next_count_date, 8, 2) . '-' . 
                         substr($notFoundProduct->next_count_date, 0, 4);
                     $suppliersForNotFound = (new Suppliers())->where('id', $notFoundProduct->default_supplier_id)->get();
-                    $notFoundProduct->last_pickup_id = count($suppliersForNotFound) > 0 ? $suppliersForNotFound[0]->last_pickup_id : -1;
-                    $notFoundProduct->pickup = count($suppliersForNotFound) > 0 ? $suppliersForNotFound[0]->pickup : -1;
+//                    $notFoundProduct->last_pickup_id = count($suppliersForNotFound) > 0 ? $suppliersForNotFound[0]->last_pickup_id : -1;
+//                    $notFoundProduct->pickup = count($suppliersForNotFound) > 0 ? $suppliersForNotFound[0]->pickup : -1;
                 }
                 break;
             case 'error':
@@ -655,7 +655,8 @@ class PendingOrders extends Model
 
             $notFoundProducts = DB::select(
                 "SELECT order_lines.*,
-                        orders.completed, orders.supplier_id, products.*,
+                        orders.completed, orders.supplier_id, 
+                        orders.pickup, orders.pickup_guy_id as last_pickup_id, products.*,
                         product_units_pivots.id as product_units_pivot_id
                 FROM order_lines
                 INNER JOIN orders

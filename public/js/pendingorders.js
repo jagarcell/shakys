@@ -822,6 +822,9 @@ function addToOrderClick(addCheckClass, prefixToReplace, button) {
     if(button !== undefined){
         button.disabled = true
     }
+
+    document.getElementById('wait_dialog').style.display = 'block'
+
     var productsToOrder = []
     var checkedToOrder = $('.' + addCheckClass + ':checkbox:checked')
     $.each(checkedToOrder, function(index, toOrder){
@@ -847,6 +850,11 @@ function addToOrderClick(addCheckClass, prefixToReplace, button) {
             if(button !== undefined){
                 button.disabled = false
             }
+            
+            document.getElementById('wait_dialog').style.display = 'none'
+
+            showSomeMissingFieldsMessage()
+
             return
         }
 
@@ -857,6 +865,10 @@ function addToOrderClick(addCheckClass, prefixToReplace, button) {
             if(button !== undefined){
                 button.disabled = false
             }
+            
+            document.getElementById('wait_dialog').style.display = 'none'
+            showSomeMissingFieldsMessage()
+
             return
         }
 
@@ -873,8 +885,6 @@ function addToOrderClick(addCheckClass, prefixToReplace, button) {
             }
         )
     })
-
-    document.getElementById('wait_dialog').style.display = 'block'
 
     $.post('/addtoorder',
     {
@@ -913,6 +923,15 @@ function addToOrderClick(addCheckClass, prefixToReplace, button) {
                 button.disabled = false
             }
         }
+    )
+}
+
+function showSomeMissingFieldsMessage() {
+    document.getElementById('missing_fields_dialog').style.display = 'block'
+    setTimeout(
+        () => {
+            document.getElementById('missing_fields_dialog').style.display = 'none'
+        }, 3000
     )
 }
 
