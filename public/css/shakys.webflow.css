@@ -1049,7 +1049,7 @@ select{
 }
 
 .order_pickup_user_display_select{
-  width: 60%;
+  width: 80%;
   padding-left: 10px;
   border-radius: 5px;
 }
@@ -1059,7 +1059,7 @@ select{
 }
 
 .order_display_date{
-  width: 60%;
+  width: 80%;
   text-align: center;
   border-radius: 5px;
 }
