@@ -817,7 +817,7 @@
         <!-- DIALOG FOR THE ORDER REGISTER PROCESS -->
         <div id="wait_dialog" class="full_overlay" style="display:none;">
             <div class="pickup_order_complete">
-                <label class="pickup_complete">COMPLETING THE PICKUP<br>PLEASE WAIT ...</label>
+                <label class="pickup_complete">COMPLETING THE ORDER<br>PLEASE WAIT ...</label>
             </div>
         </div>
 
