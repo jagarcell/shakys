@@ -12,6 +12,7 @@ $(document).ready(function(){
     // Make the navbar sticky and level 1 depth
     document.getElementById('navbarSupportedContent').style.zIndex = 1
     document.getElementById('navbarSupportedContent').style.position = 'sticky'
+    document.getElementById('navbarSupportedContent').style.background = 'white'
 
     // Add the search bar event listener to respond to an enter
     var searchText = document.getElementById('search_text')

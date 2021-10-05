@@ -182,20 +182,20 @@
                     </select>
                 </div>
                 <div class="request_dialog_section">
-                    <label for="name">Order Qty</label>
+                    <label for="name">Qty</label>
                     <div class="field_and_button_wrap">
                         <select id="qty" class="discarded_order_qty w-input">
                             <option value="0" style="text-align:right;text-align-last:right;">0</option>
                         </select>
                         <div class="request_button_frame justify_right">
-                            <input type="button" value="Request" class="discarded_order_button w-button" onclick="orderClick('product-id', this)">
+                            <input type="button" value="Request" class="discarded_order_button w-button" onclick="orderClick('product-id', this)" TITLE="REQUEST TO ORDER THE SELECTED QUANTITY (QTY)">
                         </div>
                     </div>
 
                     <div class="product_request_buttons">
                         <div class="request_button_frame bottom_buttons_frame">
-                            <input type="button" value="Not Now" class="discarded_order_button w-button" onclick="discardOrderClick('product-id', this)">
-                            <input type="button" value="Cancel" class="discarded_order_button w-button" onclick="closeOrder('product-id', this)">
+                            <input type="button" value="Not Now" class="discarded_order_button w-button" onclick="discardOrderClick('product-id', this)" title="DISCARD THIS PRODUCT FROM COUNTING">
+                            <input type="button" value="Cancel" class="discarded_order_button w-button" onclick="closeOrder('product-id', this)" title="CANCEL ANY ACTION">
 
                         </div>
                     </div>
