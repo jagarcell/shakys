@@ -2968,7 +2968,10 @@ body {
 }
 
 @media screen and (max-width: 991px) {
-  
+  .pickup_complete {
+    line-height: 3em;
+  }
+
   .ordered{
     right: 40%;
   }
