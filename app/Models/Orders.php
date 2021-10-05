@@ -37,6 +37,9 @@ class Orders extends Model
         try {
             $productsToOrder = $request['productsToOrder'];
             $elementTags = [];
+            $ProcessedProducts = [];
+            $ResOrders = [];
+
             foreach($productsToOrder as $key => $productToOrder){
                 $SupplierId = $productToOrder['supplier_id'];
                 $ProductId = $productToOrder['product_id'];
@@ -47,21 +50,24 @@ class Orders extends Model
                 $PickupGuyId = $productToOrder['pickup_guy_id'];
                 $ElementTag = $productToOrder['element_tag'];
 
-                $Suppliers = (new Suppliers())->where('id', $SupplierId)->get();
-                // Check if the supplier exists
-                if(count($Suppliers) == 0){
-                    return ['status' => 'notfound', 'message' => 'Supplier Not Found', 'element_tag' => $ElementTag];
-                }
-                $Supplier = $Suppliers[0];
-
-                $Products = (new Products())->where('id', $ProductId)->get();
-                // Check if the product exists
-                if(count($Products) == 0){
-                    return ['status' => 'notfound', 'message' => 'Product Not Found', 'element_tag' => $ElementTag];
-                }
-                $Product = $Products[0];
-
+                // If some quantity was requested to be ordered ...
                 if($Qty > 0){
+                    array_push($ProcessedProducts, $productToOrder);
+                    // ... then let's continue to put it on an order
+                    $Suppliers = (new Suppliers())->where('id', $SupplierId)->get();
+                    // Check if the supplier exists
+                    if(count($Suppliers) == 0){
+                        return ['status' => 'notfound', 'message' => 'Supplier Not Found', 'element_tag' => $ElementTag];
+                    }
+                    $Supplier = $Suppliers[0];
+
+                    $Products = (new Products())->where('id', $ProductId)->get();
+                    // Check if the product exists
+                    if(count($Products) == 0){
+                        return ['status' => 'notfound', 'message' => 'Product Not Found', 'element_tag' => $ElementTag];
+                    }
+                    $Product = $Products[0];
+    
                     // Check if the supplier is for pickup or delivery    
                     if($Pickup == 'pickup'){
                         $PickupUsers = (new Users())->where('user_type', 'pickup')->where('id', $PickupGuyId)->get();
@@ -82,9 +88,12 @@ class Orders extends Model
                                     ->where('pickup_guy_id', $PickupGuyId)
                                     ->where('submitted', false)->get();
 
+                    array_push($ResOrders, $Orders);
+
                     // Check if there is an ongoing order for this supplier,
                     // it means, an order that hasn't been submitted
                     if(count($Orders) > 0){
+                        array_push($ResOrders, 'found - ' . $SupplierId);
                         // Ongoing order
                         $Order = $Orders[0];
                         $Products = (new OrderLines())
@@ -110,15 +119,17 @@ class Orders extends Model
                     }
                     else{
                         // Let's create a new order
+                        array_push($ResOrders, 'not found - ' . $SupplierId);
 
-                        $this->supplier_id = $SupplierId;
-                        $this->date = new \DateTime();
-                        $this->pickup = $Pickup;
-                        $this->pickup_guy_id = $PickupGuyId;
-                        $this->save();
+                        $Order = (new Orders());
+                        $Order->supplier_id = $SupplierId;
+                        $Order->date = new \DateTime();
+                        $Order->pickup = $Pickup;
+                        $Order->pickup_guy_id = $PickupGuyId;
+                        $Order->save();
 
                         $OrderLines = (new OrderLines());
-                        $OrderLines->order_id = $this->id;
+                        $OrderLines->order_id = $Order->id;
                         $OrderLines->product_id = $ProductId;
                         $OrderLines->qty = $Qty;
                         $OrderLines->measure_unit_id = $MeasureUnitId;
@@ -155,7 +166,8 @@ class Orders extends Model
                     ->where('not_found', 1)->update(['not_found' => 0]);
                 array_push($elementTags, $ElementTag);                
             }
-            return ['status' => 'ok', 'element_tags' => $elementTags];
+
+            return ['status' => 'ok', 'element_tags' => $elementTags, 'resorders' => $ResOrders, 'processedproducts' => $ProcessedProducts];
         } catch (\Throwable $th) {
             //throw $th;
             $Message = $this->ErrorInfo($th);
