@@ -222,17 +222,15 @@ class PickupUser extends Model
             ON orders.supplier_id = suppliers.id 
             INNER JOIN users 
             ON orders.pickup_guy_id = users.id 
-            WHERE orders.id = $orderId");
+            WHERE orders.id = :orderId", ['orderId' => $orderId]);
 
         $UnavailableLines = DB::select(
             "SELECT order_lines.*, products.internal_description 
             FROM order_lines 
             INNER JOIN products on products.id = order_lines.product_id 
-            WHERE order_lines.order_id = "
-            . $Unavailables[0]->id
-            . " 
-            AND (order_lines.available_qty < order_lines.qty)"
-            
+            WHERE order_lines.order_id = :unavailableId
+            AND (order_lines.available_qty < order_lines.qty)",
+            ['unavailableId', $Unavailables[0]->id]
         );
 
         $Unavailables[0]->lines = $UnavailableLines;

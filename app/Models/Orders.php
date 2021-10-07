@@ -13,10 +13,12 @@ use App\Models\Products;
 use App\Models\Suppliers;
 use App\Models\Users;
 use App\Mail\OrderEmail;
+use App\Mail\UnavailablesEmail;
 use App\Models\SuppliersProductsPivots;
 use App\Models\ProductUnitsPivots;
 use App\Models\SuppProdPivots;
-use PDF;
+use App\Errors\ErrorInfo;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class Orders extends Model
 {
@@ -568,7 +570,8 @@ class Orders extends Model
       * 
       * @param Request ['id' 'order_lines:{id, avilable_qty, supplier_price}' 'element_tag']
       *
-      * @return String status ['ok' 'error' 'notfound' '419']
+      * @return Array ['status' => 'ok', 'mailfail' => [], 'mailsent' => [], 'element_tag' => string]
+      * @return Array ['status' => 'error', 'message' => string, 'element_tag' => string]
       * 
       */
      public function ReceiveOrder($request)
@@ -663,15 +666,89 @@ class Orders extends Model
 
              // Update the order's header
              DB::table('orders')->where('id', $Orders[0]->id)->update(['received' => true, 'completed' => true]);
+             
              DB::commit();
+
+             DB::select(
+                "UPDATE order_lines
+                SET order_lines.not_found = 1
+                WHERE order_lines.order_id = :orderId
+                AND order_lines.available_qty < order_lines.qty",
+                ['orderId' => $Id]
+            );
+            
+            $res = $this->emailUnavailables($Id);
+
+             return ['status' => 'ok', 'mailfail' => $res['mailfail'], 'mailsent' => $res['mailsent'], 'element_tag' => $ElementTag];
+
              // If all went right return an OK status
-             return ['status' => 'ok', 'element_tag' => $ElementTag];
          } catch (\Throwable $th) {
              // If something went wrong return an error
              DB::rollback();
              $Message = $this->ErrorInfo($th);
              return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag];
          }
+     }
+
+     /**
+      * @param orderId
+      *
+      * @return ['Unavailables' => [], 'mailsent' => [], 'mailfail' => []]
+      */
+     public function emailUnavailables($orderId)
+     {
+         # code...
+         $MailSent = [];
+         $MailFail = [];
+
+         $unavailables = DB::select(
+             "SELECT suppliers.name as supplier_name
+              FROM orders
+              INNER JOIN suppliers
+              ON orders.supplier_id = suppliers.id
+              WHERE orders.id=:orderId
+             ", ['orderId' => $orderId]);
+
+        if(count($unavailables) > 0){
+            $unavailableLines = DB::select(
+                "SELECT order_lines.*, products.internal_description
+                FROM order_lines
+                INNER JOIN products
+                ON order_lines.product_id = products.id
+                WHERE order_lines.id = :orderId
+                AND order_lines.available_qty < order_lines.qty
+                ", ['orderId' => $orderId]);
+    
+            if(count($unavailableLines) > 0){
+
+                $unavailables[0]->lines = $unavailableLines;
+                $unavailables[0]->homePage = env('APP_URL');
+                $unavailables[0]->user_name = Auth::user()->name;
+
+                $unavailablesEmail = new UnavailablesEmail($unavailables);
+    
+                $Subject = "Products not found!";
+                $adminUsers = (new Users())->where('user_type', 'admin')->get();
+
+                foreach($adminUsers as $key => $adminUser){
+                    try {
+                        //code...
+                        if($adminUser->email !== null && strlen($adminUser->email) > 0){
+                            Mail::to($adminUser->email)->send(($unavailablesEmail)->subject($Subject));
+                            array_push($MailSent, $adminUser->email);
+                        }
+                    } catch (\Throwable $th) {
+                        //throw $th;
+                        $Message = (new ErrorInfo())->GetErrorInfo($th);
+                        array_push($MailFail, [$adminUser->email => $Message]);
+                    }
+                }
+            }
+            else{
+                $unavailables = [];
+            }
+        }
+        return ['Unavailables' => $unavailables, 'mailsent' => $MailSent, 'mailfail' => $MailFail];
      }
 
      /**
