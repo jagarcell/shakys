@@ -19,7 +19,7 @@
 
 <script>
 const axios = require('axios')
-import addicon from './addicon.vue'
+import addicon from '../addicon.vue'
 
 export default {
     components:{addicon},
