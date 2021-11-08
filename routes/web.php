@@ -49,9 +49,9 @@ Route::get('/error/{message}', function($message){
 
 require __DIR__.'/auth.php';
 
-Route::get('/vue', function(){
+Route::get('/vuejs', function(){
     return view('vue');
-});
+})->middleware('checkusersstate');
 
 Route::get('/sqltest', 'SqltestController@SqlTest');
 
@@ -60,6 +60,8 @@ Route::get('/sqltest', 'SqltestController@SqlTest');
  ********************************/
 
 Route::get('/users', 'UsersController@ListUsers')->middleware('checkifcanregister');
+
+Route::get('/getusers', 'UsersController@getUsers');
 
 Route::post('/userbyid', 'UsersController@UserById');
 
@@ -70,6 +72,8 @@ Route::post('deleteuser', 'UsersController@DeleteUser');
 Route::post('changepassword', 'UsersController@ChangePassword');
 
 Route::post('/createuser', 'UsersController@CreateUser');
+
+Route::get('authuser', 'UsersController@AuthUser');
 
 /****************************************
  *                                      *
@@ -193,6 +197,8 @@ Route::post('/createuser', 'UsersController@CreateUser');
  ***************************************/
   
 Route::get('/userdashboard', 'UserDashboardController@ShowUserDashboard');
+
+Route::get('getuserdashboard', 'UserDashboardController@GetUserDashboard');
   
 Route::get('/searchfor', 'UserDashboardController@SearchFor');
 
@@ -231,6 +237,8 @@ Route::get('/searchfor', 'UserDashboardController@SearchFor');
   **************************************/
 
   Route::get('/measureunits','MeasureUnitsController@MeasureUnits')->middleware('checkusersstate');
+
+  Route::get('/measureunits1','MeasureUnitsController@MeasureUnits1')->middleware('checkusersstate');
  
   Route::post('/createmeasureunit','MeasureUnitsController@CreateMeasureUnit');
 
@@ -239,3 +247,5 @@ Route::get('/searchfor', 'UserDashboardController@SearchFor');
   Route::get('/getmeasureunit','MeasureUnitsController@GetMeasureUnit');
 
   Route::post('/updatemeasureunit', 'MeasureUnitsController@UpdateMeasureUnit');
+
+  Route::get('/searchbytext', 'MeasureUnitsController@searchByText');
