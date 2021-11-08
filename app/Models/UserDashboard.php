@@ -55,6 +55,45 @@ class UserDashboard extends Model
 
     /**
      * 
+     * @return View userdashboard [locations, products]
+     * 
+     */
+    public function GetUserDashboard($request)
+    {
+        # code...
+        $Locations = (new ProductLocations)->where('id', '>', -1)->get();
+
+        $LocationsCount = count($Locations);
+        if(round($LocationsCount / 2) * 2 != $LocationsCount){
+            $Locations[$LocationsCount - 1]->odd = true;
+        }
+
+        $Result = $this->ProductsToCount($request);
+        switch ($Result['status']) {
+            case 'ok':
+                # code...
+                $ProductsToCount = $Result['productstocount'];
+                break;
+            case 'error':
+                $Product = new \stdClass;
+                $Product->id = -1;
+                $Product->internal_description = $Result['message'];
+                $Product->image_path = config('app')['nophoto'];
+                $ProductsToCount = [];
+                array_push($ProductsToCount, $Product);
+                break;
+            default:
+                # code...
+                break;
+        }
+        return [
+            'locations' => $Locations, 
+            'productstocount' => $ProductsToCount,
+        ];
+    }
+
+    /**
+     * 
      * Search for products due to count, if locationid is
      * set it shows only the products for that location
      * 

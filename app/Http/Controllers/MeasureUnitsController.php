@@ -8,6 +8,11 @@ use App\Models\MeasureUnits;
 
 class MeasureUnitsController extends Controller
 {
+    public function MeasureUnits2(Request $request)
+    {
+        # code...
+        return (new MeasureUnits())->MeasureUnits($request);
+    }
     public function MeasureUnits(Request $request)
     {
         # code...
@@ -32,5 +37,11 @@ class MeasureUnitsController extends Controller
     public function UpdateMeasureUnit(Request $request)
     {
         return (new MeasureUnits())->UpdateMeasureUnit($request);
+    }
+
+    public function searchByText(Request $request)
+    {
+        # code...
+        return (new MeasureUnits())->searchByText($request);
     }
 }

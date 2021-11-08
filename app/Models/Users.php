@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
@@ -58,6 +59,56 @@ class Users extends Model
             //throw $th;
             $Message = $this->ErrorInfo($th);
             return Redirect("/error/$Message[0]");
+        }
+    }
+
+    /**
+     * 
+     *  @return View users
+     */
+    public function getUsers($request)
+    {
+        # code...
+        if(!isset($request['search_text'])){
+            return View('users', ['users' => []]);
+        }
+        $SearchText = $request['search_text'];
+        try {
+            //code...
+            if(strlen($SearchText) == 0){
+                $users = $this->where('id', '>', -1)->get();
+            }
+            else{
+                $Keywords = explode(" ", $SearchText);
+
+                $query = " where ((name like '%";
+                $first = true;
+                foreach ($Keywords as $key => $Keyword) {
+                    # code...
+                    if($first){
+                        $first = false;
+                        $query = $query . $Keyword . "%')";
+                        $query = $query . "or (email like '%" . $Keyword . "%')";
+                        $query = $query . "or (user_type like '%" . $Keyword . "%')";
+                        $query = $query . "or (username like '%" . $Keyword . "%')";
+                    }
+                    else{
+                        $query = $query . "or (name like '%" . $Keyword . "%')";
+                        $query = $query . "or (email like '%" . $Keyword . "%')";
+                        $query = $query . "or (user_type like '%" . $Keyword . "%')";
+                        $query = $query . "or (username like '%" . $Keyword . "%')";
+                    }
+                }
+       
+                $query = $query . ")";
+                $basequery = "select * from users";
+                $users = DB::select($basequery . $query);
+            }
+            return ['status' => 'ok', 'users' => $users];
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return ['status' => 'error', 'message' => $Message];
         }
     }
 
@@ -370,5 +421,16 @@ class Users extends Model
             $Message = $th->errorInfo;
         }
         return $Message;
+    }
+
+    public function authUser($request)
+    {
+        # code...
+        $user = Auth::user();
+        if($user !== null){
+            $user = ['name' => $user->name, 'username' => $user->username, 'user_type' => $user->user_type];
+        }
+        
+        return ['user' => $user];
     }
 }
