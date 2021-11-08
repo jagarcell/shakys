@@ -3,9 +3,9 @@ import Vue from 'vue'
 //Main pages
 import pageheader from './components/pageheader.vue'
 import addicon from './components/addicon.vue'
-import measureunitadd from './components/measureunitadd.vue'
 import reportresult from './components/reportresult.vue'
-import measureunitedit from './components/measureunitedit.vue'
+import measureunitedit from './components/measureunits/measureunitedit.vue'
+import measureunitadd from './components/measureunits/measureunitadd.vue'
 
 const axios = require('axios')
 

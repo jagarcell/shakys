@@ -2,8 +2,7 @@ import Vue from 'vue'
 
 //Main pages
 import pageheader from './components/pageheader.vue'
-import adminpagecontent from './components/adminpagecontent.vue'
-//import adminpage from './components/adminpage.vue'
+import adminpagecontent from './components/adminpage/adminpagecontent.vue'
 
 var admindashboardapp = new Vue({
     el: '#app',
