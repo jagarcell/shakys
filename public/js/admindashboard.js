@@ -7,6 +7,7 @@ $(document).ready(function(){
         }, 3000)
     }
 })
+
 /*!
  * Webflow: Front-end site library
  * @license MIT

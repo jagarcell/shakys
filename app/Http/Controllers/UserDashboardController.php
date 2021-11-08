@@ -14,6 +14,13 @@ class UserDashboardController extends Controller
         return (new UserDashboard())->ShowUserDashboard($request);
     }
 
+    public function GetUserDashboard(Request $request)
+    {
+        # code...
+        return (new UserDashboard())->GetUserDashboard($request);
+    }
+
+
     public function ProductsToCount(Request $request)
     {
         # code

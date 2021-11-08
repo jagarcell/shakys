@@ -14,6 +14,11 @@ class UsersController extends Controller
         return (new Users())->ListUsers($request);
     }
 
+    public function getUsers(Request $request)
+    {
+        return (new Users())->getUsers($request);
+    }
+
     public function HasUsers(Request $request)
     {
         # code...
@@ -48,5 +53,11 @@ class UsersController extends Controller
     {
         # code...
         return (new Users())->CreateUser($request);
+    }
+
+    public function authUser(Request $request)
+    {
+        # code...
+        return (new Users())->authUser($request);
     }
 }
