@@ -39,8 +39,6 @@ var measureunitsapp = new Vue({
             this.reportAction = false
         },
         inUse:function(description){
-            console.log('in-use')
-            console.log(description)
             this.description = description
             this.isInUse = true
         },

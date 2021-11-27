@@ -139,6 +139,8 @@ Route::get('authuser', 'UsersController@AuthUser');
 
   Route::get('/listproducts', 'ProductsController@ListProducts')->middleware('checkusersstate');
 
+  Route::get('/listproducts1', 'ProductsController@ListProducts1')->middleware('checkusersstate');
+
   Route::post('/productimgupload', 'ProductsController@ProductImgUpload');
 
   Route::post('/createproduct', 'ProductsController@CreateProduct');

@@ -165,7 +165,7 @@ class Suppliers extends Model
      * 
      * @param String id
      * 
-     * @return String status 'ok' 'error'
+     * @return Object status 'ok' 'error'
      * @return Object supplier 
      */
     public function GetSupplierById($id)

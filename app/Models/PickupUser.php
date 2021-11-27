@@ -129,6 +129,7 @@ class PickupUser extends Model
 
                     $Order->lines = $OrderLines;
                 }
+                dd($Orders);
                 return view('/pickupdashboard', ['orders' => $Orders]);
             }
             else{

@@ -30,7 +30,7 @@ export default {
     updated:function(){
         if(this.report && this.messagetimeout > 0){
             setTimeout((function(){
-                this.$emit('ok-click')
+                this.$emit('time-out', this.iserrormessage)
             }).bind(this), this.messagetimeout)
         }
     }

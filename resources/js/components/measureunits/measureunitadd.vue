@@ -43,8 +43,11 @@ export default {
             axios.post(
                 '/createmeasureunit',
                 {
-                    unit_description:this.unitDescription
-                }
+                    params : 
+                        {
+                            unit_description:this.unitDescription
+                        }
+                    }
                 ).then(response => {
                    this.unitDescription = ''
                    this.$emit('create-button-click', response.data)

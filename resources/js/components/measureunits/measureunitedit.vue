@@ -83,7 +83,12 @@ export default {
         },
         deleteButtonClick:function(){
           axios.post('/removemeasureunit',
-            {id:this.measureunit.id, verbose:true}
+            {
+              params :
+                {
+                  id:this.measureunit.id, verbose:true
+                }
+            }
           ).then(response => {
             if(response.data.status == 'inuse'){
               this.showInUse = true
@@ -96,7 +101,11 @@ export default {
         },
         removeAnyway:function(){
           axios.post('/removemeasureunit',
-            {id:this.measureunit.id}
+            {
+              paramas : {
+                id:this.measureunit.id
+              }
+            }
           ).then(response => {
               this.showInUse = false
               response.data.index = response.data.isError ? -1 : this.index
@@ -107,11 +116,12 @@ export default {
           this.showInUse = false
         },
         acceptEdit:function(){
-          axios.post(
-            '/updatemeasureunit',
-             {
-              id:this.measureunit.id, unit_description:this.description 
-             }).then(response => {
+          axios.post('/updatemeasureunit',
+            {
+              params : {
+                id:this.measureunit.id, unit_description:this.description 
+              }
+            }).then(response => {
               this.edition = false
               this.$emit('accept-edit', response.data)
             }

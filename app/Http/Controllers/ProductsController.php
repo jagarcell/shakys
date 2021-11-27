@@ -17,6 +17,12 @@ class ProductsController extends Controller
         # code...
         return (new Products())->ListProducts($request);
     }
+    
+    public function ListProducts1(Request $request)
+    {
+        # code...
+        return (new Products())->ListProducts1($request);
+    }
 
     public function ProductImgUpload(Request $request)
     {

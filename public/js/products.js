@@ -22,8 +22,8 @@ function productSearchClick() {
  function createProductImageDrop(){
 
     var productImage = document.getElementById('product_image')
-    $(productImage).addClass('dropzone')
 
+    $(productImage).addClass('dropzone')
     MyDropzone = new Dropzone(
         "form#product_image", 
 		{ 
