@@ -66,7 +66,7 @@ class PickupUser extends Model
                             'supp_prod_pivots.supplier_description',
                             'supp_prod_pivots.location_stop'
                         )->get();
-                    
+                    $Orders->lines = [];
                     foreach($OrderLines as $Key => $OrderLine){
                         $ProductUnitsPivots = (new ProductUnitsPivots())
                             ->where('product_id', $OrderLine->product_id)
