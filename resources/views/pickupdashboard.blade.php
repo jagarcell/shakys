@@ -86,7 +86,7 @@
                                         <div class="order_detail_line_section order_detail_line_1">
                                             <div class="order_detail_code">
                                                 <div class="individual_label">Code</div>
-                                                <div class="order_detail_line_field">{{}}</div>
+                                                <div class="order_detail_line_field"></div>
                                             </div>
                                             <div class="order_detail_description">
                                                 <div class="individual_label">Description</div>
