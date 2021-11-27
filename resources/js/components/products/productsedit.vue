@@ -3,7 +3,7 @@
         <div class="product_section_wrap">
             <div class="section">
                 <div class="pic_frame">
-                    <img src="{{imagePath}}" loading="lazy" sizes="(max-width: 479px) 80vw, 256px" srcset="{{imagePath}} 500w, {{imagePath}} 512w" alt="" class="picture box_shadow">
+                    <img :src="imagePath" loading="lazy" sizes="(max-width: 479px) 80vw, 256px" :srcset="imagePath" 500W alt="" class="picture box_shadow">
                 </div>
                 <div class="data_entry">
                     <div class="data_edit">
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="section_right">
-                <div id="supplier_data_edit_frame" class="data_entry">
+                <div class="data_entry">
                     <div class="data_edit">
                         <div class="field_wrap">
                             <div class="field_label">Default Measure Unit</div>

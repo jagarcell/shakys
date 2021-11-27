@@ -181,6 +181,82 @@ class Products extends Model
         }
     }
 
+    public function getProductsBySearch($request)
+    {
+        if(!isset($request[['search_text']])){
+            return ['products' => [], 'measureunits' => []];
+        }
+        $SearchText = isset($request['search_text']) ? $request['search_text'] : "";
+        try {
+            //code...
+            if(strlen($SearchText) == 0){
+                $Products = $this->where('id', '>', -1)->get();
+            }
+            else{
+                $Keywords = explode(" ", $SearchText);
+
+                $query = " where ((internal_description like '%";
+                $first = true;
+                foreach ($Keywords as $key => $Keyword) {
+                    # code...
+                    if($first){
+                        $first = false;
+                        $query = $query . $Keyword . "%')";
+                    }
+                    else{
+                        $query = $query . "or (internal_description like '%" . $Keyword . "%')";
+                    }
+                    $query = $query . "or (internal_code like '%" . $Keyword . "%')";
+                    $query = $query . "or (days_to_count like '%" . $Keyword . "%')";
+                    $query = $query . "or (supplier_code like '%" . $Keyword . "%')";
+                    $query = $query . "or (supplier_description like '%" . $Keyword . "%')";
+                 }
+        
+                $query = $query . ")";
+                $basequery = "select products.*, supp_prod_pivots.supplier_code, supp_prod_pivots.supplier_description from products inner join supp_prod_pivots on products.id = supp_prod_pivots.product_id";
+                $Products = DB::select($basequery . $query);
+            }
+            for($i = 0; $i < count($Products); $i++){
+                $DefaultSupplierName = "";
+                $Product = $Products[$i];
+                if($Product->default_supplier_id != -1){
+                    $Supplier = (new Suppliers())->GetSupplierById($Product->default_supplier_id);
+                    if(!is_null($Supplier)){
+                        $DefaultSupplierName = $Supplier->name;
+                    }
+                }
+                $Product->default_supplier_name = $DefaultSupplierName;
+
+                $DefaultMeasureUnits = (new MeasureUnits())->where('id', $Product->default_measure_unit_id)->get();
+                $DefaultMeasureUnitName = "";
+                if(count($DefaultMeasureUnits) > 0){
+                    $DefaultMeasureUnit = $DefaultMeasureUnits[0];
+                    $DefaultMeasureUnitName = $DefaultMeasureUnit->unit_description;
+                }
+                $Product->default_measure_unit = $DefaultMeasureUnitName;
+                $ProductId = $Product->id;
+
+                $ProductMeasureUnits = DB::table('product_units_pivots')->join('measure_units', function($join) use ($ProductId){
+                    $join->on('product_units_pivots.measure_unit_id', '=', 'measure_units.id')
+                    ->where('product_units_pivots.product_id', '=', $ProductId);
+                })->select('measure_units.*')->get();
+
+                $Product->measure_units = $ProductMeasureUnits;
+                
+                if($Product->plan_type == -1){
+                    $Product->plan_type = "NONE";
+                }
+            }
+
+            $MeasureUnits = (new MeasureUnits())->where('id', '>', -1)->get();
+            return ['products' => $Products, 'measureunits' => $MeasureUnits, 'isError' => false, 'message' => "PRODUCT FOUND"];
+        } catch (\Throwable $th) {
+            //throw $th;
+            $Message = $this->ErrorInfo($th);
+            return ['isError' => true, 'message' => $Message];
+        }
+    }
+
     /**
      * 
      * @param Request $request[

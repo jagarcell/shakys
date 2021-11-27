@@ -34,6 +34,8 @@
                 v-on:created="created"
                 v-on:discarded="discarded"
                 v-on:add-click="addClick"></productsadd>
+            <productedit 
+                v-for="product in products"></productedit>
             <reportresult 
                 :iserrormessage="isErrorMessage"
                 :resultmessage="resultMessage"

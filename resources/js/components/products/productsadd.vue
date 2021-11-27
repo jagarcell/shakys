@@ -134,8 +134,8 @@ export default {
         }
     },
     methods:{
-        searchClick:function(){
-            console.log('searchClick')
+        searchClick:function(searchText){
+            console.log('searchClick = ' + searchText)
         },
         add:function(){
             axios.get('/searchbytext', {params : {

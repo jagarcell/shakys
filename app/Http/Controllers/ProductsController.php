@@ -24,6 +24,11 @@ class ProductsController extends Controller
         return (new Products())->ListProducts1($request);
     }
 
+    public function getProductsBySearch(Reuest $request)
+    {
+        return (new Products())->getProductsBySearch($request);
+    }
+
     public function ProductImgUpload(Request $request)
     {
         # code...

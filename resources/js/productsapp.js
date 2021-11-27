@@ -1,3 +1,4 @@
+import axios from 'axios'
 import Vue from 'vue'
 
 import pageheader from './components/pageheader.vue'
@@ -39,6 +40,7 @@ var productsApp = new Vue({
             isErrorMessage : false,
             report : false,
             add : false,
+            products : [],
         }
-    }
+    },
 })

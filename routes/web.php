@@ -169,6 +169,8 @@ Route::get('authuser', 'UsersController@AuthUser');
 
   Route::get('/resetcounts', 'ProductsController@ResetCounts')->middleware('checkifcanregister');
 
+  Route::get('/getproductsbysearch', 'ProductsController@getProductsBySearch');
+
 /****************************************
  *                                      *
  *             PICKUP USER              *
