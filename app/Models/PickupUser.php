@@ -36,6 +36,7 @@ class PickupUser extends Model
                     ->where('submitted', true)
                     ->where('received', false)
                     ->where('completed', false)->get();
+
                 foreach($Orders as $Key => $Order){
                     $Suppliers = (new Suppliers())->where('id', $Order->supplier_id)->get();
                     if(count($Suppliers) > 0){
@@ -68,6 +69,7 @@ class PickupUser extends Model
                             'supp_prod_pivots.supplier_description',
                             'supp_prod_pivots.location_stop'
                         )->get();
+                    
                     foreach($OrderLines as $Key => $OrderLine){
                         $ProductUnitsPivots = (new ProductUnitsPivots())
                             ->where('product_id', $OrderLine->product_id)
@@ -129,9 +131,10 @@ class PickupUser extends Model
                     }
 
                     $Order->lines = $OrderLines;
+
+                    $Order->lines = [];                    
                 }
-                dd($Orders);
-                return view('/pickupdashboard', ['orders' => $Orders]);
+                return view('pickupdashboard', ['orders' => $Orders]);
             }
             else{
                 return redirect('/login');

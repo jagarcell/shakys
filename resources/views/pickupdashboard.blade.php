@@ -81,7 +81,7 @@
                         <div class="order_details_body shadowRight">
                             <div class="order_lines">
                                 @foreach($order->lines as $key => $line)
-                                <!--div id="{{$order->id}}_{{$line->id}}" lineid="{{$line->id}}" class="order_detail_line">
+                                <div id="{{$order->id}}_{{$line->id}}" lineid="{{$line->id}}" class="order_detail_line">
                                     <div class="order_detail_line_section_wraper">
                                         <div class="order_detail_line_section order_detail_line_1">
                                             <div class="order_detail_code">
@@ -161,8 +161,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div-->
-                                
+                                </div>
+
                                 @endforeach
                             </div>
 
