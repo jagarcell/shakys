@@ -48,6 +48,8 @@ class PickupUser extends Model
                     }
                     $OrderId = $Order->id;
 
+                    $Order->lines = [];
+
                     $OrderLines = DB::table('order_lines')
                         ->join('orders', function($join) use($OrderId){
                             $join->on('orders.id', '=', 'order_lines.order_id')
@@ -66,7 +68,6 @@ class PickupUser extends Model
                             'supp_prod_pivots.supplier_description',
                             'supp_prod_pivots.location_stop'
                         )->get();
-                    $Orders->lines = [];
                     foreach($OrderLines as $Key => $OrderLine){
                         $ProductUnitsPivots = (new ProductUnitsPivots())
                             ->where('product_id', $OrderLine->product_id)
