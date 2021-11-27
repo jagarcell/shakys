@@ -81,12 +81,12 @@
                         <div class="order_details_body shadowRight">
                             <div class="order_lines">
                                 @foreach($order->lines as $key => $line)
-                                <div id="{{$order->id}}_{{$line->id}}" lineid="{{$line->id}}" class="order_detail_line">
+                                <!--div id="{{$order->id}}_{{$line->id}}" lineid="{{$line->id}}" class="order_detail_line">
                                     <div class="order_detail_line_section_wraper">
                                         <div class="order_detail_line_section order_detail_line_1">
                                             <div class="order_detail_code">
                                                 <div class="individual_label">Code</div>
-                                                <div class="order_detail_line_field"></div>
+                                                <div class="order_detail_line_field">{{$line->product_code}}</div>
                                             </div>
                                             <div class="order_detail_description">
                                                 <div class="individual_label">Description</div>
@@ -161,7 +161,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div-->
                                 @endforeach
                             </div>
 
