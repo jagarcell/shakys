@@ -131,8 +131,7 @@ class PickupUser extends Model
                     }
 
                     $Order->lines = $OrderLines;
-
-                    $Order->lines = [];                    
+           
                 }
                 return view('pickupdashboard', ['orders' => $Orders]);
             }
