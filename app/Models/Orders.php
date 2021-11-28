@@ -271,8 +271,10 @@ class Orders extends Model
                 $OrderLines = (new OrderLines())->where('order_id', $Order->id)->get();
                 foreach($OrderLines as $Key => $OrderLine){
                     $Products = (new Products())->where('id', $OrderLine->product_id)->get();
-                    $OrderLine->product_code = "";
-                    $OrderLine->product_description = "";
+                    
+                    $product_code = "No Code Asiggned";
+                    $product_description = "No Description Entered";
+
                     if(count($Products) > 0){
                         $Product = $Products[0];
 
@@ -287,20 +289,22 @@ class Orders extends Model
                             ->where('supplier_id', $Order->supplier_id)
                             ->where('product_id', $Product->id)->get();
 
-                            $OrderLine->product_code = $Product->internal_code;
-                            $OrderLine->product_description = $Product->internal_description;
+                            $product_code = $Product->internal_code;
+                            $product_description = $Product->internal_description;
 
                             if(count($SuppliersProductsPivots) > 0){
                                 $SuppliersProductsPivot = $SuppliersProductsPivots[0];
                                 if(strlen($SuppliersProductsPivot->supplier_code) > 0
                                     || strlen($SuppliersProductsPivot->supplier_description) > 0){
-                                    $OrderLine->product_code = $SuppliersProductsPivot->supplier_code;
-                                    $OrderLine->product_description = $SuppliersProductsPivot->supplier_description;
+                                    $product_code = $SuppliersProductsPivot->supplier_code;
+                                    $product_description = $SuppliersProductsPivot->supplier_description;
                                 }
                             }
                         }
                     }
-                }
+                    $OrderLine->product_code = $product_code;
+                    $OrderLine->product_description = $product_description;
+               }
 
                 $Order->lines = $OrderLines;
 
