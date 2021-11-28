@@ -299,10 +299,9 @@ class Orders extends Model
                                     $product_code = $SuppliersProductsPivot->supplier_code;
                                 }
 
-                                if($SuppliersProductsPivot->supplier_description !== null && strlen($SuppliersProductsPivot->supplier_description) > 0)
+                                if($SuppliersProductsPivot->supplier_description !== null && strlen($SuppliersProductsPivot->supplier_description) > 0){
                                     $product_description = $SuppliersProductsPivot->supplier_description;
                                 }
-                                return ['result' => $SuppliersProductsPivot];
 
                             }
                         }
