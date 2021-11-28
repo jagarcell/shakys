@@ -307,7 +307,7 @@ class Orders extends Model
                     }
                     $OrderLine->product_code = $product_code;
                     $OrderLine->product_description = $product_description;
-                    return ['result' => $product_description];
+                    return ['result' => $SuppliersProductsPivot->supplier_description];
 
                }
 
