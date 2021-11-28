@@ -293,11 +293,11 @@ class Orders extends Model
                             $product_description = $Product->internal_description;
 
                             if(count($SuppliersProductsPivots) > 0){
-                                return ['result' => $request['order_id']];
-
                                 $SuppliersProductsPivot = $SuppliersProductsPivots[0];
                                 if(($SuppliersProductsPivot->supplier_code !== null && strlen($SuppliersProductsPivot->supplier_code) > 0)
                                     || ($SuppliersProductsPivot->supplier_description !== null && strlen($SuppliersProductsPivot->supplier_description) > 0)){
+                                    return ['result' => $request['order_id']];
+
                                     $product_code = $SuppliersProductsPivot->supplier_code;
                                     $product_description = $SuppliersProductsPivot->supplier_description;
                                 }
