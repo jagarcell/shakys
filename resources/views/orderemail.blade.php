@@ -67,7 +67,7 @@
         </div>
         @foreach($order->lines as $key => $line)
         <div class="order_line">
-            <div class="code_column">{{$line->product_code}}</div><div class="description_column">{{$line->product_description}}</div><div class="qty_column align_right">{{$line->qty}}</div>
+            <div class="code_column">$line->product_code</div><div class="description_column">$line->product_description</div><div class="qty_column align_right">{{$line->qty}}</div>
         </div>
         @endforeach
     </div>
