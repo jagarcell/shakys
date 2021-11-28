@@ -369,7 +369,7 @@ class Orders extends Model
         } catch (\Exception $th) {
             //throw $th;
             $Message = $this->ErrorInfo($th);
-            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag, 'th' => $th, 'email' => $Order->email, 'subject' => $Subject];
+            return ['status' => 'error', 'message' => $Message, 'element_tag' => $ElementTag, 'th' => $th, 'email' => $Order->email, 'subject' => $Subject, 'order' => $Order];
         }
         return ['status' => 'ok', 'order' => $Order, 'element_tag' => $ElementTag];
      }
