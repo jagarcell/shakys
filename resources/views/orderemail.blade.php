@@ -43,7 +43,7 @@
         </style>
     </head>
     <body>
-    <div class="order_id">Order #: {{$order->id}}</div>
+    <!--div class="order_id">Order #: {{$order->id}}</div>
     @if(isset($order->instructions1))
     <div>{{$order->instructions1}}</div>
     @endif
@@ -72,6 +72,6 @@
         @endforeach
     </div>
     <div class="link_label">Click the link below to visit the orders dashboard (Only for Pickup Users)</div>
-    <div>{{$order->homePage}}/pickupdashboard</div>
+    <div>{{$order->homePage}}/pickupdashboard</div-->
     </body>
 </html>
