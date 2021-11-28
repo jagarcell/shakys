@@ -302,13 +302,13 @@ class Orders extends Model
                                 if($SuppliersProductsPivot->supplier_description != null && strlen($SuppliersProductsPivot->supplier_description) > 0){
                                     $product_description = $SuppliersProductsPivot->supplier_description;
                                 }
-                                return ['result' => $SuppliersProductsPivot->supplier_description];
-
                             }
                         }
                     }
                     $OrderLine->product_code = $product_code;
                     $OrderLine->product_description = $product_description;
+                    return ['result' => $product_description];
+
                }
 
                 $Order->lines = $OrderLines;
