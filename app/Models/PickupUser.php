@@ -119,7 +119,7 @@ class PickupUser extends Model
                                 }
                             }
                             $OrderLine->product_code = "No Code Asigned";    
-                            $OrderLine->product_code = "No Description Entered";
+                            $OrderLine->product_description = "No Description Entered";
 
                         }
 
