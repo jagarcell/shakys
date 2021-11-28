@@ -343,7 +343,6 @@ class Orders extends Model
                     $Order->instructions4 = "North Bergen, NJ, 074407";
                     $Order->instructions5 = "Phone: +1 201-520-9351";
                 }
-                return ['result' => 'OK'];
             }
             else{
                 return ['status' => 'notfound', 'element_tag' => $ElementTag];
@@ -361,6 +360,8 @@ class Orders extends Model
                 $Order->user_name = $User->name;
                 Mail::to($Order->email)
                     ->send((new OrderEmail($Order))->subject($Subject));
+        return ['result' => 'OK'];
+    
             }
             else{
                 return ['status' => 'noemail', 'element_tag' => $ElementTag];
