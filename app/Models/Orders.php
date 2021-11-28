@@ -267,7 +267,6 @@ class Orders extends Model
             $Orders = $this->where('id', $OrderId)->get();
 
             if(count($Orders) > 0){
-                return ['result' => $request['order_id']];
                 $Order = $Orders[0];
                 $OrderLines = (new OrderLines())->where('order_id', $Order->id)->get();
                 foreach($OrderLines as $Key => $OrderLine){
@@ -277,6 +276,7 @@ class Orders extends Model
                     $product_description = "No Description Entered";
 
                     if(count($Products) > 0){
+                        return ['result' => $request['order_id']];
                         $Product = $Products[0];
 
                         $ProductUnitsPivots = (new ProductUnitsPivots())
