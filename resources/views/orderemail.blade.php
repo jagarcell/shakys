@@ -43,7 +43,7 @@
         </style>
     </head>
     <body>
-    <!--div class="order_id">Order #: {{$order->id}}</div>
+    <div class="order_id">Order #: {{$order->id}}</div>
     @if(isset($order->instructions1))
     <div>{{$order->instructions1}}</div>
     @endif
@@ -67,11 +67,11 @@
         </div>
         @foreach($order->lines as $key => $line)
         <div class="order_line">
-            <div class="code_column">$line->product_code</div><div class="description_column">$line->product_description</div><div class="qty_column align_right">{{$line->qty}}</div>
+            <div class="code_column">{{$line->product_code}}</div><div class="description_column">{{$line->product_description}}</div><div class="qty_column align_right">{{$line->qty}}</div>
         </div>
         @endforeach
     </div>
     <div class="link_label">Click the link below to visit the orders dashboard (Only for Pickup Users)</div>
-    <div>{{$order->homePage}}/pickupdashboard</div-->
+    <div>{{$order->homePage}}/pickupdashboard</div>
     </body>
 </html>

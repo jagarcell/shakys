@@ -258,6 +258,7 @@ class Orders extends Model
       
      public function EmailOrder($request)
      {
+        $Subject = "";
         try {
             // Set the parameters
             $OrderId = $request['order_id'];
