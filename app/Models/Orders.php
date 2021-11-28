@@ -265,6 +265,7 @@ class Orders extends Model
 
             // Find the order
             $Orders = $this->where('id', $OrderId)->get();
+            dd($Orders);
 
             if(count($Orders) > 0){
                 $Order = $Orders[0];
@@ -294,8 +295,8 @@ class Orders extends Model
 
                             if(count($SuppliersProductsPivots) > 0){
                                 $SuppliersProductsPivot = $SuppliersProductsPivots[0];
-                                if(strlen($SuppliersProductsPivot->supplier_code) > 0
-                                    || strlen($SuppliersProductsPivot->supplier_description) > 0){
+                                if(($SuppliersProductsPivot->supplier_code !== null && strlen($SuppliersProductsPivot->supplier_code) > 0)
+                                    || ($SuppliersProductsPivot->supplier_description !== null && strlen($SuppliersProductsPivot->supplier_description) > 0)){
                                     $product_code = $SuppliersProductsPivot->supplier_code;
                                     $product_description = $SuppliersProductsPivot->supplier_description;
                                 }
