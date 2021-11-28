@@ -259,6 +259,8 @@ class Orders extends Model
      public function EmailOrder($request)
      {
         try {
+            return ['result' => $request['order_id']];
+
             // Set the parameters
             $OrderId = $request['order_id'];
             $ElementTag = $request['element_tag'];
