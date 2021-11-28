@@ -128,8 +128,8 @@ class PickupUser extends Model
                         else{
                             $OrderLine->unit_description = "";
                         }
-                        $OrderLine->product_code = "No Code Asigned";    
-                        $OrderLine->product_description = "No Description Entered";
+                        $OrderLine->product_code = $InternalCode;    
+                        $OrderLine->product_description = $InternalDescription;
 
                     }
 
