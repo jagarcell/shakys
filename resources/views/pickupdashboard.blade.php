@@ -86,11 +86,11 @@
                                         <div class="order_detail_line_section order_detail_line_1">
                                             <div class="order_detail_code">
                                                 <div class="individual_label">Code</div>
-                                                <div class="order_detail_line_field">$line->product_code</div>
+                                                <div class="order_detail_line_field">{{$line->product_code}}</div>
                                             </div>
                                             <div class="order_detail_description">
                                                 <div class="individual_label">Description</div>
-                                                <div class="order_detail_line_field">$line->product_description</div>
+                                                <div class="order_detail_line_field">{{$line->product_description}}</div>
                                             </div>
                                         </div>
                                         <div class="order_detail_line_section order_detail_line_2">
@@ -161,7 +161,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div-->
 
                                 @endforeach
                             </div>

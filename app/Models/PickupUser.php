@@ -92,13 +92,13 @@ class PickupUser extends Model
 
                             if(count($SuppliersProductsPivots) > 0){
                                 $SuppliersProductsPivot = $SuppliersProductsPivots[0];
-                                if(strlen($SuppliersProductsPivot->supplier_code) == 0){
+                                if($SuppliersProductsPivot->supplier_code === null || strlen($SuppliersProductsPivot->supplier_code) == 0){
                                     $OrderLine->product_code = $InternalCode;    
                                 }
                                 else{
                                     $OrderLine->product_code = $SuppliersProductsPivot->supplier_code;
                                 }
-                                if(strlen($SuppliersProductsPivot->supplier_description) == 0){
+                                if($SuppliersProductsPivot->supplier_description === null || strlen($SuppliersProductsPivot->supplier_description) == 0){
                                     $OrderLine->product_description = $InternalDescription;
                                 }
                                 else{
