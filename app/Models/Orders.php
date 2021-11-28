@@ -265,7 +265,6 @@ class Orders extends Model
 
             // Find the order
             $Orders = $this->where('id', $OrderId)->get();
-            dd($Orders);
 
             if(count($Orders) > 0){
                 $Order = $Orders[0];
