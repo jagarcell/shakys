@@ -294,7 +294,8 @@ class Orders extends Model
 
                             if(count($SuppliersProductsPivots) > 0){
                                 $SuppliersProductsPivot = $SuppliersProductsPivots[0];
-
+                                return ['result' => $SuppliersProductsPivot];
+                                
                                 if($SuppliersProductsPivot->supplier_code !== null && strlen($SuppliersProductsPivot->supplier_code) > 0){
                                     $product_code = $SuppliersProductsPivot->supplier_code;
                                 }
