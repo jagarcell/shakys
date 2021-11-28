@@ -75,8 +75,8 @@ class PickupUser extends Model
                             ->where('product_id', $OrderLine->product_id)
                             ->where('measure_unit_id', $OrderLine->measure_unit_id)->get();
 
-                        $InternalCode = "";
-                        $InternalDescription = "";
+                        $InternalCode = "No code Asigned";
+                        $InternalDescription = "No description Entered";
 
                         $Products = (new Products())->where('id', $OrderLine->product_id)->get();
                         if(count($Products) > 0){
