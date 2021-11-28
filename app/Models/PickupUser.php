@@ -118,9 +118,6 @@ class PickupUser extends Model
                                     $OrderLine->product_description = "THIS PRODUCT WAS NOT FOUND";
                                 }
                             }
-                            $OrderLine->product_code = "No Code Asigned";    
-                            $OrderLine->product_description = "No Description Entered";
-
                         }
 
                         $MeasureUnits = (new MeasureUnits())->where('id', $OrderLine->measure_unit_id)->get();
@@ -131,6 +128,9 @@ class PickupUser extends Model
                         else{
                             $OrderLine->unit_description = "";
                         }
+                        $OrderLine->product_code = "No Code Asigned";    
+                        $OrderLine->product_description = "No Description Entered";
+
                     }
 
                     $Order->lines = $OrderLines;
