@@ -259,8 +259,6 @@ class Orders extends Model
      public function EmailOrder($request)
      {
         try {
-            return ['result' => $request['order_id']];
-
             // Set the parameters
             $OrderId = $request['order_id'];
             $ElementTag = $request['element_tag'];
@@ -269,6 +267,7 @@ class Orders extends Model
             $Orders = $this->where('id', $OrderId)->get();
 
             if(count($Orders) > 0){
+                return ['result' => $request['order_id']];
                 $Order = $Orders[0];
                 $OrderLines = (new OrderLines())->where('order_id', $Order->id)->get();
                 foreach($OrderLines as $Key => $OrderLine){
