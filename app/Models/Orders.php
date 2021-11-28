@@ -276,7 +276,6 @@ class Orders extends Model
                     $product_description = "No Description Entered";
 
                     if(count($Products) > 0){
-                        return ['result' => $request['order_id']];
                         $Product = $Products[0];
 
                         $ProductUnitsPivots = (new ProductUnitsPivots())
@@ -284,6 +283,7 @@ class Orders extends Model
                         ->where('measure_unit_id', $OrderLine->measure_unit_id)->get();
 
                         if(count($ProductUnitsPivots) > 0){
+                            return ['result' => $request['order_id']];
                             $ProductUnitsPivot = $ProductUnitsPivots[0];
 
                             $SuppliersProductsPivots = (new SuppProdPivots())
