@@ -358,9 +358,10 @@ class Orders extends Model
                 $Order->homePage = env('APP_URL');
                 $User = Auth::user();
                 $Order->user_name = $User->name;
+                return ['result' => 'OK'];
+
                 Mail::to($Order->email)
                     ->send((new OrderEmail($Order))->subject($Subject));
-        return ['result' => 'OK'];
     
             }
             else{
