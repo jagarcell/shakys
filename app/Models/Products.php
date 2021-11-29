@@ -28,7 +28,6 @@ class Products extends Model
             return View('products', ['products' => [], 'measureunits' => []]);
         }
         $SearchText = isset($request['search_text']) ? $request['search_text'] : "";
-        dd($SearchText);
         try {
             //code...
             if(strlen($SearchText) == 0){
