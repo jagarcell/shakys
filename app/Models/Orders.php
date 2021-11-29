@@ -361,7 +361,6 @@ class Orders extends Model
                 $Order->user_name = $User->name;
                 Mail::to($Order->email)
                     ->send((new OrderEmail($Order))->subject($Subject));
-    
             }
             else{
                 return ['status' => 'noemail', 'element_tag' => $ElementTag];

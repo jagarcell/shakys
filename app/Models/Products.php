@@ -90,6 +90,7 @@ class Products extends Model
             }
 
             $MeasureUnits = (new MeasureUnits())->where('id', '>', -1)->get();
+            dd($Products);
             return View('products', ['products' => $Products, 'measureunits' => $MeasureUnits]);
         } catch (\Throwable $th) {
             //throw $th;
