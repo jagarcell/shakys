@@ -28,6 +28,7 @@ class Products extends Model
             return View('products', ['products' => [], 'measureunits' => []]);
         }
         $SearchText = isset($request['search_text']) ? $request['search_text'] : "";
+        dd($SearchText);
         try {
             //code...
             if(strlen($SearchText) == 0){
@@ -90,7 +91,6 @@ class Products extends Model
             }
 
             $MeasureUnits = (new MeasureUnits())->where('id', '>', -1)->get();
-            dd($Products);
             return View('products', ['products' => $Products, 'measureunits' => $MeasureUnits]);
         } catch (\Throwable $th) {
             //throw $th;
