@@ -14,6 +14,10 @@ use App\Models\Users;
 |
 */
 
+Route::get('/check', function(){
+    return view('measureunits2');
+});
+
 Route::get('/unavailables', function(){
     return view('unavailablesemail');
 });

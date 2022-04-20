@@ -213,8 +213,15 @@ class Products extends Model
                  }
         
                 $query = $query . ")";
-                $basequery = "select products.*, supp_prod_pivots.supplier_code, supp_prod_pivots.supplier_description from products inner join supp_prod_pivots on products.id = supp_prod_pivots.product_id";
-                $Products = DB::select($basequery . $query);
+                $basequery = "select 
+                    products.*, 
+                    supp_prod_pivots.supplier_code, 
+                    supp_prod_pivots.supplier_description 
+                    from products 
+                    inner join supp_prod_pivots 
+                    on products.id = supp_prod_pivots.product_id";
+                
+                    $Products = DB::select($basequery . $query);
             }
             for($i = 0; $i < count($Products); $i++){
                 $DefaultSupplierName = "";
