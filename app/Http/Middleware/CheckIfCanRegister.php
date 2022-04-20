@@ -28,9 +28,17 @@ class CheckIfCanRegister
                 if($user->user_type == 'admin'){
                     return $next($request);
                 }
+                if($user->user_type == 'user'){
+                    return redirect('/userdashboard');
+                }
+                if($user->user_type == 'pickup'){
+                    return redirect('/pickupdashboard');
+                }
+/*                
                 else{
                     return redirect('/unauth');
                 }
+*/
             } catch (\Exception $e) {
                 return redirect('/');
             }
