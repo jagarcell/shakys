@@ -23,11 +23,13 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                dd('for');
                 return redirect(RouteServiceProvider::HOME);
             }
         }
-        dd('auth');
+        $user = Auth::user();
+        if($user != null){
+            dd('user');
+        }
         return $next($request);
     }
 }
