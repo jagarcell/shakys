@@ -38,7 +38,7 @@ Route::get('/unauth', function(){
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['auth'])->middleware('user.admin')->name('dashboard');
 
 Route::get('/goback', function(){
     return session()->all();
@@ -181,7 +181,7 @@ Route::get('authuser', 'UsersController@AuthUser');
  *                                      *
  ***************************************/
 
- Route::get('/pickupdashboard', 'PickupUserController@ShowDashboard');
+ Route::get('/pickupdashboard', 'PickupUserController@ShowDashboard')->middleware('user.pickup');
 
  Route::post('/completeorder', 'PickupUserController@CompleteOrder');
 
@@ -204,7 +204,7 @@ Route::get('authuser', 'UsersController@AuthUser');
  *                                      *
  ***************************************/
   
-Route::get('/userdashboard', 'UserDashboardController@ShowUserDashboard');
+Route::get('/userdashboard', 'UserDashboardController@ShowUserDashboard')->middleware('user.user');
 
 Route::get('getuserdashboard', 'UserDashboardController@GetUserDashboard');
   

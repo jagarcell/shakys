@@ -26,10 +26,6 @@ class RedirectIfAuthenticated
                 return redirect(RouteServiceProvider::HOME);
             }
         }
-        $user = Auth::user();
-        if($user != null){
-            dd('user');
-        }
         return $next($request);
     }
 }
