@@ -22,7 +22,7 @@ class CheckIfUserIsPickup
             return redirect('/login');
         };
 
-        if($user->user_type =='user'){
+        if($user->user_type =='pickup'){
             return $next($request);
         }
         else{
