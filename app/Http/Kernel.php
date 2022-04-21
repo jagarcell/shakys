@@ -57,6 +57,9 @@ class Kernel extends HttpKernel
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'check.if.is.user.admin' => \App\Http\Middleware\CheckIfUserIsAdmin::class,
+        'check.if.is.user.user' => \App\Http\Middleware\CheckIfUserIsUser::class,
+        'check.if.is.user.pickup' => \App\Http\Middleware\CheckIfUserIsPickup::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'checkifcanregister' => \App\Http\Middleware\CheckIfCanRegister::class,
@@ -64,9 +67,6 @@ class Kernel extends HttpKernel
         'isregisterallowed' => \App\Http\Middleware\IsRegisterAllowed::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'user.admin' => \App\Http\Middleware\CheckIfUserIsAdmin::class,
-        'user.user' => \App\Http\Middleware\CheckIfUserIsUser::class,
-        'user.pickup' => \App\Http\Middleware\CheckIfUserIsPickup::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
 }

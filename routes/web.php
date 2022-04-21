@@ -38,7 +38,7 @@ Route::get('/unauth', function(){
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth'])->middleware('user.admin')->name('dashboard');
+})->middleware(['auth'])->middleware('check.if.is.user.admin')->name('dashboard');
 
 Route::get('/goback', function(){
     return session()->all();
@@ -65,7 +65,7 @@ Route::get('/sqltest', 'SqltestController@SqlTest');
 
 Route::get('/users', 'UsersController@ListUsers')->middleware('checkifcanregister');
 
-Route::get('/getusers', 'UsersController@getUsers');
+Route::get('/getusers', 'UsersController@getUsers')->middleware('check.if.is.user.admin');
 
 Route::post('/userbyid', 'UsersController@UserById');
 
@@ -181,7 +181,7 @@ Route::get('authuser', 'UsersController@AuthUser');
  *                                      *
  ***************************************/
 
- Route::get('/pickupdashboard', 'PickupUserController@ShowDashboard')->middleware('user.pickup');
+ Route::get('/pickupdashboard', 'PickupUserController@ShowDashboard')->middleware('check.if.is.user.pickup');
 
  Route::post('/completeorder', 'PickupUserController@CompleteOrder');
 
@@ -204,7 +204,7 @@ Route::get('authuser', 'UsersController@AuthUser');
  *                                      *
  ***************************************/
   
-Route::get('/userdashboard', 'UserDashboardController@ShowUserDashboard')->middleware('user.user');
+Route::get('/userdashboard', 'UserDashboardController@ShowUserDashboard')->middleware('check.if.is.user.user');
 
 Route::get('getuserdashboard', 'UserDashboardController@GetUserDashboard');
   
