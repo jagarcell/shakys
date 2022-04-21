@@ -19,7 +19,7 @@ Vue.component('search-bar', {
     },
     template: `<div class="search-frame">
         <div class="search-input"> 
-          <input v-model="searchText" type="text" class="search-bar w-input" maxlength="256"placeholder="Enter your search here (Press Enter For All)">
+          <input v-model="searchText" type="text" class="search-bar w-input" maxlength="256"placeholder="Search text or Enter for all">
           <div class="search-product-icon">
             <img src="/images/MagnifierBk.png">
             <input type="button" v-on:click="$emit('search', searchText)" class="search-button">

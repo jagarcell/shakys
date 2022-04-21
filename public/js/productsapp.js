@@ -5378,7 +5378,7 @@
                             staticClass: "search_bar",
                             attrs: {
                                 type: "text",
-                                placeholder: "Enter your search here (Press Enter for all)",
+                                placeholder: "Search text or Enter for all",
                                 autofocus: ""
                             },
                             domProps: { value: _vm.searchText },
@@ -5791,8 +5791,7 @@
                             attrs: { type: "checkbox" },
                             domProps: {
                                 checked: Array.isArray(_vm.checked) ?
-                                    _vm._i(_vm.checked, null) > -1 :
-                                    _vm.checked
+                                    _vm._i(_vm.checked, null) > -1 : _vm.checked
                             },
                             on: {
                                 change: [
@@ -6792,9 +6791,7 @@
                     } else {
                         // inject component registration as beforeCreate hook
                         var existing = options.beforeCreate
-                        options.beforeCreate = existing ?
-                            [].concat(existing, hook) :
-                            [hook]
+                        options.beforeCreate = existing ? [].concat(existing, hook) : [hook]
                     }
                 }
 
@@ -8114,8 +8111,7 @@
                     parentVal ?
                     parentVal.concat(childVal) :
                     Array.isArray(childVal) ?
-                    childVal :
-                    [childVal] :
+                    childVal : [childVal] :
                     parentVal;
                 return res ?
                     dedupeHooks(res) :
@@ -8279,8 +8275,7 @@
                         val = props[key];
                         name = camelize(key);
                         res[name] = isPlainObject(val) ?
-                            val :
-                            { type: val };
+                            val : { type: val };
                     }
                 } else if (true) {
                     warn(
@@ -8307,8 +8302,7 @@
                     for (var key in inject) {
                         var val = inject[key];
                         normalized[key] = isPlainObject(val) ?
-                            extend({ from: key }, val) :
-                            { from: val };
+                            extend({ from: key }, val) : { from: val };
                     }
                 } else if (true) {
                     warn(
@@ -9204,8 +9198,7 @@
             // with hand-written render functions / JSX. In such cases a full normalization
             // is needed to cater to all possible types of children values.
             function normalizeChildren(children) {
-                return isPrimitive(children) ?
-                    [createTextVNode(children)] :
+                return isPrimitive(children) ? [createTextVNode(children)] :
                     Array.isArray(children) ?
                     normalizeArrayChildren(children) :
                     undefined
@@ -9443,8 +9436,7 @@
             function normalizeScopedSlot(normalSlots, key, fn) {
                 var normalized = function() {
                     var res = arguments.length ? fn.apply(null, arguments) : fn({});
-                    res = res && typeof res === 'object' && !Array.isArray(res) ?
-                        [res] // single vnode
+                    res = res && typeof res === 'object' && !Array.isArray(res) ? [res] // single vnode
                         :
                         normalizeChildren(res);
                     var vnode = res && res[0];
@@ -12408,9 +12400,7 @@
             function mergeClassData(child, parent) {
                 return {
                     staticClass: concat(child.staticClass, parent.staticClass),
-                    class: isDef(child.class) ?
-                        [child.class, parent.class] :
-                        parent.class
+                    class: isDef(child.class) ? [child.class, parent.class] : parent.class
                 }
             }
 
@@ -13841,8 +13831,7 @@
                 key
             ) {
                 return modules ?
-                    modules.map(function(m) { return m[key]; }).filter(function(_) { return _; }) :
-                    []
+                    modules.map(function(m) { return m[key]; }).filter(function(_) { return _; }) : []
             }
 
             function addProp(el, name, value, range, dynamic) {
@@ -14457,8 +14446,7 @@
                 target$1.addEventListener(
                     name,
                     handler,
-                    supportsPassive ?
-                    { capture: capture, passive: passive } :
+                    supportsPassive ? { capture: capture, passive: passive } :
                     capture
                 );
             }
@@ -14892,7 +14880,8 @@
                 window.requestAnimationFrame ?
                 window.requestAnimationFrame.bind(window) :
                 setTimeout :
-                /* istanbul ignore next */ function(fn) { return fn(); };
+                /* istanbul ignore next */
+                function(fn) { return fn(); };
 
             function nextFrame(fn) {
                 raf(function() {

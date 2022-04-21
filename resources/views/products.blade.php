@@ -37,7 +37,7 @@
             <!-- THIS IS THE ADD ICON -->
             <div id="add_icon_frame" class="add_icon_frame">
                 <div class="all_products_search_frame">
-                    <input id="product_search_text" type="text" class="all_products_search_bar" placeholder="Enter your search here (Press Enter for all)">
+                    <input id="product_search_text" type="text" class="all_products_search_bar" placeholder="Search text or Enter for all">
                     <div class="search_product_icon">
                         <img src="/images/MagnifierBk.png">
                         <input type="button" class="all_products_search_button" onclick="productSearchClick()">

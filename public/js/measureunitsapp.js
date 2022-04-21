@@ -4813,7 +4813,7 @@
                             staticClass: "search_bar",
                             attrs: {
                                 type: "text",
-                                placeholder: "Enter your search here (Press Enter for all)",
+                                placeholder: "Search text or Enter for all",
                                 autofocus: ""
                             },
                             domProps: { value: _vm.searchText },
