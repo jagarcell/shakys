@@ -1,11 +1,11 @@
-$(document).ready(function(){
+$(document).ready(function() {
 
     var measureUnitSearchText = document.getElementById('measure_unit_search_text')
 
-    measureUnitSearchText.addEventListener("keyup", function (event){
-        if(event.code == 'Enter'){
+    measureUnitSearchText.addEventListener("keyup", function(event) {
+        if (event.code == 'Enter') {
             measureUnitSearchClick()
-        }        
+        }
     })
 
 })
@@ -17,78 +17,70 @@ function addIconClick() {
 }
 
 function createButtonClick(button) {
-    if(button !== undefined){
+    if (button !== undefined) {
         button.disabled = true
     }
     var unitDescription = document.getElementById('unit_description').value
- 
-    $.post('/createmeasureunit',
-        {
-            _token:$('meta[name="csrf-token"]').attr('content'),
-            unit_description:unitDescription,
-            element_tag:'add_section_frame',
-        }, function(data, status){
-            if(status == 'success'){
-                var elementTag = data.element_tag
-                var actionResultMessage = $('#' + elementTag).find('#action_result_message')
-                switch (data.status) {
-                    case 'ok':
-                        var measureUnit = data.measureunit
-                        reportResult(
-                            {
-                                frame:actionResultMessage,
-                                message:"THE UNIT WAS SUCCESFULLY CREATED",
-                                error:false,
-                                alignTop:false,
-                                param:{elementTag:elementTag, measureUnit:measureUnit},
-                            }, function(frame, param){
-                                frame.hide()
-                                var measureUnit = param.measureUnit
-                                var sectionHtml = document.getElementById('section_html').outerHTML
-                                var productsListWrap = document.getElementById('products_list_wrap')
 
-                                unitSectionHTML = sectionHtml
-                                unitSectionHTML = unitSectionHTML.replace(/section_html/g, measureUnit.id)
-                                unitSectionHTML = unitSectionHTML.replace(/unit-id/g, measureUnit.id)
-                                unitSectionHTML = unitSectionHTML.replace(/unit-description/g, measureUnit.unit_description)
-                                productsListWrap.innerHTML = unitSectionHTML + productsListWrap.innerHTML
+    $.post('/createmeasureunit', {
+        //            _token:$('meta[name="csrf-token"]').attr('content'),
+        unit_description: unitDescription,
+        element_tag: 'add_section_frame',
+    }, function(data, status) {
+        if (status == 'success') {
+            var elementTag = data.element_tag
+            var actionResultMessage = $('#' + elementTag).find('#action_result_message')
+            switch (data.status) {
+                case 'ok':
+                    var measureUnit = data.measureunit
+                    reportResult({
+                        frame: actionResultMessage,
+                        message: "THE UNIT WAS SUCCESFULLY CREATED",
+                        error: false,
+                        alignTop: false,
+                        param: { elementTag: elementTag, measureUnit: measureUnit },
+                    }, function(frame, param) {
+                        frame.hide()
+                        var measureUnit = param.measureUnit
+                        var sectionHtml = document.getElementById('section_html').outerHTML
+                        var productsListWrap = document.getElementById('products_list_wrap')
 
-                                $(productsListWrap).find('#' + measureUnit.id)[0].classList.add("measure_unit_edition")
-                                $(productsListWrap).find('#' + measureUnit.id)[0].style.display = 'block'
-                                discardButtonClick()
-                            }   
-                        )                        
-                        break
-                    case 'error':
-                        var message = getMessageFromErrorInfo(data.message)
-                        reportResult(
-                            {
-                                frame:actionResultMessage,
-                                message:message,
-                            }, function(frame, param){
-                                frame.hide()
-                            }
-                        )    
-                        break
-                
-                    case '419':
-                        var message = getStatusMessage('419')
-                        reportResult(
-                            {
-                                frame:actionResultMessage,
-                                message:message,
-                            }
-                        )
-                        break    
-                    default:
-                        break;
-                }
-            }
-            if(button !== undefined){
-                button.disabled = false
+                        unitSectionHTML = sectionHtml
+                        unitSectionHTML = unitSectionHTML.replace(/section_html/g, measureUnit.id)
+                        unitSectionHTML = unitSectionHTML.replace(/unit-id/g, measureUnit.id)
+                        unitSectionHTML = unitSectionHTML.replace(/unit-description/g, measureUnit.unit_description)
+                        productsListWrap.innerHTML = unitSectionHTML + productsListWrap.innerHTML
+
+                        $(productsListWrap).find('#' + measureUnit.id)[0].classList.add("measure_unit_edition")
+                        $(productsListWrap).find('#' + measureUnit.id)[0].style.display = 'block'
+                        discardButtonClick()
+                    })
+                    break
+                case 'error':
+                    var message = getMessageFromErrorInfo(data.message)
+                    reportResult({
+                        frame: actionResultMessage,
+                        message: message,
+                    }, function(frame, param) {
+                        frame.hide()
+                    })
+                    break
+
+                case '419':
+                    var message = getStatusMessage('419')
+                    reportResult({
+                        frame: actionResultMessage,
+                        message: message,
+                    })
+                    break
+                default:
+                    break;
             }
         }
-    )
+        if (button !== undefined) {
+            button.disabled = false
+        }
+    })
 }
 
 function discardButtonClick() {
@@ -98,17 +90,16 @@ function discardButtonClick() {
 }
 
 function editButtonClick(unitId, button) {
-    if(button !== undefined){
+    if (button !== undefined) {
         button.disabled = true
     }
     discardEditChanges(-1)
 
-    $.get('/getmeasureunit',
-    {
-        id:unitId,
-        element_tag:unitId,
-    }, function(data, status){
-        if(status == 'success'){
+    $.get('/getmeasureunit', {
+        id: unitId,
+        element_tag: unitId,
+    }, function(data, status) {
+        if (status == 'success') {
             var elementTag = data.element_tag
             var actionResultMessage = $('#' + elementTag).find('#action_result_message')
             switch (data.status) {
@@ -122,99 +113,89 @@ function editButtonClick(unitId, button) {
                     unitSection.innerHTML = unitSection.innerHTML.replace(/unit-description/g, measureUnit.unit_description)
                     break
                 case 'notfound':
-                    reportResult(
-                        {
-                            frame:actionResultMessage,
-                            message:"MEASURE UNIT NOT FOUND",
-                            alignTop:false,
-                            param:elementTag,
-                        }, function(frame, elementTag){
-                            document.getElementById(elementTag).outerHTML = ""
-                        }
-                    )
+                    reportResult({
+                        frame: actionResultMessage,
+                        message: "MEASURE UNIT NOT FOUND",
+                        alignTop: false,
+                        param: elementTag,
+                    }, function(frame, elementTag) {
+                        document.getElementById(elementTag).outerHTML = ""
+                    })
                     break
-            
+
                 default:
                     break
             }
         }
-        if(button !== undefined){
+        if (button !== undefined) {
             button.disabled = false
         }
     })
 }
 
 function deleteButtonClick(unitId, button) {
-    if(button !== undefined){
+    if (button !== undefined) {
         button.disabled = true
     }
-    $.post('/removemeasureunit',
-        {
-            _token:$('meta[name="csrf-token"]').attr('content'),
-            id:unitId,
-            verbose:true,
-            element_tag:unitId,
-        }, function(data, status){
-            if(status == 'success'){
-                var elementTag = data.element_tag
-                var actionResultMessage = $('#' + elementTag).find('#action_result_message')
-                switch (data.status) {
-                    case 'ok':
-                        reportResult(
-                            {
-                                frame:actionResultMessage,
-                                message:"THE MEASURE UNIT WAS SUCCESFULLY DELETED",
-                                error:false,
-                                alignTop:false,
-                                param:elementTag        
-                            }, function(frame, elementTag){
-                                frame.hide()
-                                document.getElementById(elementTag).outerHTML = ""
-                            }
-                        )
-                        break
-                    case 'inuse':
-                        var measureUnit = data.measureunit
-                        var acceptCancelUnitLinkDialogFrameHtml = document.getElementById('accept_cancel_unit_link_dialog_frame_html').innerHTML
-                        var acceptCancelUnitLinkDialogFrame = document.getElementById('accept_cancel_unit_link_dialog_frame')
+    $.post('/removemeasureunit', {
+        _token: $('meta[name="csrf-token"]').attr('content'),
+        id: unitId,
+        verbose: true,
+        element_tag: unitId,
+    }, function(data, status) {
+        if (status == 'success') {
+            var elementTag = data.element_tag
+            var actionResultMessage = $('#' + elementTag).find('#action_result_message')
+            switch (data.status) {
+                case 'ok':
+                    reportResult({
+                        frame: actionResultMessage,
+                        message: "THE MEASURE UNIT WAS SUCCESFULLY DELETED",
+                        error: false,
+                        alignTop: false,
+                        param: elementTag
+                    }, function(frame, elementTag) {
+                        frame.hide()
+                        document.getElementById(elementTag).outerHTML = ""
+                    })
+                    break
+                case 'inuse':
+                    var measureUnit = data.measureunit
+                    var acceptCancelUnitLinkDialogFrameHtml = document.getElementById('accept_cancel_unit_link_dialog_frame_html').innerHTML
+                    var acceptCancelUnitLinkDialogFrame = document.getElementById('accept_cancel_unit_link_dialog_frame')
 
-                        acceptCancelUnitLinkDialogFrame.innerHTML = acceptCancelUnitLinkDialogFrameHtml
-                        acceptCancelUnitLinkDialogFrame.innerHTML = acceptCancelUnitLinkDialogFrame.innerHTML.replace(/unit-id/g, measureUnit.id)
-                        acceptCancelUnitLinkDialogFrame.innerHTML = acceptCancelUnitLinkDialogFrame.innerHTML.replace(/unit-description/g, measureUnit.unit_description)
-                        acceptCancelUnitLinkDialogFrame.style.display = 'block'
-                        break
-                    case 'error':
-                        var message = getMessageFromErrorInfo(data.message)
-                        reportResult(
-                            {
-                                frame:actionResultMessage,
-                                message:message,
-                                alignTop:false,                                
-                            }, function(frame, param){
-                                frame.hide()
-                            }
-                        )
-                        break
-                    case '419':
-                        var message = getStatusMessage('419')
-                        reportResult(
-                            {
-                                frame:actionResultMessage,
-                                message:message,
-                                alignTop:false,
-                            }
-                        )    
-                        break
-                
-                    default:
-                        break;
-                }
-            }
-            if(button !== undefined){
-                button.disabled = false
+                    acceptCancelUnitLinkDialogFrame.innerHTML = acceptCancelUnitLinkDialogFrameHtml
+                    acceptCancelUnitLinkDialogFrame.innerHTML = acceptCancelUnitLinkDialogFrame.innerHTML.replace(/unit-id/g, measureUnit.id)
+                    acceptCancelUnitLinkDialogFrame.innerHTML = acceptCancelUnitLinkDialogFrame.innerHTML.replace(/unit-description/g, measureUnit.unit_description)
+                    acceptCancelUnitLinkDialogFrame.style.display = 'block'
+                    break
+                case 'error':
+                    var message = getMessageFromErrorInfo(data.message)
+                    reportResult({
+                        frame: actionResultMessage,
+                        message: message,
+                        alignTop: false,
+                    }, function(frame, param) {
+                        frame.hide()
+                    })
+                    break
+                case '419':
+                    var message = getStatusMessage('419')
+                    reportResult({
+                        frame: actionResultMessage,
+                        message: message,
+                        alignTop: false,
+                    })
+                    break
+
+                default:
+                    break;
             }
         }
-    )
+        if (button !== undefined) {
+            button.disabled = false
+        }
+    })
 }
 
 /**
@@ -223,54 +204,50 @@ function deleteButtonClick(unitId, button) {
  *  
  */
 function acceptEditChanges(unitId, button) {
-   if(button !== undefined){
-       button.disabled = true
-   } 
-   $.post('/updatemeasureunit',
-        {
-            _token:$('meta[name="csrf-token"]').attr('content'),
-            id:unitId,
-            unit_description:$('#' + unitId).find('.unit_description_input').val(),
-            element_tag:unitId,
-        }, function(data, status){
-            if(status == 'success'){
-                var elementTag = data.element_tag
-                var actionResultMessage = $('#' + elementTag).find('#action_result_message')
-                switch (data.status) {
-                    case 'ok':
-                        var measureUnit = data.measureunit
-                        param = {elementTag:elementTag, measureUnit:measureUnit}
-                        reportResult(
-                            {
-                                frame:actionResultMessage,
-                                message:"MEASURE UNIT SUCCESFULLY UPDATED",
-                                error:false,
-                                alignTop:false,
-                                param:param,
-                            }, function(frame, param){
-                                frame.hide()
-                                elementTag = param.elementTag
-                                measureUnit = param.measureUnit
+    if (button !== undefined) {
+        button.disabled = true
+    }
+    $.post('/updatemeasureunit', {
+        _token: $('meta[name="csrf-token"]').attr('content'),
+        id: unitId,
+        unit_description: $('#' + unitId).find('.unit_description_input').val(),
+        element_tag: unitId,
+    }, function(data, status) {
+        if (status == 'success') {
+            var elementTag = data.element_tag
+            var actionResultMessage = $('#' + elementTag).find('#action_result_message')
+            switch (data.status) {
+                case 'ok':
+                    var measureUnit = data.measureunit
+                    param = { elementTag: elementTag, measureUnit: measureUnit }
+                    reportResult({
+                        frame: actionResultMessage,
+                        message: "MEASURE UNIT SUCCESFULLY UPDATED",
+                        error: false,
+                        alignTop: false,
+                        param: param,
+                    }, function(frame, param) {
+                        frame.hide()
+                        elementTag = param.elementTag
+                        measureUnit = param.measureUnit
 
-                                var unitSection = document.getElementById(elementTag)
-                                var sectionHtml = document.getElementById('section_html').innerHTML
+                        var unitSection = document.getElementById(elementTag)
+                        var sectionHtml = document.getElementById('section_html').innerHTML
 
-                                unitSection.innerHTML = sectionHtml
-                                unitSection.innerHTML = unitSection.innerHTML.replace(/unit-id/g, measureUnit['id'])
-                                unitSection.innerHTML = unitSection.innerHTML.replace(/unit-description/g, measureUnit['unit_description'])
-                            }
-                        )
-                        break
-                
-                    default:
-                        break
-                }
-            }
-            if(button !== undefined){
-                button.disabled = false
+                        unitSection.innerHTML = sectionHtml
+                        unitSection.innerHTML = unitSection.innerHTML.replace(/unit-id/g, measureUnit['id'])
+                        unitSection.innerHTML = unitSection.innerHTML.replace(/unit-description/g, measureUnit['unit_description'])
+                    })
+                    break
+
+                default:
+                    break
             }
         }
-   )  
+        if (button !== undefined) {
+            button.disabled = false
+        }
+    })
 }
 
 /**
@@ -279,44 +256,42 @@ function acceptEditChanges(unitId, button) {
  *  
  */
 function discardEditChanges(unitId, button) {
-    if(unitId == -1){
+    if (unitId == -1) {
         var measureUnitEditions = $('.measure_unit_edition')
-        $.each(measureUnitEditions, function(index, measureUnitEdition){
+        $.each(measureUnitEditions, function(index, measureUnitEdition) {
             discardEditChanges(measureUnitEdition.id)
         })
         return
     }
 
-    if(button !== undefined){
+    if (button !== undefined) {
         button.disabled = true
     }
 
-    $.get('/getmeasureunit',
-        {
-            id:unitId,
-            element_tag:unitId,
-        }, function(data, status){
-            if(status == 'success'){
-                var elementTag = data.element_tag
-                switch (data.status) {
-                    case 'ok':
-                        var measureUnit = data.measureunit
-                        var unitSection = document.getElementById(elementTag)
+    $.get('/getmeasureunit', {
+        id: unitId,
+        element_tag: unitId,
+    }, function(data, status) {
+        if (status == 'success') {
+            var elementTag = data.element_tag
+            switch (data.status) {
+                case 'ok':
+                    var measureUnit = data.measureunit
+                    var unitSection = document.getElementById(elementTag)
 
-                        unitSection.innerHTML = document.getElementById('section_html').innerHTML
-                        unitSection.innerHTML = unitSection.innerHTML.replace(/unit-id/g, measureUnit.id)
-                        unitSection.innerHTML = unitSection.innerHTML.replace(/unit-description/g, measureUnit.unit_description)
-                        break
-                
-                    default:
-                        break
-                }
-            }
-            if(button !== undefined){
-                button.disabled = false
+                    unitSection.innerHTML = document.getElementById('section_html').innerHTML
+                    unitSection.innerHTML = unitSection.innerHTML.replace(/unit-id/g, measureUnit.id)
+                    unitSection.innerHTML = unitSection.innerHTML.replace(/unit-description/g, measureUnit.unit_description)
+                    break
+
+                default:
+                    break
             }
         }
-    )    
+        if (button !== undefined) {
+            button.disabled = false
+        }
+    })
 }
 
 /**
@@ -324,7 +299,7 @@ function discardEditChanges(unitId, button) {
  * Action to close the unit removal dialog
  * 
  */
-function acceptCancelUnitLinkDialogClose(){
+function acceptCancelUnitLinkDialogClose() {
     var acceptCancelUnitLinkDialogFrame = document.getElementById('accept_cancel_unit_link_dialog_frame')
     acceptCancelUnitLinkDialogFrame.style.display = 'none'
     acceptCancelUnitLinkDialogFrame.innerHTML = ""
@@ -334,64 +309,56 @@ function acceptCancelUnitLinkDialogClose(){
  * 
  * @param {string} unitId 
  */
-function acceptUnitRemoval(unitId){
+function acceptUnitRemoval(unitId) {
     var acceptCancelUnitLinkDialogFrame = document.getElementById('accept_cancel_unit_link_dialog_frame')
     acceptCancelUnitLinkDialogFrame.style.display = 'none'
     acceptCancelUnitLinkDialogFrame.innerHTML = ""
 
-    $.post('/removemeasureunit',
-        {
-            _token:$('meta[name="csrf-token"]').attr('content'),
-            id:unitId,
-            element_tag:unitId,
-        }, function(data, status){
-            if(status == 'success'){
-                var elementTag = data.element_tag
-                var actionResultMessage = $('#' + elementTag).find('#action_result_message')
-                switch (data.status) {
-                    case 'ok':
-                        reportResult(
-                            {
-                                frame:actionResultMessage,
-                                message:"THE MEASURE UNIT WAS SUCCESFULLY DELETED",
-                                error:false,
-                                alignTop:false,
-                                param:elementTag        
-                            }, function(frame, elementTag){
-                                frame.hide()
-                                document.getElementById(elementTag).outerHTML = ""
-                            }
-                        )
-                        break
-                    case 'error':
-                        var message = getMessageFromErrorInfo(data.message)
-                        reportResult(
-                            {
-                                frame:actionResultMessage,
-                                message:message,
-                                alignTop:false,                                
-                            }, function(frame, param){
-                                frame.hide()
-                            }
-                        )
-                        break
-                    case '419':
-                        var message = getStatusMessage('419')
-                        reportResult(
-                            {
-                                frame:actionResultMessage,
-                                message:message,
-                                alignTop:false,
-                            }
-                        )    
-                        break
-                
-                    default:
-                        break;
-                }
+    $.post('/removemeasureunit', {
+        _token: $('meta[name="csrf-token"]').attr('content'),
+        id: unitId,
+        element_tag: unitId,
+    }, function(data, status) {
+        if (status == 'success') {
+            var elementTag = data.element_tag
+            var actionResultMessage = $('#' + elementTag).find('#action_result_message')
+            switch (data.status) {
+                case 'ok':
+                    reportResult({
+                        frame: actionResultMessage,
+                        message: "THE MEASURE UNIT WAS SUCCESFULLY DELETED",
+                        error: false,
+                        alignTop: false,
+                        param: elementTag
+                    }, function(frame, elementTag) {
+                        frame.hide()
+                        document.getElementById(elementTag).outerHTML = ""
+                    })
+                    break
+                case 'error':
+                    var message = getMessageFromErrorInfo(data.message)
+                    reportResult({
+                        frame: actionResultMessage,
+                        message: message,
+                        alignTop: false,
+                    }, function(frame, param) {
+                        frame.hide()
+                    })
+                    break
+                case '419':
+                    var message = getStatusMessage('419')
+                    reportResult({
+                        frame: actionResultMessage,
+                        message: message,
+                        alignTop: false,
+                    })
+                    break
+
+                default:
+                    break;
             }
         }
-    )
+    })
 }
 
 /**
@@ -409,9 +376,9 @@ function acceptUnitRemoval(unitId){
  **          419:'SESSION EXPIRED!<br>REFRESH YOUR BROWSER.'
  * 
  */
- function getStatusMessage(status) {
+function getStatusMessage(status) {
     var statusMessage = ""
-    
+
     switch (status) {
         case '419':
             statusMessage = 'SESSION EXPIRED!<br>REFRESH YOUR BROWSER.'
