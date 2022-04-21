@@ -43,7 +43,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (\Symfony\Component\HttpKernel\Exception\HttpException $e, $request) {
             if ($e->getStatusCode() == 419) {
 //              return response()->json(['status' => '419', 'element_tag' => $request['element_tag']]);
-                return redirect('/login');
+                redirect('/login');
             }
           });
     
