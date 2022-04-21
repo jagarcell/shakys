@@ -23,9 +23,9 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
+                dd('for');
                 return redirect(RouteServiceProvider::HOME);
             }
-            dd('for');
         }
         dd('auth');
         return $next($request);
