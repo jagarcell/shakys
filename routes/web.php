@@ -38,7 +38,7 @@ Route::get('/unauth', function(){
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth'])->middleware('check.if.is.user.admin')->name('dashboard');
+})->middleware(['auth'])->middleware('checkifcanregister')->name('dashboard');
 
 Route::get('/goback', function(){
     return session()->all();
@@ -181,7 +181,7 @@ Route::get('authuser', 'UsersController@AuthUser');
  *                                      *
  ***************************************/
 
- Route::get('/pickupdashboard', 'PickupUserController@ShowDashboard')->middleware('check.if.is.user.pickup');
+ Route::get('/pickupdashboard', 'PickupUserController@ShowDashboard')->middleware('checkifcanregister');
 
  Route::post('/completeorder', 'PickupUserController@CompleteOrder');
 
@@ -204,7 +204,7 @@ Route::get('authuser', 'UsersController@AuthUser');
  *                                      *
  ***************************************/
   
-Route::get('/userdashboard', 'UserDashboardController@ShowUserDashboard')->middleware('check.if.is.user.user');
+Route::get('/userdashboard', 'UserDashboardController@ShowUserDashboard')->middleware('checkifcanregister');
 
 Route::get('getuserdashboard', 'UserDashboardController@GetUserDashboard');
   
