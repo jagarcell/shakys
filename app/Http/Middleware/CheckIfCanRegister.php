@@ -29,12 +29,10 @@ class CheckIfCanRegister
                     return $next($request);
                 }
                 if($user->user_type == 'user'){
-                    dd('user');
                     return redirect('/userdashboard');
                 }
                 if($user->user_type == 'pickup')
                 {
-                    dd('pickup');
                     return redirect('/pickupdashboard');
                 }
 /*                
