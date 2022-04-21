@@ -91,7 +91,7 @@ function newSupplier(newSupplierButton) {
         var image_path = supplier_data_entry_form.find('#supplier_image_to_upload').val()
 
         $.post('/addsupplier', {
-                //                _token: $('meta[name="csrf-token"]').attr('content'),
+                _token: $('meta[name="csrf-token"]').attr('content'),
                 code: code,
                 email: email,
                 name: name,
