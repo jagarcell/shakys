@@ -38,7 +38,7 @@
                         <div class="search_block w-form">
                             <div id="email-form" name="email-form" data-name="Email Form" class="search_form">
                                 <div class="all_products_search_frame">
-                                    <input id="search_text" type="text" class="search_bar w-input" maxlength="256" name="name" data-name="Name" placeholder="Enter Your Search">
+                                    <input id="search_text" type="text" class="search_bar w-input" maxlength="256" name="name" data-name="Name" placeholder="Enter your search here (Press Enter For All)">
                                     <div class="search_product_icon">
                                         <img src="/images/MagnifierBk.png">
                                         <input type="button" class="all_products_search_button" onclick="searchClick()">
