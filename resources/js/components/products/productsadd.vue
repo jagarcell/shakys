@@ -9,7 +9,7 @@
         <div v-show="addMode" class="add_section">
             <div class="pic_frame">
                 <form id="product-image" action="/productimgupload" method="post" enctype="multipart/form-data" class="dropzone product_image box_shadow" :image="imgToUpload">
-                    <input type="hidden" name="_token" :value="csrf">
+                    <!--input type="hidden" name="_token" :value="csrf"-->
                 </form>
             </div>
             <div class="data_entry">

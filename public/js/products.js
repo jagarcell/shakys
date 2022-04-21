@@ -149,7 +149,7 @@ function createButtonClick(button) {
 
     if (productForm.checkValidity()) {
         $.post('/createproduct', {
-            //                _token: $('meta[name="csrf-token"]').attr('content'),
+            _token: $('meta[name="csrf-token"]').attr('content'),
             internal_code: $('#add_section_frame').find('.code').val(),
             internal_description: $('#add_section_frame').find('.description').val(),
             days_to_count: $('#add_section_frame').find('.days_to_count').val(),
