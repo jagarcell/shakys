@@ -23,7 +23,7 @@ function createButtonClick(button) {
     var unitDescription = document.getElementById('unit_description').value
 
     $.post('/createmeasureunit', {
-        _token: $('meta[name="csrf-token"]').attr('content'),
+        //        _token: $('meta[name="csrf-token"]').attr('content'),
         unit_description: unitDescription,
         element_tag: 'add_section_frame',
     }, function(data, status) {
