@@ -36,7 +36,7 @@
             <!-- ALL PRODUCTS ADD TO ORDER BUTTON -->
             <div id="all_products_add_to_order_button" class="add_to_order_button_frame add_to_order_button_frame_mobile_height" style="display:none;">
                 <div class="all_products_search_frame">
-                    <input id="all_products_search_text" type="text" class="all_products_search_bar" placeholder="Enter your search here">
+                    <input id="all_products_search_text" type="text" class="all_products_search_bar" placeholder="Enter your search here (Press Enter for all)">
                     <div class="search_product_icon">
                         <img src="/images/MagnifierBk.png">
                         <input type="button" class="all_products_search_button" onclick="allProductsSearchClick()">

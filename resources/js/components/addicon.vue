@@ -1,7 +1,7 @@
 <template>
     <!-- THIS IS THE SECTION THAT HOLDS THE HTML FOR THE ADDING ICON AND THE ADDING ACTION FORM -->
     <div v-if="this.show" class="search_frame">
-        <input v-model="searchText" type="text" class="search_bar" placeholder="Enter your search here" v-on:keyup.enter="search" autofocus>
+        <input v-model="searchText" type="text" class="search_bar" placeholder="Enter your search here (Press Enter for all)" v-on:keyup.enter="search" autofocus>
         <div class="search_product_icon" v-on:click="search">
             <a><img src="/images/MagnifierBk.png"></a>
         </div>
