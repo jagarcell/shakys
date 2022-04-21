@@ -50,11 +50,6 @@ class Handler extends ExceptionHandler
 
     public function render($request, Exception $exception)
     {
-        dd('render');
-        if( $exception instanceof TokenMismatchException){
-            return response()
-                ->view('error', ['message' => 'Page expired, go back and try again']);
-        }
 
         return parent::render($request, $exception);    }
 }
