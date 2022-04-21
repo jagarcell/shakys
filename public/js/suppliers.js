@@ -103,7 +103,6 @@ function newSupplier(newSupplierButton) {
             },
             function(data, status) {
                 if (status == 'success') {
-                    console.log('supplier created')
                     switch (data.status) {
                         case 'ok':
                             var emptyList = $('#empty_list')
