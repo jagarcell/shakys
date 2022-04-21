@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Illuminate\Session\TokenMismatchException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -50,7 +52,7 @@ class Handler extends ExceptionHandler
     {
         if( $exception instanceof TokenMismatchException){
             return response()
-                ->view('errors.401', ['error' => 'Page expired, go back and try again'], 401);
+                ->view('error', ['message' => 'Page expired, go back and try again']);
         }
 
         return parent::render($request, $exception);    }
