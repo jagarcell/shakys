@@ -257,3 +257,10 @@ Route::get('/searchfor', 'UserDashboardController@SearchFor');
   Route::post('/updatemeasureunit', 'MeasureUnitsController@UpdateMeasureUnit');
 
   Route::get('/searchbytext', 'MeasureUnitsController@searchByText');
+ 
+ /***************************************
+  *                                     *
+  *                API                  *
+  *                                     *
+  **************************************/
+Route::get('/api/geolocation', 'GeoController@getGeoLocation');
