@@ -16,7 +16,7 @@ class GeoController extends Controller
 
     public function getClientIp(Request $request)
     {
-        $url = 'http://ip-api.com/json/'. $request->ip();
+        $url = 'http://ip-api.com/json/96.225.102.144';
         $tz = file_get_contents($url);
         $tz = json_decode($tz,true)['timezone'];
         return $tz;
