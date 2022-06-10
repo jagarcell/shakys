@@ -17,10 +17,12 @@ class GeoController extends Controller
     public function getClientIp(Request $request)
     {
         $url = 'http://ipecho.net/plain';
-        dd($url);
         $curl = curl_init($url);
-        return curl_exec($curl);
-
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);        
+        $resp = curl_exec($curl);
+        curl_close($curl);
+        return $resp;
         $tz = file_get_contents($url);
         $tz = json_decode($tz,true)['timezone'];
         return $tz;
