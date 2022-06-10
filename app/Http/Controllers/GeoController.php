@@ -17,6 +17,7 @@ class GeoController extends Controller
     public function getClientIp(Request $request)
     {
         $url = 'http://ipecho.net/plain';
+        dd($url);
         $curl = curl_init($url);
         return curl_exec($curl);
 
