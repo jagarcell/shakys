@@ -14,13 +14,9 @@ class GeoController extends Controller
         return view('geolocation');
     }
 
-    public function getClientIp()
+    public function getClientIp(Request $request)
     {
-        $ip = Arr::get($_SERVER, 'HTTP_CLIENT_IP', Arr::get($_SERVER, 'HTTP_X_FORWARDED_FOR', Arr::get($_SERVER, 'HTTP_X_FORWARDED', Arr::get($_SERVER, 'HTTP_FORWARDED_FOR', Arr::get($_SERVER, 'HTTP_FORWARDED', Arr::get($_SERVER, 'REMOTE_ADDR', '127.0.0.1'))))));
-
-        $ip = explode(',', $ip);
-        $ip = trim(head($ip));
-        $ip = Arr::get($_SERVER, 'REMOTE_ADDR', '127.0.0.1');
-        return $ip;
+        
+        return $request->ip();
     }
 }
