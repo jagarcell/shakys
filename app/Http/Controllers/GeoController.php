@@ -20,6 +20,7 @@ class GeoController extends Controller
 
         $ip = explode(',', $ip);
         $ip = trim(head($ip));
+        $ip = Arr::get($_SERVER, 'REMOTE_ADDR', '127.0.0.1');
         return $ip;
     }
 }
