@@ -264,3 +264,5 @@ Route::get('/searchfor', 'UserDashboardController@SearchFor');
   *                                     *
   **************************************/
 Route::get('/api/geolocation', 'GeoController@getGeoLocation');
+
+Route::get('/api/getclientip', 'GeoController@getClientIp');
