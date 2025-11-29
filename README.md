@@ -1,4 +1,3 @@
-This PHP Laravel App was built to provide a fast food store with an inventory control.
-The application exposes the products through the UI to allow the service personal to check
-what they are delivering and tghe app estimates the point of reorder according to the historic
-rotation of the product. The 
+This PHP Laravel application was developed to help a fast-food store manage its inventory efficiently. The app presents products on a sleek, restaurant-style dashboard, allowing service staff to easily verify orders before delivering them to customers. It also calculates reorder points based on historical product turnover, helping ensure stock levels are maintained.
+
+The admin dashboard provides the business administrator with actionable insights, enabling them to place orders with suppliers based on these reorder point estimates, streamlining inventory management and reducing the risk of stockouts.
